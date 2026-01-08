@@ -1,0 +1,179 @@
+.rdc_concept
+{
+  min-height: 200px;
+  padding: 100px 25px;
+  max-width: 1400px;
+  margin: auto;
+  display: flex;
+}
+
+.rdc_concept .rdc_part
+{
+  flex: 1;
+}
+
+.rdc_concept .subheading
+{
+  color: #706865;
+  margin-bottom: 10px;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.rdc_concept .heading 
+{
+  color: #433c38;
+  margin-bottom: 15px;
+}
+
+.rdc_concept p 
+{
+  margin-block: 10px;
+  font-size: 1.6rem;
+}
+
+.rdc_concept .point
+{
+  display: flex; align-items: center; gap: 20px;
+  margin-block: 20px;
+  padding-right: 40px;
+}
+
+.rdc_concept .point1 p 
+{
+  color: #395549;
+}
+
+.rdc_concept .point2 p 
+{
+  color: #553940;
+}
+
+.rdc_concept .point3 p 
+{
+  color: #3e3955;
+}
+
+
+/* CONTENT */
+
+.rdc_contents
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  height: 100%;
+}
+
+.rdc_contents .btn 
+{
+  position: absolute;
+  bottom: 20px;
+}
+
+.rdc_concept_content
+{
+  position: relative;
+  background-color: #555;
+  background-size: cover;
+  height: 390px;
+  display: flex;
+  justify-content: center;
+  width: 260px;
+  overflow: hidden;
+}
+
+.rdc_concept_content img 
+{
+  object-fit: cover;
+  opacity: 0.7;
+  transition: all 0.5s;
+}
+
+.rdc_concept_content:hover img 
+{
+  transform: scale(1.05);
+  opacity: 0.8;
+}
+
+.rdc_concept_content_2
+{
+  margin-top: 50px;
+}
+
+.rdc_concept_content_2 img 
+{
+  object-fit: cover;
+  opacity: 0.8;
+  transition: all 0.5s;
+}
+
+.rdc_concept_content_2:hover img 
+{
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+
+/* Mobile */
+
+@media (max-width: 798px){
+  .rdc_concept
+{
+  padding: 35px;
+  flex-direction: column;
+}
+
+.rdc_concept .rdc_part
+{
+  flex: 1;
+}
+
+.rdc_concept .subheading
+{
+  text-align: center;
+}
+
+.rdc_concept .heading 
+{
+text-align: center;
+}
+
+  .points 
+  {
+      display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 5px;
+  justify-items: center;
+
+  }
+
+  .rdc_concept .point
+{
+  flex-direction: row;
+  padding-right: 0;
+}
+
+    .rdc_concept .point p
+{
+font-size: 1.2rem;
+}
+
+.rdc_contents
+{
+  gap: 0;
+  padding-top: 20px;
+}
+  
+  .rdc_concept_content
+{
+  width: 50vw;
+}
+
+  .rdc_concept_content_2
+{
+  margin-top: 0;
+}
+}

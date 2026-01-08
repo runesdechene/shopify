@@ -1,0 +1,772 @@
+/* ============================================
+   RDC BLOG POST - FIDÈLE À LA MAQUETTE
+   ============================================ */
+
+:root {
+  --blog-text: #333333;
+  --blog-bg: #FFFFFF;
+  --blog-accent: #6B7FD7;
+  --blog-gray-light: #F5F5F5;
+  --blog-gray: #999999;
+  --blog-border: #E0E0E0;
+}
+
+.invisible_fragments
+{
+  display: none;
+}
+
+/* ============================================
+   SECTION BLOG POST
+   ============================================ */
+
+.rdc-blog-post {
+  width: 100%;
+  background: #f7f7f4;
+  color: var(--blog-text);
+  padding: 3rem 1.5rem;
+}
+
+.rdc-blog-post * {
+  box-sizing: border-box;
+}
+
+.blog-post-container {
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* ============================================
+   BOUTON RETOUR
+   ============================================ */
+
+.back-to-fragments {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 2rem;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  color: #4b4c4e;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.back-to-fragments:hover {
+  background: #f7f7f4;
+  border-color: #4b4c4e;
+  transform: translateX(-3px);
+}
+
+.back-to-fragments svg {
+  flex-shrink: 0;
+}
+
+/* ============================================
+   ILLUSTRATION (centrée en haut)
+   ============================================ */
+
+.fragment-illustration {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.illustration-wrapper {
+  position: relative;
+  display: inline-block;
+  max-width: 350px;
+  width: 100%;
+}
+
+.fragment-illustration img {
+  max-width: 350px;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+}
+
+.zoom-button {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.zoom-button:hover {
+  background: white;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.zoom-button svg {
+  color: #4b4c4e;
+}
+
+/* ============================================
+   MODAL DE ZOOM
+   ============================================ */
+
+.zoom-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.zoom-modal.active {
+  display: flex;
+}
+
+.zoom-modal-close {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  width: 50px;
+  height: 50px;
+  background: #f7f7f4;
+  border: 2px solid #e0e0e0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10001;
+}
+
+.zoom-modal-close:hover {
+  background: #4b4c4e;
+  border-color: #4b4c4e;
+  transform: rotate(90deg);
+}
+
+.zoom-modal-close:hover svg {
+  color: white;
+}
+
+.zoom-modal-close svg {
+  color: #4b4c4e;
+  transition: color 0.2s ease;
+}
+
+.zoom-modal-content {
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: zoomIn 0.3s ease;
+}
+
+.zoom-modal-content img {
+  max-width: 100%;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   TITRE (centré, majuscules)
+   ============================================ */
+
+.fragment-title {
+  font-size: 3rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 4rem 0 0.6rem 0;
+  color: #2C2C2C;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ============================================
+   ARTISTE (centré, italique, gris)
+   ============================================ */
+
+.fragment-artist {
+  text-align: center;
+  font-size: 1.3rem;
+  color: #888888;
+  margin: 0 0 2.4rem 0;
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* ============================================
+   NUMÉRO DU FRAGMENT (centré, bleu)
+   ============================================ */
+
+.fragment-number {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #626064;
+  margin: 0 0 1rem 0;
+  font-weight: 400;
+}
+
+/* ============================================
+   CONTENU PRINCIPAL
+   ============================================ */
+
+.fragment-content {
+  margin: 0 0 2.5rem 0;
+  font-size: 1.6rem;
+  line-height: 1.7;
+  color: #4A4A4A;
+  text-align: left;
+}
+
+.fragment-content h2 {
+  font-size: 2.4rem;
+  font-weight: 600;
+  margin: 3.5rem 0 2rem 0;
+  color: #45464d;
+  text-align: left;
+}
+
+.fragment-content h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.75rem 0;
+  color: #2C2C2C;
+  text-align: left;
+}
+
+.fragment-content p {
+  margin-bottom: 1.8rem;
+  color: #5a5b63;
+  text-align: justify;
+}
+
+.fragment-content ul,
+.fragment-content ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.fragment-content li {
+  margin-bottom: 0.5rem;
+}
+
+/* ============================================
+   CONTENEUR ANECDOTE + BIBLIOGRAPHIE
+   (côte à côte)
+   ============================================ */
+
+.fragment-info-container {
+  display: block;
+  margin: 0 0 2.5rem 0;
+}
+
+/* ============================================
+   ANECDOTE DE L'ARTISTE (gauche, fond gris)
+   ============================================ */
+
+.fragment-anecdote {
+  padding: 2rem 3rem;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(133, 127, 127, 0.3);
+  margin-bottom: 1.25rem;
+  border-radius: 10px;
+  text-align: left;
+}
+
+.anecdote-title, .sources-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #98929D;
+  margin: 0 0 0.6rem 0;
+  text-align: left;
+  font-family: var(--font-body-family);
+}
+
+.anecdote-author {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #483030;
+  margin-bottom: 0.85rem;
+  text-align: left;
+  font-family: var(--font-body-family);
+}
+
+.anecdote-content, .sources-content {
+  font-size: 1.4rem;
+  line-height: 1.65;
+  color: #5e5f66;
+  font-style: italic;
+  text-align: justify;
+}
+
+/* ============================================
+   BIBLIOGRAPHIE & SOURCES (droite, bordure)
+
+   ============================================ */
+.fragment-sources 
+{
+    padding: 0;
+    background: transparent;
+    padding-bottom: 20px;
+}
+
+.sources-title {
+  font-size: 1rem;
+    font-style: italic;
+
+}
+
+.sources-content {
+  font-size: 1.2rem;
+    color: #8a8b91;
+}
+
+
+/* ============================================
+   BOUTON DE PARTAGE (centré, violet clair)
+   ============================================ */
+
+.fragment-share {
+  text-align: center;
+  margin: 0 0 3rem 0;
+}
+
+.share-button {
+  display: block;
+  width: 100%;
+  padding: 1.4rem 2.75rem;
+  background: #D5D9F0;
+  color: #4e5886;
+  border: none;
+  border-radius: 10px;
+  text-transform: uppercase;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-family: var(--font-heading-family);
+}
+
+.share-button:hover {
+  background: #C5CAE9;
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   SECTION CTA "CE FRAGMENT VOUS A PLU ?"
+   ============================================ */
+hr {
+    background: rgb(226, 226, 226);
+    height: 2px;
+    border-radius: 5px;
+}
+
+.fragment-cta {
+  margin: 2rem 0 2rem 0;
+  padding-top: 3rem;
+}
+
+.cta-title {
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: left;
+  margin: 0 0 0.85rem 0;
+  color: #4b4c4e;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.cta-description {
+  font-size: 1.6rem;
+  line-height: 1.65;
+  color: #666666;
+  margin: 0 0 2.5rem 0;
+}
+
+/* ============================================
+   PRODUITS LIÉS - CARROUSEL
+   ============================================ */
+
+.fragment-products-container {
+  position: relative;
+  margin-top: 2rem;
+}
+
+.fragment-products {
+  display: flex;
+  gap: 2.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.fragment-products::-webkit-scrollbar {
+  display: none;
+}
+
+/* Flèches de navigation */
+.products-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid var(--blog-border);
+  color: var(--blog-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.products-nav:hover {
+  background: var(--blog-accent);
+  border-color: var(--blog-accent);
+  color: white;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.products-nav:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.products-nav-prev {
+  left: -60px;
+}
+
+.products-nav-next {
+  right: -60px;
+}
+
+.product-card {
+  text-decoration: none;
+  color: var(--blog-text);
+  transition: all 0.3s ease;
+  display: flex !important;
+  flex-direction: column !important;
+  position: relative;
+  flex: 0 0 calc(50% - 1.25rem);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+     background: #f1efea;
+     padding-bottom: 20px;
+     border-radius: 10px;
+}
+
+.product-card:hover {
+    opacity: 0.9;
+}
+
+/* Sur mobile, prendre toute la largeur */
+@media (max-width: 768px) {
+  .product-card {
+    flex: 0 0 calc(100% - 2.5rem);
+  }
+  
+  .fragment-products-container {
+    padding: 0 20px;
+  }
+  
+  .products-nav {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .products-nav-prev {
+    left: -10px;
+  }
+  
+  .products-nav-next {
+    right: -10px;
+  }
+}
+
+.product-card-inner {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  width: 100% !important;
+  flex-shrink: 0;
+}
+
+.product-image {
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.05);
+}
+
+.product-info {
+  text-align: center;
+  padding: 0;
+  width: 100% !important;
+  display: block !important;
+}
+
+.product-name {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--blog-text);
+  margin: 0 0 0.5rem 0;
+  line-height: 1.3;
+}
+
+.product-price {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--blog-text);
+  margin: 0 0 0.75rem 0;
+}
+
+.product-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: #F5E6D3;
+  color: #8B6F47;
+  padding: 0.4rem 0.8rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 2;
+  border-radius: 2px;
+}
+
+.product-colors {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.color-swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid #DDDDDD;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: inline-block;
+  position: relative;
+}
+
+.color-swatch:hover {
+  transform: scale(1.1);
+  border-color: var(--blog-accent);
+  box-shadow: 0 0 0 2px rgba(107, 127, 215, 0.2);
+}
+
+.color-more {
+  font-size: 1.1rem;
+  color: var(--blog-gray);
+  font-weight: 500;
+}
+
+.color-more {
+  font-size: 1.1rem;
+  color: var(--blog-gray);
+  font-weight: 500;
+}
+
+/* ============================================
+   SECTION CONTINUER DE LIRE
+   ============================================ */
+
+.continue-reading {
+  margin-top: 5rem;
+  padding-top: 3rem;
+}
+
+.continue-reading-title {
+  font-size: 2rem;
+  text-align: left;
+  margin: 0 0 0.5rem 0;
+  color: #4b4c4e;
+}
+
+.continue-reading-subtitle {
+  font-size: 1.6rem;
+  color: #666666;
+  margin: 0 0 3rem 0;
+  text-align: left;
+}
+
+.related-articles {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+}
+
+.article-card {
+  text-decoration: none;
+  color: var(--blog-text);
+  display: block;
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.article-card:hover {
+  opacity: 0.9;
+}
+
+.article-card-image {
+  width: 100%;
+  overflow: hidden;
+  background: #9CA3AF;
+}
+
+.article-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.article-card:hover .article-card-image img {
+  transform: scale(1.05);
+}
+
+.article-card-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholder-content {
+  font-size: 6rem;
+  font-weight: 700;
+  color: white;
+  opacity: 0.5;
+}
+
+/* ============================================
+   RESPONSIVE MOBILE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .rdc-blog-post {
+    padding: 2rem 5rem;
+  }
+
+  .blog-post-container {
+    max-width: 100%;
+  }
+  
+  .related-articles {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .fragment-title {
+    font-size: 1.5rem;
+  }
+
+  .fragment-info-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .fragment-products {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+}
+
+/* ============================================
+   ACCESSIBILITÉ
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.share-button:focus-visible,
+.product-card:focus-visible {
+  outline: 3px solid var(--blog-accent);
+  outline-offset: 3px;
+}

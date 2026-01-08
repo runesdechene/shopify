@@ -1,0 +1,65 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "section_width": "container-narrow",
+        "show_default_heading": true,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "rdc_nos_produits_R4qewz": {
+      "type": "rdc_nos_produits",
+      "blocks": {
+        "mini_block_cBXTHP": {
+          "type": "mini_block",
+          "settings": {
+            "image_position": "left",
+            "vertical_alignment": "middle",
+            "text_alignment": "right",
+            "padding_top": 40,
+            "padding_bottom": 40,
+            "image_width": 50,
+            "image_format": "auto",
+            "title": "Image with text",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "button_text": "button text",
+            "button_link": "shopify://products/t-shirt-unisexe-gjallahorn",
+            "button_style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "mini_block_cBXTHP"
+      ],
+      "name": "RDC - Nos Produits",
+      "settings": {
+        "width": "container",
+        "heading_tag": "h1",
+        "heading_text": "",
+        "description_text": "",
+        "description_button_text": "Découvrir",
+        "description_button_link": "",
+        "description_button_style": "primary",
+        "content_orientation": "vertical"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rdc_nos_produits_R4qewz"
+  ]
+}

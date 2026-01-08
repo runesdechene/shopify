@@ -1,0 +1,680 @@
+{{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
+
+
+<style>
+/* CSS personnalisé pour les astérisques obligatoires */
+.section-contact .field__label::after,
+.section-contact .form__label::after {
+  content: " *";
+  {% if section.settings.show_asterisk %}color: {{ section.settings.asterisk_color | default: '#33322D' }};{% else %}display: none;{% endif %}
+  font-weight: bold;
+  margin-left: 2px;
+}
+
+
+.section-contact .field__input:required,
+.section-contact .text-area:required {
+  {% if section.settings.show_border_required %}border-left: {{ section.settings.border_width | default: 4 }}px solid {{ section.settings.border_color | default: '#33322D' }};{% endif %}
+}
+
+
+.section-contact .field__input:invalid:not(:placeholder-shown),
+.section-contact .text-area:invalid:not(:placeholder-shown) {
+  {% if section.settings.show_border_required %}border-color: {{ section.settings.border_color | default: '#33322D' }};
+  box-shadow: 0 0 0 {{ section.settings.border_width | default: 4 | divided_by: 2 }}px {{ section.settings.border_color | default: '#33322D' }};{% endif %}
+}
+
+
+{% if section.settings.bg_image %}
+.section-contact {
+  background-image: url('{{ section.settings.bg_image | image_url }}');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+{% endif %}
+</style>
+
+
+{%- liquid
+  assign class_section = 'contact'
+  assign content_width = section.settings.content_width
+  
+  assign contact_form_class = 'isolate mx-auto max-w-6xl'
+  if content_width == 'max-full'
+    assign contact_form_class = 'isolate mx-auto max-full'
+  else
+    assign contact_form_class = 'isolate mx-auto max-w-6xl'
+  endif
+
+
+  assign input_bg_color = section.settings.input_bg_color
+  assign input_text_color = section.settings.input_text_color
+  assign input_border_color = section.settings.input_border_color
+-%}
+
+
+{% unless input_bg_color == 'rgba(0,0,0,0)' or input_bg_color == blank %}
+  {%- capture style_attr_color -%}--color-background: {{ input_bg_color.rgb }};{%- endcapture -%}
+{% endunless %}
+{% unless input_text_color == 'rgba(0,0,0,0)' or input_text_color == blank %}
+  {%- capture style_attr_color -%}{{ style_attr_color }} --color-foreground: {{ input_text_color.rgb }};{%- endcapture -%}
+{% endunless %}
+{% unless input_border_color == 'rgba(0,0,0,0)' or input_border_color == blank %}
+  {%- capture style_attr_color -%}{{ style_attr_color }} --color-input-border: {{ input_border_color.rgb }};{%- endcapture -%}
+{% endunless %}
+
+
+<div class="section-{{ class_section }} isolate section-padding section-bg" {% render 'section-properties' %}>
+  <div class="container">
+    {% render 'section-header', layout_header: section.settings.layout, subheading: section.settings.subheading, heading: section.settings.heading, description: section.settings.description, class:"header-contact", heading_size: section.settings.heading_size_section, heading_tag: section.settings.heading_tag %}
+    <div class="block {% if  settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in {% endif %}">
+    {%- form 'contact', id: 'ContactForm', class: contact_form_class -%}
+      <div class="fieldset flex flex-col justify-center gap-y-6" 
+      {% if style_attr_color != blank %}
+        style="{{ style_attr_color | strip }}"
+      {%- endif -%}>
+        {%- if form.posted_successfully? -%}
+          <div class="form-status form-status-list form__message" tabindex="-1" autofocus>
+            {% render 'icon-success' %}
+            {{ 'templates.contact.form.post_success' | t }}
+          </div>
+        {%- elsif form.errors -%}
+            <div class="form-status caption-large text-body form__message" role="alert" tabindex="-1" autofocus>
+              {% render 'icon-error' %}
+              {{ 'templates.contact.form.error_heading' | t }}
+            </div>
+          <ul class="form-status-list caption-large" role="list">
+            <li>
+              <a href="#ContactForm-email" class="link">
+                {{ form.errors.translated_fields.email | capitalize }}
+                {{ form.errors.messages.email }}
+              </a>
+            </li>
+          </ul>
+        {%- endif -%}
+        
+        <div class="contact__fields flex  flex-col lg:flex-row gap-x-6 gap-y-6" >
+          <div class="field">
+            <input
+              class="field__input"
+              autocomplete="name"
+              type="text"
+              id="ContactForm-name"
+              name="contact[{{ section.settings.name_label | default: 'Prénom' }}]"
+              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+              placeholder="{{ section.settings.name_label | default: 'Prénom' }}"
+              required
+            >
+            <label class="field__label" for="ContactForm-name">{{ section.settings.name_label | default: 'Prénom' }}</label>
+          </div>
+          <div class="field field--with-error">
+            <input
+              autocomplete="email"
+              type="email"
+              id="ContactForm-email"
+              class="field__input"
+              name="contact[email]"
+              spellcheck="false"
+              autocapitalize="off"
+              value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+              aria-required="true"
+              {% if form.errors contains 'email' %}
+                aria-invalid="true"
+                aria-describedby="ContactForm-email-error"
+              {% endif %}
+              placeholder="{{ 'templates.contact.form.email' | t }}"
+              required
+            >
+            <label class="field__label" for="ContactForm-email">
+              {{- 'templates.contact.form.email' | t }}
+            </label>
+            {%- if form.errors contains 'email' -%}
+              <small class="contact__field-error" id="ContactForm-email-error">
+                <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
+                <span class="form__message">
+                  {%- render 'icon-error' -%}
+                  {{- form.errors.translated_fields.email | capitalize }}
+                  {{ form.errors.messages.email -}}
+                </span>
+              </small>
+            {%- endif -%}
+          </div>
+        </div>
+        
+        {%- if section.settings.show_phone_number -%}
+          <div class="field">
+            <input
+              type="tel"
+              id="ContactForm-phone"
+              class="field__input"
+              autocomplete="tel"
+              name="contact[{{ 'templates.contact.form.phone' | t }}]"
+              pattern="[0-9\-]*"
+              value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+              placeholder="{{ 'templates.contact.form.phone' | t }}"
+              {% if section.settings.phone_required %}required{% endif %}
+            >
+            <label class="field__label" for="ContactForm-phone">{{ 'templates.contact.form.phone' | t }}</label>
+          </div>
+        {%- endif -%}
+        
+        <!-- Champ Instagram/TikTok -->
+        <div class="field">
+          <input
+            class="field__input"
+            type="text"
+            id="ContactForm-instagram"
+            name="contact[{{ section.settings.instagram_label | default: 'Votre compte Instagram/TikTok' }}]"
+            placeholder="{{ section.settings.instagram_placeholder | default: '@votre_compte' }}"
+            required
+          >
+          <label class="field__label" for="ContactForm-instagram">{{ section.settings.instagram_label | default: 'Votre compte Instagram/TikTok' }}</label>
+        </div>
+        
+        <!-- Champ Localisation -->
+        <div class="field">
+          <input
+            class="field__input"
+            type="text"
+            id="ContactForm-location"
+            name="contact[{{ section.settings.location_label | default: 'D où venez-vous ?' }}]"
+            placeholder="{{ section.settings.location_placeholder | default: 'Votre ville, région ou pays' }}"
+            required
+          >
+          <label class="field__label" for="ContactForm-location">{{ section.settings.location_label | default: 'D où venez-vous ?' }}</label>
+        </div>
+        
+        <!-- Champ Comment avez-vous connu -->
+        <div class="field">
+          <textarea
+            rows="5"
+            id="ContactForm-discovery"
+            class="text-area field__input"
+            name="contact[{{ section.settings.discovery_label | default: 'Comment avez-vous connu Runes de Chêne ?' }}]"
+            placeholder="{{ section.settings.discovery_placeholder | default: 'Racontez-nous comment vous avez découvert notre marque...' }}"
+            required
+          ></textarea>
+          <label class="form__label field__label" for="ContactForm-discovery">{{ section.settings.discovery_label | default: 'Comment avez-vous connu Runes de Chêne ?' }}</label>
+        </div>
+
+        <!-- Nouveau champ Parlez-nous de vous -->
+        <div class="field">
+          <textarea
+            rows="7"
+            id="ContactForm-about"
+            class="text-area field__input"
+            name="contact[{{ section.settings.about_label | default: 'Parlez-nous de vous' }}]"
+            placeholder="{{ section.settings.about_placeholder | default: 'Présentez-vous : vos passions, votre personnalité, ce qui vous anime...' }}"
+            required
+          ></textarea>
+          <label class="form__label field__label" for="ContactForm-about">{{ section.settings.about_label | default: 'Parlez-nous de vous' }}</label>
+        </div>
+
+        
+        
+        {% for block in section.blocks %}
+          {%- liquid
+              assign title = block.settings.title | escape
+              assign title_handle = title | handle | append: forloop.index
+            -%}
+          {%- if block.type == 'text_field' -%}
+            <div class="field">
+              {%- if block.settings.use_long_text -%}
+                <textarea
+                  rows="10"
+                  id="ContactForm-{{ title_handle }}"
+                  class="text-area field__input"
+                  name="contact[{{ title }}]"
+                  placeholder="{{ title }}"
+                {% if block.settings.is_required %}required{% endif %}
+                >
+                </textarea>
+              {%- else -%}
+                <input
+                  class="field__input"
+                  type="text"
+                  id="ContactForm-{{ title_handle }}"
+                  name="contact[{{ title }}]"
+                  placeholder="{{ title }}"
+                {% if block.settings.is_required %}required{% endif %}
+                >
+              {%- endif -%}
+              <label class="field__label" for="ContactForm-{{ title_handle }}">{{ title }}</label>
+            </div>
+          {%- elsif block.type == 'dropdown_field' -%}
+            <div class="field">
+              <div class="select">
+                <select
+                  id="ContactForm-{{ title_handle }}"
+                  class="field__input select__select"
+                  name="contact[{{ title }}]"
+                >
+                  {% assign values = block.settings.values | split: ',' %}
+                  {% for value in values %}
+                    <option value="{{ value | strip }}">{{ value | strip }}</option>
+                  {% endfor %}
+                </select>
+                {% render 'icon-caret' %}
+              </div>
+              <label class="field__label" for="ContactForm-{{ title_handle }}">{{ title }}</label>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+        
+        <div class="field">
+          <textarea
+            rows="10"
+            id="ContactForm-body"
+            class="text-area field__input"
+            name="contact[{{ section.settings.motivation_label | default: 'Pourquoi souhaitez-vous devenir ambassadeur ?' }}]"
+            placeholder="{{ section.settings.motivation_placeholder | default: 'Pourquoi souhaitez-vous devenir ambassadeur ?' }}"
+            required
+          >
+            {{- form.body -}}
+          </textarea>
+          <label class="form__label field__label" for="ContactForm-body">
+            {{ section.settings.motivation_label | default: 'Pourquoi souhaitez-vous devenir ambassadeur ?' }}
+          </label>
+        </div>
+        <div class="contact__button mt-5 text-center">
+          {%-  assign text_button = section.settings.button_text | default: 'Envoyer ma candidature' -%}
+          {%- render 'button',
+            button_style: section.settings.button_type,
+            button_text: text_button,
+            button_type: 'submit',
+        -%}
+        </div>
+      </div>
+    {%- endform -%}
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Contact form ambassadeur",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer", "aside"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Rejoignez-nous"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Formulaire Ambassadeur",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "options": [
+          {
+              "value": "h1",
+              "label": "H1"
+          },
+          {
+              "value": "h2",
+              "label": "H2"
+          },
+          {
+              "value": "h3",
+              "label": "H3"
+          },
+          {
+              "value": "h4",
+              "label": "H4"
+          },
+          {
+              "value": "h5",
+              "label": "H5"
+          },
+          {
+              "value": "h6",
+              "label": "H6"
+          },
+          {
+              "value": "p",
+              "label": "Paragraph"
+          },
+          {
+              "value": "div",
+              "label": "Div"
+          }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "heading_size_section",
+      "label": "Heading size",
+      "options": [
+          {
+              "value": "h1",
+              "label": "Heading 1"
+          },
+          {
+              "value": "h2",
+              "label": "Heading 2"
+          },
+          {
+              "value": "h3",
+              "label": "Heading 3"
+          },
+          {
+              "value": "h4",
+              "label": "Heading 4"
+          },
+          {
+              "value": "h5",
+              "label": "Heading 5"
+          },
+          {
+              "value": "h6",
+              "label": "Heading 6"
+          }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Partagez votre passion avec notre communauté</p>"
+    },
+    {
+        "type": "select",
+        "id": "layout",
+        "label": "Layout",
+        "options": [
+            {
+                "value": "horizontal",
+                "label": "Horizontal"
+            },
+            {
+                "value": "vertical",
+                "label": "Vertical"
+            }
+        ],
+        "default": "vertical"
+    },
+    {
+        "type": "header",
+        "content": "Form fields"
+    },
+    {
+        "type": "select",
+        "id": "content_width",
+        "label": "Content width",
+        "options": [
+            {
+                "value": "narrow",
+                "label": "Narrow"
+            },
+            {
+                "value": "max-full",
+                "label": "Full width"
+            }
+        ],
+        "default": "narrow"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_phone_number",
+      "label": "Show phone number",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "phone_required",
+      "label": "Phone number required",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Envoyer ma candidature"
+    },
+    {
+      "type": "select",
+      "id": "button_type",
+      "label": "Button style",
+      "options": [
+        { "group": "Primary color","value": "primary","label": "Primary" },
+        { "group": "Primary color","value": "outline","label": "Outline" },
+        { "group": "Primary color","value": "underlined","label": "Underlined" },
+        { "group": "White color","value": "primary-white","label": "Solid White" },
+        { "group": "White color","value": "outline-white","label": "Outline White" },
+        { "group": "White color","value": "underlined-white","label": "Underlined White" },
+        { "group": "Accent color","value": "secondary","label": "Secondary" }
+      ],
+      "default": "primary"
+    },
+    {
+        "type": "header",
+        "content": "Required fields styling"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_asterisk",
+      "label": "Show asterisk (*) for required fields",
+      "default": true
+    },
+    {
+        "type": "color",
+        "id": "asterisk_color",
+        "label": "Asterisk color",
+        "default": "#33322D"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_border_required",
+      "label": "Show colored border for required fields",
+      "default": true
+    },
+    {
+        "type": "color",
+        "id": "border_color",
+        "label": "Required fields border color",
+        "default": "#33322D"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Border width",
+      "default": 4
+    },
+    {
+        "type": "header",
+        "content": "Custom field labels"
+    },
+    {
+      "type": "text",
+      "id": "name_label",
+      "label": "Name field label",
+      "default": "Prénom"
+    },
+    {
+      "type": "text",
+      "id": "instagram_label",
+      "label": "Instagram/TikTok field label",
+      "default": "Votre compte Instagram/TikTok"
+    },
+    {
+      "type": "text",
+      "id": "instagram_placeholder",
+      "label": "Instagram/TikTok placeholder",
+      "default": "@votre_compte"
+    },
+    {
+      "type": "text",
+      "id": "location_label",
+      "label": "Location field label",
+      "default": "D'où venez-vous ?"
+    },
+    {
+      "type": "text",
+      "id": "location_placeholder",
+      "label": "Location placeholder",
+      "default": "Votre ville, région ou pays"
+    },
+    {
+      "type": "text",
+      "id": "discovery_label",
+      "label": "Discovery field label",
+      "default": "Comment avez-vous connu Runes de Chêne ?"
+    },
+    {
+      "type": "text",
+      "id": "discovery_placeholder",
+      "label": "Discovery placeholder",
+      "default": "Racontez-nous comment vous avez découvert notre marque..."
+    },
+    {
+      "type": "text",
+      "id": "about_label",
+      "label": "About field label",
+      "default": "Parlez-nous de vous"
+    },
+    {
+      "type": "text",
+      "id": "about_placeholder",
+      "label": "About placeholder",
+      "default": "Présentez-vous : vos passions, votre personnalité, ce qui vous anime..."
+    },
+    {
+      "type": "text",
+      "id": "motivation_label",
+      "label": "Motivation field label",
+      "default": "Pourquoi souhaitez-vous devenir ambassadeur ?"
+    },
+    {
+      "type": "text",
+      "id": "motivation_placeholder",
+      "label": "Motivation placeholder",
+      "default": "Pourquoi souhaitez-vous devenir ambassadeur ?"
+    },
+    {
+        "type": "header",
+        "content": "Colors"
+    },
+    {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background"
+    },
+    {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text"
+    },
+    {
+        "type": "header",
+        "content": "Contact block colors"
+    },
+    {
+        "type": "color",
+        "id": "input_bg_color",
+        "label": "Input background"
+    },
+    {
+        "type": "color",
+        "id": "input_text_color",
+        "label": "Input text"
+    },
+    {
+        "type": "color",
+        "id": "input_border_color",
+        "label": "Input border"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text_field",
+      "name": "Text field",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Name",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "Use long text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "is_required",
+          "label": "Field is required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "dropdown_field",
+      "name": "Dropdown field",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Name",
+          "default": "Custom field"
+        },
+        {
+          "type": "text",
+          "id": "values",
+          "label": "Values",
+          "info": "Separate each value by a comma.",
+          "default": "value 1, value 2, value 3"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact form ambassadeur"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,306 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumbs_ka3wVn": {
+      "type": "breadcrumbs",
+      "custom_css": [
+        "@media only screen {.section-breadcrumb {color: white; height: 1px; overflow: hidden; padding: 0; }}"
+      ],
+      "settings": {
+        "section_width": "container-fluid",
+        "alignment": "start",
+        "text_size": "text-size-small",
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 24,
+        "padding_bottom": 12
+      }
+    },
+    "rdc_ressources_hub_DU3DGY": {
+      "type": "rdc_ressources-hub",
+      "name": "Ressources Hub",
+      "settings": {
+        "section_width": "container",
+        "overlay_title": "Précommande bénévole",
+        "overlay_subtitle": "Quel est le mot de passe ?",
+        "riddle_question": "",
+        "riddle_answer": "Crokmou25",
+        "riddle_hint": "<p>Demandez le mot de passe à votre référent bénévole ou regardez vos emails.</p>",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h1"
+          }
+        },
+        "price_BDiFeE": {
+          "type": "price",
+          "settings": {
+            "show_sale_badge": true,
+            "sale_badge_type": "percentage"
+          }
+        },
+        "rating_UhVAtV": {
+          "type": "rating",
+          "settings": {
+            "target_to_section": true,
+            "section_id": "#judgeme_product_reviews"
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+            "show_more_toggle": false,
+            "max_height": 8
+          }
+        },
+        "separator_fTXQic": {
+          "type": "separator",
+          "settings": {
+            "show_border": true,
+            "divider_space": 2
+          }
+        },
+        "siblings_j3h7Cg": {
+          "type": "siblings",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "hide_sold_out_variants": false,
+            "color_picker_type": "native_color_swatch",
+            "style": "solid",
+            "option_name": "Taille",
+            "size_chart_page": "guide-des-tailles-t-shirt-unisexe"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_two_columns": true,
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true,
+            "show_pickup_availability": true,
+            "show_back_in_stock": false,
+            "text_back_in_stock": "Notify me"
+          }
+        },
+        "separator_BcFrTM": {
+          "type": "separator",
+          "settings": {
+            "show_border": false,
+            "divider_space": 0.5
+          }
+        },
+        "collapsible_tab_6kicUP": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Taille & coupe",
+            "heading_size": "h6",
+            "icon": "ruler",
+            "content": "<p><strong>Coupe unisexe retravaillée.<br/><br/></strong>Il est conseillé pour un homme de corpulence moyenne d'1m88 de porter du XL pour avoir le produit juste au corps.<br/><br/>Pour femme, nous conseillons une taille en dessous de votre coupe habituelle.</p>",
+            "content_liquid": "",
+            "page": "",
+            "open_by_default": false
+          }
+        },
+        "collapsible_tab_bVRE3V": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Entretien",
+            "heading_size": "h6",
+            "icon": "iron",
+            "content": "<ul><li>Lavage à 30°C maximum, </li><li>Éviter les assouplissants trop agressifs. </li><li>Ne pas repasser sur le motif.</li></ul>",
+            "content_liquid": "",
+            "page": "",
+            "open_by_default": false
+          }
+        },
+        "collapsible_tab_4UNrkz": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Informations produit",
+            "heading_size": "h6",
+            "icon": "shirt",
+            "content": "<ul><li>100% Coton biologique brossé</li><li>Tissage et coutures issues du commerce équitable</li><li>Maillage de textile supérieur</li><li>Savoir faire d’impression 100% Français (DTG la plus récente)</li><li>Grammage qualitatif (180g/m²)</li></ul>",
+            "content_liquid": "",
+            "page": "",
+            "open_by_default": false
+          }
+        },
+        "collapsible_tab_Lh8GPY": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Délai de livraison",
+            "heading_size": "h6",
+            "icon": "check_mark",
+            "content": "<p>Chez Runes de Chêne, chaque commande que vous passez sur notre site internet est imprimée à la demande par nos soins. Cela nous permet de limiter les pertes textiles et de réduire notre empreinte écologique. <br/>Veuillez noter que les délais de livraison sont en moyenne compris entre 7 et 14 jours.</p>",
+            "content_liquid": "",
+            "page": "",
+            "open_by_default": false
+          }
+        },
+        "separator_CgCj4T": {
+          "type": "separator",
+          "settings": {
+            "show_border": false,
+            "divider_space": 1
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "price_BDiFeE",
+        "rating_UhVAtV",
+        "description",
+        "separator_fTXQic",
+        "siblings_j3h7Cg",
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons",
+        "separator_BcFrTM",
+        "collapsible_tab_6kicUP",
+        "collapsible_tab_bVRE3V",
+        "collapsible_tab_4UNrkz",
+        "collapsible_tab_Lh8GPY",
+        "separator_CgCj4T"
+      ],
+      "custom_css": [],
+      "settings": {
+        "section_width": "container",
+        "enable_sticky_info": true,
+        "enable_max_width_content": false,
+        "show_sticky_add_to_cart_bar": true,
+        "media_width": 60,
+        "media_aspect_ratio": "adapt",
+        "thumbnail_aspect_ratio": "square",
+        "gallery_layout": "thumbnail",
+        "media_position": "left",
+        "show_lightbox": true,
+        "enable_video_autoplay": true,
+        "enable_video_looping": true,
+        "mobile_thumbnails": "show",
+        "enable_media_grouping": false,
+        "grouping_type": "variant_group",
+        "bg_color": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)",
+        "border_color": "rgba(0,0,0,0)",
+        "padding_top": 24,
+        "padding_bottom": 12
+      }
+    },
+    "information-products": {
+      "type": "information-tabs-products",
+      "blocks": {
+        "custom_liquid_YYQjTm": {
+          "type": "custom-liquid",
+          "settings": {
+            "tab_heading": "Tab heading",
+            "content_liquid": ""
+          }
+        },
+        "description_6CNYAh": {
+          "type": "description",
+          "settings": {
+            "tab_heading": "Description"
+          }
+        },
+        "custom_content_qnMhGh": {
+          "type": "custom-content",
+          "settings": {
+            "tab_heading": "Size guide",
+            "content": "",
+            "page": "size-guide"
+          }
+        },
+        "custom_content_73AKnk": {
+          "type": "custom-content",
+          "settings": {
+            "tab_heading": "Product care",
+            "content": "<p>Hand or machine wash on a cool, gentle cycle with similar colours. Avoid harsh chemicals or stain removers, which can affect the colour. </p>",
+            "page": ""
+          }
+        },
+        "custom_content_4bDa3X": {
+          "type": "custom-content",
+          "settings": {
+            "tab_heading": "Shipping & returns",
+            "content": "<p>We aim to dispatch Standard and Express orders on the next business day.</p><p>Free shipping on all orders above $99 and over within Australia. $10 flat rate for all orders under $99.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "custom_liquid_YYQjTm",
+        "description_6CNYAh",
+        "custom_content_qnMhGh",
+        "custom_content_73AKnk",
+        "custom_content_4bDa3X"
+      ],
+      "disabled": true,
+      "settings": {
+        "section_width": "container",
+        "enable_uppercase": true,
+        "tabs_font_family": "headings_font",
+        "heading_size": "h6",
+        "align": "center",
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 60,
+        "padding_bottom": 0
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "settings": {
+        "section_width": "container",
+        "subheading": "",
+        "heading": "Vous pourriez aussi aimez",
+        "heading_tag": "h2",
+        "heading_size_section": "h2",
+        "description": "",
+        "layout": "vertical",
+        "enable_stack_products": true,
+        "show_progress_bar": true,
+        "enable_overflow_visible": false,
+        "products_to_show": 3,
+        "columns_desktop": 3,
+        "column_gap": 3,
+        "columns_mobile": "2",
+        "column_gap_mobile": 2,
+        "swipe_on_mobile": false,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 32,
+        "padding_bottom": 52
+      }
+    }
+  },
+  "order": [
+    "breadcrumbs_ka3wVn",
+    "rdc_ressources_hub_DU3DGY",
+    "main",
+    "information-products",
+    "related-products"
+  ]
+}

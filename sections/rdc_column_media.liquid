@@ -1,0 +1,415 @@
+<div class="rdc-media-section rdc-media-section--{{ section.settings.section_width }}">
+  <div class="rdc-media-section__container">
+    {% if section.settings.section_title != blank %}
+      <h2 class="rdc-media-section__title">{{ section.settings.section_title }}</h2>
+    {% endif %}
+    
+    {% if section.settings.section_description != blank %}
+      <p class="rdc-media-section__description">{{ section.settings.section_description }}</p>
+    {% endif %}
+    
+    <div class="rdc-media-section__grid" style="--columns: {{ section.settings.columns_desktop }}; --columns-mobile: {{ section.settings.columns_mobile }};">
+      {% for block in section.blocks %}
+        <div class="rdc-media-card" {{ block.shopify_attributes }}>
+          {% if block.settings.link != blank %}
+            <a href="{{ block.settings.link }}" class="rdc-media-card__link">
+          {% else %}
+            <div class="rdc-media-card__link">
+          {% endif %}
+            
+            <div class="rdc-media-card__image-wrapper">
+              {% if block.settings.image != blank %}
+                <img 
+                  src="{{ block.settings.image | img_url: '800x' }}" 
+                  alt="{{ block.settings.title }}"
+                  class="rdc-media-card__image"
+                  loading="lazy"
+                >
+              {% else %}
+                <div class="rdc-media-card__placeholder">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                  </svg>
+                </div>
+              {% endif %}
+              
+              {% if block.settings.show_overlay %}
+                <div class="rdc-media-card__overlay" style="background: {{ block.settings.overlay_color }}; opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"></div>
+              {% endif %}
+              
+              {% if block.settings.title != blank or block.settings.subtitle != blank %}
+                <div class="rdc-media-card__content">
+                  {% if block.settings.subtitle != blank %}
+                    <p class="rdc-media-card__subtitle">{{ block.settings.subtitle }}</p>
+                  {% endif %}
+                  {% if block.settings.title != blank %}
+                    <h3 class="rdc-media-card__title">{{ block.settings.title }}</h3>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+            
+          {% if block.settings.link != blank %}
+            </a>
+          {% else %}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .rdc-media-section {
+    width: 100%;
+    padding: 60px 20px;
+  }
+  
+  .rdc-media-section__container {
+    margin: 0 auto;
+  }
+  
+  /* Container width variations */
+  .rdc-media-section--container .rdc-media-section__container {
+    max-width: var(--container-max-width);
+    padding-left: var(--fluid-offset, 24px);
+    padding-right: var(--fluid-offset, 24px);
+  }
+  
+  .rdc-media-section--container-fluid .rdc-media-section__container {
+    max-width: 1600px;
+  }
+  
+  .rdc-media-section--w-full .rdc-media-section__container {
+    max-width: 100%;
+  }
+  
+  .rdc-media-section--w-full {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  
+  .rdc-media-section__title {
+    text-align: center;
+    margin: 0 0 15px 0;
+    font-size: 36px;
+    font-family: var(--font-heading-family);
+  }
+  
+  .rdc-media-section__description {
+    text-align: center;
+    margin: 0 0 40px 0;
+    font-size: 16px;
+    color: #666;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .rdc-media-section__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--columns), 1fr);
+    gap: {{ section.settings.gap }}px;
+  }
+  
+  .rdc-media-card {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .rdc-media-card__link {
+    display: block;
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+  }
+  
+  .rdc-media-card__image-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: {{ section.settings.aspect_ratio }}%;
+    overflow: hidden;
+    border-radius: {{ section.settings.border_radius }}px;
+  }
+  
+  .rdc-media-card__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  
+  .rdc-media-card__link:hover .rdc-media-card__image {
+    transform: scale(1.05);
+  }
+  
+  .rdc-media-card__placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F0F0F0;
+    color: #999;
+  }
+  
+  .rdc-media-card__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  
+  .rdc-media-card__link:hover .rdc-media-card__overlay {
+    opacity: 0.5 !important;
+  }
+  
+  .rdc-media-card__content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 30px 20px;
+    color: white;
+    text-align: center;
+    z-index: 2;
+    transition: transform 0.3s ease;
+  }
+  
+  .rdc-media-card__link:hover .rdc-media-card__content {
+    transform: translateY(-10px);
+  }
+  
+  .rdc-media-card__subtitle {
+    margin: 0 0 8px 0;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: white;
+    opacity: 0.9;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+  
+  .rdc-media-card__title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    font-family: var(--font-heading-family);
+    color: white;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .rdc-media-section {
+      padding: 40px 15px;
+    }
+    
+    .rdc-media-section__title {
+      font-size: 28px;
+    }
+    
+    .rdc-media-section__grid {
+      grid-template-columns: repeat(var(--columns-mobile), 1fr);
+    }
+    
+    .rdc-media-card__title {
+      font-size: 20px;
+    }
+    
+    .rdc-media-card__content {
+      padding: 20px 15px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Colonnes Média",
+  "tag": "section",
+  "class": "rdc-media-columns",
+  "settings": [
+    {
+      "type": "header",
+      "content": "En-tête de section"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Width",
+      "options": [
+        {
+          "value": "container",
+          "label": "Container"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Stretched"
+        },
+        {
+          "value": "w-full",
+          "label": "Full width"
+        }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Titre de la section (optionnel)"
+    },
+    {
+      "type": "textarea",
+      "id": "section_description",
+      "label": "Description (optionnel)"
+    },
+    {
+      "type": "header",
+      "content": "Mise en page"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "label": "Colonnes (desktop)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Colonnes (mobile)",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Espacement entre les colonnes",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "aspect_ratio",
+      "min": 50,
+      "max": 150,
+      "step": 5,
+      "unit": "%",
+      "label": "Ratio hauteur/largeur",
+      "default": 100,
+      "info": "100% = carré, 75% = paysage, 133% = portrait"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Arrondi des coins",
+      "default": 8
+    }
+  ],
+  "blocks": [
+    {
+      "type": "media",
+      "name": "Média",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Titre du média"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Sous-titre (optionnel)"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Lien (optionnel)"
+        },
+        {
+          "type": "header",
+          "content": "Overlay"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_overlay",
+          "label": "Afficher l'overlay",
+          "default": true
+        },
+        {
+          "type": "color",
+          "id": "overlay_color",
+          "label": "Couleur de l'overlay",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "label": "Opacité de l'overlay",
+          "default": 40
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RDC Colonnes Média",
+      "blocks": [
+        {
+          "type": "media",
+          "settings": {
+            "title": "Média 1"
+          }
+        },
+        {
+          "type": "media",
+          "settings": {
+            "title": "Média 2"
+          }
+        },
+        {
+          "type": "media",
+          "settings": {
+            "title": "Média 3"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

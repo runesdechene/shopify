@@ -1,0 +1,725 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "section_width": "container",
+        "show_default_heading": true,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "image_with_text_overlay_pV3Qkx": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "subheading_6KKRpa": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Plus qu'une marque, un phénomène d'époque"
+          }
+        },
+        "heading_f7eLz6": {
+          "type": "heading",
+          "settings": {
+            "heading": "Notre momentum",
+            "heading_tag": "h2",
+            "heading_size": "h2"
+          }
+        },
+        "text_k7rXmd": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Ou comment, étape par étape, vous pouvez nous aider à révolutionner l'aventure locale, reconnecter les gens à l'Histoire et à la nature, et ramener de l'esprit de camaraderie en France.</p>",
+            "large_text": false
+          }
+        },
+        "buttons_3YxMeD": {
+          "type": "buttons",
+          "settings": {
+            "button_label": "Commander maintenant",
+            "button_link": "shopify://collections/tous-les-produits",
+            "button_type": "secondary",
+            "show_icon": false
+          }
+        }
+      },
+      "block_order": [
+        "subheading_6KKRpa",
+        "heading_f7eLz6",
+        "text_k7rXmd",
+        "buttons_3YxMeD"
+      ],
+      "disabled": true,
+      "settings": {
+        "section_width": "w-full",
+        "image": "shopify://shop_images/Sans_titre-3.jpg",
+        "link": "",
+        "desktop_height": "desktop-height-650",
+        "mobile_height": "mobile-height-500",
+        "desktop_content_position": "middle-center",
+        "mobile_content_position": "middle-center",
+        "content_alignment": "center",
+        "mobile_content_alignment": "center",
+        "content_width": "max-w-4xl",
+        "enable_parallax": false,
+        "color_text": "#ffffff",
+        "overlay_color": "#151515",
+        "overlay_opacity": 58,
+        "overlay_gradient": ""
+      }
+    },
+    "rich_text_UVaM63": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_D6HpmB": {
+          "type": "heading",
+          "settings": {
+            "heading": "Notre concept",
+            "heading_tag": "h2",
+            "heading_size": "h1"
+          }
+        },
+        "text_VXUC8B": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Bravo, vous venez de trouver la Marque qui va révolutionner l'aventure locale, reconnecter les gens à l'Histoire et à la nature, et raviver l'esprit de camaraderie en France. Tout ça avec des t-shirts et une application mobile.</p>",
+            "large_text": false
+          }
+        },
+        "separator_cBeJUi": {
+          "type": "separator",
+          "settings": {
+            "show_border": false,
+            "space": 8
+          }
+        },
+        "button_x6jJ94": {
+          "type": "button",
+          "settings": {
+            "button_label": "Commander maintenant",
+            "button_link": "shopify://collections",
+            "button_type": "secondary",
+            "show_icon": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_D6HpmB",
+        "text_VXUC8B",
+        "separator_cBeJUi",
+        "button_x6jJ94"
+      ],
+      "disabled": true,
+      "settings": {
+        "section_width": "w-full",
+        "content_width": "max-w-4xl",
+        "content_alignment": "center",
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 96,
+        "padding_bottom": 92
+      }
+    },
+    "image_with_text_8JJPp3": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_wiaqYq": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Nos valeurs"
+          }
+        },
+        "heading_Xp9bCB": {
+          "type": "heading",
+          "settings": {
+            "heading": "Pourquoi Runes de Chêne ?",
+            "heading_tag": "h2",
+            "heading_size": "hxl"
+          }
+        },
+        "text_ahA9Ur": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Car nous vivons définitivement une époque étrange.</strong></p><p>Nous sommes de plus en plus nombreux à nous sentir déconnectés de notre Histoire et de la Nature, comme si la première avait arrêté de s’écrire, et que la seconde était condamnée à disparaître. </p><p>Après tout, nous étions la génération à qui on promettait l'exploration spatiale, l'entente entre les peuples et les grandes découvertes...</p><p>... Et nous obtenions les crises, l’uniformisation des cultures, et la disparition de la beauté dans notre quotidien. </p><p>Ce constat, nous sommes un nombre incroyable à le réaliser chaque jour.</p><p>Victimes d'une époque qui nous vola beaucoup et nous donna peu, nous nous mettions en 2018 à créer des vêtements durables inspirés par l'Histoire ancienne. <br/><br/><strong>Pourquoi l'Histoire ? <br/><br/></strong>Car elle porte en elle des joyaux oubliés de sagesse et d'audace, de liberté et d'aventure humaine. C'est un terrain de jeu sans fin, où souvent les os ont assez blanchi pour ne plus porter querelle à ceux qui s'en amusent, l'étudient et s'en inspirent.</p><p>Des forêts mystérieuses des Celtes, aux fjords scandinaves, des remparts de Byzance aux temples grecs, je souhaitais rendre à nos anciens leurs lettres de noblesses, les sortir de la fantasy et nous inspirer de nouveau. </p><p>Chaque époque puisa dans son passé la force d'avancer. La notre ne devrait pas faire exception.</p><p>Pour se réenraciner, inspirer, interroger, et rapprocher l'humain au travers une forme intemporelle de camaraderie  et de curiosité entre les esprits et les peuples. </p><p>Je l'ai voulu comme une marque qui incarnerait <strong>à la fois la nécessité de se rebeller contre, et celle de réenchanter le monde moderne.</strong></p><h6>- Uriel,  Artiste nomade & créateur de Runes de Chêne</h6>",
+            "large_text": false
+          }
+        }
+      },
+      "block_order": [
+        "subheading_wiaqYq",
+        "heading_Xp9bCB",
+        "text_ahA9Ur"
+      ],
+      "custom_css": [
+        "p {text-align: justify; line-height: 2.9rem !important; font-size: 1.9rem;}",
+        ".layer-image-2 {padding-left: 30px; padding-top: 30px;}",
+        "h6 {padding-top: 20px; font-size: 2.4rem; opacity: 0.7;}",
+        ".layer-image-2 .responsive-image {overflow: visible;}",
+        "@media screen and (max-width: 798px) {}",
+        "@media only screen and (max-width: 768px) {.responsive-image {height: 0; }}"
+      ],
+      "settings": {
+        "section_width": "container-fluid",
+        "image": "shopify://shop_images/inbound280171227439748803.jpg",
+        "media_size": "adapt",
+        "show_image_2": false,
+        "image_2": "shopify://shop_images/Uriel_Avatar.webp",
+        "position_image_2": "top-right",
+        "media_size_2": "adapt",
+        "desktop_image_width": "50",
+        "use_video": false,
+        "video": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+        "video_autoplay": true,
+        "video_controls": true,
+        "layout": "left",
+        "column_gap": "16",
+        "vertical_alignment": "center",
+        "content_alignment": "start",
+        "bg_color": "",
+        "text_color": "",
+        "bg_column": "",
+        "padding_top": 80,
+        "padding_bottom": 44
+      }
+    },
+    "wave_text_pmmdbD": {
+      "type": "wave-text",
+      "disabled": true,
+      "name": "Wave text",
+      "settings": {
+        "path_type": "path-1",
+        "wave_scale": 0,
+        "wave_scale_mobile": 110,
+        "wave_text_type": "marquee",
+        "scroll_speed": 1,
+        "scroll_direction": "reverse",
+        "text": "Une marque française qui s'inspire de la Nature & de l'Histoire pour Révolutionner l'aventure locale, reconnecter les gens au patrimoine et raviver l'esprit de camaraderie en France. Tout ça avec des t-shirts.",
+        "font_size": "body-1",
+        "bg_color": "#ede4d1",
+        "text_color": "#544d36",
+        "padding_top": 168,
+        "padding_bottom": 64
+      }
+    },
+    "custom_liquid_rJXanQ": {
+      "type": "custom-liquid",
+      "custom_css": [],
+      "settings": {
+        "section_width": "container",
+        "custom_liquid": "<div class=\"charter-signature\">\n  <button class=\"signature-button\" data-counter>\n    <span class=\"button-content\">\n      <span class=\"button-text\">J'approuve ce message!</span>\n      <span class=\"button-emoji\">✨</span>\n    </span>\n  </button>\n  <div class=\"signature-count\">\n    Nos valeurs a été approuvée <span class=\"count-value\">...</span> fois\n  </div>\n  <div class=\"emoji-container\"></div>\n</div>\n\n<style>\n  .charter-signature {\n    text-align: center;\n    padding: 3rem;\n    position: relative;\n  }\n  \n  .signature-button {\n    padding: 1.5rem 3.5rem;\n    font-size: 2.3rem;\n    background: linear-gradient(45deg, #1a1a1a, #0d47a1);\n    color: white;\n    border: none;\n    border-radius: 50px;\n    cursor: pointer;\n    transition: all 0.3s ease;\n    box-shadow: 0 4px 15px rgba(13, 71, 161, 0.3);\n    font-family: var(--font-heading-family);\n  }\n  \n  .signature-button:hover {\n    transform: translateY(-2px);\n    box-shadow: 0 6px 20px rgba(13, 71, 161, 0.5);\n    background: linear-gradient(45deg, #2c2c2c, #1565c0);\n  }\n  \n  .button-content {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 10px;\n  }\n  \n  .button-emoji {\n    font-size: 1.6rem;\n  }\n  \n  .signature-count {\n    margin-top: 1.5rem;\n    font-size: 1.6rem;\n    color: #666;\n  }\n  \n  .count-value {\n    font-weight: bold;\n    color: #0d47a1;\n  }\n\n  .emoji {\n    position: fixed;\n    pointer-events: none;\n    font-size: 3.5rem;\n    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));\n  }\n\n  @keyframes flyEmoji {\n    0% {\n      transform: scale(0.2);\n      opacity: 0;\n    }\n    20% {\n      opacity: 1;\n    }\n    80% {\n      opacity: 1;\n    }\n    100% {\n      transform: translate(var(--moveX), var(--moveY)) scale(1.5) rotate(var(--rotate));\n      opacity: 0;\n    }\n  }\n</style>\n\n<script type=\"module\">\n  import { initializeApp } from \"https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js\";\n  import { getAnalytics } from \"https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js\";\n  import { getDatabase, ref, onValue, runTransaction } from \"https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js\";\n\n  const firebaseConfig = {\n    apiKey: \"AIzaSyDWFl8jo5xpiAU9qQ7o9Y5oiqT4dYuAEEE\",\n    authDomain: \"clickcounter-7c92c.firebaseapp.com\",\n    databaseURL: \"https://clickcounter-7c92c-default-rtdb.europe-west1.firebasedatabase.app\",\n    projectId: \"clickcounter-7c92c\",\n    storageBucket: \"clickcounter-7c92c.firebasestorage.app\",\n    messagingSenderId: \"386325681258\",\n    appId: \"1:386325681258:web:dbbc5f6254e78ca148a613\",\n    measurementId: \"G-4PLEN58DTB\"\n  };\n\n  const app = initializeApp(firebaseConfig);\n  const analytics = getAnalytics(app);\n  const database = getDatabase(app);\n  const clicksRef = ref(database, 'totalClicks');\n\n  class CharterSignature {\n    constructor(button) {\n      this.button = button;\n      this.display = document.querySelector('.count-value');\n      this.emojis = [\n        '⚔️', '🗡️', '🛡️', '🏹', '🎯', // Armes\n        '🐉', '🐲', '🦁', '🦅', // Créatures\n        '👑', '⚜️', '🏰', '🔮', // Royauté et magie\n        '🌟', '✨', '💫', '⭐️', // Effets lumineux\n        '🌲', '🪻', '🌿', '🌙', // Effets lumineux\n        '🎊', '🎉', '🔥', '⚡️' // Effets spéciaux\n      ];\n      this.setupCounter();\n      this.setupSound();\n    }\n\n    createEmoji(x, y) {\n      const emoji = document.createElement('div');\n      emoji.className = 'emoji';\n      emoji.textContent = this.emojis[Math.floor(Math.random() * this.emojis.length)];\n      \n      // Position de départ au centre du bouton\n      emoji.style.left = x + 'px';\n      emoji.style.top = y + 'px';\n      \n      // Variables d'animation aléatoires\n      const angle = Math.random() * Math.PI * 2;\n      const distance = 150 + Math.random() * 150; // Distance plus grande\n      const moveX = Math.cos(angle) * distance;\n      const moveY = Math.sin(angle) * distance;\n      const rotate = Math.random() * 720 - 360; // Rotation entre -360 et 360 degrés\n      \n      emoji.style.setProperty('--moveX', `${moveX}px`);\n      emoji.style.setProperty('--moveY', `${moveY}px`);\n      emoji.style.setProperty('--rotate', `${rotate}deg`);\n      \n      // Animation plus longue\n      emoji.style.animation = 'flyEmoji 2s ease-out forwards';\n      \n      document.body.appendChild(emoji);\n      setTimeout(() => emoji.remove(), 1000);\n    }\n\n    setupSound() {\n      // Son net et fort\n      this.sound = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3');\n      this.sound.load();\n      this.sound.volume = 0.7;\n    }\n\n    playSound() {\n      this.sound.currentTime = 0;\n      this.sound.play().catch(() => {});\n    }\n\n    spawnEmojis(event) {\n      const rect = this.button.getBoundingClientRect();\n      const x = rect.left + rect.width / 2;\n      const y = rect.top + rect.height / 2;\n      \n      // Jouer le son\n      this.playSound();\n      \n      // Plus d'emojis\n      for (let i = 0; i < 15; i++) {\n        setTimeout(() => this.createEmoji(x, y), i * 50);\n      }\n\n      // Animation du bouton\n      this.button.style.transform = 'scale(0.95)';\n      setTimeout(() => this.button.style.transform = '', 150);\n    }\n\n    setupCounter() {\n      onValue(clicksRef, (snapshot) => {\n        const count = snapshot.val() || 0;\n        this.display.textContent = count;\n      });\n\n      this.button.addEventListener('click', (e) => {\n        this.spawnEmojis(e);\n        \n        runTransaction(clicksRef, (currentCount) => {\n          return (currentCount || 0) + 1;\n        });\n      });\n    }\n  }\n\n  // Initialiser quand le DOM est chargé\n  document.addEventListener('DOMContentLoaded', () => {\n    const buttons = document.querySelectorAll('[data-counter]');\n    buttons.forEach(button => new CharterSignature(button));\n  });\n</script>",
+        "bg_color": "#f7f7f4",
+        "text_color": "",
+        "padding_top": 28,
+        "padding_bottom": 40
+      }
+    },
+    "image_with_text_UMxn7D": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_8HtFQV": {
+          "type": "heading",
+          "settings": {
+            "heading": "Une marque",
+            "heading_tag": "h2",
+            "heading_size": "h2"
+          }
+        },
+        "text_WGjfjA": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Runes de Chêne est la première marque qui incite à partir à l'aventure dans nos régions, pour redécouvrir l'Histoire, se reconnecter à la Nature et ressusciter l'esprit de camaraderie d'une manière authentique et ludique.</p>",
+            "large_text": false
+          }
+        },
+        "button_jDxirz": {
+          "type": "button",
+          "settings": {
+            "button_label": "Découvrir",
+            "button_link": "",
+            "button_type": "primary",
+            "show_icon": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_8HtFQV",
+        "text_WGjfjA",
+        "button_jDxirz"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".responsive-image img {height: 340px; width: 340px; margin: auto;}"
+      ],
+      "settings": {
+        "section_width": "container",
+        "image": "shopify://shop_images/Capture_d_ecran_2025-03-04_091126.png",
+        "media_size": "adapt",
+        "show_image_2": true,
+        "image_2": "shopify://shop_images/Capture_d_ecran_2025-02-21_181109.png",
+        "position_image_2": "bottom-right",
+        "media_size_2": "adapt",
+        "desktop_image_width": "50",
+        "use_video": false,
+        "video": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+        "video_autoplay": true,
+        "video_controls": true,
+        "layout": "left",
+        "column_gap": "16",
+        "vertical_alignment": "center",
+        "content_alignment": "start",
+        "bg_color": "",
+        "text_color": "",
+        "bg_column": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "multicolumn_eXNi6P": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_bEjYCb": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/02_28c46116-2b28-4d1b-b8a5-4cca9f31f27e.webp",
+            "link": "",
+            "title": "Nos produits",
+            "text": "<p>Nos plus belles créations d'artistes humains, entre tissu haut-de-gamme et impressions durables.</p>",
+            "button_label": "Parcourir",
+            "button_link": "shopify://collections/all",
+            "button_type": "outline",
+            "show_icon": false
+          }
+        },
+        "column_nUtXnz": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/03_fae4f563-f847-4147-b538-b6e7f1ffdd41.webp",
+            "link": "",
+            "title": "L'Emblème",
+            "text": "<p>Découvrez la symbolique de <strong>Rune de Chêne</strong>, cet étrange symbole qui fédère notre communauté.</p>",
+            "button_label": "Bientôt",
+            "button_link": "",
+            "button_type": "outline",
+            "show_icon": false
+          }
+        }
+      },
+      "block_order": [
+        "column_bEjYCb",
+        "column_nUtXnz"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".responsive-image {border-radius: 5%; margin-bottom: 20px;}",
+        "p {font-size: 1.6rem;}"
+      ],
+      "name": "Multicolumn",
+      "settings": {
+        "section_width": "container",
+        "subheading": "Envie d'y prendre part ?",
+        "heading": "Explorez nos Fragments d'Histoire",
+        "heading_tag": "h2",
+        "heading_size_section": "h2",
+        "description": "",
+        "layout": "vertical",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "heading_size": "h4",
+        "column_alignment": "center",
+        "link_url": "",
+        "link_text": "",
+        "button_type": "primary",
+        "show_icon": false,
+        "enable_stack_columns": false,
+        "show_progress_bar": false,
+        "enable_overflow_visible": false,
+        "columns_desktop": 2,
+        "column_gap": 3,
+        "column_gap_mobile": 3,
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "image_with_text_8kVdbA": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_3rAeVf": {
+          "type": "heading",
+          "settings": {
+            "heading": "Une marque de vêtements.",
+            "heading_tag": "h2",
+            "heading_size": "h2"
+          }
+        },
+        "text_dpaWif": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Par nostalgie des vieux t-shirts ultra-qualitatif qu'on pouvait garder des années,</strong></p><p>Ceux qu'on pouvait garder des années entières, sans crainte qu'ils se mettent à gratter, pelucher ou s'effacer. </p><p>Avec des illustrations qui conteraient des histoires profondes ou des symboles inspirants, en opposition </p>",
+            "large_text": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_3rAeVf",
+        "text_dpaWif"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".rte p {text-align: justify;}"
+      ],
+      "settings": {
+        "section_width": "container",
+        "image": "shopify://shop_images/02_28c46116-2b28-4d1b-b8a5-4cca9f31f27e.webp",
+        "media_size": "adapt",
+        "show_image_2": false,
+        "position_image_2": "middle-right",
+        "media_size_2": "square",
+        "desktop_image_width": "50",
+        "use_video": false,
+        "video": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+        "video_autoplay": true,
+        "video_controls": true,
+        "layout": "right",
+        "column_gap": "16",
+        "vertical_alignment": "center",
+        "content_alignment": "start",
+        "bg_color": "",
+        "text_color": "",
+        "bg_column": "",
+        "padding_top": 52,
+        "padding_bottom": 52
+      }
+    },
+    "image_with_text_C83yF3": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_CU66Ah": {
+          "type": "heading",
+          "settings": {
+            "heading": "Un emblème.",
+            "heading_tag": "h2",
+            "heading_size": "h2"
+          }
+        },
+        "text_ncEWmh": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Inspirée par les 4 coins de l'Europe et 3000 ans d'Histoire, la <em><strong>Rune de Chêne </strong></em>incarne notre ADN.</p><p>Cette envie de se reconnecter et de protéger ce qui mérite de l'être : Notre écosystème, notre patrimoine, et surtout l'envie d'aventure.</p><p>Aujourd'hui vous êtes des milliers de clients à sympathiser grâce à ce symbole et ce qu'il incarne 🎉 </p>",
+            "large_text": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_CU66Ah",
+        "text_ncEWmh"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".rte p {text-align: justify;}"
+      ],
+      "settings": {
+        "section_width": "container",
+        "image": "shopify://shop_images/03_fae4f563-f847-4147-b538-b6e7f1ffdd41.webp",
+        "media_size": "square",
+        "show_image_2": false,
+        "position_image_2": "middle-right",
+        "media_size_2": "adapt",
+        "desktop_image_width": "50",
+        "use_video": false,
+        "video": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+        "video_autoplay": true,
+        "video_controls": true,
+        "layout": "left",
+        "column_gap": "16",
+        "vertical_alignment": "center",
+        "content_alignment": "start",
+        "bg_color": "",
+        "text_color": "",
+        "bg_column": "",
+        "padding_top": 52,
+        "padding_bottom": 52
+      }
+    },
+    "image_with_text_qDKbDG": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_3gDkED": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "ET CROYEZ LE OU NON, nous avons lancé"
+          }
+        },
+        "heading_BxBjwd": {
+          "type": "heading",
+          "settings": {
+            "heading": "une application mobile",
+            "heading_tag": "h2",
+            "heading_size": "h2"
+          }
+        },
+        "text_KfdVV4": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Qui encourage à redécouvrir les merveilles de nos contrées, et devenir un aventurier moderne sans avoir à partir à l'autre bout du monde. </p><p>Pour revaloriser nos régions, barouder, prendre le chemin buissonnier, s'évader loin des villes <strong>et pourquoi pas</strong> <strong>rencontrer les autres personnes de votre nouvelle tribu ?</strong></p><h6><strong>Disponible DEPUIS LE 1er MAI 2025</strong></h6>",
+            "large_text": false
+          }
+        },
+        "button_QPUKYU": {
+          "type": "button",
+          "settings": {
+            "button_label": "Accéder à l'application mobile",
+            "button_link": "https://explore.runesdechene.com/",
+            "button_type": "outline",
+            "show_icon": true
+          }
+        }
+      },
+      "block_order": [
+        "subheading_3gDkED",
+        "heading_BxBjwd",
+        "text_KfdVV4",
+        "button_QPUKYU"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".rte p {text-align: justify;}"
+      ],
+      "settings": {
+        "section_width": "container",
+        "image": "shopify://shop_images/04_711ee767-1e4b-4696-bae1-58b2a71980ad_2_copie.webp",
+        "media_size": "square",
+        "show_image_2": false,
+        "position_image_2": "middle-right",
+        "media_size_2": "adapt",
+        "desktop_image_width": "50",
+        "use_video": false,
+        "video": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+        "video_autoplay": true,
+        "video_controls": true,
+        "layout": "right",
+        "column_gap": "16",
+        "vertical_alignment": "center",
+        "content_alignment": "start",
+        "bg_color": "",
+        "text_color": "",
+        "bg_column": "",
+        "padding_top": 52,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_bhmGag": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_HDQPyw": {
+          "type": "heading",
+          "settings": {
+            "heading": "Et d'ailleurs, qui sommes nous ?",
+            "heading_tag": "h2",
+            "heading_size": "h3"
+          }
+        },
+        "text_w94MPN": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Une bande de doux dingues rassemblés par <a href=\"https://instagram.com/uriel.lahoussaye\" title=\"https://instagram.com/uriel.lahoussaye\"><strong>Uriel</strong></a>, un niçois aux allures de baroudeur gallo-romain qui parcours la France pour vous rencontrer sur les stands Runes de Chêne et qui dessine la plupart des motifs présents aujourd'hui sur le site. Mais aussi <strong>Mathéo</strong>, son écuyer breton, <strong>Tanguy </strong>le maîstre imprimeur, <a href=\"https://www.tiktok.com/@bilskirnir.fr\" title=\"https://www.tiktok.com/@bilskirnir.fr\"><strong>Gautier de Bilskirnir</strong></a>, co-fondateur d'honneur, et <strong>Katia </strong>pour son aide inestimable sur le stand et pour le traitement des commandes ; mais aussi des remerciements éternels à ceux qui sont passés de manière éphémère dans la saga Runes de Chêne : Anthony (Developpeur), Thibaut (Logicien),  <a href=\"https://instagram.com/dyrmaor\" title=\"https://instagram.com/dyrmaor\"><strong>Dyrmaor</strong></a> (illustratrice) Antony (Illustrateur), Charline (Vendeuse mercenaire), Valentin (Vendeur mercenaire)... Et bien d'autres ambassadeurs et clients qui sont devenus tellement plus pour nous avec le temps !</p>",
+            "large_text": false
+          }
+        },
+        "image_atcBBE": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/WhatsApp_Image_2024-06-21_a_11.09.28_9bacb3c5_0120738f-326b-47cb-a8bb-3d016fdc6ca2.jpg",
+            "image_width": 380,
+            "image_width_mobile": 200,
+            "url": ""
+          }
+        },
+        "subheading_yckFAQ": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Thibaut, Uriel, Charline & Gautier | Normandie Juin 2024"
+          }
+        },
+        "button_YHfgD6": {
+          "type": "button",
+          "settings": {
+            "button_label": "JE CHOISIS MON RUNES DE CHÊNE",
+            "button_link": "shopify://collections/tous-les-produits",
+            "button_type": "secondary",
+            "show_icon": true
+          }
+        }
+      },
+      "block_order": [
+        "heading_HDQPyw",
+        "text_w94MPN",
+        "image_atcBBE",
+        "subheading_yckFAQ",
+        "button_YHfgD6"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".rich-text {padding: 10px; width: 100%; max-width: 1050px; line-height: 1.6; margin: 0 AUTO;}",
+        ".rich-text__heading {margin-bottom: 30px;}",
+        ".rich-text p {margin-bottom: 20px; text-align: justify;}",
+        ".rich-text .rich-text__subheading {text-align: center;}",
+        ".rich-text responsive-image {border-radius: 10px; opacity: 0.85;}",
+        ".btn {margin-top: 20px;}"
+      ],
+      "settings": {
+        "section_width": "w-full",
+        "content_width": "max-w-4xl",
+        "content_alignment": "center",
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 76,
+        "padding_bottom": 68
+      }
+    },
+    "before_after_image_aA7Jiy": {
+      "type": "before-after-image",
+      "blocks": {
+        "image_w6Hf9e": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/city.webp",
+            "label_text": "Avant"
+          }
+        },
+        "image_UmYzUh": {
+          "type": "image",
+          "settings": {
+            "label_text": "Après"
+          }
+        }
+      },
+      "block_order": [
+        "image_w6Hf9e",
+        "image_UmYzUh"
+      ],
+      "disabled": true,
+      "settings": {
+        "section_width": "container",
+        "subheading": "Si on pouvait schématiser",
+        "heading": "Avant et après Runes de Chêne",
+        "heading_tag": "h2",
+        "heading_size_section": "h2",
+        "description": "",
+        "layout": "vertical",
+        "image_placement": "bottom",
+        "desktop_height": "desktop-height-650",
+        "mobile_height": "mobile-height-500",
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "collection_list_pzxWyh": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_UbEAPt": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "t-shirts",
+            "image": "shopify://shop_images/Vagabond_Gris_4__cropped_lD.jpg",
+            "title": "",
+            "url": ""
+          }
+        },
+        "featured_collection_7UGJPQ": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "sweatshirts",
+            "image": "shopify://shop_images/DJI_0063.jpg",
+            "title": "",
+            "url": ""
+          }
+        },
+        "featured_collection_bh7KiU": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "t-shirts-femme",
+            "image": "shopify://shop_images/pommier_e3ac75e1-c193-4bc8-b37b-18235a24034c.jpg",
+            "title": "",
+            "url": ""
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_UbEAPt",
+        "featured_collection_7UGJPQ",
+        "featured_collection_bh7KiU"
+      ],
+      "disabled": true,
+      "settings": {
+        "section_width": "container",
+        "subheading": "",
+        "heading": "Nos collections",
+        "heading_tag": "h2",
+        "heading_size_section": "h2",
+        "description": "",
+        "layout": "vertical",
+        "link_url": "",
+        "link_text": "",
+        "button_type": "primary",
+        "show_icon": false,
+        "card_type": "standard",
+        "image_ratio": "square",
+        "show_collection_count": true,
+        "show_button_arrow": true,
+        "show_zoom_on_hover": true,
+        "heading_size": "h4",
+        "content_alignment": "start",
+        "title_color": "",
+        "overlay_color": "#000000",
+        "enable_gradient": false,
+        "overlay_opacity": 10,
+        "enable_stack_collections": false,
+        "show_progress_bar": false,
+        "enable_overflow_visible": false,
+        "columns_desktop": 3,
+        "column_gap": 3,
+        "columns_mobile": "2",
+        "column_gap_mobile": 2,
+        "swipe_on_mobile": false,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 68,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "main",
+    "image_with_text_overlay_pV3Qkx",
+    "rich_text_UVaM63",
+    "image_with_text_8JJPp3",
+    "wave_text_pmmdbD",
+    "custom_liquid_rJXanQ",
+    "image_with_text_UMxn7D",
+    "multicolumn_eXNi6P",
+    "image_with_text_8kVdbA",
+    "image_with_text_C83yF3",
+    "image_with_text_qDKbDG",
+    "rich_text_bhmGag",
+    "before_after_image_aA7Jiy",
+    "collection_list_pzxWyh"
+  ]
+}

@@ -1,0 +1,66 @@
+<script>
+// Mapping des couleurs avec leurs badges spécifiques
+const COLOR_BADGES = {
+  Prune: "2025",
+  Chocolat: "🍂 NEW",
+  Ocre: "🍂 NEW",
+
+  // Ajoutez d'autres couleurs avec leurs badges ici
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Fonction pour appliquer les badges aux couleurs spécifiques
+  function applyBadges() {
+    // Sélectionner tous les inputs de couleur
+    const colorInputs = document.querySelectorAll(
+      '.swatch-input__input[name="Couleur"]'
+    );
+
+    colorInputs.forEach((input) => {
+      const color = input.value;
+      const label = document.querySelector(`label[for="${input.id}"]`);
+
+      // Vérifier si la couleur a un badge associé
+      if (COLOR_BADGES[color] && label) {
+        // S'assurer que le label est en position relative
+        label.style.position = "relative";
+
+        // Créer le badge avec le texte spécifique à la couleur
+        const badge = document.createElement("div");
+        badge.textContent = COLOR_BADGES[color];
+        badge.style.cssText = `
+          position: absolute;
+          bottom: -22px;
+          left: 50%;
+          transform: translateX(-50%);
+      background-color: #f7f7f4;
+    color: #555;
+    border: 1px solid #999;
+    box-shadow: 0 0 0 3px #f7f7f4;
+          font-size: 9px;
+          padding: 2px 6px;
+          border-radius: 10px;
+          z-index: 2;
+          font-weight: bold;
+          white-space: nowrap;
+        `;
+
+        // Ajouter le badge seulement s'il n'existe pas déjà
+        if (!label.querySelector("div")) {
+          label.appendChild(badge);
+        }
+      }
+    });
+  }
+
+  // Exécuter au chargement
+  applyBadges();
+
+  // Réexécuter lors des changements de variante
+  document.addEventListener("variant:change", applyBadges);
+});
+
+
+
+
+</script>

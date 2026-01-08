@@ -1,0 +1,166 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumbs_RNaJ3x": {
+      "type": "breadcrumbs",
+      "settings": {
+        "section_width": "container-fluid",
+        "alignment": "start",
+        "text_size": "text-size-tiny",
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 20,
+        "padding_bottom": 8
+      }
+    },
+    "main": {
+      "type": "main-list-collections",
+      "blocks": {
+        "featured_collection_9kGfLz": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "t-shirts",
+            "title": "",
+            "url": ""
+          }
+        },
+        "featured_collection_YGA8nP": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "sweatshirts",
+            "title": "",
+            "url": ""
+          }
+        },
+        "featured_collection_i4Rfc3": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "les-debardeurs",
+            "title": "",
+            "url": ""
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_9kGfLz",
+        "featured_collection_YGA8nP",
+        "featured_collection_i4Rfc3"
+      ],
+      "disabled": true,
+      "settings": {
+        "section_width": "container",
+        "subheading": "",
+        "heading": "Nos collections",
+        "heading_tag": "h2",
+        "heading_size_section": "h2",
+        "description": "<p>L'univers Runes de Chêne à porté de clic</p>",
+        "layout": "vertical",
+        "select_collections": "selected",
+        "sort": "alphabetical",
+        "collection_per_page": 9,
+        "columns_desktop": 3,
+        "columns_mobile": "1",
+        "card_type": "standard",
+        "image_ratio": "square",
+        "show_collection_count": true,
+        "heading_size": "h4",
+        "content_alignment": "start",
+        "title_color": "",
+        "overlay_color": "#000000",
+        "enable_gradient": false,
+        "overlay_opacity": 10,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 40,
+        "padding_bottom": 80
+      }
+    },
+    "collection_list_rE3WTj": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_mVWtCf": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "t-shirts",
+            "image": "shopify://shop_images/NOS_T-SHIRTS.webp",
+            "title": "nos t-shirts",
+            "url": ""
+          }
+        },
+        "featured_collection_6EWFpR": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "sweatshirts",
+            "image": "shopify://shop_images/LES_SWEATS.webp",
+            "title": "",
+            "url": ""
+          }
+        },
+        "featured_collection_7K3aeD": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "les-debardeurs",
+            "image": "shopify://shop_images/NOS_DEBARDEURS_2.webp",
+            "title": "nos debardeurs",
+            "url": ""
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_mVWtCf",
+        "featured_collection_6EWFpR",
+        "featured_collection_7K3aeD"
+      ],
+      "name": "Collection list",
+      "settings": {
+        "section_width": "container",
+        "subheading": "",
+        "heading": "Nos collections",
+        "heading_tag": "h2",
+        "heading_size_section": "h2",
+        "description": "",
+        "layout": "vertical",
+        "link_url": "shopify://collections/tous-les-produits",
+        "link_text": "Tous nos produits",
+        "button_type": "primary",
+        "show_icon": false,
+        "card_type": "standard",
+        "image_ratio": "adapt",
+        "show_collection_count": true,
+        "show_button_arrow": true,
+        "show_zoom_on_hover": true,
+        "heading_size": "h4",
+        "content_alignment": "start",
+        "title_color": "",
+        "overlay_color": "#000000",
+        "enable_gradient": false,
+        "overlay_opacity": 10,
+        "enable_stack_collections": false,
+        "show_progress_bar": false,
+        "enable_overflow_visible": false,
+        "columns_desktop": 3,
+        "column_gap": 3,
+        "columns_mobile": "2",
+        "column_gap_mobile": 2,
+        "swipe_on_mobile": false,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "breadcrumbs_RNaJ3x",
+    "main",
+    "collection_list_rE3WTj"
+  ]
+}

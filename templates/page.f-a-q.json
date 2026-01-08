@@ -1,0 +1,199 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "section_width": "container-narrow",
+        "show_default_heading": false,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "page_EddgCV": {
+      "type": "page",
+      "disabled": true,
+      "settings": {
+        "section_width": "container",
+        "page": "f-a-q",
+        "heading_size": "h3",
+        "heading_alignment": "center",
+        "show_page_title": true,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "image_with_text_overlay_Dt7tPd": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "heading_AYyDN6": {
+          "type": "heading",
+          "settings": {
+            "heading": "FOIRE AUX QUESTIONS",
+            "heading_size": "h2"
+          }
+        },
+        "text_4wnX4h": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Retrouvez ici, la réponse à vos questions fréquemment posées sur votre commande, votre livraison et autres..</p>",
+            "large_text": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_AYyDN6",
+        "text_4wnX4h"
+      ],
+      "settings": {
+        "section_width": "w-full",
+        "link": "",
+        "desktop_height": "desktop-height-650",
+        "mobile_height": "mobile-height-500",
+        "desktop_content_position": "middle-center",
+        "mobile_content_position": "middle-center",
+        "content_alignment": "center",
+        "mobile_content_alignment": "center",
+        "content_width": "max-w-4xl",
+        "enable_parallax": false,
+        "color_text": "#ffffff",
+        "overlay_color": "#000000",
+        "overlay_opacity": 70,
+        "overlay_gradient": "linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3) 90%)"
+      }
+    },
+    "divider_F9gCJ4": {
+      "type": "divider",
+      "settings": {
+        "section_width": "container",
+        "spacer_mobile": 90,
+        "spacer_desktop": 100,
+        "show_border": false,
+        "bg_color": "",
+        "color": "",
+        "style": "solid",
+        "thickness": 1
+      }
+    },
+    "faq_UzpjJk": {
+      "type": "faq",
+      "blocks": {
+        "category_PQ6ngR": {
+          "type": "category",
+          "settings": {
+            "heading_row": "COMMANDES  & RETOURS"
+          }
+        },
+        "question_NVhyHU": {
+          "type": "question",
+          "settings": {
+            "heading": "Ma commande est-elle bien pasée ?",
+            "icon": "none",
+            "row_content": "<p>Answer 1</p>",
+            "page": ""
+          }
+        },
+        "question_JRqDr4": {
+          "type": "question",
+          "settings": {
+            "heading": "Comment annuler ou modifier ma commande ?",
+            "icon": "none",
+            "row_content": "<p>Answer 2</p>",
+            "page": ""
+          }
+        },
+        "question_UebMTN": {
+          "type": "question",
+          "settings": {
+            "heading": "Puis je savoir où en est ma commande ?",
+            "icon": "none",
+            "row_content": "<p>Fill in the text content of the collapsible item here. You can provide details and explanation for the question here.</p>",
+            "page": ""
+          }
+        },
+        "category_gWPhCN": {
+          "type": "category",
+          "settings": {
+            "heading_row": "ENVOIS & LIVRAISONS"
+          }
+        },
+        "question_bcbqge": {
+          "type": "question",
+          "settings": {
+            "heading": "Question 3",
+            "icon": "none",
+            "row_content": "<p>Answer 3</p>",
+            "page": ""
+          }
+        },
+        "question_K4pbnQ": {
+          "type": "question",
+          "settings": {
+            "heading": "Question 4",
+            "icon": "none",
+            "row_content": "<p>Answer 4</p>",
+            "page": ""
+          }
+        },
+        "category_NKFxmQ": {
+          "type": "category",
+          "settings": {
+            "heading_row": "PAIEMENTS"
+          }
+        },
+        "category_wJqaLw": {
+          "type": "category",
+          "settings": {
+            "heading_row": "RUNES DE CHÊNE - EXPLORE"
+          }
+        }
+      },
+      "block_order": [
+        "category_PQ6ngR",
+        "question_NVhyHU",
+        "question_JRqDr4",
+        "question_UebMTN",
+        "category_gWPhCN",
+        "question_bcbqge",
+        "question_K4pbnQ",
+        "category_NKFxmQ",
+        "category_wJqaLw"
+      ],
+      "settings": {
+        "subheading": "",
+        "heading": "",
+        "heading_size_section": "h2",
+        "description": "",
+        "layout": "vertical",
+        "sidebar_heading": "Categories",
+        "heading_size_category": "h4",
+        "heading_size_question": "h6",
+        "bg_color": "",
+        "text_color": "",
+        "border_color": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "main",
+    "page_EddgCV",
+    "image_with_text_overlay_Dt7tPd",
+    "divider_F9gCJ4",
+    "faq_UzpjJk"
+  ]
+}

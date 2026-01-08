@@ -1,0 +1,519 @@
+{{ 'rdc_galerie-ressources.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'rdc_galerie-ressources.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign section_width = section.settings.section_width
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+  
+  # Collecter toutes les catégories uniques
+  assign all_categories = ''
+  for block in section.blocks
+    if block.settings.category != blank
+      assign all_categories = all_categories | append: block.settings.category | append: ','
+    endif
+  endfor
+  
+  # Convertir en tableau et trier
+  assign categories_array = all_categories | split: ','
+  assign unique_categories = categories_array | uniq | sort
+-%}
+
+<div class="section-galerie-ressources section-padding section-bg isolate" {% render 'section-properties' %} data-galerie-ressources>
+  <div class="galerie-ressources {{ section_width }}">
+    <div class="galerie-ressources__header">
+      {% if heading != blank %}
+        <h2 class="galerie-ressources__heading {{ section.settings.heading_size }}">{{ heading }}</h2>
+      {% endif %}
+      {% if subheading != blank %}
+        <div class="galerie-ressources__subheading">{{ subheading }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Filtres par catégorie -->
+    {% if unique_categories.size > 0 and section.settings.show_filters %}
+      <div class="galerie-ressources__filters">
+        <button class="galerie-ressources__filter-btn active" data-filter="all">Tous</button>
+        {% for category in unique_categories %}
+          {% if category != blank %}
+            <button class="galerie-ressources__filter-btn" data-filter="{{ category | handle }}">{{ category }}</button>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="galerie-ressources__grid">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'text' %}
+            <div class="galerie-ressources__item galerie-ressources__item--text" data-type="text" data-category="{{ block.settings.category | handle }}" {{ block.shopify_attributes }}>
+              <div class="galerie-ressources__item-inner">
+                {% if block.settings.category != blank %}
+                  <div class="galerie-ressources__category-tag category-{{ block.settings.category | handle }}">{{ block.settings.category }}</div>
+                {% endif %}
+                <div class="galerie-ressources__text-container">
+                  {% if block.settings.icon != blank %}
+                    <div class="galerie-ressources__text-icon">
+                      {{ block.settings.icon | image_url: width: 60 | image_tag: 
+                        loading: 'lazy',
+                        class: 'galerie-ressources__icon-image',
+                        alt: block.settings.title
+                      }}
+                    </div>
+                  {% endif %}
+                  {% if block.settings.main_image != blank %}
+                    <div class="galerie-ressources__text-main-image">
+                      {{ block.settings.main_image | image_url: width: 600 | image_tag: 
+                        loading: 'lazy',
+                        class: 'galerie-ressources__main-image',
+                        alt: block.settings.title
+                      }}
+                    </div>
+                  {% endif %}
+                  {% if block.settings.title != blank %}
+                    <h3 class="galerie-ressources__item-title">{{ block.settings.title }}</h3>
+                  {% endif %}
+                  {% if block.settings.content != blank %}
+                    <div class="galerie-ressources__item-content">{{ block.settings.content }}</div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% when 'image' %}
+            <div class="galerie-ressources__item galerie-ressources__item--image" data-type="image" data-category="{{ block.settings.category | handle }}" {{ block.shopify_attributes }}>
+              <div class="galerie-ressources__item-inner">
+                {% if block.settings.category != blank %}
+                  <div class="galerie-ressources__category-tag category-{{ block.settings.category | handle }}">{{ block.settings.category }}</div>
+                {% endif %}
+                <div class="galerie-ressources__image-container">
+                  {% if block.settings.image != blank %}
+                    {{ block.settings.image | image_url: width: 800 | image_tag: 
+                      loading: 'lazy',
+                      class: 'galerie-ressources__image',
+                      alt: block.settings.title
+                    }}
+                  {% else %}
+                    {{ 'image' | placeholder_svg_tag: 'galerie-ressources__image placeholder' }}
+                  {% endif %}
+                  <div class="galerie-ressources__overlay">
+                    <div class="galerie-ressources__actions">
+                      <button class="galerie-ressources__action-btn galerie-ressources__action-view" data-view-image="{{ block.settings.image | image_url }}">
+                        <span class="visually-hidden">Voir</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                      </button>
+                      <a href="{{ block.settings.image | image_url }}" class="galerie-ressources__action-btn galerie-ressources__action-download" download>
+                        <span class="visually-hidden">Télécharger</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                {% if block.settings.title != blank %}
+                  <h3 class="galerie-ressources__item-title">{{ block.settings.title }}</h3>
+                {% endif %}
+                {% if block.settings.description != blank %}
+                  <div class="galerie-ressources__item-description">{{ block.settings.description }}</div>
+                {% endif %}
+              </div>
+            </div>
+          {% when 'video' %}
+            <div class="galerie-ressources__item galerie-ressources__item--video" data-type="video" data-category="{{ block.settings.category | handle }}" {{ block.shopify_attributes }}>
+              <div class="galerie-ressources__item-inner">
+                {% if block.settings.category != blank %}
+                  <div class="galerie-ressources__category-tag category-{{ block.settings.category | handle }}">{{ block.settings.category }}</div>
+                {% endif %}
+                <div class="galerie-ressources__video-container">
+                  {% if block.settings.video_url != blank %}
+                    <div class="galerie-ressources__video-wrapper" data-video-url="{{ block.settings.video_url }}">
+                      {% if block.settings.video_thumbnail != blank %}
+                        {{ block.settings.video_thumbnail | image_url: width: 800 | image_tag: 
+                          loading: 'lazy',
+                          class: 'galerie-ressources__video-thumbnail',
+                          alt: block.settings.title
+                        }}
+                      {% else %}
+                        <div class="galerie-ressources__video-placeholder">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </div>
+                      {% endif %}
+                      <div class="galerie-ressources__play-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                      </div>
+                    </div>
+                  {% else %}
+                    <div class="galerie-ressources__video-placeholder">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    </div>
+                  {% endif %}
+                  <div class="galerie-ressources__overlay">
+                    <div class="galerie-ressources__actions">
+                      <button class="galerie-ressources__action-btn galerie-ressources__action-view" data-view-video="{{ block.settings.video_url }}">
+                        <span class="visually-hidden">Voir</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                      </button>
+                      <a href="{{ block.settings.video_url }}" class="galerie-ressources__action-btn galerie-ressources__action-download" download>
+                        <span class="visually-hidden">Télécharger</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                {% if block.settings.title != blank %}
+                  <h3 class="galerie-ressources__item-title">{{ block.settings.title }}</h3>
+                {% endif %}
+                {% if block.settings.description != blank %}
+                  <div class="galerie-ressources__item-description">{{ block.settings.description }}</div>
+                {% endif %}
+              </div>
+            </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    initGalerieRessources();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "RDC Galerie Ressources",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer", "aside"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Largeur",
+      "options": [
+        {
+          "value": "container",
+          "label": "Container"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Étendue"
+        },
+        {
+          "value": "w-full",
+          "label": "Pleine largeur"
+        }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Ressources pour ambassadeurs"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Sous-titre",
+      "default": "<p>Téléchargez nos ressources graphiques et vidéos pour promouvoir notre marque.</p>"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Taille du titre",
+      "options": [
+        {
+          "value": "h1",
+          "label": "Titre 1"
+        },
+        {
+          "value": "h2",
+          "label": "Titre 2"
+        },
+        {
+          "value": "h3",
+          "label": "Titre 3"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Afficher les filtres par catégorie",
+      "default": true,
+      "info": "Activer pour afficher les boutons de filtrage par catégorie en haut de la galerie"
+    },
+    {
+      "type": "header",
+      "content": "Couleurs"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Arrière-plan"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Texte"
+    },
+    {
+      "type": "header",
+      "content": "Espacement de section"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Marge supérieure",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Marge inférieure",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Texte",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Astuce ou idée"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icône (optionnelle)"
+        },
+        {
+          "type": "image_picker",
+          "id": "main_image",
+          "label": "Image principale",
+          "info": "Affichée au-dessus du titre"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Contenu",
+          "default": "<p>Ajoutez ici votre texte, astuce, conseil ou idée. Ce bloc est idéal pour partager des informations textuelles avec vos utilisateurs.</p>"
+        },
+        {
+          "type": "select",
+          "id": "category",
+          "label": "Catégorie",
+          "options": [
+            {
+              "value": "",
+              "label": "Aucune"
+            },
+            {
+              "value": "Logos",
+              "label": "Logos"
+            },
+            {
+              "value": "Réseaux sociaux",
+              "label": "Réseaux sociaux"
+            },
+            {
+              "value": "Prospectus",
+              "label": "Prospectus"
+            },
+            {
+              "value": "Stickers",
+              "label": "Stickers"
+            },
+            {
+              "value": "Divers",
+              "label": "Divers"
+            },
+            {
+              "value": "Astuces",
+              "label": "Astuces"
+            },
+            {
+              "value": "Idées",
+              "label": "Idées"
+            },
+            {
+              "value": "Ambassadeurs",
+              "label": "Ambassadeurs"
+            },
+            {
+              "value": "Éclaireurs",
+              "label": "Éclaireurs"
+            }
+          ],
+          "default": "Astuces"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "category",
+          "label": "Catégorie",
+          "options": [
+            {
+              "value": "",
+              "label": "Aucune"
+            },
+            {
+              "value": "Logos",
+              "label": "Logos"
+            },
+            {
+              "value": "Réseaux sociaux",
+              "label": "Réseaux sociaux"
+            },
+            {
+              "value": "Prospectus",
+              "label": "Prospectus"
+            },
+            {
+              "value": "Stickers",
+              "label": "Stickers"
+            },
+            {
+              "value": "Divers",
+              "label": "Divers"
+            },
+           {
+              "value": "Ambassadeurs",
+              "label": "Ambassadeurs"
+            },
+             {
+              "value": "Éclaireurs",
+              "label": "Éclaireurs"
+            }
+          ],
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Titre de l'image"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Description courte de cette ressource."
+        }
+      ]
+    },
+    {
+      "type": "video",
+      "name": "Vidéo",
+      "settings": [
+        {
+          "type": "url",
+          "id": "video_url",
+          "label": "URL de la vidéo",
+          "info": "Lien YouTube, Vimeo ou fichier MP4"
+        },
+        {
+          "type": "select",
+          "id": "category",
+          "label": "Catégorie",
+          "options": [
+            {
+              "value": "",
+              "label": "Aucune"
+            },
+            {
+              "value": "Logos",
+              "label": "Logos"
+            },
+            {
+              "value": "Réseaux sociaux",
+              "label": "Réseaux sociaux"
+            },
+            {
+              "value": "Prospectus",
+              "label": "Prospectus"
+            },
+            {
+              "value": "Stickers",
+              "label": "Stickers"
+            },
+            {
+              "value": "Divers",
+              "label": "Divers"
+            },
+            {
+              "value": "Ambassadeurs",
+              "label": "Ambassadeurs"
+            },
+            {
+              "value": "Éclaireurs",
+              "label": "Éclaireurs"
+            }
+          ],
+          "default": ""
+        },
+        {
+          "type": "image_picker",
+          "id": "video_thumbnail",
+          "label": "Miniature de la vidéo"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Titre de la vidéo"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Description courte de cette ressource."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RDC Galerie Ressources",
+      "blocks": [
+        {
+          "type": "text"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "video"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

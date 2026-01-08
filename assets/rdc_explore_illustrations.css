@@ -1,0 +1,1166 @@
+/* ========================================
+   ANNULATION STYLE - REST 
+   ======================================== */
+.invisible_fragments,
+header,
+footer,
+.section-text-with-icons,
+.announcement-wrapper {
+  display: none;
+}
+
+/* ========================================
+   FRAGMENTS D'HISTOIRE - SECTION PRINCIPALE
+   ======================================== */
+
+.rdc-fragments-section {
+  height: 100vh;
+  max-height: 100vh;
+  background: transparent;
+  color: #e8e8e8;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ========================================
+   HERO / EN-TÊTE
+   ======================================== */
+
+.fragments-hero {
+  margin: 0 auto;
+  padding: 40px 40px 20px 40px;
+  position: relative;
+}
+
+.fragments-back-btn {
+  position: absolute;
+  top: 42px;
+  left: 40px;
+  width: 50px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(221, 220, 219, 0.9);
+  border-radius: 12px;
+  color: #5d6d7e;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.fragments-back-btn:hover {
+  background: #5d6d7e;
+  color: #ffffff;
+  transform: translateX(-3px);
+  box-shadow: 0 4px 12px rgba(93, 109, 126, 0.3);
+}
+
+.fragments-back-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.fragments-header-title {
+  text-align: left;
+  margin-left: 70px;
+}
+
+.fragments-title {
+  font-size: 6rem;
+  font-weight: 500;
+  color: #635e4c;
+  margin: 0;
+  text-transform: uppercase;
+  font-family: var(--font-heading-family);
+  line-height: 1.2;
+}
+
+.fragments-subtitle {
+  font-size: 3rem;
+  font-weight: 500;
+  color: #b8b8b8;
+  text-transform: uppercase;
+}
+
+.fragments-meta {
+  font-size: 2rem;
+  color: #9ca3af;
+  margin: 10px 0 0 0;
+  font-family: var(--font-body-family);
+  letter-spacing: 0.05rem;
+}
+
+.fragments-description {
+  font-size: 1.8rem;
+  color: rgb(75, 66, 65);
+  line-height: 1.6;
+  max-width: 700px;
+  margin: 0 auto 40px;
+  animation: fadeInUp 0.8s ease 0.4s both;
+}
+
+/* ========================================
+   BARRE DE RECHERCHE
+   ======================================== */
+
+.fragments-search {
+  display: none;
+}
+
+.fragments-search-input {
+  width: 100%;
+  padding: 15px 25px;
+  font-size: 1.6rem;
+  border: 2px solid #e8ecef;
+  border-radius: 50px;
+  background: #fff;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.fragments-search-input:focus {
+  border-color: #5d6d7e;
+  box-shadow: 0 4px 12px rgba(93, 109, 126, 0.15);
+}
+
+.fragments-search-input::placeholder {
+  color: #adb5bd;
+}
+
+/* ========================================
+   FILTRES / TAGS
+   ======================================== */
+
+.fragments-filters {
+  position: absolute;
+  top: 40px;
+  right: 150px;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  max-width: 400px;
+  animation: fadeInUp 0.8s ease 0.8s both;
+}
+
+.fragments-filter {
+  padding: 5px 10px;
+  font-size: 1.2rem;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-heading-family);
+  font-weight: 400;
+}
+
+/* Couleurs pastel équilibrées pour chaque filtre */
+.fragments-filter:nth-child(1) {
+  background: #edf4f8;
+  color: #3a5366;
+}
+
+.fragments-filter:nth-child(2) {
+  background: #edf4f8;
+  color: #3f4346;
+}
+
+.fragments-filter:nth-child(3) {
+  background: #fdf5e8;
+  color: #7a6338;
+}
+
+.fragments-filter:nth-child(4) {
+  background: #f0e8f7;
+  color: #5a4577;
+}
+
+.fragments-filter:nth-child(5) {
+  background: #e8f5e8;
+  color: #3a6b3a;
+}
+
+.fragments-filter:nth-child(6) {
+  background: #fce8f0;
+  color: #7a4560;
+}
+
+.fragments-filter:nth-child(7) {
+  background: #e8f5fc;
+  color: #3a5f77;
+}
+
+.fragments-filter:nth-child(8) {
+  background: #fdf0e8;
+  color: #7a5738;
+}
+
+.fragments-filter:nth-child(9) {
+  background: #f3e8f7;
+  color: #604577;
+}
+
+.fragments-filter:nth-child(10) {
+  background: #e8f7f0;
+  color: #3a7760;
+}
+
+/* Répéter les couleurs pour les filtres suivants */
+.fragments-filter:nth-child(n + 11) {
+  background: #e8f0f5;
+  color: #3a5366;
+}
+
+.fragments-filter:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.fragments-filter.active {
+  border-color: currentColor;
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ========================================
+   TOGGLE THÈME SOMBRE
+   ======================================== */
+
+.theme-toggle-container {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: fadeInUp 0.8s ease 0.8s both;
+}
+
+.theme-toggle {
+  position: relative;
+  width: 60px;
+  height: 30px;
+  background: #e8ecef;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  padding: 0;
+}
+
+.theme-toggle:hover {
+  background: #d4d9dd;
+}
+
+.theme-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  color: #5d6d7e;
+}
+
+.sun-icon {
+  left: 8px;
+  opacity: 1;
+}
+
+.moon-icon {
+  right: 8px;
+  opacity: 0.3;
+}
+
+.theme-toggle.active .sun-icon {
+  opacity: 0.3;
+}
+
+.theme-toggle.active .moon-icon {
+  opacity: 1;
+  color: #d4af37;
+}
+
+.theme-toggle-slider {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  background: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.theme-toggle.active {
+  background: #2c3539;
+}
+
+.theme-toggle.active .theme-toggle-slider {
+  transform: translateX(30px);
+}
+
+/* ========================================
+   CARROUSEL HORIZONTAL SCROLLABLE
+   ======================================== */
+
+.fragments-carousel-container {
+  position: relative;
+  width: 100%;
+  max-width: 100vw;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.fragments-carousel {
+  display: flex;
+  gap: 0;
+  padding: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+/* Cacher la scrollbar */
+.fragments-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+/* ========================================
+   CARTES - SYSTÈME HORIZONTAL
+   ======================================== */
+
+.fragment-card {
+  position: relative;
+  flex: 0 0 100vw;
+  width: 100vw;
+  max-width: 100vw;
+  min-width: 100vw;
+  height: calc(100vh - var(--header-height, 300px));
+  scroll-snap-align: start;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1;
+  transform: scale(1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.fragment-card-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  width: 100%;
+  padding: 0 0 150px;
+  box-sizing: border-box;
+}
+
+/* Animation pour les cartes filtrées */
+.fragment-card.hidden {
+  opacity: 0 !important;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  width: 0 !important;
+  min-width: 0 !important;
+  flex: 0 0 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.fragment-card-inner {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  border-radius: 16px;
+  background: var(--card-color, #5d6d7e);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+/* Image de fond de la carte */
+.fragment-card-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+/* Pas d'overlay - image pure */
+
+/* Pastille "Nouveau" */
+.fragment-card-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: #1a1a1a;
+  color: #fff0f0;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 6px 12px;
+  border-radius: 4px;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  animation: badgePulse 2s ease-in-out infinite;
+  pointer-events: none;
+  font-family: var(--font-heading-family);
+}
+
+@keyframes badgePulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+/* Colonne image */
+.fragment-card-image-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.fragment-image {
+  width: 80%;
+  height: 75%;
+  padding-top: 10%;
+  object-fit: contain;
+}
+
+.fragment-image-placeholder {
+  width: 100%;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+}
+
+/* Colonne contenu */
+.fragment-card-content-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 40px;
+  padding-top: 80px;
+  padding-left: 0;
+  text-align: left;
+  pointer-events: auto;
+}
+
+.fragment-card-artist {
+  font-size: 1.8rem;
+  color: #9ca3af;
+  margin: 0;
+  font-family: var(--font-heading-family);
+  text-align: left;
+}
+
+.fragment-card-title {
+  font-size: 4rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #2c3e50;
+  margin: 0 0 20px 0;
+  line-height: 1.1;
+  font-family: var(--font-heading-family);
+  text-align: left;
+}
+
+.fragment-card-section-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #5d6d7e;
+  margin: 0 0 10px 0;
+  font-family: var(--font-heading-family);
+  text-align: left;
+}
+
+.fragment-card-description {
+  font-size: 1.6rem;
+  line-height: 1.6;
+  color: #b8b8b8;
+  font-weight: 300;
+}
+
+.fragment-card-description p {
+  margin: 0 0 10px 0;
+  max-width: 500px;
+  text-align: justify;
+}
+
+.fragment-card-artist-word {
+  font-size: 1.4rem;
+  line-height: 1.6;
+  color: #b8b8b8;
+  font-style: italic;
+  max-width: 500px;
+  padding: 20px 20px 10px 20px;
+  border-radius: 20px;
+  background: rgba(155, 155, 155, 0.1);
+}
+
+.fragment-card-artist-word p {
+  margin: 0 0 10px 0;
+}
+
+/* Boutons d'action */
+.fragment-card-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  position: relative;
+  z-index: 60;
+}
+
+.fragment-action-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  font-family: var(--font-heading-family);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 60;
+  pointer-events: auto;
+}
+
+.fragment-btn-products {
+  background: #a39568;
+  color: #ffffff;
+  border: 2px solid #a39568;
+}
+
+.fragment-btn-products:hover {
+  background: #8d7f56 !important;
+  border-color: #8d7f56 !important;
+  box-shadow: 0 4px 12px rgba(163, 149, 104, 0.3) !important;
+}
+
+.fragment-btn-article {
+  background: transparent;
+  color: #5d6d7e;
+  border: 2px solid #5d6d7e;
+}
+
+.fragment-btn-article:hover {
+  background: #5d6d7e !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(93, 109, 126, 0.3) !important;
+}
+
+.fragment-card:hover .fragment-card-inner {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  transform: translateY(-5px);
+}
+
+.fragment-card-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #fff;
+  z-index: 2;
+  pointer-events: none;
+  width: 100%;
+  padding: 20px;
+  display: none; /* Masquer le contenu texte */
+}
+
+.fragment-card-content p {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+/* Titre sous la carte - SUPPRIMÉ (utilise maintenant .fragment-card-title défini plus haut) */
+
+/* Zone d'extrait fixe */
+.fragments-excerpt-container {
+  max-width: 700px;
+  padding: 0 20px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.fragments-excerpt {
+  font-size: 1.6rem;
+  line-height: 1.6;
+  color: #5d6d7e;
+  text-align: center;
+  margin: 0;
+  transition: opacity 0.3s ease;
+  width: 100%;
+}
+
+.fragments-excerpt.fade-out {
+  opacity: 0;
+}
+
+.fragments-cta {
+  font-size: 1.4rem;
+  color: #9ca3af;
+  text-align: center;
+  margin: 0;
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+
+/* ========================================
+   CONTRÔLES DE NAVIGATION
+   ======================================== */
+
+.carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid #e8ecef;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  color: #5d6d7e;
+}
+
+.carousel-nav:hover {
+  background: #fff;
+  border-color: #5d6d7e;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.carousel-nav-prev {
+  left: 20px;
+}
+
+.carousel-nav-next {
+  right: 20px;
+}
+
+/* ========================================
+   INDICATEURS
+   ======================================== */
+
+.fragments-counter {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translate(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  z-index: 100;
+  padding: 10px 20px;
+  border-radius: 50px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  font-family: var(--font-heading-family);
+  font-size: 1.2rem;
+  color: #6e7279;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.counter-current {
+  color: #a39568;
+  font-weight: 600;
+  font-family: var(--font-heading-family);
+}
+
+.counter-total {
+  color: #6e7279;
+  font-family: var(--font-heading-family);
+}
+
+/* ========================================
+   IMAGES DE DÉCORATION EN BAS
+   ======================================== */
+
+.bottom-decoration-images {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.bottom-image {
+  position: absolute;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.bottom-image-left {
+  left: 0;
+  max-width: 400px;
+  height: auto;
+  z-index: 2;
+}
+
+.bottom-image-center {
+  left: 0;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  max-height: 300px;
+  z-index: 1;
+}
+
+.bottom-image-right {
+  right: 0;
+  max-width: 400px;
+  height: auto;
+  z-index: 2;
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+/* Écrans verticaux (portrait) - Layout vertical */
+@media screen and (orientation: portrait), screen and (max-width: 1024px) {
+  .fragment-card-wrapper {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    padding: 20px 40px 150px;
+    gap: 20px;
+  }
+
+  .fragment-card-image-col {
+    height: auto;
+    min-height: 400px;
+    padding: 20px 0;
+  }
+
+  .fragment-image {
+    width: 90%;
+    height: auto;
+    max-height: 1100px;
+    padding-top: 0;
+  }
+
+  .fragment-card {
+    height: auto;
+  }
+
+  .fragment-card-content-col {
+    padding: 20px 40px;
+    padding-left: 40px;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+  }
+
+  .fragment-card-title {
+    font-size: 8rem;
+  }
+
+  .fragment-card-artist {
+    font-size: 3.4rem;
+    text-align: center;
+  }
+
+  .fragment-card-description {
+    font-size: 2.4rem;
+    padding-top: 30px;
+  }
+
+  .fragment-card-description p
+  {
+    max-width: 900px;
+  }
+
+  .fragment-card-description p {
+    text-align: justify;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .fragment-card-artist-word {
+    font-size: 2rem;
+    margin-left: auto;
+    max-width: 900px;
+    margin-right: auto;
+  }
+
+  .fragment-card-section-title {
+    text-align: center;
+    font-size: 3rem;
+  }
+}
+
+/* Tablettes en portrait */
+@media screen and (orientation: portrait) and (max-width: 768px) {
+  .fragments-hero {
+    padding: 30px 20px 15px 20px;
+  }
+
+  .fragments-header-title {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .fragments-title {
+    font-size: 8rem;
+  }
+
+  .fragments-subtitle {
+    font-size: 2rem;
+  }
+
+  .fragments-meta {
+    font-size: 1.6rem;
+  }
+
+  .fragments-filters {
+    position: static;
+    justify-content: center;
+    margin: 20px 0;
+    max-width: 100%;
+  }
+
+  .theme-toggle-container {
+    top: 20px;
+    right: 20px;
+  }
+
+  .fragments-back-btn {
+    top: 22px;
+    left: 20px;
+  }
+
+  .fragment-card-wrapper {
+    padding: 20px 20px 120px;
+  }
+
+  .fragment-card-image-col {
+    min-height: 250px;
+  }
+
+  .fragment-image {
+    width: 70%;
+    max-height: 300px;
+  }
+
+  .fragment-card-content-col {
+    padding: 20px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .fragment-card-title {
+    font-size: 2.5rem;
+  }
+
+  .fragment-card-artist {
+    font-size: 1.4rem;
+    text-align: center;
+  }
+
+  .fragment-card-description {
+    font-size: 1.3rem;
+  }
+
+  .fragment-card-description p {
+    text-align: justify;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .fragment-card-section-title {
+    font-size: 1.4rem;
+    text-align: center;
+  }
+
+  .fragment-card-artist-word {
+    font-size: 1.2rem;
+    padding: 15px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Mobiles en portrait */
+@media screen and (orientation: portrait) and (max-width: 480px) {
+  .fragments-hero {
+    padding: 20px 15px 10px 15px;
+  }
+
+  .fragments-title {
+    font-size: 3rem;
+  }
+
+  .fragments-subtitle {
+    font-size: 1.5rem;
+  }
+
+  .fragments-meta {
+    font-size: 1.3rem;
+  }
+
+  .fragments-filters {
+    gap: 8px;
+  }
+
+  .fragments-filter {
+    font-size: 1rem;
+    padding: 4px 8px;
+  }
+
+  .fragment-card-wrapper {
+    padding: 15px 15px 100px;
+  }
+
+  .fragment-card-image-col {
+    min-height: 200px;
+  }
+
+  .fragment-image {
+    width: 80%;
+    max-height: 250px;
+  }
+
+  .fragment-card-content-col {
+    padding: 15px;
+    gap: 8px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .fragment-card-title {
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+
+  .fragment-card-artist {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .fragment-card-description {
+    font-size: 1.2rem;
+  }
+
+  .fragment-card-description p {
+    max-width: 100%;
+    text-align: justify;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .fragment-card-section-title {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .fragment-card-artist-word {
+    font-size: 1.1rem;
+    padding: 12px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .carousel-nav {
+    width: 35px;
+    height: 35px;
+  }
+
+  .carousel-nav-prev {
+    left: 10px;
+  }
+
+  .carousel-nav-next {
+    right: 10px;
+  }
+
+  .fragments-counter {
+    font-size: 1rem;
+    padding: 8px 16px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .fragments-carousel::before,
+  .fragments-carousel::after {
+    width: calc(50vw - 150px);
+  }
+
+  .fragment-card {
+    width: 300px;
+  }
+
+  .fragment-card-inner {
+    height: 450px;
+  }
+
+  .fragment-card-title {
+    font-size: 7.3rem;
+    height: 55px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .fragments-title {
+    font-size: 2.5rem;
+  }
+
+  .fragments-carousel::before,
+  .fragments-carousel::after {
+    width: calc(50vw - 125px);
+  }
+
+  .fragment-card {
+    width: 250px;
+  }
+
+  .fragment-card-inner {
+    height: 380px;
+  }
+
+  .fragment-card-title {
+    height: 50px;
+  }
+
+  .fragments-excerpt-container {
+    height: 90px;
+  }
+
+  .fragments-carousel {
+    gap: 20px;
+  }
+
+  .carousel-nav {
+    width: 40px;
+    height: 40px;
+  }
+
+  .carousel-nav-prev {
+    left: 10px;
+  }
+
+  .carousel-nav-next {
+    right: 10px;
+  }
+
+  .fragments-carousel-container::before,
+  .fragments-carousel-container::after {
+    width: 100px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .rdc-fragments-section {
+    padding: 60px 15px 100px;
+  }
+
+  .fragments-title {
+    font-size: 2rem;
+  }
+
+  .fragments-carousel::before,
+  .fragments-carousel::after {
+    width: calc(50vw - 110px);
+  }
+
+  .fragment-card {
+    width: 220px;
+  }
+
+  .fragment-card-inner {
+    height: 340px;
+  }
+
+  .fragment-card-title {
+    font-size: 1rem;
+    height: 45px;
+  }
+
+  .fragments-excerpt-container {
+    height: auto;
+    margin: 0 auto 0;
+  }
+
+  .fragments-carousel {
+    gap: 15px;
+    padding: 0px 10px;
+  }
+
+  .fragments-carousel-container::before,
+  .fragments-carousel-container::after {
+    width: 60px;
+  }
+}

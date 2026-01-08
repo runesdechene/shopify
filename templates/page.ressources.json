@@ -1,0 +1,740 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "slideshow_jjRycr": {
+      "type": "slideshow",
+      "blocks": {
+        "slide_bk48aQ": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Fond_foret.png",
+            "slide_link": "",
+            "video_background": false,
+            "content_width": 500,
+            "content_position": "middle-center",
+            "mobile_content_position": "middle-center",
+            "content_space": "gap-y-4",
+            "subheading": "Ambassadeurs  & Eclaireurs",
+            "heading": "Vos Ressources",
+            "heading_tag": "div",
+            "heading_size": "hxl",
+            "content": "",
+            "description_size": "medium",
+            "color_text": "#fffcfc",
+            "overlay_color": "#000000",
+            "overlay_opacity": 100,
+            "overlay_gradient": "linear-gradient(180deg, rgba(51, 51, 51, 0.54), rgba(0, 0, 0, 0.3) 90%)",
+            "button_text_1": "",
+            "button_link_1": "",
+            "button_type_1": "primary",
+            "button_text_2": "",
+            "button_link_2": "",
+            "button_type_2": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "slide_bk48aQ"
+      ],
+      "name": "Slideshow",
+      "settings": {
+        "slide_width": "w-full",
+        "desktop_height": "desktop-height-650",
+        "mobile_height": "mobile-height-500",
+        "auto_rotate": true,
+        "change_slides_speed": 5,
+        "transition": "zoom",
+        "controls": "filled-arrows",
+        "accessibility_info": "Slideshow about our brand",
+        "bg_color": "",
+        "controls_color": "#ffffff",
+        "controls_color_arrows": "#000000",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "section_width": "container",
+        "show_default_heading": true,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "rich_text_Gjcida": {
+      "type": "rich-text",
+      "blocks": {
+        "image_jkMUQ3": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Poignee_de_main_sombre.webp",
+            "image_width": 260,
+            "image_width_mobile": 200,
+            "url": ""
+          }
+        },
+        "heading_GUhNht": {
+          "type": "heading",
+          "settings": {
+            "heading": "Une page pour tous les lier",
+            "heading_tag": "h2",
+            "heading_size": "h3"
+          }
+        },
+        "subheading_EGnfUM": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Et une marque pour tous les guider"
+          }
+        },
+        "text_piGhfm": {
+          "type": "text",
+          "settings": {
+            "text": "<p>En tant <strong>qu'Eclaireurs</strong>, il vous arrivera d'utiliser des images pour promouvoir la marque. Mais aussi vous tenir à jours sur nos ressources actives, comme les flyers. Cette page harmonise vos voix.</p>",
+            "large_text": true
+          }
+        }
+      },
+      "block_order": [
+        "image_jkMUQ3",
+        "heading_GUhNht",
+        "subheading_EGnfUM",
+        "text_piGhfm"
+      ],
+      "custom_css": [
+        ".responsive-image img {width: 75%; height: 74%; margin: auto;}"
+      ],
+      "name": "Rich text",
+      "settings": {
+        "section_width": "w-full",
+        "content_width": "max-w-4xl",
+        "content_alignment": "center",
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rdc_ressources_hub_a8473U": {
+      "type": "rdc_ressources-hub",
+      "disabled": true,
+      "name": "Ressources Hub",
+      "settings": {
+        "section_width": "container",
+        "overlay_title": "Espace Ressources",
+        "overlay_subtitle": "Entrez le mot de passe pour accéder au panel Ambassadeur / Eclaireur !",
+        "riddle_question": "",
+        "riddle_answer": "Byzance",
+        "riddle_hint": "<p>Devenez Ambassadeur ou Eclaireur pour recevoir votre mot de passe. <a href=\"/pages/devenir-ambassadeur\" title=\"Devenir ambassadeur\">Postuler.</a></p>",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_collection_Ued8Ve": {
+      "type": "featured-collection",
+      "disabled": true,
+      "name": "précomandes",
+      "settings": {
+        "section_width": "container",
+        "subheading": "",
+        "heading": "précommandes officielles",
+        "heading_tag": "h2",
+        "heading_size_section": "h2",
+        "description": "<p>Soyez les premiers à vous acquérir : L'esprit du hibou</p>",
+        "layout": "vertical",
+        "collection": "precommandes",
+        "products": [],
+        "link_url": "shopify://collections/automne-2025",
+        "link_text": "",
+        "button_type": "primary",
+        "show_icon": false,
+        "enable_stack_products": false,
+        "show_progress_bar": true,
+        "enable_overflow_visible": false,
+        "products_to_show": 11,
+        "columns_desktop": 3,
+        "column_gap": 3,
+        "columns_mobile": "2",
+        "column_gap_mobile": 2,
+        "swipe_on_mobile": true,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rdc_galerie_ressource_hjJFE9": {
+      "type": "rdc_galerie-ressource",
+      "blocks": {
+        "text_Tm3Mgx": {
+          "type": "text",
+          "settings": {
+            "title": "1. Notez votre code",
+            "content": "<p>En théorie, un code de réduction personnel vous a été fourni. <strong>Plus il est utilisé, plus vous êtes remarqués. Diffusez le !</strong><br/></p><p>Si vous le perdez, il vous faudra nous contacter à nouveau 😊</p>",
+            "category": "Astuces"
+          }
+        },
+        "text_f9GpDV": {
+          "type": "text",
+          "settings": {
+            "title": "2. Créer un post ou une story à la une",
+            "content": "<p>Utilisez les ressources ci-dessous pour créer un post épinglé ou une story à la une qui explique à votre audience votre engagement.</p>",
+            "category": "Astuces"
+          }
+        },
+        "text_B9ywFq": {
+          "type": "text",
+          "settings": {
+            "title": "3. Savoir présenter la marque",
+            "content": "<p>En quelques mots ça donne ça :</p><p></p><p>« Runes de Chêne, c'est une marque qui propose de porter des<strong> Fragments d'Histoire</strong> - des illustrations d'artistes, faites à la main, qui revalorisent le patrimoine, l'archéologie et les récits de nos ancêtres loin des clichés ; et qui sont imprimés en Bretagne, avec une dimension humaine et écologique.»</p>",
+            "category": "Astuces"
+          }
+        },
+        "text_jwVgc4": {
+          "type": "text",
+          "settings": {
+            "title": "4. La différence entre éclaireur & ambassadeurs",
+            "content": "<p>Sur cet onglet de ressources, vous verrez alors certaines reservées aux éclaireurs, d'autres aux ambassadeurs. <strong>Les ambassadeurs sont les éclaireurs les plus motivés </strong>et sont selectionnés en fonction de leur investissement longue durée, et après avoir rencontré l'équipe en vrai.</p>",
+            "category": "Astuces"
+          }
+        }
+      },
+      "block_order": [
+        "text_Tm3Mgx",
+        "text_f9GpDV",
+        "text_B9ywFq",
+        "text_jwVgc4"
+      ],
+      "name": "astuces",
+      "settings": {
+        "section_width": "container",
+        "heading": "",
+        "subheading": "",
+        "heading_size": "h3",
+        "show_filters": false,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_collection_8afkHf": {
+      "type": "featured-collection",
+      "name": "produits du moment",
+      "settings": {
+        "section_width": "container",
+        "subheading": "",
+        "heading": "Produits du moment",
+        "heading_tag": "h2",
+        "heading_size_section": "h2",
+        "description": "<p>Tout les Runes de Chêne du moment à mettre en avant</p>",
+        "layout": "vertical",
+        "collection": "automne-2025",
+        "products": [],
+        "link_url": "shopify://collections/automne-2025",
+        "link_text": "",
+        "button_type": "primary",
+        "show_icon": false,
+        "enable_stack_products": false,
+        "show_progress_bar": true,
+        "enable_overflow_visible": false,
+        "products_to_show": 11,
+        "columns_desktop": 4,
+        "column_gap": 3,
+        "columns_mobile": "2",
+        "column_gap_mobile": 2,
+        "swipe_on_mobile": true,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_8Gx4tm": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_B9krFT": {
+          "type": "heading",
+          "settings": {
+            "heading": "déposer une ressource",
+            "heading_tag": "h2",
+            "heading_size": "h3"
+          }
+        },
+        "separator_AUDFiX": {
+          "type": "separator",
+          "settings": {
+            "show_border": false,
+            "space": 8
+          }
+        },
+        "text_dNUrn8": {
+          "type": "text",
+          "settings": {
+            "text": "<ul><li>Pour déposer vos ressources graphiques, appuyez sur le bouton et rentrez le mot de passe <strong>runesdechene.</strong></li><li>Pour l'envoi de ses ressources veuillez rentrer votre <strong>code promo </strong>dans le<strong> votre nom</strong></li></ul>",
+            "large_text": false
+          }
+        },
+        "separator_irBw3d": {
+          "type": "separator",
+          "settings": {
+            "show_border": false,
+            "space": 8
+          }
+        },
+        "button_ryBXeR": {
+          "type": "button",
+          "settings": {
+            "button_label": "Déposez vos fichiers",
+            "button_link": "https://nas.lahoussaye.fr/sharing/afJQntwYH",
+            "button_type": "primary",
+            "show_icon": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_B9krFT",
+        "separator_AUDFiX",
+        "text_dNUrn8",
+        "separator_irBw3d",
+        "button_ryBXeR"
+      ],
+      "custom_css": [],
+      "name": "Rich text",
+      "settings": {
+        "section_width": "w-full",
+        "content_width": "max-w-screen-lg",
+        "content_alignment": "center",
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rdc_galerie_ressource_VafDcM": {
+      "type": "rdc_galerie-ressource",
+      "blocks": {
+        "image_Y6WJa8": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/intro_eclaireur_version_femme_751f8e5c-8622-4c46-9bf7-7c952b3670e8.png",
+            "category": "Éclaireurs",
+            "title": "Template intro éclaireuse🙍‍♀️",
+            "description": "Premiere story à la une pour éclaireuses"
+          }
+        },
+        "image_fykFWg": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/intro_eclaireur_version_homme_35e8e63e-dffc-4f55-b4f2-c8157ab4f167.png",
+            "category": "Éclaireurs",
+            "title": "Template intro éclaireur🙍‍♂️",
+            "description": "Premiere story à la une pour ambassadeurs"
+          }
+        },
+        "image_JFHLmP": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Ambassadeur_-_Explication.png",
+            "category": "Éclaireurs",
+            "title": "Présentation runes de chêne",
+            "description": "Deuxieme story pour les éclaireurs"
+          }
+        },
+        "image_mABmhb": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Ambassadeur_-_Code_b7d36410-d694-49ae-9029-c182fe877e0b.png",
+            "category": "Éclaireurs",
+            "title": "Cadre photo avec code promo",
+            "description": "Troisieme story pour les éclaireurs, à placer PAR DESSUS votre photo (ajout d'image lors de la création de la Story).\n<br><br>\n<b>PENSER À AJOUTER LE LIEN DU SITE ET SON CODE PROMO EN BAS.</b>"
+          }
+        }
+      },
+      "block_order": [
+        "image_Y6WJa8",
+        "image_fykFWg",
+        "image_JFHLmP",
+        "image_mABmhb"
+      ],
+      "name": "ressources ambassadeurs",
+      "settings": {
+        "section_width": "container",
+        "heading": "Stories à la une pour éclaireurs",
+        "subheading": "",
+        "heading_size": "h3",
+        "show_filters": true,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rdc_galerie_ressource_EANkB6": {
+      "type": "rdc_galerie-ressource",
+      "blocks": {
+        "image_8UA6xD": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Ambassadeur-Intro_1_h.png",
+            "category": "Réseaux sociaux",
+            "title": "Template intro ambassadeur 🙍‍♂️",
+            "description": "Premiere story à la une pour ambassadeurs"
+          }
+        },
+        "image_gDrUt3": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Ambassadeur_-Intro_1_f.png",
+            "category": "Réseaux sociaux",
+            "title": "Template intro ambassadrice 🙍‍♀️",
+            "description": "Premiere story à la une pour ambassadrices"
+          }
+        },
+        "image_AVECbB": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Ambassadeur_-_Explication.png",
+            "category": "Réseaux sociaux",
+            "title": "Présentation runes de chêne",
+            "description": "Deuxieme story pour les ambassadeurs"
+          }
+        },
+        "image_3rgAhM": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Ambassadeur_-_Code_b7d36410-d694-49ae-9029-c182fe877e0b.png",
+            "category": "Réseaux sociaux",
+            "title": "Cadre photo avec code promo",
+            "description": "Troisieme story pour les ambassadeurs, à placer PAR DESSUS votre photo (ajout d'image lors de la création de la Story).\n<br><br>\n<b>PENSER À AJOUTER LE LIEN DU SITE ET SON CODE PROMO EN BAS.</b>"
+          }
+        }
+      },
+      "block_order": [
+        "image_8UA6xD",
+        "image_gDrUt3",
+        "image_AVECbB",
+        "image_3rgAhM"
+      ],
+      "disabled": true,
+      "name": "ressources ambassadeurs",
+      "settings": {
+        "section_width": "container",
+        "heading": "Stories à la une réservées aux ambassadeurs",
+        "subheading": "",
+        "heading_size": "h3",
+        "show_filters": true,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rdc_galerie_ressource_NrAyrX": {
+      "type": "rdc_galerie-ressource",
+      "blocks": {
+        "image_phWkiX": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/intro_eclaireur_version_homme_35e8e63e-dffc-4f55-b4f2-c8157ab4f167.png",
+            "category": "Réseaux sociaux",
+            "title": "Template intro éclaireurs🙍‍♂️",
+            "description": "Premiere story à la une pour éclaireurs"
+          }
+        },
+        "image_xcKir4": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/intro_eclaireur_version_femme_751f8e5c-8622-4c46-9bf7-7c952b3670e8.png",
+            "category": "Réseaux sociaux",
+            "title": "Template intro éclaireuses🙍‍♀️",
+            "description": "Premiere story à la une pour éclaireuses"
+          }
+        },
+        "image_iVtmAN": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Ambassadeur_-_Explication.png",
+            "category": "Réseaux sociaux",
+            "title": "Présentation runes de chêne",
+            "description": "Deuxieme story pour les éclaireurs"
+          }
+        },
+        "image_X7A44M": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Ambassadeur_-_Code_b7d36410-d694-49ae-9029-c182fe877e0b.png",
+            "category": "Réseaux sociaux",
+            "title": "Cadre photo avec code promo",
+            "description": "Troisieme story pour les éclaireurs, à placer PAR DESSUS votre photo (ajout d'image lors de la création de la Story).\n<br><br>\n<b>PENSER À AJOUTER LE LIEN DU SITE ET SON CODE PROMO EN BAS.</b>"
+          }
+        }
+      },
+      "block_order": [
+        "image_phWkiX",
+        "image_xcKir4",
+        "image_iVtmAN",
+        "image_X7A44M"
+      ],
+      "disabled": true,
+      "name": "Ressources éclaireurs",
+      "settings": {
+        "section_width": "container",
+        "heading": "Stories à la une réservées aux éclaireurs",
+        "subheading": "",
+        "heading_size": "h3",
+        "show_filters": true,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rdc_galerie_ressource_a64nTE": {
+      "type": "rdc_galerie-ressource",
+      "blocks": {
+        "image_cX8BRA": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/ambassadeur_story.png",
+            "category": "Réseaux sociaux",
+            "title": "Recrutement d'éclaireurs/ambassadeurs",
+            "description": "Post à mettre en story accompagné d'un lien vers le formulaire dans l'encadrement blanc"
+          }
+        },
+        "image_KhyFkY": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/LOGO_full.webp",
+            "category": "Logos",
+            "title": "Logo_complet",
+            "description": "Le logo officiel « Runes de Chêne »"
+          }
+        },
+        "image_x84iEk": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/LOGO_ligne_noir.webp",
+            "category": "Logos",
+            "title": "Logo_ligne",
+            "description": "Le logo, sur une seule ligne."
+          }
+        },
+        "image_pEiPgD": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/LOGO_couronne.png",
+            "category": "Logos",
+            "title": "Logo_Couronne",
+            "description": "Notre emblématique Couronne de Chêne"
+          }
+        },
+        "image_TjcJx9": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/LOGO_couronne_simplifiee.png",
+            "category": "Logos",
+            "title": "Logo_Couronne_Simplifiée",
+            "description": "Idéal pour les petites tailles"
+          }
+        },
+        "image_3XLNLA": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/LOGO_Reseaux_Sociaux_CMJN.jpg",
+            "category": "Stickers",
+            "title": "Badge officiel",
+            "description": ""
+          }
+        },
+        "image_QGJ4nr": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Sticker_-_Eclaireurs_8d4b8f59-7c46-4550-b34f-ddf621f26c88.jpg",
+            "category": "Stickers",
+            "title": "Badge Eclaireur",
+            "description": ""
+          }
+        },
+        "image_RhYkEt": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/Sticker_-_Ambassadeurs.jpg",
+            "category": "Stickers",
+            "title": "Badge Ambassadeur",
+            "description": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_cX8BRA",
+        "image_KhyFkY",
+        "image_x84iEk",
+        "image_pEiPgD",
+        "image_TjcJx9",
+        "image_3XLNLA",
+        "image_QGJ4nr",
+        "image_RhYkEt"
+      ],
+      "name": "ressources graphiques",
+      "settings": {
+        "section_width": "container",
+        "heading": "RESSOURCES GRAPHIQUES",
+        "subheading": "<p>Pour afficher fièrement la marque. </p>",
+        "heading_size": "h3",
+        "show_filters": true,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rdc_galerie_ressource_HaqbQy": {
+      "type": "rdc_galerie-ressource",
+      "blocks": {
+        "image_Ed4rnT": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/inbound9184981614333206442.jpg",
+            "category": "Divers",
+            "title": "ressource photo pour cadre",
+            "description": ""
+          }
+        },
+        "image_AVFVAt": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/20250422_165834_1.jpg",
+            "category": "Divers",
+            "title": "ressource photo pour cadre",
+            "description": ""
+          }
+        },
+        "image_BKcUq6": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/inbound8702354169609129681_b2d7730d-b9c1-4fb1-9876-961eb8ffbe4d.jpg",
+            "category": "Divers",
+            "title": "ressource photo pour cadre",
+            "description": ""
+          }
+        },
+        "image_r9tz3F": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/denis_rallonge_f683e2e8-68cb-41ea-b849-1d1e99e0d6ae.png",
+            "category": "Divers",
+            "title": "ressource photo pour cadre",
+            "description": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_Ed4rnT",
+        "image_AVFVAt",
+        "image_BKcUq6",
+        "image_r9tz3F"
+      ],
+      "name": "photographies officielles",
+      "settings": {
+        "section_width": "container",
+        "heading": "Photographies officielles",
+        "subheading": "<p>Images validées par la direction artistique.</p>",
+        "heading_size": "h3",
+        "show_filters": true,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rdc_galerie_ressource_djwjXx": {
+      "type": "rdc_galerie-ressource",
+      "blocks": {
+        "image_xDLDM3": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Flyer_v4_-_RTP_LD_Recto.png",
+            "category": "Prospectus",
+            "title": "Flyer officiel Recto",
+            "description": "La vibe de la marque + notre slogan"
+          }
+        },
+        "image_KpqimT": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Flyer_v4_-_RTP_LD_Verso.png",
+            "category": "Prospectus",
+            "title": "Flyer officiel Verso",
+            "description": "Un résumé idéal de la marque"
+          }
+        },
+        "image_ELKHX8": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/CARTE_de_Remerciement_A6_RTP.png",
+            "category": "Prospectus",
+            "title": "Carte de remerciement - Recto",
+            "description": "Celle qu'on glisse dans les commandes. Idéale pour comprendre les valeurs de la marque."
+          }
+        },
+        "image_c3zV9z": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/CARTE_de_Remerciement_A6_RTP_VERSO.png",
+            "category": "Prospectus",
+            "title": "Carte de remerciement - Verso",
+            "description": "Celle qu'on glisse dans les commandes. Idéale pour comprendre les valeurs de la marque."
+          }
+        }
+      },
+      "block_order": [
+        "image_xDLDM3",
+        "image_KpqimT",
+        "image_ELKHX8",
+        "image_c3zV9z"
+      ],
+      "name": "prospectus",
+      "settings": {
+        "section_width": "container",
+        "heading": "PROSPECTUS",
+        "subheading": "<p>Actifs en ce moment sur le stand ou dans nos commandes.</p>",
+        "heading_size": "h3",
+        "show_filters": true,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "slideshow_jjRycr",
+    "main",
+    "rich_text_Gjcida",
+    "rdc_ressources_hub_a8473U",
+    "featured_collection_Ued8Ve",
+    "rdc_galerie_ressource_hjJFE9",
+    "featured_collection_8afkHf",
+    "rich_text_8Gx4tm",
+    "rdc_galerie_ressource_VafDcM",
+    "rdc_galerie_ressource_EANkB6",
+    "rdc_galerie_ressource_NrAyrX",
+    "rdc_galerie_ressource_a64nTE",
+    "rdc_galerie_ressource_HaqbQy",
+    "rdc_galerie_ressource_djwjXx"
+  ]
+}

@@ -1,0 +1,424 @@
+{{ 'rdc_tableau-comparaison.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'rdc_tableau-comparaison.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign section_width = section.settings.section_width
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+  
+  # Convertir la couleur hexadécimale en RGB
+  assign highlight_color = section.settings.highlight_color | default: '#e32c2c'
+  assign highlight_color_rgb = highlight_color | color_to_rgb | remove: 'rgb(' | remove: ')' 
+-%}
+
+<div class="section-tableau-comparaison section-padding section-bg isolate" {% render 'section-properties' %} data-tableau-comparaison style="--highlight-color: {{ highlight_color }}; --highlight-color-rgb: {{ highlight_color_rgb }}; --overlay-opacity: {{ section.settings.overlay_opacity | default: 85 | divided_by: 100.0 }}; {% if section.settings.bg_color != blank %}background-color: {{ section.settings.bg_color }};{% endif %}">
+  <div class="tableau-comparaison {{ section_width }}">
+    <div class="tableau-comparaison__header">
+      {% if heading != blank %}
+        <h2 class="tableau-comparaison__heading {{ section.settings.heading_size }}">{{ heading }}</h2>
+      {% endif %}
+      {% if subheading != blank %}
+        <div class="tableau-comparaison__subheading">{{ subheading }}</div>
+      {% endif %}
+    </div>
+
+    <div class="tableau-comparaison__container">
+      <div class="tableau-comparaison__table-wrapper" {% if section.settings.background_image != blank %}style="background-image: url({{ section.settings.background_image | image_url: width: 2000 }}); background-position: center {{ section.settings.background_position }};"{% endif %}>
+        <table class="tableau-comparaison__table">
+          <thead>
+            <tr>
+              <th class="tableau-comparaison__header-cell tableau-comparaison__header-cell--empty"></th>
+              {% for block in section.blocks %}
+                {% if block.type == 'column_header' %}
+                  <th class="tableau-comparaison__header-cell {% if block.settings.highlight %}tableau-comparaison__header-cell--highlight{% endif %}" {{ block.shopify_attributes }} {% if block.settings.highlight %}style="background-color: {{ section.settings.highlight_color | default: '#e32c2c' }};"{% endif %}>
+                    <div class="tableau-comparaison__header-content">
+                      {% if block.settings.image != blank %}
+                        <div class="tableau-comparaison__header-image">
+                          {{ block.settings.image | image_url: width: 120 | image_tag: 
+                            loading: 'lazy',
+                            class: 'tableau-comparaison__image',
+                            alt: block.settings.title
+                          }}
+                        </div>
+                      {% endif %}
+                      {% if block.settings.title != blank %}
+                        <h3 class="tableau-comparaison__column-title">{{ block.settings.title }}</h3>
+                      {% endif %}
+                    </div>
+                  </th>
+                {% endif %}
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for block in section.blocks %}
+              {% if block.type == 'row' %}
+                <tr class="tableau-comparaison__row" {{ block.shopify_attributes }}>
+                  <td class="tableau-comparaison__row-header">
+                    {% if block.settings.row_title != blank %}
+                      <div class="tableau-comparaison__row-title">{{ block.settings.row_title }}</div>
+                    {% endif %}
+                  </td>
+                  
+                  {% for i in (1..10) %}
+                    {% capture cell_key %}cell_{{ i }}{% endcapture %}
+                    {% capture highlight_key %}highlight_{{ i }}{% endcapture %}
+                    {% assign cell_content = block.settings[cell_key] %}
+                    {% assign cell_highlight = block.settings[highlight_key] %}
+                    
+                    {% assign column_count = section.blocks | where: "type", "column_header" | size %}
+                    {% if forloop.index <= column_count %}
+                      <td class="tableau-comparaison__cell {% if cell_highlight %}tableau-comparaison__cell--highlight{% endif %}" {% if cell_highlight %}style="border-left: 3px solid {{ section.settings.highlight_color | default: '#e32c2c' }}; background-color: {{ section.settings.highlight_color | default: '#e32c2c' | color_modify: 'alpha', 0.1 }};"{% endif %}>
+                        <div class="tableau-comparaison__cell-content">{{ cell_content }}</div>
+                      </td>
+                    {% endif %}
+                  {% endfor %}
+                </tr>
+              {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "RDC Tableau Comparaison",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer", "aside"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Largeur",
+      "options": [
+        {
+          "value": "container",
+          "label": "Container"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Étendue"
+        },
+        {
+          "value": "w-full",
+          "label": "Pleine largeur"
+        }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Tableau comparatif"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Sous-titre",
+      "default": "<p>Comparez les différentes options disponibles.</p>"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Taille du titre",
+      "options": [
+        {
+          "value": "h1",
+          "label": "Titre 1"
+        },
+        {
+          "value": "h2",
+          "label": "Titre 2"
+        },
+        {
+          "value": "h3",
+          "label": "Titre 3"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "header",
+      "content": "Couleurs et arrière-plan"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Couleur d'arrière-plan"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Image d'arrière-plan"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Opacité de l'overlay",
+      "default": 85
+    },
+    {
+      "type": "select",
+      "id": "background_position",
+      "label": "Position de l'image",
+      "options": [
+        {
+          "value": "top",
+          "label": "Haut"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        },
+        {
+          "value": "bottom",
+          "label": "Bas"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Texte"
+    },
+    {
+      "type": "color",
+      "id": "highlight_color",
+      "label": "Couleur de mise en évidence",
+      "default": "#e32c2c"
+    },
+    {
+      "type": "header",
+      "content": "Espacement de section"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Marge supérieure",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Marge inférieure",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column_header",
+      "name": "En-tête de colonne",
+      "limit": 10,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Option"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image (optionnelle)"
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight",
+          "label": "Mettre en évidence cette colonne",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "row",
+      "name": "Ligne",
+      "settings": [
+        {
+          "type": "text",
+          "id": "row_title",
+          "label": "Titre de la ligne",
+          "default": "Caractéristique"
+        },
+        {
+          "type": "header",
+          "content": "Contenu des cellules"
+        },
+        {
+          "type": "richtext",
+          "id": "cell_1",
+          "label": "Cellule 1"
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight_1",
+          "label": "Mettre en évidence la cellule 1",
+          "default": false
+        },
+        {
+          "type": "richtext",
+          "id": "cell_2",
+          "label": "Cellule 2"
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight_2",
+          "label": "Mettre en évidence la cellule 2",
+          "default": false
+        },
+        {
+          "type": "richtext",
+          "id": "cell_3",
+          "label": "Cellule 3"
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight_3",
+          "label": "Mettre en évidence la cellule 3",
+          "default": false
+        },
+        {
+          "type": "richtext",
+          "id": "cell_4",
+          "label": "Cellule 4"
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight_4",
+          "label": "Mettre en évidence la cellule 4",
+          "default": false
+        },
+        {
+          "type": "richtext",
+          "id": "cell_5",
+          "label": "Cellule 5"
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight_5",
+          "label": "Mettre en évidence la cellule 5",
+          "default": false
+        },
+        {
+          "type": "richtext",
+          "id": "cell_6",
+          "label": "Cellule 6"
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight_6",
+          "label": "Mettre en évidence la cellule 6",
+          "default": false
+        },
+        {
+          "type": "richtext",
+          "id": "cell_7",
+          "label": "Cellule 7"
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight_7",
+          "label": "Mettre en évidence la cellule 7",
+          "default": false
+        },
+        {
+          "type": "richtext",
+          "id": "cell_8",
+          "label": "Cellule 8"
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight_8",
+          "label": "Mettre en évidence la cellule 8",
+          "default": false
+        },
+        {
+          "type": "richtext",
+          "id": "cell_9",
+          "label": "Cellule 9"
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight_9",
+          "label": "Mettre en évidence la cellule 9",
+          "default": false
+        },
+        {
+          "type": "richtext",
+          "id": "cell_10",
+          "label": "Cellule 10"
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight_10",
+          "label": "Mettre en évidence la cellule 10",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RDC Tableau Comparaison",
+      "blocks": [
+        {
+          "type": "column_header",
+          "settings": {
+            "title": "Runes de Chêne",
+            "highlight": true
+          }
+        },
+        {
+          "type": "column_header",
+          "settings": {
+            "title": "LES AUTRES"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "row_title": "",
+            "cell_1": "<p>Exemple 1</p>",
+            "cell_2": "<p>Exemple 2</p>"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "row_title": "",
+            "cell_1": "<p>Exemple 1</p>",
+            "cell_2": "<p>Exemple 2</p>"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "row_title": "",
+            "cell_1": "<p>Exemple 1</p>",
+            "cell_2": "<p>Exemple 2</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

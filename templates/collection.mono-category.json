@@ -1,0 +1,82 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumbs_FYp3jd": {
+      "type": "breadcrumbs",
+      "settings": {
+        "section_width": "container-fluid",
+        "alignment": "start",
+        "text_size": "text-size-small",
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "banner": {
+      "type": "main-collection-banner",
+      "custom_css": [
+        "p {font-size: 18px;}"
+      ],
+      "settings": {
+        "show_breadcrumb": false,
+        "show_collection_title": true,
+        "show_collection_image": true,
+        "heading_size": "h2",
+        "image_size": "550px",
+        "align_content": "start",
+        "show_collection_description": true,
+        "navigation": "",
+        "text_color": "#ffffff",
+        "overlay_color": "#282a2e",
+        "overlay_opacity": 45
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "custom_css": [
+        ".facets-layout .swatch-color {box-shadow: none;}",
+        ".product-card-wrapper {background: #eeedea; padding: 10px 15px; border-radius: 10px;}",
+        ".card-product__media-inner,.responsive-image {background: #eeedea;}",
+        ".gap-x-12 {gap: 15px;}",
+        ".facets__item {transition: all 0.3s;}",
+        ".facets__item:hover {background: #f1f1f1; border-radius: 10px; padding-left: 10px;}"
+      ],
+      "settings": {
+        "section_width": "container",
+        "products_per_page": 12,
+        "columns_desktop": 3,
+        "column_gap": "12",
+        "row_gap": "16",
+        "pagination_type": "page-numbers",
+        "filter_type": "vertical",
+        "enable_filtering": true,
+        "enable_sorting": true,
+        "show_filter_values_count": false,
+        "show_product_count": false,
+        "show_view_mode": true,
+        "collapsible_state": "expanded",
+        "show_color_swatch": false,
+        "filter_color_type": "inline",
+        "show_block_style": false,
+        "matching_block_names": "Size",
+        "columns_mobile": "2",
+        "padding_top": 52,
+        "padding_bottom": 72
+      }
+    }
+  },
+  "order": [
+    "breadcrumbs_FYp3jd",
+    "banner",
+    "product-grid"
+  ]
+}

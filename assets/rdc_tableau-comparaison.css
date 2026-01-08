@@ -1,0 +1,258 @@
+/* Tableau Comparaison Section Styles */
+.section-tableau-comparaison {
+  position: relative;
+  padding: var(--section-padding-top, 36px) 0 var(--section-padding-bottom, 36px);
+}
+
+.tableau-comparaison {
+  position: relative;
+}
+
+/* Header Styles */
+.tableau-comparaison__header {
+  text-align: left;
+  margin-bottom: 2.5rem;
+}
+
+.tableau-comparaison__heading {
+  margin-bottom: 2rem;
+  color: var(--text-color, inherit);
+}
+
+.tableau-comparaison__subheading {
+  max-width: 800px;
+  color: var(--text-color-secondary, #767676);
+  font-size: 1.4rem;
+  line-height: 1.6;
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+
+/* Table Container */
+.tableau-comparaison__container {
+  width: 100%;
+  overflow-x: visible; /* Changé de auto à visible pour éviter la scrollbar par défaut */
+  margin-bottom: 2rem;
+  padding: 4px; /* Ajusté pour correspondre à l'espacement des cellules */
+}
+
+.tableau-comparaison__table-wrapper {
+  width: 100%;
+  overflow: visible;
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  padding: 8px;
+}
+
+/* Overlay pour l'image de fond */
+.tableau-comparaison__table-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+/* Table Styles */
+.tableau-comparaison__table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 4px;
+  overflow: visible; /* Changé de hidden à visible pour éviter les problèmes de débordement */
+  box-shadow: none; /* Suppression de l'ombre du tableau pour éviter les problèmes de débordement */
+  background-color: transparent; /* Fond transparent pour éviter les problèmes de débordement */
+}
+
+/* Header Cell Styles */
+.tableau-comparaison__header-cell {
+  padding: 2rem 1.5rem;
+  text-align: center;
+  font-weight: 600;
+  color: #333;
+  min-width: 180px;
+  position: relative;
+  background: #fcfcfc;
+  z-index: 2; /* Assure que les cellules d'en-tête sont au-dessus de l'overlay */
+}
+
+.tableau-comparaison__header-cell--empty {
+  background-color: transparent;
+  border: none;
+  min-width: 200px;
+  box-shadow: none;
+  visibility: hidden; /* Rend la cellule invisible tout en préservant son espace */
+}
+
+.tableau-comparaison__header-cell--highlight {
+  /* La couleur de fond est maintenant appliquée directement dans le HTML */
+  color: white;
+}
+
+.tableau-comparaison__header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tableau-comparaison__header-image {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tableau-comparaison__image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.tableau-comparaison__column-title {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Row Styles */
+.tableau-comparaison__row:nth-child(even) {
+  background-color: transparent; /* Supprimé car nous avons maintenant des cellules individuelles avec leur propre fond */
+}
+
+.tableau-comparaison__cell:hover,
+.tableau-comparaison__row-header:hover {
+  background: #f1f1f1;
+}
+
+.tableau-comparaison__header-cell:hover {
+  background: #f1f1f1;
+}
+
+/* Row Header Styles */
+.tableau-comparaison__row-header {
+  padding: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  border-right: none;
+  border-bottom: none;
+  background-color:rgba(255,250,250,0.7);
+  text-align: left;
+  border-radius: 0;
+  position: relative;
+  z-index: 1; /* Assure que l'en-tête de ligne est au-dessus des autres cellules */
+  transition: all 0.3s;
+}
+
+.tableau-comparaison__row-title {
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Cell Styles */
+.tableau-comparaison__cell {
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 2; /* Assure que les cellules sont au-dessus de l'overlay */
+}
+
+/* .tableau-comparaison__cell--highlight - Les styles sont maintenant appliqués directement dans le HTML */
+
+.tableau-comparaison__cell-content {
+  font-size: 1.4rem;
+  line-height: 1.6;
+}
+
+.tableau-comparaison__cell-content p {
+  margin: 0;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 767px) {
+  .tableau-comparaison__container {
+    overflow-x: auto; /* Permettre le défilement horizontal sur mobile si nécessaire */
+    padding: 4px;
+  }
+  
+  .tableau-comparaison__header-cell {
+    padding: 1.5rem 1rem;
+    min-width: 140px;
+  }
+  
+  .tableau-comparaison__header-cell--empty {
+    min-width: 100px; /* Réduit la largeur sur mobile */
+  }
+  
+  .tableau-comparaison__column-title {
+    font-size: 1.6rem;
+  }
+  
+  .tableau-comparaison__row-title {
+    font-size: 1.3rem;
+  }
+  
+  .tableau-comparaison__cell {
+    padding: 1.2rem 1rem;
+  }
+  
+  .tableau-comparaison__cell-content {
+    font-size: 1.3rem;
+  }
+  
+  .tableau-comparaison__header-image {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* Special Styling for Yes/No/Check Content */
+.tableau-comparaison__cell-content .icon-check,
+.tableau-comparaison__cell-content .icon-x {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  text-align: center;
+  line-height: 24px;
+  font-weight: bold;
+}
+
+.tableau-comparaison__cell-content .icon-check {
+  background-color: #27ae60;
+  color: white;
+}
+
+.tableau-comparaison__cell-content .icon-x {
+  background-color: #e74c3c;
+  color: white;
+}
+
+/* Highlight Column Styles */
+.tableau-comparaison__header-cell--highlight .tableau-comparaison__column-title {
+  color: white;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tableau-comparaison__table {
+  animation: fadeIn 0.6s ease forwards;
+}

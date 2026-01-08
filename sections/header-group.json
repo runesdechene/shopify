@@ -1,0 +1,164 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "Header",
+  "type": "header",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_gYEBea": {
+          "type": "announcement",
+          "settings": {
+            "text": "Commandes de noël : livraison garantie avant le 14 décembre 🎄",
+            "icon": "global",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "announcement_gYEBea"
+      ],
+      "disabled": true,
+      "custom_css": [
+        "@media screen {span {font-size: 1.3rem; }}"
+      ],
+      "settings": {
+        "announcement_width": "full_width",
+        "announcement_height": "large",
+        "show_border": false,
+        "show_arrows": true,
+        "auto_rotate": true,
+        "change_slides_speed": 6,
+        "animation_slides": "loop",
+        "bg_color": "#480d18",
+        "text_color": "#ffffff"
+      }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "megamenu_classic_TK7YAi": {
+          "type": "megamenu_classic",
+          "settings": {
+            "menu_item": "Boutique",
+            "label_text": "",
+            "label_color": "#ffffff",
+            "label_bg_color": "#ff0000",
+            "menu_width": "container",
+            "columns_link": 3,
+            "show_border": true,
+            "show_banner": true,
+            "postion_banner": "left",
+            "columns_banner": 100,
+            "columns_banner_per_row": 3,
+            "image_1": "shopify://shop_images/t-shirts.webp",
+            "image_ratio_1": "adapt",
+            "url_1": "shopify://collections/t-shirts",
+            "align_text_1": "center",
+            "sub_title_1": "Nos iconiques",
+            "title_1": "T-shirts",
+            "heading_size_1": "h3",
+            "text_1": "",
+            "type_button_1": "primary",
+            "text_button_1": "Parcourir",
+            "text_color_1": "#000000",
+            "image_2": "shopify://shop_images/LES_SWEATS.webp",
+            "image_ratio_2": "adapt",
+            "url_2": "shopify://collections/sweatshirts",
+            "align_text_2": "center",
+            "sub_title_2": "Nos incroyables",
+            "title_2": "Vestes & Hoodies",
+            "heading_size_2": "h3",
+            "text_2": "",
+            "type_button_2": "primary",
+            "text_button_2": "Parcourir",
+            "text_color_2": "#000000",
+            "image_3": "shopify://shop_images/NOS_DEBARDEURS_2_0cb9b491-7011-410c-b4e1-5ce825541af0.webp",
+            "image_ratio_3": "adapt",
+            "url_3": "shopify://collections/les-debardeurs",
+            "align_text_3": "center",
+            "sub_title_3": "Nos tant attendus",
+            "title_3": "Débardeurs",
+            "heading_size_3": "h3",
+            "text_3": "",
+            "type_button_3": "primary",
+            "text_button_3": "Parcourir",
+            "text_color_3": "#000000",
+            "image_ratio_4": "landscape-v2",
+            "url_4": "",
+            "align_text_4": "center",
+            "sub_title_4": "",
+            "title_4": "",
+            "heading_size_4": "h3",
+            "text_4": "",
+            "type_button_4": "primary",
+            "text_button_4": "",
+            "text_color_4": "#000000",
+            "image_ratio_5": "adapt",
+            "url_5": "shopify://collections/notre-selection-dete",
+            "align_text_5": "center",
+            "sub_title_5": "",
+            "title_5": "notre sélection d'été",
+            "heading_size_5": "h3",
+            "text_5": "",
+            "type_button_5": "primary",
+            "text_button_5": "DECOUVRIR",
+            "text_color_5": "#000000",
+            "image_ratio_6": "adapt",
+            "url_6": "",
+            "align_text_6": "start",
+            "sub_title_6": "Sub heading",
+            "title_6": "Heading",
+            "heading_size_6": "h3",
+            "text_6": "<p>Add description text here.</p>",
+            "type_button_6": "primary",
+            "text_button_6": "Shop now",
+            "text_color_6": "#000000"
+          }
+        }
+      },
+      "block_order": [
+        "megamenu_classic_TK7YAi"
+      ],
+      "custom_css": [
+        ".global-settings-popup {border-radius: 20px; box-shadow: 1px 1px 20px -4px rgba(0, 0, 0, 0.05);}",
+        ".btn {display: none;}"
+      ],
+      "settings": {
+        "section_width": "container-fluid",
+        "logo_position": "middle-left-center",
+        "logo": "shopify://shop_images/2025_footer_logo.webp",
+        "logo_width": 250,
+        "logo_width_mobile": 150,
+        "menu": "main-menu",
+        "sticky_header_type": "on-scroll-up",
+        "show_line_separator": true,
+        "enable_country_selector": false,
+        "enable_country_flag": false,
+        "enable_country_name": false,
+        "enable_language_selector": false,
+        "transparent_header": true,
+        "text_color_transparent_header": "#ffffff",
+        "logo_light": "shopify://shop_images/2025_logo_site_4d72f71d-c38e-4270-bbee-b84c505b0e9e.webp",
+        "mobile_logo_position": "left",
+        "enable_country_selector_mobile": true,
+        "enable_language_selector_mobile": true,
+        "margin_bottom": 0,
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
+}

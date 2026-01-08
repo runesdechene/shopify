@@ -1,0 +1,90 @@
+il{{ 'rdc_taille.css' | asset_url | stylesheet_tag }}
+
+
+
+<div class="sizeguide">
+  <h1>Guide des Tailles</h1>
+
+  <img id="size-guide-img"
+       src="{{ 'rdc_taille_freestyler_vintage.webp' | asset_url }}"
+       loading="lazy"
+       alt="Guide des tailles t-shirt"
+       class="size-guide-img">
+
+  <div class="table-container">
+    <!-- Tableau 1 : Coupes Premiums -->
+    <div id="table-flat" class="active">
+      <table class="size-guide">
+        <thead>
+          <tr>
+            <th>Taille</th>
+            <th>A - Poitrine</th>
+            <th>B - Longueur</th>
+            <th>C - Manches</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>XXS</td><td>49.5</td><td>68</td><td>22.5</td></tr>
+          <tr><td>XS</td><td>52</td><td>70</td><td>23</td></tr>
+          <tr><td>S</td><td>55</td><td>73</td><td>24</td></tr>
+          <tr><td>M</td><td>58</td><td>76</td><td>25</td></tr>
+          <tr><td>L</td><td>61</td><td>78</td><td>26</td></tr>
+          <tr><td>XL</td><td>64</td><td>80</td><td>26</td></tr>
+          <tr><td>XXL</td><td>67</td><td>82</td><td>27</td></tr>
+          <tr><td>3XL</td><td>70</td><td>84</td><td>28</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Tableau 2 : Coupes Premiums Vintages -->
+    <div id="table-body">
+      <table class="size-guide">
+        <thead>
+          <tr>
+            <th>Taille</th>
+            <th>A - Poitrine</th>
+            <th>B - Longueur</th>
+            <th>C - Manches</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>XXS</td><td>50</td><td>65</td><td>21</td></tr>
+          <tr><td>XS</td><td>52</td><td>68</td><td>22</td></tr>
+          <tr><td>S</td><td>54</td><td>72</td><td>23.5</td></tr>
+          <tr><td>M</td><td>58</td><td>76</td><td>25</td></tr>
+          <tr><td>L</td><td>61</td><td>78</td><td>25.5</td></tr>
+          <tr><td>XL</td><td>64</td><td>80</td><td>26</td></tr>
+          <tr><td>XXL</td><td>68</td><td>82</td><td>26.5</td></tr>
+          <tr><td>3XL</td><td>72</td><td>84</td><td>27</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <p>Toutes les tailles sont mesurées en CM</p>
+
+  <div class="toggle-buttons">
+    <button onclick="showTable('flat')" class="active">Coupes Premiums</button>
+    <button onclick="showTable('body')">Coupes Premiums Vintages</button>
+  </div>
+</div>
+
+<script>
+  function showTable(type) {
+    const flatImg = "{{ 'rdc_taille_freestyler_vintage.webp' | asset_url }}";
+    const vintageImg = "{{ 'rdc_taille_freestyler_vintage.webp' | asset_url }}";
+    
+    document.querySelectorAll('.table-container > div').forEach(div => {
+      div.classList.remove('active');
+    });
+    document.querySelectorAll('.toggle-buttons button').forEach(btn => {
+      btn.classList.remove('active');
+    });
+
+    document.getElementById('table-' + type).classList.add('active');
+    event.target.classList.add('active');
+
+    const img = document.getElementById('size-guide-img');
+    img.src = (type === 'flat') ? flatImg : vintageImg;
+  }
+</script>

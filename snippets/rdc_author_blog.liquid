@@ -1,0 +1,109 @@
+{% style %}
+  .bio-author-container {
+    position: relative;
+    background: #efeae6;
+    border-radius: 10px;
+    padding: 25px;
+    margin-top: 3rem;
+    align-items: center;
+  }
+
+  .author-flex {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+  }
+
+  .author-bio {
+    flex: 1;
+  }
+
+  .author-photo {
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 5px solid #dbd0c8;
+  }
+
+  .author-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 5px solid #efeae6;
+  }
+
+  .author-name {
+    font-size: 2.45rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+    color: #4c4139;
+  }
+
+  .author-description {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    color: #4c4139;
+    margin-bottom: 1rem;
+  }
+
+.author-label 
+  {
+    font-size: 1.2rem; opacity: 0.7;
+    position: absolute;
+    background: #dcdeeb;
+    border: 1px solid #989bbd;
+    color: #32365b;
+    border-radius: 25px;
+    padding: 10px;
+    left: -10px;
+    top: -10px;
+  }
+  
+{% endstyle %}
+
+<div class="max-w-7xl padding-x mx-auto bio-author">
+  <div class="bio-author-container">
+    {% for tag in article.tags %}
+      {% if tag == 'uriel' %}
+        <div class="author-flex">
+          <div class="author-photo">
+            <img src="https://cdn.shopify.com/s/files/1/0728/9690/5483/files/Uriel_Avatar.webp?v=1747067621" alt="Uriel" loading="lazy">
+          </div>
+          <div class="author-bio">
+            <h2 class="author-label">Cet article a été écrit par</h2>
+            <h3 class="author-name">Uriel</h3>
+            <p class="author-description">
+              Libre marchand & artiste nomade Uriel a créé Runes de Chêne sur les cendres de la marque North Wanderers (2018-2023). Il n'a alors qu'une idée en tête : 
+              proposer des vêtements iconiques capables de créer du lien entre les gens qui partagent l'envie de réenchanter le monde moderne, entre esprit 
+              rebelle et curiosité intemporelle pour l'Histoire. Depuis, il sillonne 
+              le pays avec son équipe pour faire naître un véritable phénomène d'époque à travers <a style="color: #355a83" href="https://explore.runesdechene.com"><b>Runes de Chêne EXPLORE</b></a>, l'application mobile qui unifie les passionnés d'Histoire, de Nature & d'aventure.</p>
+          </div>
+        </div>
+      {% elsif tag == 'matheo' %}
+        <div class="author-flex">
+          <div class="author-photo">
+            <img src="{{ 'matheo-profile.jpg' | asset_url }}" alt="Mathéo" loading="lazy">
+          </div>
+          <div class="author-bio">
+            <h3 class="author-name">Mathéo</h3>
+            <p class="author-description">
+              Développeur full-stack et expert en solutions e-commerce. Spécialisé dans l'optimisation des performances et l'expérience utilisateur, je partage mes insights sur le développement web moderne.
+            </p>
+            <div class="author-social">
+              <a href="https://twitter.com/matheo" class="social-link" target="_blank" rel="noopener noreferrer">
+                {% render 'icon-twitter' %}
+              </a>
+              <a href="https://github.com/matheo" class="social-link" target="_blank" rel="noopener noreferrer">
+                {% render 'icon-github' %}
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>

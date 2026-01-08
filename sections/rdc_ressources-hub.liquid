@@ -1,0 +1,153 @@
+{{ 'rdc_ressources-hub.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'rdc_ressources-hub.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign section_width = section.settings.section_width
+  assign riddle_question = section.settings.riddle_question
+  assign riddle_answer = section.settings.riddle_answer
+  assign riddle_hint = section.settings.riddle_hint
+-%}
+
+<!-- Overlay d'énigme pleine page -->
+<div class="ressources-hub__overlay" id="overlay-{{ section.id }}" data-overlay>
+  <div class="ressources-hub__overlay-container">
+    <div class="ressources-hub__overlay-header">
+      <h2 class="ressources-hub__overlay-title">{{ section.settings.overlay_title }}</h2>
+      <p class="ressources-hub__overlay-subtitle">{{ section.settings.overlay_subtitle }}</p>
+    </div>
+    
+    <div class="ressources-hub__riddle">
+      <p class="ressources-hub__riddle-question">{{ riddle_question }}</p>
+      {% if riddle_hint != blank %}
+        <button class="ressources-hub__hint-button" data-hint-button>Besoin d'un indice ?</button>
+        <div class="ressources-hub__riddle-hint" data-riddle-hint>{{ riddle_hint }}</div>
+      {% endif %}
+    </div>
+    
+    <div class="ressources-hub__form">
+      <div class="ressources-hub__input-group">
+        <input type="text" class="ressources-hub__input" placeholder="Votre réponse" data-input>
+      </div>
+      <div class="ressources-hub__button-group">
+        <button class="ressources-hub__submit-button" data-submit-button>Valider</button>
+      </div>
+      <p class="ressources-hub__error-message" data-error-message></p>
+    </div>
+  </div>
+</div>
+
+<!-- Section invisible (sert uniquement pour l'overlay d'énigme) -->
+<div class="section-ressources-hub" {% render 'section-properties' %} data-ressources-hub data-section-id="{{ section.id }}">
+  <div class="ressources-hub" id="ressources-hub-{{ section.id }}" data-id="{{ section.id }}">
+    <div class="ressources-hub__content" data-content></div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the ressources hub functionality
+    const ressourcesHub = document.querySelector('[data-ressources-hub][data-section-id="{{ section.id }}"]');
+    if (ressourcesHub) {
+      const correctAnswer = "{{ riddle_answer | escape }}";
+      initRessourcesHub(ressourcesHub, correctAnswer);
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "RDC Ressources Hub",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer", "aside"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Largeur",
+      "options": [
+        {
+          "value": "container",
+          "label": "Container"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Étendue"
+        },
+        {
+          "value": "w-full",
+          "label": "Pleine largeur"
+        }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "header",
+      "content": "Paramètres de l'overlay d'énigme"
+    },
+    {
+      "type": "text",
+      "id": "overlay_title",
+      "label": "Titre de l'overlay",
+      "default": "Espace Ressources"
+    },
+    {
+      "type": "text",
+      "id": "overlay_subtitle",
+      "label": "Sous-titre de l'overlay",
+      "default": "Résolvez l'énigme pour accéder à l'espace ressources"
+    },
+    {
+      "type": "text",
+      "id": "riddle_question",
+      "label": "Question de l'énigme",
+      "default": "Quels sont les deux arbres tutélaires de la marque ?"
+    },
+    {
+      "type": "text",
+      "id": "riddle_answer",
+      "label": "Réponse à l'énigme",
+      "default": "Le Houx et le Chêne",
+      "info": "La réponse est sensible à la casse"
+    },
+    {
+      "type": "richtext",
+      "id": "riddle_hint",
+      "label": "Indice (optionnel)",
+      "default": "<p>L'un est persistant, l'autre perd ses feuilles en hiver. <a href=\"#\">En savoir plus</a></p>",
+      "info": "Ce champ accepte du texte enrichi avec des liens"
+    },
+    {
+      "type": "header",
+      "content": "Espacement de section"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Marge supérieure",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Marge inférieure",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ressources Hub"
+    }
+  ]
+}
+{% endschema %}

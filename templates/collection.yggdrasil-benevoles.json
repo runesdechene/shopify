@@ -1,0 +1,120 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "custom_css": [
+        "p {font-size: 18px;}",
+        "@media only screen and (max-width: 768px) {.collection-hero__height-550px {height: 400px; } .collection-hero__image {height: 100%; } .rte p {width: 80%; }}"
+      ],
+      "settings": {
+        "show_breadcrumb": false,
+        "show_collection_title": true,
+        "show_collection_image": true,
+        "heading_size": "h2",
+        "image_size": "550px",
+        "align_content": "start",
+        "show_collection_description": true,
+        "navigation": "",
+        "text_color": "#ffffff",
+        "overlay_color": "#282a2e",
+        "overlay_opacity": 45
+      }
+    },
+    "image_with_text_overlay_BPRN4P": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "subheading_zXhc6X": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Runes de Chêne est Fournisseur officiel du"
+          }
+        },
+        "heading_aPpamB": {
+          "type": "heading",
+          "settings": {
+            "heading": "FESTIVAL YGGDRASIL",
+            "heading_size": "h2"
+          }
+        },
+        "text_a7bJ6r": {
+          "type": "text",
+          "settings": {
+            "text": "<p>L'événement fantastique iconique de la ville de Lyon</p>",
+            "large_text": true
+          }
+        }
+      },
+      "block_order": [
+        "subheading_zXhc6X",
+        "heading_aPpamB",
+        "text_a7bJ6r"
+      ],
+      "disabled": true,
+      "settings": {
+        "section_width": "w-full",
+        "link": "",
+        "desktop_height": "desktop-height-650",
+        "mobile_height": "mobile-height-500",
+        "desktop_content_position": "middle-center",
+        "mobile_content_position": "middle-center",
+        "content_alignment": "center",
+        "mobile_content_alignment": "center",
+        "content_width": "max-w-4xl",
+        "enable_parallax": false,
+        "color_text": "#ffffff",
+        "overlay_color": "#000000",
+        "overlay_opacity": 70,
+        "overlay_gradient": "linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3) 90%)"
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "custom_css": [
+        ".facets-layout .swatch-color {box-shadow: none;}",
+        ".product-card-wrapper {background: #eeedea; padding: 10px 15px; border-radius: 10px;}",
+        ".card-product__media-inner,.responsive-image {background: #eeedea;}",
+        ".gap-x-12 {gap: 15px;}",
+        ".facets__item {transition: all 0.3s;}",
+        ".facets__item:hover {background: #f1f1f1; border-radius: 10px; padding-left: 10px;}",
+        "@media only screen and (max-width: 768px) {.product-card-wrapper {padding: 10px; } .container {padding: 0 15px; }}"
+      ],
+      "settings": {
+        "section_width": "container",
+        "products_per_page": 12,
+        "columns_desktop": 3,
+        "column_gap": "12",
+        "row_gap": "16",
+        "pagination_type": "page-numbers",
+        "filter_type": "vertical",
+        "enable_filtering": false,
+        "enable_sorting": true,
+        "show_filter_values_count": false,
+        "show_product_count": false,
+        "show_view_mode": false,
+        "collapsible_state": "expanded",
+        "show_color_swatch": false,
+        "filter_color_type": "inline",
+        "show_block_style": false,
+        "matching_block_names": "Size",
+        "columns_mobile": "2",
+        "padding_top": 52,
+        "padding_bottom": 72
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "image_with_text_overlay_BPRN4P",
+    "product-grid"
+  ]
+}

@@ -1,0 +1,300 @@
+{{ 'component-accordion.css' | asset_url | stylesheet_tag }}
+{{ 'faq-section.css' | asset_url | stylesheet_tag }}
+
+{% assign section_width = section.settings.section_width | default: 'container' %}
+
+<div
+  class="section-faq isolate section-padding section-bg rdc-faq section-faq--width-{{ section_width }}"
+  {% render 'section-properties' %}
+>
+  <div class="container">
+
+    {% assign desktop_header = section.settings.layout_header %}
+
+    {% assign header_classes = 'header-faq header-faq--desktop-' | append: desktop_header %}
+
+    {% render 'section-header',
+      layout_header: desktop_header,
+      subheading: section.settings.subheading,
+      heading: section.settings.heading,
+      description: section.settings.description,
+      class: header_classes,
+      heading_size: section.settings.heading_size_section,
+      heading_tag: section.settings.heading_tag
+    %}
+
+  </div>
+
+  <div class="rdc-faq__inner">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'question' -%}
+        <div class="accordion" {{ block.shopify_attributes }}>
+          <collapsible-details>
+            <details
+              {% if section.settings.open_first_collapsible_row and forloop.first %}
+                class="is-open"
+                open
+              {% endif %}
+            >
+              <summary id="Summary-{{ block.id }}-{{ section.id }}">
+                <div class="summary__title">
+                  {% if block.settings.icon != 'none' %}
+                    {% render 'icon-svg', icon: block.settings.icon %}
+                  {% endif %}
+                  <h3 class="accordion__title inline-richtext">
+                    {{ block.settings.heading | default: block.settings.page.title | escape }}
+                  </h3>
+                </div>
+
+                <span class="faq-toggle-icon">
+                  {% if section.settings.toggle_icon_image != blank %}
+                    <img
+                      src="{{ section.settings.toggle_icon_image | image_url: width: 40 }}"
+                      alt=""
+                      loading="lazy"
+                      class="faq-toggle-icon-image"
+                    >
+                  {% elsif section.settings.toggle_icon_text != blank %}
+                    <span class="faq-toggle-icon-text">
+                      {{ section.settings.toggle_icon_text }}
+                    </span>
+                  {% else %}
+                    <span class="faq-toggle-icon-text">+</span>
+                  {% endif %}
+                </span>
+              </summary>
+
+              <div
+                class="collapsible__content"
+                role="region"
+                aria-labelledby="Summary-{{ block.id }}-{{ section.id }}"
+              >
+                <div class="collapsible__content-inner rte">
+                  {{ block.settings.row_content }}
+                  {{ block.settings.page.content }}
+                </div>
+              </div>
+            </details>
+          </collapsible-details>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+<style>
+  /* Couleurs personnalisables */
+  #shopify-section-{{ section.id }} {
+    {% if section.settings.bg_color != blank %} --faq-bg: {{ section.settings.bg_color }}; {% endif %}
+    {% if section.settings.text_color != blank %} --faq-text: {{ section.settings.text_color }}; {% endif %}
+    {% if section.settings.border_color != blank %} --faq-border: {{ section.settings.border_color }}; {% endif %}
+  }
+
+  #shopify-section-{{ section.id }} .section-faq {
+    {% if section.settings.bg_color != blank %} background-color: var(--faq-bg); {% endif %}
+    {% if section.settings.text_color != blank %} color: var(--faq-text); {% endif %}
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  /* Largeur de section contrôlée par le setting section_width */
+  #shopify-section-{{ section.id }} .section-faq.section-faq--width-container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #shopify-section-{{ section.id }} .section-faq.section-faq--width-stretched {
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #shopify-section-{{ section.id }} .section-faq.section-faq--width-full {
+    max-width: 100%;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* Grille simple des questions, centrée */
+  #shopify-section-{{ section.id }} .rdc-faq__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  /* Bloc de question/réponse */
+  #shopify-section-{{ section.id }} .accordion {
+    {% if section.settings.border_color != blank %} border-color: var(--faq-border); {% endif %}
+    width: 100%;
+    max-width: 40rem;
+    margin: 0 auto;
+  }
+
+  #shopify-section-{{ section.id }} .accordion details {
+    border: 1px solid var(--faq-border, currentColor);
+    padding: 1rem 1.25rem;
+  }
+
+  /* Header de base */
+  #shopify-section-{{ section.id }} .header-faq {
+    max-width: 40rem;
+    margin: 0 auto 2rem auto;
+    text-align: center;
+  }
+
+  /* Header desktop : support horizontal/vertical */
+  @media (min-width: 769px) {
+    #shopify-section-{{ section.id }} .header-faq--desktop-horizontal {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 100%;
+      margin: 0;
+      text-align: left;
+    }
+
+    #shopify-section-{{ section.id }} .header-faq--desktop-vertical {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+  }
+
+  /* Ligne question + icône */
+  #shopify-section-{{ section.id }} summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  /* Masquer le triangle natif des <details> */
+  #shopify-section-{{ section.id }} summary::-webkit-details-marker {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .summary__title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Titre de question : forcer un affichage horizontal normal */
+  #shopify-section-{{ section.id }} .accordion__title {
+    font-size: {{ section.settings.question_title_size }}px;
+    writing-mode: horizontal-tb;
+    text-orientation: mixed;
+    white-space: normal;
+  }
+
+  /* Icône de toggle */
+  #shopify-section-{{ section.id }} .faq-toggle-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.5rem;
+    transition: transform 0.3s ease;
+  }
+
+  #shopify-section-{{ section.id }} .faq-toggle-icon-text {
+    font-size: {{ section.settings.toggle_icon_size }}px;
+    line-height: 1;
+  }
+
+  #shopify-section-{{ section.id }} .faq-toggle-icon-image {
+    width: {{ section.settings.toggle_icon_size }}px;
+    height: auto;
+  }
+
+  /* Animation de rotation au survol */
+  #shopify-section-{{ section.id }} .faq-toggle-icon:hover {
+    transform: rotate(360deg);
+  }
+
+  /* Contenu de la réponse */
+  #shopify-section-{{ section.id }} .collapsible__content-inner {
+    margin-top: 0.75rem;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "FAQ (RDC)",
+  "class": "section--rdc-faq",
+  "tag": "section",
+  "disabled_on": { "groups": ["header", "footer", "aside"] },
+  "settings": [
+    { "type": "text", "id": "subheading", "label": "Sous-titre", "default": "Sous-titre de la section" },
+    { "type": "text", "id": "heading", "label": "Titre principal", "default": "Foire aux questions" },
+    { "type": "select", "id": "heading_tag", "label": "Balise du titre", "options": [
+      { "value": "h1", "label": "H1" },
+      { "value": "h2", "label": "H2" },
+      { "value": "h3", "label": "H3" },
+      { "value": "h4", "label": "H4" },
+      { "value": "h5", "label": "H5" },
+      { "value": "h6", "label": "H6" },
+      { "value": "p", "label": "Paragraphe" },
+      { "value": "div", "label": "Bloc (div)" }
+    ], "default": "h2" },
+    { "type": "select", "id": "heading_size_section", "label": "Taille du titre de section", "options": [
+      { "value": "h1", "label": "Titre 1" },
+      { "value": "h2", "label": "Titre 2" },
+      { "value": "h3", "label": "Titre 3" },
+      { "value": "h4", "label": "Titre 4" },
+      { "value": "h5", "label": "Titre 5" },
+      { "value": "h6", "label": "Titre 6" }
+    ], "default": "h2" },
+    { "type": "richtext", "id": "description", "label": "Description", "default": "<p>Ajoutez une courte description pour cette section.</p>" },
+    { "type": "select", "id": "layout_header", "label": "Disposition du header (desktop)", "options": [
+      { "value": "horizontal", "label": "Horizontal" },
+      { "value": "vertical", "label": "Vertical" }
+    ], "default": "vertical" },
+    { "type": "select", "id": "section_width", "label": "Largeur de la section", "options": [
+      { "value": "container", "label": "Container" },
+      { "value": "stretched", "label": "Stretched" },
+      { "value": "full", "label": "Full width" }
+    ], "default": "container" },
+    { "type": "checkbox", "id": "open_first_collapsible_row", "label": "Ouvrir la première question par défaut", "default": true },
+    { "type": "header", "content": "Icône de déroulement" },
+    { "type": "text", "id": "toggle_icon_text", "label": "Caractère / texte de l’icône", "default": "+" },
+    { "type": "image_picker", "id": "toggle_icon_image", "label": "Image de l’icône (optionnel)" },
+    { "type": "range", "id": "toggle_icon_size", "label": "Taille de l’icône de toggle (px)", "min": 10, "max": 40, "step": 1, "unit": "px", "default": 18 },
+    { "type": "range", "id": "question_title_size", "label": "Taille du titre de question (px)", "min": 12, "max": 32, "step": 1, "unit": "px", "default": 16 },
+    { "type": "header", "content": "Couleurs" },
+    { "type": "color", "id": "bg_color", "label": "Arrière-plan" },
+    { "type": "color", "id": "text_color", "label": "Texte" },
+    { "type": "color", "id": "border_color", "label": "Bordure" },
+    { "type": "header", "content": "Marges internes (padding)" },
+    { "type": "range", "id": "padding_top", "label": "Padding haut", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 36 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bas", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 36 }
+  ],
+  "blocks": [
+    { "type": "question", "name": "Question", "settings": [
+      { "type": "text", "id": "heading", "label": "Titre de la question", "default": "Titre de la question" },
+      { "type": "select", "id": "icon", "label": "Icône à gauche de la question", "default": "none", "options": [
+        { "value": "none", "label": "Aucune" },
+        { "value": "question_mark", "label": "Point d’interrogation" },
+        { "value": "chat_bubble", "label": "Bulle de discussion" },
+        { "value": "check_mark", "label": "Coche" },
+        { "value": "star", "label": "Étoile" },
+        { "value": "heart", "label": "Cœur" }
+      ] },
+      { "type": "richtext", "id": "row_content", "label": "Texte de la réponse", "default": "<p>Renseignez ici la réponse à la question.</p>" },
+      { "type": "page", "id": "page", "label": "Contenu de la réponse depuis une page" }
+    ] }
+  ],
+  "presets": [
+    { "name": "FAQ (RDC)", "blocks": [
+      { "type": "question", "settings": { "heading": "Question 1", "row_content": "<p>Réponse 1</p>" } },
+      { "type": "question", "settings": { "heading": "Question 2", "row_content": "<p>Réponse 2</p>" } }
+    ] }
+  ]
+}
+{% endschema %}

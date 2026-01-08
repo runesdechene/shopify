@@ -1,0 +1,1675 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "slideshow_tjmRRq": {
+      "type": "slideshow",
+      "blocks": {
+        "slide_VxeAMT": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/SG207481.jpg",
+            "slide_link": "",
+            "video_background": false,
+            "content_width": 700,
+            "content_position": "bottom-left",
+            "mobile_content_position": "bottom-center",
+            "content_space": "gap-y-2",
+            "subheading": "",
+            "heading": "Frimats d'Hiver",
+            "heading_tag": "div",
+            "heading_size": "h0",
+            "content": "La saison des sweats est ouverte !",
+            "description_size": "large",
+            "color_text": "#fdfdfd",
+            "overlay_color": "#4e5966",
+            "overlay_opacity": 47,
+            "overlay_gradient": "",
+            "button_text_1": "Explorer nos modèles",
+            "button_link_1": "shopify://collections/sweatshirts",
+            "button_type_1": "outline-white",
+            "button_text_2": "",
+            "button_link_2": "shopify://collections/le-solide",
+            "button_type_2": "outline-white"
+          }
+        },
+        "slide_WyUCEX": {
+          "type": "slide",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/denis_rallonge_f683e2e8-68cb-41ea-b849-1d1e99e0d6ae.png",
+            "mobile_image": "shopify://shop_images/denis_rallonge.png",
+            "slide_link": "",
+            "video_background": false,
+            "content_width": 500,
+            "content_position": "bottom-right",
+            "mobile_content_position": "bottom-center",
+            "content_space": "gap-y-4",
+            "subheading": "",
+            "heading": "t-shirt avalon",
+            "heading_tag": "div",
+            "heading_size": "hxl",
+            "content": "Une immersion dans notre collection celtique",
+            "description_size": "small",
+            "color_text": "#f7f7f4",
+            "overlay_color": "#424636",
+            "overlay_opacity": 54,
+            "overlay_gradient": "",
+            "button_text_1": "Obtenir",
+            "button_link_1": "shopify://products/t-shirt-oversized-recto-verso-avalon",
+            "button_type_1": "outline-white",
+            "button_text_2": "Découvrir la colllection",
+            "button_link_2": "shopify://collections/collection-celtique",
+            "button_type_2": "outline-white"
+          }
+        },
+        "slide_WF69mM": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/inbound8884338897298839741_etendue.jpg",
+            "mobile_image": "shopify://shop_images/inbound8884338897298839741.jpg",
+            "slide_link": "",
+            "video_background": false,
+            "content_width": 740,
+            "content_position": "bottom-left",
+            "mobile_content_position": "bottom-center",
+            "content_space": "gap-y-2",
+            "subheading": "",
+            "heading": "Sweatshirt Valkyrie",
+            "heading_tag": "div",
+            "heading_size": "h0",
+            "content": "Crépuscule de notre collection viking",
+            "description_size": "large",
+            "color_text": "#fdfdfd",
+            "overlay_color": "#5a636c",
+            "overlay_opacity": 38,
+            "overlay_gradient": "",
+            "button_text_1": "Obtenir",
+            "button_link_1": "shopify://products/sweatshirt-premium-valkyrie",
+            "button_type_1": "outline-white",
+            "button_text_2": "",
+            "button_link_2": "shopify://collections/le-solide",
+            "button_type_2": "outline-white"
+          }
+        }
+      },
+      "block_order": [
+        "slide_VxeAMT",
+        "slide_WyUCEX",
+        "slide_WF69mM"
+      ],
+      "custom_css": [
+        ".rte {font-family: var(--font-heading-family); font-size: 2.4rem; opacity: 0.7;}",
+        ".slideshow-item__background img {object-position: top left; /* Ancrage en haut à gauche */}"
+      ],
+      "settings": {
+        "slide_width": "w-full",
+        "desktop_height": "desktop-height-full",
+        "mobile_height": "mobile-height-full",
+        "auto_rotate": true,
+        "change_slides_speed": 8,
+        "transition": "slide",
+        "controls": "dots",
+        "accessibility_info": "Images d'en tête de Runes de Chêne",
+        "bg_color": "",
+        "controls_color": "#ffffff",
+        "controls_color_arrows": "#000000",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "scrolling_text_pJV99N": {
+      "type": "scrolling-text",
+      "blocks": {
+        "text_LhdDgk": {
+          "type": "text",
+          "settings": {
+            "text": "100% Biologique",
+            "link": "",
+            "outline_text": false
+          }
+        },
+        "text_PWAE4G": {
+          "type": "text",
+          "settings": {
+            "text": "Impressions maison en Bretagne",
+            "link": "",
+            "outline_text": false
+          }
+        },
+        "text_xPUhEF": {
+          "type": "text",
+          "settings": {
+            "text": "Illustrations d'Artistes",
+            "link": "",
+            "outline_text": false
+          }
+        },
+        "text_kiHCnh": {
+          "type": "text",
+          "settings": {
+            "text": "Coton brossé haut-de-gamme",
+            "link": "",
+            "outline_text": false
+          }
+        },
+        "text_WdGx3N": {
+          "type": "text",
+          "settings": {
+            "text": "Ecosourcé",
+            "link": "",
+            "outline_text": false
+          }
+        }
+      },
+      "block_order": [
+        "text_LhdDgk",
+        "text_PWAE4G",
+        "text_xPUhEF",
+        "text_kiHCnh",
+        "text_WdGx3N"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".scrolling-text__content {font-weight: 700; text-transform: uppercase;}"
+      ],
+      "name": "text scrolling",
+      "settings": {
+        "section_width": "w-full",
+        "text_size": "h6",
+        "pause_scroll_on_hover": false,
+        "spacing": 40,
+        "spacing_mobile": 30,
+        "image_width": 24,
+        "speed": 40,
+        "direction": "left",
+        "bg_color": "#33322d",
+        "text_color": "#96928c",
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    },
+    "rich_text_tnTpBm": {
+      "type": "rich-text",
+      "blocks": {
+        "separator_JTatGG": {
+          "type": "separator",
+          "settings": {
+            "show_border": false,
+            "space": 8
+          }
+        },
+        "heading_7QUcqU": {
+          "type": "heading",
+          "settings": {
+            "heading": "EXPLOREZ L'HISTOIRE EN LA revêtant",
+            "heading_tag": "h1",
+            "heading_size": "h0"
+          }
+        },
+        "text_kywhrR": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Runes de Chêne, c’est une ligne de vêtements de haute qualité, illustrée par des artistes qui racontent<strong> l’Histoire, la nature et le folklore européen</strong>, loin des clichés.<br/><strong>Durable. Rebelle. Française.</strong><br/></p>",
+            "large_text": true
+          }
+        }
+      },
+      "block_order": [
+        "separator_JTatGG",
+        "heading_7QUcqU",
+        "text_kywhrR"
+      ],
+      "custom_css": [
+        ".rich-text {max-width: 900px;}",
+        "h1 {color: #2f2524; font-size: 4.6rem;}",
+        "p {font-size: 17px;}"
+      ],
+      "name": "introduction 1",
+      "settings": {
+        "section_width": "w-full",
+        "content_width": "max-w-4xl",
+        "content_alignment": "center",
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rdc_faq_LUNfFh": {
+      "type": "rdc-faq",
+      "blocks": {
+        "question_6bi7nC": {
+          "type": "question",
+          "settings": {
+            "heading": "Question 1",
+            "icon": "none",
+            "row_content": "<p>Réponse 1</p>",
+            "page": ""
+          }
+        },
+        "question_E7QDFU": {
+          "type": "question",
+          "settings": {
+            "heading": "Question 2",
+            "icon": "none",
+            "row_content": "<p>Réponse 2</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "question_6bi7nC",
+        "question_E7QDFU"
+      ],
+      "disabled": true,
+      "name": "FAQ (RDC)",
+      "settings": {
+        "subheading": "",
+        "heading": "Foire aux questions",
+        "heading_tag": "h2",
+        "heading_size_section": "h2",
+        "description": "",
+        "layout_header": "horizontal",
+        "section_width": "container",
+        "open_first_collapsible_row": false,
+        "toggle_icon_text": "+",
+        "toggle_icon_size": 18,
+        "question_title_size": 16,
+        "bg_color": "",
+        "text_color": "",
+        "border_color": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rdc_multi_collection_bkMwNN": {
+      "type": "rdc_multi-collection",
+      "blocks": {
+        "collection_tab_tzAhGe": {
+          "type": "collection_tab",
+          "settings": {
+            "tab_title": "Les favoris",
+            "collection": "nos-meilleures-ventes",
+            "show_ranking": true
+          }
+        },
+        "collection_tab_ATUDfk": {
+          "type": "collection_tab",
+          "settings": {
+            "tab_title": "NOUVEAUTÉS",
+            "collection": "nouveautes",
+            "show_ranking": true
+          }
+        }
+      },
+      "block_order": [
+        "collection_tab_tzAhGe",
+        "collection_tab_ATUDfk"
+      ],
+      "name": "meilleures ventes",
+      "settings": {
+        "section_width": "container",
+        "heading": "🎁 Meilleures ventes",
+        "heading_tag": "h2",
+        "heading_size_section": "h2",
+        "enable_stack_products": false,
+        "show_progress_bar": false,
+        "enable_overflow_visible": false,
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "column_gap": 3,
+        "columns_mobile": "2",
+        "column_gap_mobile": 2,
+        "swipe_on_mobile": true,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 36,
+        "padding_bottom": 80
+      }
+    },
+    "image_with_text_overlay_XbyMeN": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "heading_cJxdGm": {
+          "type": "heading",
+          "settings": {
+            "heading": "Portez un authentique",
+            "heading_tag": "h2",
+            "heading_size": "h2"
+          }
+        },
+        "heading_qYzyiU": {
+          "type": "heading",
+          "settings": {
+            "heading": "Fragments d'Histoire",
+            "heading_tag": "h1",
+            "heading_size": "h0"
+          }
+        },
+        "text_wTMXHY": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Chacune de nos créations porte un fragment d'une époque révolue à découvrir et perpétuer.  Elles naissent d'une rencontre entre<strong> des artistes  et des experts</strong> de leur domaine,<strong> appuyés par des sources fiables. </strong></p><p>Chaque pièce est imprimée sur mesure et <strong> livrée avec un QR code </strong>qui retrace la symbolique de votre motif, quel que soit votre niveau de connaissances. <em>Le voyage peut commencer.</em></p>",
+            "large_text": true
+          }
+        },
+        "buttons_GY7TFd": {
+          "type": "buttons",
+          "settings": {
+            "button_label": "🜁 EXPLORER LES FRAGMENTS",
+            "button_link": "shopify://pages/fragments",
+            "button_type": "primary-white",
+            "show_icon": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_cJxdGm",
+        "heading_qYzyiU",
+        "text_wTMXHY",
+        "buttons_GY7TFd"
+      ],
+      "disabled": true,
+      "custom_css": [
+        "h2,h1,p,.btn {margin-left: 90px; text-shadow: 0 0 80px rgba(0, 0, 0, 0.2);}",
+        "h1 {opacity: 0.9;}",
+        "h2 {opacity: 0.8;}",
+        ".btn {margin-top: 15px; color: #433a39; text-align: center; background: transparent; width: 80%; color: white; font-weight: bold; border-radius: 8px; border: 2.5px solid white;}"
+      ],
+      "name": "Image with text overlay",
+      "settings": {
+        "section_width": "container",
+        "image": "shopify://shop_images/inbound2187008480020395977__allongee.webp",
+        "link": "",
+        "desktop_height": "desktop-height-650",
+        "mobile_height": "mobile-height-500",
+        "desktop_content_position": "middle-left",
+        "mobile_content_position": "middle-center",
+        "content_alignment": "start",
+        "mobile_content_alignment": "start",
+        "content_width": "max-w-4xl",
+        "enable_parallax": false,
+        "color_text": "#ffffff",
+        "overlay_color": "#5e4848",
+        "overlay_opacity": 100,
+        "overlay_gradient": "linear-gradient(180deg, rgba(0, 0, 0, 0.4), rgba(57, 52, 52, 0.8) 100%)"
+      }
+    },
+    "rdc_column_content_colored_title_JVdpxV": {
+      "type": "rdc_column_content_colored_title",
+      "custom_css": [
+        "h2 {font-size: 3.8rem; text-transform: uppercase; margin-bottom: 0;}",
+        "h1 {font-size: 5.8rem;}",
+        "p {margin-block: 5px; font-size: 18px; text-align: justify;}",
+        ".rdc-section__content {max-width: 1300px;}",
+        "@media (min-width: 798px) {p {padding-right: 70px; }}",
+        "@media screen and (max-width: 798px) {p {padding: 0 20px; } .rdc-section__button {width: 100%; } h2, h1 {padding-left: 20px; }}"
+      ],
+      "name": "Titre coloré avec colonne",
+      "settings": {
+        "title_h2": "portez des",
+        "title_h1_part1": "",
+        "title_h1_colored": "fragments d'Histoire",
+        "custom_color": "",
+        "description_text": "<p>Depuis 2023, Runes de Chêne rassemble <strong>des artistes talentueux avec des experts</strong> de leur domaine <strong>pour se garder de raconter n'importe quoi.</strong></p><p><strong>Résultat, des collections sourcées & élégante qui vous font voyager à différentes époques.</strong></p><p>Chaque <strong>Relique est </strong>imprimée sur mesure puis <strong> livrée avec un QR code </strong>révélant toute sa symbolique, quel que soit votre niveau de connaissance. <em>Le voyage peut commencer.</em></p>",
+        "image": "shopify://shop_images/Cartes_des_fragment_ff904334-6da1-46ef-bf29-89a394fd3aee.webp",
+        "button_text": "🕯️ OUVRIR l'APPLICATION WEB",
+        "button_link": "shopify://pages/fragments"
+      }
+    },
+    "featured_collection_PLnna8": {
+      "type": "featured-collection",
+      "name": "produits du moment",
+      "settings": {
+        "section_width": "container",
+        "subheading": "",
+        "heading": "Selection d'Hiver",
+        "heading_tag": "h2",
+        "heading_size_section": "h3",
+        "description": "",
+        "layout": "vertical",
+        "collection": "automne-2025",
+        "products": [],
+        "link_url": "shopify://collections/automne-2025",
+        "link_text": "",
+        "button_type": "primary",
+        "show_icon": false,
+        "enable_stack_products": false,
+        "show_progress_bar": true,
+        "enable_overflow_visible": false,
+        "products_to_show": 11,
+        "columns_desktop": 4,
+        "column_gap": 3,
+        "columns_mobile": "2",
+        "column_gap_mobile": 2,
+        "swipe_on_mobile": true,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 88,
+        "padding_bottom": 56
+      }
+    },
+    "multicolumn_FjFnkU": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_pCHGwK": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/plante_pour_site.webp",
+            "link": "",
+            "title": "Tissu biologique",
+            "text": "<p>Certifiation Fair Wear & Peta approuvé</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_type": "outline",
+            "show_icon": false
+          }
+        },
+        "column_Dq69br": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/carton_pour_site.webp",
+            "link": "",
+            "title": "Livraison sans plastique",
+            "text": "<p>En flux tendu</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_type": "outline",
+            "show_icon": false
+          }
+        },
+        "column_cRwy6J": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/triskel_pour_site.webp",
+            "link": "",
+            "title": "Imprimés en Bretagne",
+            "text": "<p>Dans notre atelier familial</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_type": "outline",
+            "show_icon": false
+          }
+        },
+        "column_h9GUck": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/eau_pour_site.webp",
+            "link": "",
+            "title": "Teintures à l’eau",
+            "text": "<p>Et encres certifiées OKEO</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_type": "outline",
+            "show_icon": false
+          }
+        },
+        "column_kEpxGb": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/coton_pour_site.webp",
+            "link": "",
+            "title": "Coton brossé",
+            "text": "<p>Fibres haute-qualité</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_type": "outline",
+            "show_icon": true
+          }
+        },
+        "column_yGjGpT": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/No_IA_pour_site.webp",
+            "link": "",
+            "title": "Artistes humains",
+            "text": "<p>Illustrations exclusives </p>",
+            "button_label": "",
+            "button_link": "",
+            "button_type": "outline",
+            "show_icon": false
+          }
+        }
+      },
+      "block_order": [
+        "column_pCHGwK",
+        "column_Dq69br",
+        "column_cRwy6J",
+        "column_h9GUck",
+        "column_kEpxGb",
+        "column_yGjGpT"
+      ],
+      "custom_css": [
+        "h3 {text-transform: none;}"
+      ],
+      "name": "colonnes icones",
+      "settings": {
+        "section_width": "container",
+        "subheading": "",
+        "heading": "",
+        "heading_tag": "h2",
+        "heading_size_section": "h2",
+        "description": "",
+        "layout": "vertical",
+        "image_width": "small",
+        "image_ratio": "square",
+        "heading_size": "h4",
+        "column_alignment": "center",
+        "link_url": "",
+        "link_text": "",
+        "button_type": "primary",
+        "show_icon": false,
+        "enable_stack_columns": true,
+        "show_progress_bar": false,
+        "enable_overflow_visible": false,
+        "columns_desktop": 6,
+        "column_gap": 3,
+        "column_gap_mobile": 3,
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 68,
+        "padding_bottom": 0
+      }
+    },
+    "rdc_column_media_xNJaGh": {
+      "type": "rdc_column_media",
+      "blocks": {
+        "media_g6h68c": {
+          "type": "media",
+          "settings": {
+            "image": "shopify://shop_images/inbound163063209911538445.jpg",
+            "title": "Totem animaux",
+            "subtitle": "Collection",
+            "link": "shopify://collections/totems-animaliers",
+            "show_overlay": true,
+            "overlay_color": "#4a3e4b",
+            "overlay_opacity": 45
+          }
+        },
+        "media_FMG4RU": {
+          "type": "media",
+          "settings": {
+            "image": "shopify://shop_images/Denix001_cropped.jpg",
+            "title": "Histoire & Folklore",
+            "subtitle": "Collection",
+            "link": "shopify://collections/histoire-folklore",
+            "show_overlay": true,
+            "overlay_color": "#261f1f",
+            "overlay_opacity": 35
+          }
+        }
+      },
+      "block_order": [
+        "media_g6h68c",
+        "media_FMG4RU"
+      ],
+      "name": "RDC Colonnes Média",
+      "settings": {
+        "section_width": "container",
+        "section_title": "",
+        "section_description": "",
+        "columns_desktop": 2,
+        "columns_mobile": 1,
+        "gap": 20,
+        "aspect_ratio": 70,
+        "border_radius": 0
+      }
+    },
+    "rdc_column_content_form_ecqDwY": {
+      "type": "rdc_column_content_form",
+      "disabled": true,
+      "custom_css": [
+        "p {margin-block: 5px; font-size: 18px;}",
+        ".rdc-section-form__icon {width: 100px; /* Au lieu de 60px */ height: 100px;}"
+      ],
+      "name": "Contenu avec Formulaire",
+      "settings": {
+        "icon": "shopify://shop_images/Calque_2_1.png",
+        "title_h2": "Rejoignez",
+        "title_h1_part1": "",
+        "title_h1_colored": "la communauté",
+        "description_text": "<p>Dans les langues celtiques et nordiques, <em><strong>rún </strong></em>évoque le secret et l’énigme. Le chêne, lui, est l’arbre de la renaissance et de la résistance. Ensemble, ils ont inspiré notre symbole: la <strong>Rune de Chêne</strong>.</p><p>Elle est devenue un étendard de ralliement pour tous ceux qui voient dans le passé une inspiration à réenchanter le futur.</p>",
+        "button_text": "",
+        "button_link": "",
+        "form_title": "Répondez à l'appel !",
+        "form_subtitle": "Et obtenez une surprise de bienvenue ✨",
+        "firstname_placeholder": "Prénom",
+        "email_placeholder": "Email",
+        "submit_text": "Recevoir mes avantages",
+        "disclaimer_text": "Abonnement gratuit, sans obligation, résiliable à tout moment. Vos données restent VOS données.",
+        "success_message": "Merci ! Vous recevrez bientôt vos avantages par email.",
+        "custom_color": "#6d3232"
+      }
+    },
+    "custom_liquid_ejgzaP": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "name": "Pourquoi Runes de Chêne ?",
+      "settings": {
+        "section_width": "container",
+        "custom_liquid": "<div style=\"margin:0 auto; max-width:870px;\">\n\n  <div style=\"text-align:center;\">\n    <!-- Image centrée au-dessus du H2 -->\n    <img src=\"https://cdn.shopify.com/s/files/1/0728/9690/5483/files/Calque_2_1.png?v=1763678453\" \n         style=\"display:block; margin:0 auto; max-width:100%; height:auto; margin-bottom:20px;\">\n    \n    <h2 style=\"font-size:3.2rem; margin-bottom:4px;\">Pourquoi</h2>\n    <h1 style=\"font-size:4.2rem; margin-bottom:20px;\"><i>Runes de Chêne</i> ?</h1>\n  </div>\n\n  <p style=\"font-size:1.6rem; margin-bottom:15px; text-align:left;\">\nDans les langues celtiques et nordiques, <b><i>rún</i></b> évoque le secret et l’énigme. Le chêne, lui, est l’arbre de la renaissance et de la résistance. Ensemble, ils ont inspiré notre symbole: la     <span style=\"color:#363889; font-weight:bold;\">Rune de Chêne</span>.\n  </p>\n\n\n  <p style=\"font-size:1.6rem; margin-bottom:15px; text-align:left;\">\nDepuis <b>2018</b>, notre communauté s’en est emparée librement, jusqu’à en faire un signe de ralliement pour tous ceux qui rêvent de réenchanter le monde moderne. Ces runes fleurissent un peu partout, au travers vos voyages et vos découvertes.\n  </p>\n\n</div>",
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 60,
+        "padding_bottom": 40
+      }
+    },
+    "image_with_text_overlay_k6ULgY": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "heading_Nrd7zg": {
+          "type": "heading",
+          "settings": {
+            "heading": "La Boutique",
+            "heading_tag": "h1",
+            "heading_size": "h2"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Nrd7zg"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".global-radius {border-radius: 10px;}",
+        ".image-with-text-overlay__heading {text-transform: none !important;}"
+      ],
+      "name": "lien vers la boutique en ligne",
+      "settings": {
+        "section_width": "container-fluid",
+        "image": "shopify://shop_images/SG207481.jpg",
+        "mobile_image": "shopify://shop_images/SG207481.jpg",
+        "link": "shopify://collections/tous-les-produits",
+        "desktop_height": "desktop-height-650",
+        "mobile_height": "mobile-height-400",
+        "desktop_content_position": "middle-center",
+        "mobile_content_position": "middle-center",
+        "content_alignment": "center",
+        "mobile_content_alignment": "center",
+        "content_width": "max-w-3xl",
+        "enable_parallax": false,
+        "color_text": "#ffffff",
+        "overlay_color": "#5e6a78",
+        "overlay_opacity": 37,
+        "overlay_gradient": ""
+      }
+    },
+    "custom_liquid_QcwHxx": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "name": "titre section",
+      "settings": {
+        "section_width": "container",
+        "custom_liquid": "{% assign title_h2 = \"Ce qui nous\" %}\n{% assign title_h1_part1 = \"Tient à \" %}\n{% assign title_h1_colored = \"coeur\" %}\n\n<div style=\"display:flex; justify-content:center; align-items:center; text-align:center; flex-direction:column;\">\n  <h2 style=\"text-transform: lowercase;\">\n    {{ title_h2 }}\n  </h2>\n  <h1 style=\"text-transform: lowercase;\">{{ title_h1_part1 }}<span style=\"color:#A42850;\">{{ title_h1_colored }}</span></h1>\n</div>\n\n<style>\n  h2::first-letter {\n    text-transform: uppercase;\n  }\n</style>",
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 52,
+        "padding_bottom": 40
+      }
+    },
+    "logo_list_h7MWMq": {
+      "type": "logo-list",
+      "blocks": {
+        "logo_QfD6yE": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/Yggdraisl.webp",
+            "url": "",
+            "image_width": 172
+          }
+        },
+        "logo_V3AxYP": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/Isle_sur_la_Sorgue_6240f7d0-0c0b-4a90-ad67-e347b74ec50c.png",
+            "url": "",
+            "image_width": 200
+          }
+        },
+        "logo_YfFLVE": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/Bilskirnig_Logo_AnDd_Grand.png",
+            "url": "https://bilskirnir.fr",
+            "image_width": 158
+          }
+        },
+        "logo_embjNB": {
+          "type": "logo",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/Logo_mug_-_Copie.png",
+            "url": "https://lafabriqueauxdragons.com",
+            "image_width": 130
+          }
+        },
+        "logo_RnDRJJ": {
+          "type": "logo",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/Logo_complet.png",
+            "url": "https://guildedesvoyageurs.fr",
+            "image_width": 200
+          }
+        },
+        "logo_gtf6EA": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/logo-2_-_Copie.png",
+            "url": "https://labuchescandinave.fr",
+            "image_width": 108
+          }
+        },
+        "logo_EGaLGM": {
+          "type": "logo",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/logo-Alchimistes-Ivres.webp",
+            "url": "https://www.alchimistes-ivres.com/",
+            "image_width": 108
+          }
+        },
+        "logo_RaGCyT": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/crom_LD.png",
+            "url": "https://www.hydromel-crom.fr/partenaires/",
+            "image_width": 200
+          }
+        },
+        "logo_Yezkxk": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/skali_5b793a46-2d92-47a7-ba6f-c8fb86849ef3.webp",
+            "url": "https://skali.ch",
+            "image_width": 154
+          }
+        }
+      },
+      "block_order": [
+        "logo_QfD6yE",
+        "logo_V3AxYP",
+        "logo_YfFLVE",
+        "logo_embjNB",
+        "logo_RnDRJJ",
+        "logo_gtf6EA",
+        "logo_EGaLGM",
+        "logo_RaGCyT",
+        "logo_Yezkxk"
+      ],
+      "custom_css": [
+        ".responsive-image {opacity: 0.6;}",
+        "@media screen and (max-width: 798px) {.responsive-image {height: 40px; }}",
+        "h2 {color: #403633;}"
+      ],
+      "settings": {
+        "section_width": "container",
+        "subheading": "Ils nous font confiance",
+        "heading": "Nos Partenaires",
+        "heading_tag": "h2",
+        "heading_size_section": "h4",
+        "description": "",
+        "layout": "vertical",
+        "enable_stack_columns": false,
+        "show_progress_bar": false,
+        "columns_desktop": 6,
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rdc_section_concept_MewEjY": {
+      "type": "rdc_section_concept",
+      "disabled": true,
+      "name": "RDC Concept",
+      "settings": {
+        "title": "Notre concept",
+        "pretitle": "Une marque + Une app mobile",
+        "texte": "<p>Des vêtements de grande qualité inspirés par<strong> l'Histoire ancienne, la Nature et le folklore</strong> de nos ancêtres. Par des humains, pour des humains.</p>",
+        "point1": "shopify://shop_images/01_4ca45c33-d652-4cfe-8b3b-5e9b9eddec77.webp",
+        "texte2": "<p>Une application mobile <strong>100% gratuite</strong> et collaborative qui rassemble tous les<strong> lieux atypiques, magiques ou anciens</strong> de nos régions. Pour les revaloriser et veiller sur eux.</p>",
+        "point2": "shopify://shop_images/02_5a56b111-4065-4acb-b3c5-c801d3789633.webp",
+        "texte3": "<p>Un phénomène social unique  au 21ème siècle, qui mélange <strong>Aventure locale, préservation du patrimoine et esprit de camaraderie. </strong>Aidez nous à réenchanter le monde moderne ! </p>",
+        "point3": "shopify://shop_images/03_02a9dd3b-dfe5-4d4d-8c8e-96d5f514c857.webp",
+        "img1": "shopify://shop_images/Pierre_Valsgard_c0d8056b-6e45-4b5e-8703-3cca0886916f.webp",
+        "img2": "shopify://shop_images/path_woman_3e1217e9-403b-42b0-80ef-34e4fb1211e5.webp"
+      }
+    },
+    "rdc_tableau_comparaison_T7nn7X": {
+      "type": "rdc_tableau-comparaison",
+      "blocks": {
+        "column_header_kWBnQK": {
+          "type": "column_header",
+          "settings": {
+            "title": "Runes de Chêne",
+            "highlight": true
+          }
+        },
+        "column_header_nYLxyB": {
+          "type": "column_header",
+          "settings": {
+            "title": "Les Autres (en général)",
+            "highlight": false
+          }
+        },
+        "row_NNnywF": {
+          "type": "row",
+          "settings": {
+            "row_title": "Le tissu",
+            "cell_1": "<p>Coton 100% biologique ou recyclé</p>",
+            "highlight_1": false,
+            "cell_2": "<p>Coton classique</p>",
+            "highlight_2": false,
+            "cell_3": "",
+            "highlight_3": false,
+            "cell_4": "",
+            "highlight_4": false,
+            "cell_5": "",
+            "highlight_5": false,
+            "cell_6": "",
+            "highlight_6": false,
+            "cell_7": "",
+            "highlight_7": false,
+            "cell_8": "",
+            "highlight_8": false,
+            "cell_9": "",
+            "highlight_9": false,
+            "cell_10": "",
+            "highlight_10": false
+          }
+        },
+        "row_ykDF9Q": {
+          "type": "row",
+          "settings": {
+            "row_title": "La Direction artistique",
+            "cell_1": "<p>Sans IA. Artistes exclusifs.</p>",
+            "highlight_1": false,
+            "cell_2": "<p>Motifs tirés par IA ou payé au lance-pierre.</p>",
+            "highlight_2": false,
+            "cell_3": "",
+            "highlight_3": false,
+            "cell_4": "",
+            "highlight_4": false,
+            "cell_5": "",
+            "highlight_5": false,
+            "cell_6": "",
+            "highlight_6": false,
+            "cell_7": "",
+            "highlight_7": false,
+            "cell_8": "",
+            "highlight_8": false,
+            "cell_9": "",
+            "highlight_9": false,
+            "cell_10": "",
+            "highlight_10": false
+          }
+        },
+        "row_3NENh3": {
+          "type": "row",
+          "settings": {
+            "row_title": "L'impression",
+            "cell_1": "<p>Imprimé par la même personne, dans notre atelier breton</p>",
+            "highlight_1": false,
+            "cell_2": "<p>Grandes imprimeries ou dropshipping</p>",
+            "highlight_2": false,
+            "cell_3": "",
+            "highlight_3": false,
+            "cell_4": "",
+            "highlight_4": false,
+            "cell_5": "",
+            "highlight_5": false,
+            "cell_6": "",
+            "highlight_6": false,
+            "cell_7": "",
+            "highlight_7": false,
+            "cell_8": "",
+            "highlight_8": false,
+            "cell_9": "",
+            "highlight_9": false,
+            "cell_10": "",
+            "highlight_10": false
+          }
+        },
+        "row_qD3nEH": {
+          "type": "row",
+          "settings": {
+            "row_title": "Les Teintures",
+            "cell_1": "<p>Teintes écologiques sélectionnées pour leur réalisme Historique</p>",
+            "highlight_1": false,
+            "cell_2": "<p>Choix inexistant, pigments chimiques.</p>",
+            "highlight_2": false,
+            "cell_3": "",
+            "highlight_3": false,
+            "cell_4": "",
+            "highlight_4": false,
+            "cell_5": "",
+            "highlight_5": false,
+            "cell_6": "",
+            "highlight_6": false,
+            "cell_7": "",
+            "highlight_7": false,
+            "cell_8": "",
+            "highlight_8": false,
+            "cell_9": "",
+            "highlight_9": false,
+            "cell_10": "",
+            "highlight_10": false
+          }
+        },
+        "row_QbE8x7": {
+          "type": "row",
+          "settings": {
+            "row_title": "Le grammage",
+            "cell_1": "<p>Modèle classique à 180g/m²</p>",
+            "highlight_1": false,
+            "cell_2": "<p>150g/m²</p>",
+            "highlight_2": false,
+            "cell_3": "",
+            "highlight_3": false,
+            "cell_4": "",
+            "highlight_4": false,
+            "cell_5": "",
+            "highlight_5": false,
+            "cell_6": "",
+            "highlight_6": false,
+            "cell_7": "",
+            "highlight_7": false,
+            "cell_8": "",
+            "highlight_8": false,
+            "cell_9": "",
+            "highlight_9": false,
+            "cell_10": "",
+            "highlight_10": false
+          }
+        },
+        "row_XtHerp": {
+          "type": "row",
+          "settings": {
+            "row_title": "La Sensation",
+            "cell_1": "<p>Textile \"brossé\" à effet doux.</p><p>Idéal pour les gens sensibles aux textures.</p>",
+            "highlight_1": false,
+            "cell_2": "<p>Rèche après 3 lavages.</p>",
+            "highlight_2": false,
+            "cell_3": "",
+            "highlight_3": false,
+            "cell_4": "",
+            "highlight_4": false,
+            "cell_5": "",
+            "highlight_5": false,
+            "cell_6": "",
+            "highlight_6": false,
+            "cell_7": "",
+            "highlight_7": false,
+            "cell_8": "",
+            "highlight_8": false,
+            "cell_9": "",
+            "highlight_9": false,
+            "cell_10": "",
+            "highlight_10": false
+          }
+        },
+        "row_wh9GLa": {
+          "type": "row",
+          "settings": {
+            "row_title": "La livraison",
+            "cell_1": "<p>Sans plastique</p>",
+            "highlight_1": false,
+            "cell_2": "<p>Avec plastique</p>",
+            "highlight_2": false,
+            "cell_3": "",
+            "highlight_3": false,
+            "cell_4": "",
+            "highlight_4": false,
+            "cell_5": "",
+            "highlight_5": false,
+            "cell_6": "",
+            "highlight_6": false,
+            "cell_7": "",
+            "highlight_7": false,
+            "cell_8": "",
+            "highlight_8": false,
+            "cell_9": "",
+            "highlight_9": false,
+            "cell_10": "",
+            "highlight_10": false
+          }
+        }
+      },
+      "block_order": [
+        "column_header_kWBnQK",
+        "column_header_nYLxyB",
+        "row_NNnywF",
+        "row_ykDF9Q",
+        "row_3NENh3",
+        "row_qD3nEH",
+        "row_QbE8x7",
+        "row_XtHerp",
+        "row_wh9GLa"
+      ],
+      "disabled": true,
+      "name": "RDC Tableau Comparaison",
+      "settings": {
+        "section_width": "container",
+        "heading": "Nos engagements",
+        "subheading": "",
+        "heading_size": "h1",
+        "bg_color": "",
+        "overlay_opacity": 85,
+        "background_position": "center",
+        "text_color": "",
+        "highlight_color": "#475aab",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "collection_list_TYfEGf": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_Kh8m7r": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "porter-la-marque",
+            "title": "",
+            "url": ""
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_Kh8m7r"
+      ],
+      "disabled": true,
+      "custom_css": [],
+      "settings": {
+        "section_width": "container",
+        "subheading": "",
+        "heading": "",
+        "heading_tag": "h2",
+        "heading_size_section": "h2",
+        "description": "",
+        "layout": "vertical",
+        "link_url": "",
+        "link_text": "",
+        "button_type": "primary",
+        "show_icon": false,
+        "card_type": "content_with_overlay",
+        "image_ratio": "wide",
+        "show_collection_count": true,
+        "show_button_arrow": false,
+        "show_zoom_on_hover": true,
+        "heading_size": "h4",
+        "content_alignment": "center",
+        "title_color": "#f7f7f4",
+        "overlay_color": "#333333",
+        "enable_gradient": false,
+        "overlay_opacity": 10,
+        "enable_stack_collections": true,
+        "show_progress_bar": false,
+        "enable_overflow_visible": false,
+        "columns_desktop": 1,
+        "column_gap": 3,
+        "columns_mobile": "2",
+        "column_gap_mobile": 2,
+        "swipe_on_mobile": false,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "collection_list_Xi8cjB": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_h4PFfQ": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "t-shirts",
+            "image": "shopify://shop_images/Thibaut_Runes_du_Voyageur_petit.webp",
+            "title": "",
+            "url": ""
+          }
+        },
+        "featured_collection_8LgwgG": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "sweatshirts",
+            "image": "shopify://shop_images/AnyConv.com__DJI_0207_1.webp",
+            "title": "",
+            "url": ""
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_h4PFfQ",
+        "featured_collection_8LgwgG"
+      ],
+      "disabled": true,
+      "custom_css": [
+        "@media only screen and (max-width: 768px) {.responsive-image {height: 350px; }"
+      ],
+      "settings": {
+        "section_width": "container",
+        "subheading": "",
+        "heading": "",
+        "heading_tag": "h2",
+        "heading_size_section": "h2",
+        "description": "",
+        "layout": "horizontal",
+        "link_url": "",
+        "link_text": "",
+        "button_type": "underlined",
+        "show_icon": false,
+        "card_type": "content_with_overlay",
+        "image_ratio": "portrait",
+        "show_collection_count": true,
+        "show_button_arrow": false,
+        "show_zoom_on_hover": true,
+        "heading_size": "h4",
+        "content_alignment": "center",
+        "title_color": "#eaeae2",
+        "overlay_color": "#38362e",
+        "enable_gradient": true,
+        "overlay_opacity": 63,
+        "enable_stack_collections": false,
+        "show_progress_bar": false,
+        "enable_overflow_visible": false,
+        "columns_desktop": 2,
+        "column_gap": 3,
+        "columns_mobile": "1",
+        "column_gap_mobile": 2,
+        "swipe_on_mobile": false,
+        "bg_color": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)",
+        "padding_top": 32,
+        "padding_bottom": 60
+      }
+    },
+    "multicolumn_mfw6rz": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_EYdKPb": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/l3_4adbd186-62d2-4d31-a329-b683bc551ec8.png",
+            "link": "",
+            "title": "Durable",
+            "text": "<p>Textile BIO haut-de-gamme tissé sous commerce équitable, puis designé et imprimé en France dans un petit atelier familial.</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_type": "outline",
+            "show_icon": false
+          }
+        },
+        "column_qBx8rx": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/l2_black.png",
+            "link": "",
+            "title": "Engagé",
+            "text": "<p>Plus qu'une marque, un état d'esprit rebelle et explorateur qui s'oppose à la froideur du monde moderne.</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_type": "outline",
+            "show_icon": false
+          }
+        },
+        "column_jdQdd8": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/1black.png",
+            "link": "",
+            "title": "Authentique",
+            "text": "<p>Runes de Chêne est LE symbole de ralliement pour ceux qui aiment l'esprit d'aventure, l'Histoire ancienne & la nature. </p>",
+            "button_label": "",
+            "button_link": "",
+            "button_type": "outline",
+            "show_icon": false
+          }
+        }
+      },
+      "block_order": [
+        "column_EYdKPb",
+        "column_qBx8rx",
+        "column_jdQdd8"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".multicolumn-card__media--full {width: 20%; padding-bottom: 20px; opacity: 0.7;}"
+      ],
+      "settings": {
+        "section_width": "container",
+        "subheading": "",
+        "heading": "",
+        "heading_tag": "h2",
+        "heading_size_section": "h2",
+        "description": "",
+        "layout": "vertical",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "heading_size": "h4",
+        "column_alignment": "center",
+        "link_url": "",
+        "link_text": "",
+        "button_type": "primary",
+        "show_icon": false,
+        "enable_stack_columns": false,
+        "show_progress_bar": false,
+        "enable_overflow_visible": false,
+        "columns_desktop": 3,
+        "column_gap": 3,
+        "column_gap_mobile": 3,
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 36,
+        "padding_bottom": 40
+      }
+    },
+    "image_with_text_q7npfy": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_apqGM4": {
+          "type": "heading",
+          "settings": {
+            "heading": "Introduction",
+            "heading_tag": "h2",
+            "heading_size": "h2"
+          }
+        },
+        "text_9JMy8D": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Runes de chêne, c'est l'alliage unique d'un esprit d'aventure et d'une curiosité intemporelle pour l'Histoire ancienne et la Nature.<br/></p><p>À l'image de notre <em>Rune</em> qui porte en elle 3000 ans d'histoire et s'inspire des 4 coins de l'Europe, nous puisons notre esprit rebelle dans une envie féroce d'exploration et d'authenticité, de beauté et de camaraderie. <strong>Dans une époque incertaine,</strong> <strong>elle rassemble les âmes courageuses qui n’ont pas encore perdu la flamme de faire de grandes choses</strong>.<strong> </strong></p>",
+            "large_text": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_apqGM4",
+        "text_9JMy8D"
+      ],
+      "disabled": true,
+      "custom_css": [
+        "img {height: 320px; width: 320px; margin: auto;}"
+      ],
+      "settings": {
+        "section_width": "container",
+        "image": "shopify://shop_images/logo_couleur_ef1eeece-c6e5-4a08-a25c-0bd6c218985b.png",
+        "media_size": "square",
+        "show_image_2": false,
+        "position_image_2": "middle-right",
+        "media_size_2": "adapt",
+        "desktop_image_width": "40",
+        "use_video": false,
+        "video": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+        "video_autoplay": true,
+        "video_controls": true,
+        "layout": "left",
+        "column_gap": "16",
+        "vertical_alignment": "center",
+        "content_alignment": "start",
+        "bg_color": "",
+        "text_color": "",
+        "bg_column": "",
+        "padding_top": 36,
+        "padding_bottom": 8
+      }
+    },
+    "featured_product_7yD8dN": {
+      "type": "featured-product",
+      "blocks": {
+        "text_zRMKMD": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "subheading"
+          }
+        },
+        "title_Di3fcW": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h2"
+          }
+        },
+        "rating_QwTdfN": {
+          "type": "rating",
+          "settings": {}
+        },
+        "rich_text_x3ELcT": {
+          "type": "rich-text",
+          "settings": {
+            "align": "start",
+            "icon": "none",
+            "width": 20,
+            "heading": "",
+            "content": "<p>🔥 Promotion here</p>",
+            "background": "#fdeee5",
+            "color": "#8e3300"
+          }
+        },
+        "price_h7jXmX": {
+          "type": "price",
+          "settings": {
+            "show_sale_badge": true,
+            "sale_badge_type": "percentage"
+          }
+        },
+        "sku_EMAzbJ": {
+          "type": "sku",
+          "settings": {
+            "text_style": "uppercase"
+          }
+        },
+        "variant_picker_VQfdjp": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "hide_sold_out_variants": false,
+            "color_picker_type": "native_color_swatch",
+            "style": "solid",
+            "option_name": "Size",
+            "size_chart_page": ""
+          }
+        },
+        "quantity_selector_gWfLfp": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons_JjnmfE": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_two_columns": false,
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true,
+            "show_pickup_availability": true,
+            "show_back_in_stock": false,
+            "text_back_in_stock": "Notify me"
+          }
+        },
+        "collapsible_tab_K84XhX": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Collapsible row",
+            "heading_size": "h6",
+            "icon": "none",
+            "content": "",
+            "content_liquid": "{%- assign product = section.settings.product -%}\n{{ product.description }}",
+            "page": "",
+            "open_by_default": false
+          }
+        },
+        "collapsible_tab_ibj9Kf": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Collapsible row",
+            "heading_size": "h6",
+            "icon": "none",
+            "content": "",
+            "content_liquid": "",
+            "page": "",
+            "open_by_default": false
+          }
+        },
+        "icon_with_text_xDiqWV": {
+          "type": "icon-with-text",
+          "settings": {
+            "layout": "vertical",
+            "icon_size": 20,
+            "icon_1": "lock",
+            "heading_1": "Icon with text",
+            "icon_2": "truck",
+            "heading_2": "Icon with text",
+            "icon_3": "box",
+            "heading_3": "Icon with text",
+            "icon_4": "none",
+            "heading_4": ""
+          }
+        },
+        "share_iGrYVk": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        },
+        "separator_LGdwbk": {
+          "type": "separator",
+          "settings": {
+            "show_border": false,
+            "divider_space": 2
+          }
+        }
+      },
+      "block_order": [
+        "text_zRMKMD",
+        "title_Di3fcW",
+        "rating_QwTdfN",
+        "rich_text_x3ELcT",
+        "price_h7jXmX",
+        "sku_EMAzbJ",
+        "variant_picker_VQfdjp",
+        "quantity_selector_gWfLfp",
+        "buy_buttons_JjnmfE",
+        "collapsible_tab_K84XhX",
+        "collapsible_tab_ibj9Kf",
+        "icon_with_text_xDiqWV",
+        "share_iGrYVk",
+        "separator_LGdwbk"
+      ],
+      "disabled": true,
+      "settings": {
+        "section_width": "container",
+        "product": "sadie-single-breasted-wool",
+        "enable_sticky_info": true,
+        "media_width": 55,
+        "media_aspect_ratio": "adapt",
+        "thumbnail_aspect_ratio": "square",
+        "gallery_layout": "thumbnail_left",
+        "media_position": "left",
+        "show_lightbox": false,
+        "enable_video_autoplay": true,
+        "enable_video_looping": false,
+        "mobile_thumbnails": "show",
+        "enable_media_grouping": false,
+        "grouping_type": "variant_group",
+        "bg_color": "",
+        "text_color": "",
+        "border_color": "",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
+    "image_with_text_overlay_CAema3": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "subheading_twkx6i": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Sub heading"
+          }
+        },
+        "heading_TmrAqz": {
+          "type": "heading",
+          "settings": {
+            "heading": "Image Text Overlay",
+            "heading_tag": "h2",
+            "heading_size": "h1"
+          }
+        },
+        "text_zbjftN": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Give customers details about the banner image(s) or content on the template.</p>",
+            "large_text": false
+          }
+        },
+        "separator_PitpAk": {
+          "type": "separator",
+          "settings": {
+            "show_border": false,
+            "space": 8
+          }
+        },
+        "buttons_cyFbjg": {
+          "type": "buttons",
+          "settings": {
+            "button_label": "Button text",
+            "button_link": "",
+            "button_type": "primary",
+            "show_icon": false
+          }
+        }
+      },
+      "block_order": [
+        "subheading_twkx6i",
+        "heading_TmrAqz",
+        "text_zbjftN",
+        "separator_PitpAk",
+        "buttons_cyFbjg"
+      ],
+      "disabled": true,
+      "settings": {
+        "section_width": "container-fluid",
+        "link": "",
+        "desktop_height": "desktop-height-650",
+        "mobile_height": "mobile-height-500",
+        "desktop_content_position": "middle-left",
+        "mobile_content_position": "middle-center",
+        "content_alignment": "center",
+        "mobile_content_alignment": "center",
+        "content_width": "max-w-3xl",
+        "enable_parallax": false,
+        "color_text": "#000000",
+        "overlay_color": "#000000",
+        "overlay_opacity": 0,
+        "overlay_gradient": ""
+      }
+    },
+    "gallery_grid_YyV6r3": {
+      "type": "gallery-grid",
+      "blocks": {
+        "image_TtR78E": {
+          "type": "image",
+          "settings": {
+            "use_video": false,
+            "media_size": "square",
+            "subheading": "Sub heading",
+            "heading": "Promote your products",
+            "heading_size": "h2",
+            "text": "<p>Pair text with an image to focus on your chosen image</p>",
+            "button_label": "Shop now",
+            "button_link": "",
+            "button_type": "primary-white",
+            "show_icon": false,
+            "desktop_content_position": "bottom-left",
+            "block_width": "basis-1/3",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0,
+            "overlay_gradient": "linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(30, 30, 30, 0.7) 100%)"
+          }
+        },
+        "image_rEezPB": {
+          "type": "image",
+          "settings": {
+            "use_video": true,
+            "media_size": "square",
+            "subheading": "Sub heading",
+            "heading": "Promote your products",
+            "heading_size": "h2",
+            "text": "<p>Pair text with an image to focus on your chosen image</p>",
+            "button_label": "Shop now",
+            "button_link": "",
+            "button_type": "primary-white",
+            "show_icon": false,
+            "desktop_content_position": "bottom-left",
+            "block_width": "basis-1/3",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0,
+            "overlay_gradient": "linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(30, 30, 30, 0.7) 100%)"
+          }
+        },
+        "image_W4Ue3r": {
+          "type": "image",
+          "settings": {
+            "use_video": false,
+            "media_size": "square",
+            "subheading": "Sub heading",
+            "heading": "Promote your products",
+            "heading_size": "h2",
+            "text": "<p>Pair text with an image to focus on your chosen image</p>",
+            "button_label": "Shop now",
+            "button_link": "",
+            "button_type": "primary-white",
+            "show_icon": false,
+            "desktop_content_position": "bottom-left",
+            "block_width": "basis-1/3",
+            "text_color": "#ffffff",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0,
+            "overlay_gradient": "linear-gradient(180deg, rgba(255, 255, 255, 0) 18%, rgba(30, 30, 30, 0.7) 100%)"
+          }
+        }
+      },
+      "block_order": [
+        "image_TtR78E",
+        "image_rEezPB",
+        "image_W4Ue3r"
+      ],
+      "disabled": true,
+      "settings": {
+        "section_width": "container-fluid",
+        "subheading": "",
+        "heading": "",
+        "heading_tag": "h2",
+        "heading_size_section": "h2",
+        "description": "",
+        "layout": "vertical",
+        "column_gap": "8",
+        "bg_color": "",
+        "text_color": "",
+        "padding_top": 8,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "slideshow_tjmRRq",
+    "scrolling_text_pJV99N",
+    "rich_text_tnTpBm",
+    "rdc_faq_LUNfFh",
+    "rdc_multi_collection_bkMwNN",
+    "image_with_text_overlay_XbyMeN",
+    "rdc_column_content_colored_title_JVdpxV",
+    "featured_collection_PLnna8",
+    "multicolumn_FjFnkU",
+    "rdc_column_media_xNJaGh",
+    "rdc_column_content_form_ecqDwY",
+    "custom_liquid_ejgzaP",
+    "image_with_text_overlay_k6ULgY",
+    "custom_liquid_QcwHxx",
+    "logo_list_h7MWMq",
+    "rdc_section_concept_MewEjY",
+    "rdc_tableau_comparaison_T7nn7X",
+    "collection_list_TYfEGf",
+    "collection_list_Xi8cjB",
+    "multicolumn_mfw6rz",
+    "image_with_text_q7npfy",
+    "featured_product_7yD8dN",
+    "image_with_text_overlay_CAema3",
+    "gallery_grid_YyV6r3"
+  ]
+}
