@@ -42,11 +42,6 @@
     border: 2px solid transparent;
     transition: border-color 0.2s ease;
     flex-shrink: 0;
-    margin-bottom: 0.75rem;
-  }
-
-  .rdc-gallery__thumbnail:last-child {
-    margin-bottom: 0;
   }
 
   .rdc-gallery__thumbnail.active {
@@ -245,7 +240,9 @@
         if (!mainImage) return;
 
         const mainImageHeight = mainImage.offsetHeight;
-        const thumbnailHeight = mainImageHeight / 4;
+        const gap = 12;
+        const totalGaps = gap * 3; // 3 gaps entre 4 miniatures
+        const thumbnailHeight = (mainImageHeight - totalGaps) / 4;
         
         // Définir la hauteur du conteneur = hauteur de l'image principale
         const container = gallery.querySelector('.rdc-gallery__thumbnails-container');
@@ -253,12 +250,14 @@
           container.style.height = `${mainImageHeight}px`;
         }
         
-        // Définir chaque miniature à 1/4 de la hauteur
-        thumbnails.forEach(thumb => {
-          thumb.style.height = `${thumbnailHeight - 9}px`;
+        // Définir chaque miniature à 1/4 de la hauteur (moins les gaps)
+        thumbnails.forEach((thumb, index) => {
+          thumb.style.height = `${thumbnailHeight}px`;
+          // Ajouter margin-bottom sauf pour la dernière miniature
+          thumb.style.marginBottom = index < thumbnails.length - 1 ? `${gap}px` : '0';
         });
 
-        console.log('Main image height:', mainImageHeight, 'Thumbnail height:', thumbnailHeight - 9);
+        console.log('Main image height:', mainImageHeight, 'Thumbnail height:', thumbnailHeight);
       }
 
       function updateThumbnailsPosition() {
