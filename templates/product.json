@@ -54,6 +54,23 @@
         "padding_bottom": 12
       }
     },
+    "rdc_product_carousel_Lm8dVj": {
+      "type": "rdc_product-carousel",
+      "name": "RDC Product Carousel",
+      "settings": {
+        "desktop_visible_slides": 5,
+        "image_height_desktop": 500,
+        "gap_desktop": 20,
+        "mobile_visible_slides": 1,
+        "image_height_mobile": 400,
+        "gap_mobile": 10,
+        "opacity_side_1": 90,
+        "opacity_side_2": 70,
+        "image_fit": "cover",
+        "background_color": "#eeede6",
+        "border_radius": 10
+      }
+    },
     "main": {
       "type": "rdc_main-product",
       "blocks": {
@@ -306,7 +323,9 @@
           }
         }
       },
-      "block_order": ["judge_me_reviews_review_widget_J6Aj9B"],
+      "block_order": [
+        "judge_me_reviews_review_widget_J6Aj9B"
+      ],
       "custom_css": [],
       "settings": {
         "section_width": "container",
@@ -326,7 +345,9 @@
           }
         }
       },
-      "block_order": ["judge_me_reviews_featured_carousel_Nt8FKX"],
+      "block_order": [
+        "judge_me_reviews_featured_carousel_Nt8FKX"
+      ],
       "disabled": true,
       "settings": {
         "section_width": "container",
@@ -527,7 +548,11 @@
           }
         }
       },
-      "block_order": ["column_iCiCVD", "column_NyVKTD", "column_7TMjH4"],
+      "block_order": [
+        "column_iCiCVD",
+        "column_NyVKTD",
+        "column_7TMjH4"
+      ],
       "disabled": true,
       "custom_css": [
         ".responsive-image {padding: 70px;}",
@@ -569,6 +594,7 @@
   "order": [
     "countdown_bar_rYcUTw",
     "breadcrumbs_ka3wVn",
+    "rdc_product_carousel_Lm8dVj",
     "main",
     "174065208557f01da1",
     "1740648643762116ab",
