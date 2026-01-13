@@ -84,7 +84,7 @@
     >
       <div class=" product__media-wrapper">
         {%- if product.media.size > 0 -%}
-          {% render 'product-media-gallery', variant_images: variant_images %}
+          {% render 'rdc_product-media-gallery', variant_images: variant_images %}
         {%- else -%}
           {% render 'placeholder-image',
             product_placeholder: 'product-1',

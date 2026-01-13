@@ -54,23 +54,6 @@
         "padding_bottom": 12
       }
     },
-    "rdc_product_carousel_Lm8dVj": {
-      "type": "rdc_product-carousel",
-      "name": "RDC Product Carousel",
-      "settings": {
-        "desktop_visible_slides": 5,
-        "image_height_desktop": 500,
-        "gap_desktop": 20,
-        "mobile_visible_slides": 1,
-        "image_height_mobile": 400,
-        "gap_mobile": 10,
-        "opacity_side_1": 90,
-        "opacity_side_2": 70,
-        "image_fit": "cover",
-        "background_color": "#eeede6",
-        "border_radius": 10
-      }
-    },
     "main": {
       "type": "rdc_main-product",
       "blocks": {
@@ -292,10 +275,10 @@
         "enable_sticky_info": true,
         "enable_max_width_content": false,
         "show_sticky_add_to_cart_bar": true,
-        "media_width": 60,
+        "media_width": 62,
         "media_aspect_ratio": "adapt",
         "thumbnail_aspect_ratio": "adapt",
-        "gallery_layout": "thumbnail",
+        "gallery_layout": "thumbnail_left",
         "media_position": "left",
         "show_lightbox": true,
         "enable_video_autoplay": true,
@@ -594,7 +577,6 @@
   "order": [
     "countdown_bar_rYcUTw",
     "breadcrumbs_ka3wVn",
-    "rdc_product_carousel_Lm8dVj",
     "main",
     "174065208557f01da1",
     "1740648643762116ab",

@@ -229,7 +229,7 @@ data-autoplay="{{ section.settings.enable_video_autoplay }}" {% if gallery_layou
     {%- endif -%}
   {%- endcapture -%}
   {% liquid
-    assign perpage = 5
+    assign perpage = 4
     if section.settings.thumbnail_aspect_ratio == 'landscape'
       assign perpage = 7
     endif
@@ -240,8 +240,7 @@ data-autoplay="{{ section.settings.enable_video_autoplay }}" {% if gallery_layou
   data-splide='{
     "direction":"{%- if gallery_layout == 'thumbnail_left'-%} ttb {%- else -%} ltr {%- endif -%}",
     {%- if gallery_layout == 'thumbnail_left' -%}
-    "height": "400px",
-    "autoHeight": true,
+    "height": "600px",
     "perPage": {{ perpage }},
       {%- if product.media.size >= perpage and grouping_successfully_applied == false -%}
       "focus": "center",
