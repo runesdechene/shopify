@@ -55,6 +55,7 @@
 
   .rdc-carousel__item {
     flex-shrink: 0;
+    max-width: 20vw;
     opacity: 0.5;
     transition: all 0.4s ease;
   }
@@ -325,32 +326,11 @@
           }
         });
         
-        // Calculer dynamiquement la largeur des items vides pour compenser
-        // On veut que l'image active soit toujours au centre
-        // Largeur des vides = (largeur écran / 2) - (largeur image active / 2)
+        // Donner une largeur minimale aux items vides
         const emptyItems = updatedItems.filter(item => item.classList.contains('rdc-carousel__item--empty'));
-        
-        if (emptyItems.length > 0) {
-          // Trouver l'image active (en soustrayant les 2 items vides de currentIndex)
-          const activeRealIndex = currentIndex - 2;
-          let activeRatio = 0.75; // défaut
-          
-          if (activeRealIndex >= 0 && activeRealIndex < aspectRatios.length) {
-            activeRatio = aspectRatios[activeRealIndex];
-          }
-          
-          const activeWidth = commonHeight * activeRatio;
-          const centerOffset = (containerWidth / 2) - (activeWidth / 2);
-          
-          // Calculer la largeur totale nécessaire pour les items vides
-          // Pour centrer l'image active, on a besoin que les items vides + gaps compensent
-          const emptyWidth = Math.max(0, centerOffset - gap);
-          const widthPerEmpty = emptyWidth / emptyItems.length;
-          
-          emptyItems.forEach(item => {
-            item.style.width = `${widthPerEmpty}px`;
-          });
-        }
+        emptyItems.forEach(item => {
+          item.style.width = '1px';
+        });
       }
       
       // Calculer les largeurs après la réorganisation
@@ -374,24 +354,29 @@
         // Recalculer les largeurs des items vides en fonction de l'image active
         calculateItemWidths();
         
-        const itemWidth = updatedItems[0]?.offsetWidth || 0;
         const containerWidth = carousel.offsetWidth;
         
         // Lire le gap réel depuis le CSS
         const trackStyles = window.getComputedStyle(track);
         const gap = parseFloat(trackStyles.gap) || 24;
         
+        // Largeur de l'image active (pas du premier item)
+        const activeItemWidth = updatedItems[currentIndex]?.offsetWidth || 0;
+        
         // Calculer l'offset pour centrer l'image active
         // L'image active doit être au centre de l'écran
-        const centerOffset = (containerWidth / 2) - (itemWidth / 2);
+        const centerOffset = (containerWidth / 2) - (activeItemWidth / 2);
         
         // Position de l'item dans le track = somme des largeurs et gaps précédents
         let itemPosition = 0;
         for (let i = 0; i < currentIndex; i++) {
-          itemPosition += (updatedItems[i]?.offsetWidth || itemWidth) + gap;
+          itemPosition += (updatedItems[i]?.offsetWidth || 0) + gap;
         }
         
-        const offset = itemPosition - centerOffset;
+        // Compenser les items vides avec un seul gap
+        const emptyItemsCompensation = 7;
+        
+        const offset = itemPosition - centerOffset - emptyItemsCompensation;
         track.style.transform = `translateX(-${offset}px)`;
 
         updateItemClasses();
