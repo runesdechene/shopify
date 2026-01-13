@@ -13,6 +13,7 @@
     position: relative;
     width: 100%;
     padding: 2rem 0;
+    overflow: hidden;
   }
 
   .rdc-carousel__header {
@@ -36,14 +37,14 @@
 
   .rdc-carousel__wrapper {
     position: relative;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 4rem;
+    width: 100%;
+    padding: 0;
   }
 
   .rdc-carousel__container {
-    overflow: hidden;
+    overflow: visible;
     position: relative;
+    width: 100%;
   }
 
   .rdc-carousel__track {
@@ -54,7 +55,24 @@
 
   .rdc-carousel__item {
     flex-shrink: 0;
-    width: calc((100% - 4.5rem) / 4);
+    width: 400px;
+    max-width: 30vw;
+    opacity: 0.5;
+    transform: scale(0.9);
+    transition: all 0.4s ease;
+  }
+
+  .rdc-carousel__item.is-active {
+    opacity: 1;
+    transform: scale(1);
+    z-index: 2;
+  }
+
+  .rdc-carousel__item.is-prev,
+  .rdc-carousel__item.is-next {
+    opacity: 0.7;
+    transform: scale(0.95);
+    z-index: 1;
   }
 
   .rdc-carousel__product-card {
@@ -72,7 +90,7 @@
   .rdc-carousel__product-image {
     position: relative;
     width: 100%;
-    aspect-ratio: 1;
+    aspect-ratio: 3/4;
     overflow: hidden;
     background-color: #f5f5f5;
   }
@@ -123,6 +141,7 @@
     justify-content: center;
     z-index: 10;
     transition: all 0.2s ease;
+    margin: 0 2rem;
   }
 
   .rdc-carousel__nav-button:hover {
@@ -150,22 +169,21 @@
 
   @media (max-width: 1023px) {
     .rdc-carousel__item {
-      width: calc((100% - 3rem) / 3);
+      width: 350px;
+      max-width: 40vw;
     }
   }
 
   @media (max-width: 767px) {
-    .rdc-carousel__wrapper {
-      padding: 0 3rem;
-    }
-
     .rdc-carousel__item {
-      width: calc((100% - 1.5rem) / 2);
+      width: 280px;
+      max-width: 70vw;
     }
 
     .rdc-carousel__nav-button {
       width: 40px;
       height: 40px;
+      margin: 0 1rem;
     }
 
     .rdc-carousel__nav-button svg {
@@ -244,31 +262,69 @@
 
       if (!track || items.length === 0) return;
 
-      let currentIndex = 0;
-      let visibleCount = 4;
-
-      function updateVisibleCount() {
-        const width = window.innerWidth;
-        if (width <= 767) {
-          visibleCount = 2;
-        } else if (width <= 1023) {
-          visibleCount = 3;
-        } else {
-          visibleCount = 4;
+      // Réorganiser les items pour avoir la première image au centre
+      // On veut avoir des images avant et après la première image
+      const originalItems = Array.from(items);
+      const reorderedItems = [];
+      
+      // Si on a assez d'images, on réorganise pour avoir la première au centre
+      if (originalItems.length >= 3) {
+        // Mettre les dernières images au début pour avoir des images à gauche
+        const itemsToMoveToStart = Math.min(3, originalItems.length - 1);
+        for (let i = originalItems.length - itemsToMoveToStart; i < originalItems.length; i++) {
+          reorderedItems.push(originalItems[i]);
         }
+        // Puis ajouter toutes les images depuis le début
+        for (let i = 0; i < originalItems.length - itemsToMoveToStart; i++) {
+          reorderedItems.push(originalItems[i]);
+        }
+      } else {
+        reorderedItems.push(...originalItems);
+      }
+      
+      // Vider et reconstruire le track
+      track.innerHTML = '';
+      reorderedItems.forEach(item => track.appendChild(item));
+      
+      // Mettre à jour la référence items
+      const updatedItems = Array.from(track.querySelectorAll('.rdc-carousel__item'));
+      
+      // L'index de départ est maintenant à la position où se trouve la première image originale
+      let currentIndex = originalItems.length >= 3 ? Math.min(3, originalItems.length - 1) : 0;
+      const originalFirstImageId = originalItems[0]?.dataset.mediaId;
+
+      function updateItemClasses() {
+        updatedItems.forEach((item, index) => {
+          item.classList.remove('is-active', 'is-prev', 'is-next');
+          
+          if (index === currentIndex) {
+            item.classList.add('is-active');
+          } else if (index === currentIndex - 1) {
+            item.classList.add('is-prev');
+          } else if (index === currentIndex + 1) {
+            item.classList.add('is-next');
+          }
+        });
       }
 
       function updateCarouselPosition() {
-        const itemWidth = items[0]?.offsetWidth || 0;
+        const itemWidth = updatedItems[0]?.offsetWidth || 0;
         const gap = 24;
-        const offset = currentIndex * (itemWidth + gap);
+        const containerWidth = carousel.offsetWidth;
+        
+        // Calculer l'offset pour centrer l'image active
+        const centerOffset = (containerWidth / 2) - (itemWidth / 2);
+        const offset = (currentIndex * (itemWidth + gap)) - centerOffset;
+        
         track.style.transform = `translateX(-${offset}px)`;
+
+        updateItemClasses();
 
         if (prevButton) {
           prevButton.classList.toggle('disabled', currentIndex === 0);
         }
         if (nextButton) {
-          const maxScroll = Math.max(0, items.length - visibleCount);
+          const maxScroll = Math.max(0, updatedItems.length - 1);
           nextButton.classList.toggle('disabled', currentIndex >= maxScroll);
         }
       }
@@ -286,7 +342,7 @@
       if (nextButton) {
         nextButton.addEventListener('click', function(e) {
           e.preventDefault();
-          const maxScroll = Math.max(0, items.length - visibleCount);
+          const maxScroll = Math.max(0, items.length - 1);
           if (currentIndex < maxScroll) {
             currentIndex++;
             updateCarouselPosition();
@@ -295,12 +351,9 @@
       }
 
       window.addEventListener('resize', () => {
-        updateVisibleCount();
-        currentIndex = Math.min(currentIndex, Math.max(0, items.length - visibleCount));
         updateCarouselPosition();
       });
 
-      updateVisibleCount();
       updateCarouselPosition();
     }
 
@@ -322,28 +375,13 @@
       "type": "text",
       "id": "title",
       "label": "Titre",
-      "default": "Nos produits"
+      "default": "Galerie d'images"
     },
     {
       "type": "text",
       "id": "subtitle",
       "label": "Sous-titre",
       "default": "DÉCOUVREZ"
-    },
-    {
-      "type": "collection",
-      "id": "collection",
-      "label": "Collection",
-      "info": "Sélectionnez une collection pour afficher ses produits"
-    },
-    {
-      "type": "range",
-      "id": "products_to_show",
-      "min": 4,
-      "max": 20,
-      "step": 1,
-      "label": "Nombre de produits à afficher",
-      "default": 12
     }
   ],
   "presets": [
