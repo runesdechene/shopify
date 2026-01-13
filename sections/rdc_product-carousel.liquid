@@ -55,9 +55,13 @@
 
   .rdc-carousel__item {
     flex-shrink: 0;
-    width: calc((100vw - 6rem) / 5);
     opacity: 0.5;
     transition: all 0.4s ease;
+  }
+
+  .rdc-carousel__item--empty {
+    opacity: 0;
+    pointer-events: none;
   }
 
   .rdc-carousel__item.is-active {
@@ -67,7 +71,7 @@
 
   .rdc-carousel__item.is-prev,
   .rdc-carousel__item.is-next {
-    opacity: 0.7;
+    opacity: 0.9;
     z-index: 1;
   }
 
@@ -75,20 +79,18 @@
     background: #fff;
     border-radius: 8px;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease;
   }
 
   .rdc-carousel__product-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   }
 
   .rdc-carousel__product-image {
     position: relative;
     width: 100%;
-    aspect-ratio: 3/4;
     overflow: hidden;
-    background-color: #f5f5f5;
+    background-color: #EEEDE6;
   }
 
   .rdc-carousel__product-image img {
@@ -142,7 +144,6 @@
 
   .rdc-carousel__nav-button:hover {
     background: #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 
   .rdc-carousel__nav-button.disabled {
@@ -190,17 +191,6 @@
 </style>
 
 <section class="rdc-carousel" id="RdcCarousel-{{ section.id }}">
-  {%- if section.settings.title != blank or section.settings.subtitle != blank -%}
-    <div class="rdc-carousel__header">
-      {%- if section.settings.subtitle != blank -%}
-        <p class="rdc-carousel__subtitle">{{ section.settings.subtitle }}</p>
-      {%- endif -%}
-      {%- if section.settings.title != blank -%}
-        <h2 class="rdc-carousel__title">{{ section.settings.title }}</h2>
-      {%- endif -%}
-    </div>
-  {%- endif -%}
-
   <div class="rdc-carousel__wrapper">
     {%- if media_count > 4 -%}
       <button class="rdc-carousel__nav-button rdc-carousel__nav-button--prev disabled" type="button" aria-label="Précédent">
@@ -214,7 +204,7 @@
       <div class="rdc-carousel__track" id="RdcCarouselTrack-{{ section.id }}">
         {%- for media in product.media -%}
           {%- if media.media_type == 'image' -%}
-            <div class="rdc-carousel__item" data-index="{{ forloop.index0 }}" data-media-id="{{ media.id }}">
+            <div class="rdc-carousel__item" data-index="{{ forloop.index0 }}" data-media-id="{{ media.id }}" data-aspect-ratio="{{ media.aspect_ratio }}">
               <div class="rdc-carousel__product-card">
                 <div class="rdc-carousel__product-image">
                   {{
@@ -278,16 +268,93 @@
         reorderedItems.push(...originalItems);
       }
       
-      // Vider et reconstruire le track
+      // Créer deux items vides pour pousser les images au centre
+      const emptyItem1 = document.createElement('div');
+      emptyItem1.className = 'rdc-carousel__item rdc-carousel__item--empty';
+      emptyItem1.style.pointerEvents = 'none';
+      
+      const emptyItem2 = document.createElement('div');
+      emptyItem2.className = 'rdc-carousel__item rdc-carousel__item--empty';
+      emptyItem2.style.pointerEvents = 'none';
+      
+      // Vider et reconstruire le track avec les items vides au début
       track.innerHTML = '';
+      track.appendChild(emptyItem1);
+      track.appendChild(emptyItem2);
       reorderedItems.forEach(item => track.appendChild(item));
       
       // Mettre à jour la référence items
       const updatedItems = Array.from(track.querySelectorAll('.rdc-carousel__item'));
       
-      // L'index de départ est maintenant à la position où se trouve la première image originale
-      let currentIndex = originalItems.length >= 3 ? Math.min(3, originalItems.length - 1) : 0;
+      // L'index de départ est maintenant décalé de 2 à cause des items vides
+      let currentIndex = originalItems.length >= 3 ? Math.min(3, originalItems.length - 1) + 2 : 2;
       const originalFirstImageId = originalItems[0]?.dataset.mediaId;
+
+      // Calculer les largeurs des images basées sur leur ratio pour avoir 5 images visibles
+      function calculateItemWidths() {
+        const containerWidth = carousel.offsetWidth;
+        const gap = 24; // 1.5rem
+        const totalGaps = 4 * gap; // 4 gaps entre 5 images
+        const availableWidth = containerWidth - totalGaps;
+        
+        // Récupérer les ratios de toutes les images (sans les items vides)
+        const realItems = updatedItems.filter(item => !item.classList.contains('rdc-carousel__item--empty'));
+        const aspectRatios = realItems.map(item => {
+          const ratio = parseFloat(item.dataset.aspectRatio) || 0.75; // 3/4 par défaut
+          return ratio;
+        });
+        
+        // Calculer la hauteur commune pour toutes les images
+        // On veut que 5 images remplissent la largeur disponible
+        // Largeur totale = somme(hauteur × ratio) pour 5 images
+        // On prend les 5 premières images pour le calcul initial
+        const first5Ratios = aspectRatios.slice(0, 5);
+        const sumRatios = first5Ratios.reduce((sum, ratio) => sum + ratio, 0);
+        const commonHeight = availableWidth / sumRatios;
+        
+        // Appliquer les largeurs calculées à chaque item réel
+        realItems.forEach((item, index) => {
+          const ratio = aspectRatios[index];
+          const width = commonHeight * ratio;
+          item.style.width = `${width}px`;
+          
+          // Appliquer la hauteur à l'image
+          const imageContainer = item.querySelector('.rdc-carousel__product-image');
+          if (imageContainer) {
+            imageContainer.style.height = `${commonHeight}px`;
+          }
+        });
+        
+        // Calculer dynamiquement la largeur des items vides pour compenser
+        // On veut que l'image active soit toujours au centre
+        // Largeur des vides = (largeur écran / 2) - (largeur image active / 2)
+        const emptyItems = updatedItems.filter(item => item.classList.contains('rdc-carousel__item--empty'));
+        
+        if (emptyItems.length > 0) {
+          // Trouver l'image active (en soustrayant les 2 items vides de currentIndex)
+          const activeRealIndex = currentIndex - 2;
+          let activeRatio = 0.75; // défaut
+          
+          if (activeRealIndex >= 0 && activeRealIndex < aspectRatios.length) {
+            activeRatio = aspectRatios[activeRealIndex];
+          }
+          
+          const activeWidth = commonHeight * activeRatio;
+          const centerOffset = (containerWidth / 2) - (activeWidth / 2);
+          
+          // Calculer la largeur totale nécessaire pour les items vides
+          // Pour centrer l'image active, on a besoin que les items vides + gaps compensent
+          const emptyWidth = Math.max(0, centerOffset - gap);
+          const widthPerEmpty = emptyWidth / emptyItems.length;
+          
+          emptyItems.forEach(item => {
+            item.style.width = `${widthPerEmpty}px`;
+          });
+        }
+      }
+      
+      // Calculer les largeurs après la réorganisation
+      calculateItemWidths();
 
       function updateItemClasses() {
         updatedItems.forEach((item, index) => {
@@ -304,14 +371,27 @@
       }
 
       function updateCarouselPosition() {
+        // Recalculer les largeurs des items vides en fonction de l'image active
+        calculateItemWidths();
+        
         const itemWidth = updatedItems[0]?.offsetWidth || 0;
-        const gap = 24;
         const containerWidth = carousel.offsetWidth;
         
-        // Calculer l'offset pour centrer l'image active
-        const centerOffset = (containerWidth / 2) - (itemWidth / 2);
-        const offset = (currentIndex * (itemWidth + gap)) - centerOffset;
+        // Lire le gap réel depuis le CSS
+        const trackStyles = window.getComputedStyle(track);
+        const gap = parseFloat(trackStyles.gap) || 24;
         
+        // Calculer l'offset pour centrer l'image active
+        // L'image active doit être au centre de l'écran
+        const centerOffset = (containerWidth / 2) - (itemWidth / 2);
+        
+        // Position de l'item dans le track = somme des largeurs et gaps précédents
+        let itemPosition = 0;
+        for (let i = 0; i < currentIndex; i++) {
+          itemPosition += (updatedItems[i]?.offsetWidth || itemWidth) + gap;
+        }
+        
+        const offset = itemPosition - centerOffset;
         track.style.transform = `translateX(-${offset}px)`;
 
         updateItemClasses();
@@ -361,6 +441,7 @@
       });
 
       window.addEventListener('resize', () => {
+        calculateItemWidths();
         updateCarouselPosition();
       });
 
@@ -380,20 +461,7 @@
   "name": "RDC Product Carousel",
   "tag": "section",
   "class": "section",
-  "settings": [
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Titre",
-      "default": "Galerie d'images"
-    },
-    {
-      "type": "text",
-      "id": "subtitle",
-      "label": "Sous-titre",
-      "default": "DÉCOUVREZ"
-    }
-  ],
+  "settings": [],
   "presets": [
     {
       "name": "RDC Product Carousel"
