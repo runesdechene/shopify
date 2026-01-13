@@ -71,7 +71,7 @@
     border: 1px solid #ddd;
     border-radius: 50%;
     cursor: pointer;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     z-index: 10;
@@ -119,14 +119,16 @@
     width: 100%;
     height: auto;
     border-radius: 8px;
+    max-height: 80vh;
+    object-fit: cover;;
   }
 
   .rdc-gallery__alt-text {
     margin-top: 1rem;
-    font-size: 1.6rem;
-    color: #666;
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: #afa8a8;
     text-align: left;
-    font-style: italic;
   }
 
   @media (max-width: 767px) {
@@ -159,7 +161,7 @@
 </style>
 
 
-<div class="rdc-gallery" id="RdcGallery-{{ section.id }}">
+<div class="rdc-gallery{% if section.settings.enable_sticky_info %} product__column-sticky{% endif %}" id="RdcGallery-{{ section.id }}">
   <!-- Miniatures à gauche -->
   <div class="rdc-gallery__thumbnails-wrapper">
     {%- if media_count > 4 -%}
@@ -260,12 +262,19 @@
         const mainImageHeight = mainImage.offsetHeight;
         const gap = 12;
         const totalGaps = gap * 3; // 3 gaps entre 4 miniatures
-        const availableHeight = mainImageHeight - totalGaps;
         
-        // Définir la hauteur du conteneur = hauteur de l'image principale
+        // Calculer la hauteur du texte ALT (margin-top + hauteur du texte)
+        const altText = gallery.querySelector('.rdc-gallery__alt-text');
+        const altTextHeight = altText ? altText.offsetHeight + 16 : 0; // 16px = 1rem margin-top
+        
+        // Hauteur totale du conteneur = hauteur de l'image + hauteur du texte ALT
+        const totalContainerHeight = mainImageHeight + altTextHeight;
+        const availableHeight = totalContainerHeight - totalGaps;
+        
+        // Définir la hauteur du conteneur = hauteur de l'image principale + texte ALT
         const container = gallery.querySelector('.rdc-gallery__thumbnails-container');
         if (container) {
-          container.style.height = `${mainImageHeight}px`;
+          container.style.height = `${totalContainerHeight}px`;
         }
         
         // Calculer la somme des ratios des 4 premières miniatures
@@ -288,7 +297,7 @@
           thumb.style.marginBottom = index < thumbnails.length - 1 ? `${gap}px` : '0';
         });
 
-        console.log('Main image height:', mainImageHeight, 'Total ratio:', totalRatio);
+        console.log('Main image height:', mainImageHeight, 'Alt text height:', altTextHeight, 'Total container height:', totalContainerHeight);
       }
 
       function updateThumbnailsPosition() {

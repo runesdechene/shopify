@@ -1,6 +1,29 @@
 {%- liquid
   assign first_3d_model = product.media | where: 'media_type', 'model' | first
 -%}
+
+{% style %}
+  @media screen and (min-width: 750px) {
+    .product__info-wrapper {
+      padding: 0 0 0 4rem !important;
+    }
+
+    .product__relique-type {
+      position: sticky;
+      top: calc(var(--header-height) - 6rem);
+      z-index: 1;
+      background-color: var(--color-background);
+      padding-bottom: 1rem;
+
+      margin-bottom: 1.5rem;
+      color: #b9b6b6;
+      font-size: 3.5rem;
+      text-align: left;
+      font-family: var(--font-heading-family);
+    }
+  }
+{% endstyle %}
+
 <section
   id="MainProduct-{{ section.id }}"
   class="section-main-product section-padding section-bg"
@@ -8,6 +31,7 @@
   data-section="{{ section.id }}"
 >
   {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+  {{ 'rdc_product-info.css' | asset_url | stylesheet_tag }}
   {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
   {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
   {% unless product.has_only_default_variant %}
@@ -78,6 +102,20 @@
 
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
   <div class="{{ section.settings.section_width }}">
+    {%- comment -%} Afficher le nom de l'illustration (métaobjet Reliques) {%- endcomment -%}
+    {%- if product.metafields.custom.illustration != blank -%}
+      {%- assign relique = product.metafields.custom.illustration.value -%}
+      <div class="product__relique-type">
+        Collection
+        {%- if relique.tags != blank -%}
+          {% for tag in relique.tags.value %}
+            {{ tag -}}
+            {%- unless forloop.last %}, {% endunless %}
+          {% endfor %}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
     <div
       class="product  product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} flex lg:flex-row flex-col "
       style="--media-width:{{ section.settings.media_width }}%;"
@@ -92,6 +130,7 @@
           %}
         {%- endif -%}
       </div>
+
       <div class="product__info-wrapper lg:pt-0 pt-8">
         <product-info
           id="ProductInfo-{{ section.id }}"
@@ -166,7 +205,21 @@
               {%- when 'inventory' -%}
                 {% render 'inventory-status', product: product, section: section, block: block %}
               {%- when 'description' -%}
-                {%- if product.description != blank -%}
+                {%- comment -%} Afficher la description de l'illustration depuis le métaobjet Reliques {%- endcomment -%}
+                {%- assign description_content = '' -%}
+                {%- if product.metafields.custom.illustration != blank -%}
+                  {%- assign relique = product.metafields.custom.illustration.value -%}
+                  {%- if relique.citation != blank -%}
+                    {%- assign description_content = relique.citation | metafield_text -%}
+                  {%- endif -%}
+                {%- endif -%}
+
+                {%- comment -%} Fallback sur la description du produit si pas d'illustration {%- endcomment -%}
+                {%- if description_content == blank -%}
+                  {%- assign description_content = product.description -%}
+                {%- endif -%}
+
+                {%- if description_content != blank -%}
                   {%- if block.settings.show_more_toggle -%}
                     <show-more-toggle
                       class="show-more-toggle product__description"
@@ -174,7 +227,7 @@
                     >
                       <div data-show-more-content class="content-truncated">
                         <div class="rte quick-add-hidden" {{ block.shopify_attributes }}>
-                          {{ product.description }}
+                          {{ description_content }}
                         </div>
                       </div>
                       <button type="button" class="link mt-4" aria-label="{{ 'accessibility.show_more' | t }}">
@@ -184,7 +237,7 @@
                     </show-more-toggle>
                   {%- else -%}
                     <div class="product__description rte quick-add-hidden" {{ block.shopify_attributes }}>
-                      {{ product.description }}
+                      {{ description_content }}
                     </div>
                   {%- endif -%}
                 {%- endif -%}

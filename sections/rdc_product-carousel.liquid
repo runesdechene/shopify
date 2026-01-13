@@ -1,0 +1,355 @@
+{% comment %}
+  RDC Custom Product Carousel
+  Carousel horizontal personnalisé pour afficher des produits
+{% endcomment %}
+
+{%- liquid
+  assign products_to_display = section.settings.collection.products | default: collections.all.products
+  assign products_count = products_to_display.size
+-%}
+
+<style>
+  .rdc-carousel {
+    position: relative;
+    width: 100%;
+    padding: 2rem 0;
+  }
+
+  .rdc-carousel__header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .rdc-carousel__title {
+    font-size: 2.5rem;
+    font-family: var(--font-heading-family);
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+
+  .rdc-carousel__subtitle {
+    font-size: 1rem;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .rdc-carousel__wrapper {
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 4rem;
+  }
+
+  .rdc-carousel__container {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .rdc-carousel__track {
+    display: flex;
+    gap: 1.5rem;
+    transition: transform 0.4s ease;
+  }
+
+  .rdc-carousel__item {
+    flex-shrink: 0;
+    width: calc((100% - 4.5rem) / 4);
+  }
+
+  .rdc-carousel__product-card {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .rdc-carousel__product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .rdc-carousel__product-image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background-color: #f5f5f5;
+  }
+
+  .rdc-carousel__product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .rdc-carousel__product-card:hover .rdc-carousel__product-image img {
+    transform: scale(1.05);
+  }
+
+  .rdc-carousel__product-info {
+    padding: 1rem;
+  }
+
+  .rdc-carousel__product-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .rdc-carousel__product-price {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #000;
+  }
+
+  .rdc-carousel__nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.2s ease;
+  }
+
+  .rdc-carousel__nav-button:hover {
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .rdc-carousel__nav-button.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  .rdc-carousel__nav-button--prev {
+    left: 0;
+  }
+
+  .rdc-carousel__nav-button--next {
+    right: 0;
+  }
+
+  .rdc-carousel__nav-button svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  @media (max-width: 1023px) {
+    .rdc-carousel__item {
+      width: calc((100% - 3rem) / 3);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .rdc-carousel__wrapper {
+      padding: 0 3rem;
+    }
+
+    .rdc-carousel__item {
+      width: calc((100% - 1.5rem) / 2);
+    }
+
+    .rdc-carousel__nav-button {
+      width: 40px;
+      height: 40px;
+    }
+
+    .rdc-carousel__nav-button svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+</style>
+
+<section class="rdc-carousel" id="RdcCarousel-{{ section.id }}">
+  {%- if section.settings.title != blank or section.settings.subtitle != blank -%}
+    <div class="rdc-carousel__header">
+      {%- if section.settings.subtitle != blank -%}
+        <p class="rdc-carousel__subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+      {%- if section.settings.title != blank -%}
+        <h2 class="rdc-carousel__title">{{ section.settings.title }}</h2>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="rdc-carousel__wrapper">
+    {%- if media_count > 4 -%}
+      <button class="rdc-carousel__nav-button rdc-carousel__nav-button--prev disabled" type="button" aria-label="Précédent">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+    {%- endif -%}
+
+    <div class="rdc-carousel__container">
+      <div class="rdc-carousel__track" id="RdcCarouselTrack-{{ section.id }}">
+        {%- for media in product.media -%}
+          {%- if media.media_type == 'image' -%}
+            <div class="rdc-carousel__item" data-index="{{ forloop.index0 }}" data-media-id="{{ media.id }}">
+              <div class="rdc-carousel__product-card">
+                <div class="rdc-carousel__product-image">
+                  {{
+                    media
+                    | image_url: width: 600
+                    | image_tag:
+                      loading: 'lazy',
+                      alt: media.alt | escape
+                  }}
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- if media_count > 4 -%}
+      <button class="rdc-carousel__nav-button rdc-carousel__nav-button--next" type="button" aria-label="Suivant">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    {%- endif -%}
+  </div>
+</section>
+
+<script>
+  (function() {
+    function initCarousel() {
+      const carousel = document.getElementById('RdcCarousel-{{ section.id }}');
+      if (!carousel) {
+        console.error('Carousel not found');
+        return;
+      }
+
+      const track = carousel.querySelector('.rdc-carousel__track');
+      const items = Array.from(carousel.querySelectorAll('.rdc-carousel__item'));
+      const prevButton = carousel.querySelector('.rdc-carousel__nav-button--prev');
+      const nextButton = carousel.querySelector('.rdc-carousel__nav-button--next');
+
+      if (!track || items.length === 0) return;
+
+      let currentIndex = 0;
+      let visibleCount = 4;
+
+      function updateVisibleCount() {
+        const width = window.innerWidth;
+        if (width <= 767) {
+          visibleCount = 2;
+        } else if (width <= 1023) {
+          visibleCount = 3;
+        } else {
+          visibleCount = 4;
+        }
+      }
+
+      function updateCarouselPosition() {
+        const itemWidth = items[0]?.offsetWidth || 0;
+        const gap = 24;
+        const offset = currentIndex * (itemWidth + gap);
+        track.style.transform = `translateX(-${offset}px)`;
+
+        if (prevButton) {
+          prevButton.classList.toggle('disabled', currentIndex === 0);
+        }
+        if (nextButton) {
+          const maxScroll = Math.max(0, items.length - visibleCount);
+          nextButton.classList.toggle('disabled', currentIndex >= maxScroll);
+        }
+      }
+
+      if (prevButton) {
+        prevButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (currentIndex > 0) {
+            currentIndex--;
+            updateCarouselPosition();
+          }
+        });
+      }
+
+      if (nextButton) {
+        nextButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          const maxScroll = Math.max(0, items.length - visibleCount);
+          if (currentIndex < maxScroll) {
+            currentIndex++;
+            updateCarouselPosition();
+          }
+        });
+      }
+
+      window.addEventListener('resize', () => {
+        updateVisibleCount();
+        currentIndex = Math.min(currentIndex, Math.max(0, items.length - visibleCount));
+        updateCarouselPosition();
+      });
+
+      updateVisibleCount();
+      updateCarouselPosition();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCarousel);
+    } else {
+      initCarousel();
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "RDC Product Carousel",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Nos produits"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "DÉCOUVREZ"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Sélectionnez une collection pour afficher ses produits"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "label": "Nombre de produits à afficher",
+      "default": 12
+    }
+  ],
+  "presets": [
+    {
+      "name": "RDC Product Carousel"
+    }
+  ]
+}
+{% endschema %}

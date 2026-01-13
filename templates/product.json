@@ -54,6 +54,16 @@
         "padding_bottom": 12
       }
     },
+    "rdc_product_carousel_6DGpVx": {
+      "type": "rdc_product-carousel",
+      "name": "RDC Product Carousel",
+      "settings": {
+        "title": "Nos produits",
+        "subtitle": "DÉCOUVREZ",
+        "collection": "",
+        "products_to_show": 12
+      }
+    },
     "main": {
       "type": "rdc_main-product",
       "blocks": {
@@ -63,17 +73,18 @@
             "heading_size": "h1"
           }
         },
+        "rating_UhVAtV": {
+          "type": "rating",
+          "settings": {
+            "target_to_section": true,
+            "section_id": "#judgeme_product_reviews"
+          }
+        },
         "price_Fr4Txr": {
           "type": "price",
           "settings": {
             "show_sale_badge": true,
             "sale_badge_type": "percentage"
-          }
-        },
-        "custom_liquid_PadDy8": {
-          "type": "custom_liquid",
-          "settings": {
-            "custom_liquid": "{% assign coupe = product.metafields.custom.coupe_du_produit %}\n{% assign epaisseur = product.metafields.custom.gfdf %}\n\n{% assign coupe_nettoyee = coupe.value \n  | remove: 'à coupe homme' \n  | remove: 'à coupe femme' \n  | strip \n%}\n\n<span style=\"color: #999; font-size: 1.6rem;\">\n  {% if coupe_nettoyee != blank %}\n    {{ coupe_nettoyee }}\n  {% endif %}\n\n  {% if product.type contains 'Débardeur' %}\n    « {{ product.type | replace: 'Débardeur', 'La coupe' }} »\n  {% else %}\n    « {{ product.type }} »\n  {% endif %}\n\n  {% if epaisseur.value != blank %}\n    {{ epaisseur.value }}\n  {% endif %}\n</span>"
           }
         },
         "custom_liquid_d9wLpx": {
@@ -82,54 +93,11 @@
             "custom_liquid": "<div class=\"container-bonus\">\n<div class=\"bonus bonus--green\">100% Cotton bio brossé</div>\n<div class=\"bonus bonus--gold\">Impression familliale</div>\n<div class=\"bonus bonus--red\">Création originale</div>\n<div class=\"bonus bonus--violette\">🚫 Sans IA</div>\n<div class=\"bonus bonus--blue\">🐓 Designed in France</div>\n</div>\n\n\n{% style %}\n.container-bonus \n{\ndisplay: flex;\ngap: 10px;\nflex-wrap: wrap;\n}\n.bonus {\nfont-size: 14px;\nfont-family: var(--font-heading-family);\nborder-radius: 20px;\npadding: 7px 12px 5px 12px;\n}\n\n.bonus--sauge\n{\nbackground: #ddf6ef;\ncolor: #306657;\n}\n.bonus--green\n{\nbackground: #dfeee4;\ncolor: #306638;\n}\n.bonus--gold\n{\nbackground: #eee9df;\ncolor: #59451e;\n}\n.bonus--red\n{\nbackground: #eee2df;\ncolor: #4c3420;\n}\n.bonus--violette\n{\nbackground: #eadfee;\ncolor: #40184e;\n}\n.bonus--blue\n{\nbackground: #e0dff0;\ncolor: #1b184e;\n}\n{% endstyle %}"
           }
         },
-        "text_BEzExg": {
-          "type": "text",
-          "settings": {
-            "text": "Artiste :{{ product.vendor }}",
-            "text_style": "subheading"
-          }
-        },
-        "rating_UhVAtV": {
-          "type": "rating",
-          "settings": {
-            "target_to_section": true,
-            "section_id": "#judgeme_product_reviews"
-          }
-        },
         "description": {
           "type": "description",
           "settings": {
             "show_more_toggle": false,
             "max_height": 8
-          }
-        },
-        "popup_4KLaCV": {
-          "type": "popup",
-          "settings": {
-            "text": "DÉCOUVIR L'HISTOIRE DU MOTIF",
-            "icon": "lock",
-            "content": "",
-            "content_liquid": "{% assign relique = product.metafields.custom.illustration.value %}\n\n{% if relique %}\n    <h2>{{ relique.titre.value }}</h2>\n    <div class=\"relique-description\">\n\n{{ relique.description | metafield_text | strip_html | escape }}\n\n{% endif %}",
-            "page": ""
-          }
-        },
-        "custom_liquid_dtxaCe": {
-          "type": "custom_liquid",
-          "settings": {
-            "custom_liquid": ""
-          }
-        },
-        "custom_liquid_JCLFhF": {
-          "type": "custom_liquid",
-          "settings": {
-            "custom_liquid": "<div class=\"bonus-rte\">La qualité d'un vêtement durable associée à l'esprit de camaraderie de la <b>1ère communauté de France à destination des amoureux d'Aventure, d'Histoire ancienne & de Nature.</b> </div>"
-          }
-        },
-        "separator_fTXQic": {
-          "type": "separator",
-          "settings": {
-            "show_border": true,
-            "divider_space": 2
           }
         },
         "siblings_j3h7Cg": {
@@ -237,16 +205,10 @@
       },
       "block_order": [
         "title",
-        "price_Fr4Txr",
-        "custom_liquid_PadDy8",
-        "custom_liquid_d9wLpx",
-        "text_BEzExg",
         "rating_UhVAtV",
+        "price_Fr4Txr",
+        "custom_liquid_d9wLpx",
         "description",
-        "popup_4KLaCV",
-        "custom_liquid_dtxaCe",
-        "custom_liquid_JCLFhF",
-        "separator_fTXQic",
         "siblings_j3h7Cg",
         "variant_picker",
         "quantity_selector",
@@ -275,7 +237,7 @@
         "enable_sticky_info": true,
         "enable_max_width_content": false,
         "show_sticky_add_to_cart_bar": true,
-        "media_width": 62,
+        "media_width": 54,
         "media_aspect_ratio": "adapt",
         "thumbnail_aspect_ratio": "adapt",
         "gallery_layout": "thumbnail_left",
@@ -577,6 +539,7 @@
   "order": [
     "countdown_bar_rYcUTw",
     "breadcrumbs_ka3wVn",
+    "rdc_product_carousel_6DGpVx",
     "main",
     "174065208557f01da1",
     "1740648643762116ab",
