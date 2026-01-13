@@ -55,23 +55,19 @@
 
   .rdc-carousel__item {
     flex-shrink: 0;
-    width: 400px;
-    max-width: 30vw;
+    width: calc((100vw - 6rem) / 5);
     opacity: 0.5;
-    transform: scale(0.9);
     transition: all 0.4s ease;
   }
 
   .rdc-carousel__item.is-active {
     opacity: 1;
-    transform: scale(1);
     z-index: 2;
   }
 
   .rdc-carousel__item.is-prev,
   .rdc-carousel__item.is-next {
     opacity: 0.7;
-    transform: scale(0.95);
     z-index: 1;
   }
 
@@ -349,6 +345,20 @@
           }
         });
       }
+
+      // Ajouter des event listeners sur chaque image pour la rendre active au clic
+      updatedItems.forEach((item, index) => {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (index !== currentIndex) {
+            currentIndex = index;
+            updateCarouselPosition();
+          }
+        });
+        
+        // Ajouter un style de curseur pour indiquer que c'est cliquable
+        item.style.cursor = 'pointer';
+      });
 
       window.addEventListener('resize', () => {
         updateCarouselPosition();
