@@ -22,7 +22,7 @@
     <splide-carousel class="{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}" data-play-videos="{{ play_all_videos }}">
     <div id="collections-{{ section.id }}"
         class="splide-slider splide shopable-video-slider " 
-        data-splide='{"type":"loop", "fixedWidth":"{{ width_videos }}", "updateOnMove":true ,"focus":"center","perMove": 1,"rewind":false,"pagination":false,"arrows":{{ arrows }},"autoplay":false,"pauseOnHover":true,"pauseOnFocus":true, "gap": "{{ column_gap }}" ,"drag":true,"breakpoints":{"640": { "drag":true,"perPage":1.5,"fixedWidth":"78%", "arrows":false, "gap": "{{ column_gap_mobile }}", "perMove": 1}}}' 
+        data-splide='{"type":"loop", "fixedWidth":"{{ width_videos }}", "updateOnMove":true ,"focus":"center","perMove": 1,"rewind":false,"pagination":false,"arrows":{{ arrows }},"autoplay":false,"pauseOnHover":true,"pauseOnFocus":true, "gap": "{{ column_gap }}" ,"drag":true,"flickMaxPages":1,"waitForTransition":false,"flickPower":300,"breakpoints":{"640": { "drag":true,"perPage":1.5,"fixedWidth":"78%", "arrows":false, "gap": "{{ column_gap_mobile }}", "perMove": 1}}}' 
         aria-labelledby="shopable video">
           <div class="splide__track mb:splide-right-overflow">
               <div class="splide__list">

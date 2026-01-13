@@ -8,10 +8,10 @@
   .products-col-1{
     max-width: 290px;
   }
-  .lookbook-slider .splide__arrow--prev{
+  .lookbook-slider >.splide__arrows .splide__arrow--prev{
   left: -7rem;
   }
-  .lookbook-slider .splide__arrow--next{
+  .lookbook-slider >.splide__arrows .splide__arrow--next{
     right: -7rem;
   }
   .products-col-1 .splide:not(.is-initialized) .splide__list .splide__slide{

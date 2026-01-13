@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "Imate pravo na besplatnu dostavu."
-      }
+      },
+      "discounts": "Popusti",
+      "discount_code": "Kod popusta",
+      "discount_code_error": "Kod popusta ne može biti primijenjen na vašu košaricu",
+      "shipping_discount_error": "Popusti za dostavu se prikazuju na blagajni nakon dodavanja adrese",
+      "discount_apply": "Primijeni",
+      "discount_applied": "Primijenjen kod popusta: {{ code }}",
+      "remove_discount": "Ukloni kod popusta: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Dom",

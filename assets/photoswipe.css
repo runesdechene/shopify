@@ -408,12 +408,12 @@
     height: 30px;
     font-size: 14px;
     line-height:1;
-    color: rgb(var(--color-heading));
+    color: rgb(var(--color-foreground));
     opacity: 0.85;
     position: fixed;
     top:24px;
     border-radius: 2rem;
-    background-color: white;
+    background-color: rgb(var(--color-background));
     left:50%;
     transform: translateX(-50%);
     padding: 0.5rem 2rem;
@@ -442,16 +442,16 @@
   .pswp__button--arrow{
     width: 46px;
     height: 46px;
-    background-color: white;
+    background-color: rgb(var(--color-background)) !important;
     box-shadow: 0 .125rem .625rem rgb(28 28 28 / .15) !important;
     border-radius: 50%;
-    background-color: white !important;
     bottom:50px;
     top:auto;
     transform: translate(-50%);
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    color: rgb(var(--color-foreground));
   }
   .pswp__button--arrow--prev{
     left: calc(50% - 70px);
@@ -471,11 +471,12 @@
     box-shadow: 0 .125rem .625rem rgb(28 28 28 / .15) !important;
     bottom:46px;
     border-radius: 50%;
-    background-color: white !important;
+    background-color: rgb(var(--color-background)) !important;
     margin:0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    color: rgb(var(--color-foreground));
   }
   .pswp__button--close svg{
     width: 18px;

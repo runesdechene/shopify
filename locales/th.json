@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "คุณมีสิทธิ์ได้รับค่าจัดส่งฟรี"
-      }
+      },
+      "discounts": "ส่วนลด",
+      "discount_code": "รหัสส่วนลด",
+      "discount_code_error": "รหัสส่วนลดไม่สามารถใช้งานได้กับตะกร้าของคุณ",
+      "shipping_discount_error": "ส่วนลดการจัดส่งจะแสดงที่ตะกร้าหลังจากเพิ่มที่อยู่",
+      "discount_apply": "ใช้งาน",
+      "discount_applied": "ส่วนลดที่ใช้งานแล้ว: {{ code }}",
+      "remove_discount": "ลบรหัสส่วนลด: {{ code }}"
     },
     "breadcrumbs": {
       "home": "บ้าน",

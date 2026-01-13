@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "Du är berättigad till fri frakt."
-      }
+      },
+      "discounts": "Rabatter",
+      "discount_code": "Rabattkod",
+      "discount_code_error": "Rabattkoden kan inte användas på din varukorg",
+      "shipping_discount_error": "Rabatter för frakt visas vid kassan efter att du har lagt till en adress",
+      "discount_apply": "Använd",
+      "discount_applied": "Rabattkod använd: {{ code }}",
+      "remove_discount": "Ta bort rabattkod: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Hem",

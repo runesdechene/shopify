@@ -428,6 +428,7 @@
   background-color: initial;
   margin-top: 0;
   padding: 1rem 3.6rem 1rem 0rem;
+  color: rgb(var(--color-foreground));
 }
 
 .menu-drawer__localization .localization-form {

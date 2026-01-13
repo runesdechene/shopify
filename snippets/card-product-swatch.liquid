@@ -4,6 +4,7 @@
         assign config = settings.color_swatch_config | newline_to_br | split: '<br />' 
         assign option_limit = 4
         assign widths = widths | default: '180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 1950, 2100, 2260, 2450, 2700, 3000, 3400, 3800'
+        assign card_hover_type = settings.card_hover_type
     %}
     {%- for option in product.options_with_values -%}
         {%- liquid
@@ -23,7 +24,7 @@
         -%}
         {% if use_color %}
             {%- if card_color_type != 'count' -%}
-                <card-product-swatch class="card-product-swatch block no-js-hidden{% if card_color_type == 'image' %} pt-3 card-product-swatch__image  {%  elsif card_color_type == 'color' %} pt-2 {% endif %}">
+                <card-product-swatch {% if card_hover_type == 'slider_image' %} data-slider {% endif %} class="card-product-swatch block no-js-hidden{% if card_color_type == 'image' %} pt-3 card-product-swatch__image  {%  elsif card_color_type == 'color' %} pt-2 {% endif %}">
                     <div class="flex gap-x-4 items-center justify-{{ text_alignment }}">
                         <ul class="list-unstyled card-product__swatch-list flex flex-row flex-wrap justify-{{ text_alignment }} gap-y-4">
                         {%- for value in option.values limit: option_limit -%}
@@ -71,8 +72,8 @@
 
                                 assign option_index = option.position  | minus: 1
                                     for variant in product.variants
-                                        if variant.title contains value
-                                            if variant.image.id == product.featured_image.id
+                                      if variant.options[option_index] == value
+                                            if variant.image.id == product.featured_image.id and product.media.size > 0
                                                 assign active = 'active'
                                             endif
                                             assign variant_url = variant.url
@@ -118,6 +119,7 @@
                                         data-link="{{ variant_url }}"
                                         data-srcset="{{ srcset }}"
                                         data-src="{{ src }}"
+                                        data-variant-image-src="{{ media.src | image_url: width: 1000 }}"
                                     >
                                         <span class="sr-only">{{ value }}</span>
                                     </button>
@@ -130,6 +132,7 @@
                                           data-link="{{ variant_url }}"
                                           data-srcset="{{ srcset }}"
                                           data-src="{{ src }}"
+                                          data-variant-image-src="{{ media.src | image_url: width: 1000 }}"
                                       >
                                           <span class="sr-only">{{ value }}</span>
                                           <span {% if swatch_value %}
@@ -150,6 +153,7 @@
                                             data-link="{{ variant_url }}"
                                             data-srcset="{{ srcset }}"
                                             data-src="{{ src }}"
+                                            data-variant-image-src="{{ media.src | image_url: width: 1000 }}"
                                             >
                                             {{- media | image_url: width: media.width | image_tag: loading: 'lazy', sizes: '60px', widths: '60,120', class: 'object-cover absolute inset-0 size-full' -}} 
                                         </button>

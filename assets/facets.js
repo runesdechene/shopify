@@ -298,23 +298,48 @@ class FacetFiltersForm extends HTMLElement {
   onSubmitHandler(event) {
     event.preventDefault();
     const sortFilterForms = document.querySelectorAll('facet-filters-form form');
-    if (event.srcElement.className == 'mobile-facets__checkbox') {
-      const searchParams = this.createSearchParams(event.target.closest('form'));
-      this.onSubmitForm(searchParams, event);
+
+
+    const searchParams = this.createFilteredSearchParams(event.target.closest('form'));
+
+
+    if (event.srcElement.className === 'mobile-facets__checkbox') {
+        this.onSubmitForm(searchParams.toString(), event);
     } else {
-      const forms = [];
-      const isMobile = event.target.closest('form').id === 'FacetFiltersFormMobile';
-      sortFilterForms.forEach((form) => {
-        if (!isMobile) {
-          if (form.id === 'FacetSortForm' || form.id === 'FacetFiltersForm' || form.id === 'FacetSortDrawerForm' ) {
-            forms.push(this.createSearchParams(form));
-          }
-        } else if (form.id === 'FacetFiltersFormMobile') {
-          forms.push(this.createSearchParams(form));
-        }
-      });
-      this.onSubmitForm(forms.join('&'), event);
+        const forms = [];
+        const isMobile = event.target.closest('form').id === 'FacetFiltersFormMobile';
+        sortFilterForms.forEach((form) => {
+            if (!isMobile) {
+                if (form.id === 'FacetSortForm' || form.id === 'FacetFiltersForm' || form.id === 'FacetSortDrawerForm') {
+                    forms.push(this.createFilteredSearchParams(form).toString());
+                }
+            } else if (form.id === 'FacetFiltersFormMobile') {
+                forms.push(this.createFilteredSearchParams(form).toString());
+            }
+        });
+        this.onSubmitForm(forms.join('&'), event);
     }
+  }
+
+  createFilteredSearchParams(form) {
+    const formData = new FormData(form);
+    const searchParams = new URLSearchParams(formData);
+
+
+    if (searchParams.has("filter.v.price.gte") && searchParams.get("filter.v.price.gte") === "0") {
+        searchParams.delete("filter.v.price.gte");
+    }
+
+    const priceSlider = document.querySelector(".price-slider-range");
+    if (priceSlider) {
+        const maxPrice = parseFloat(priceSlider.dataset.max);
+        
+        if (searchParams.has("filter.v.price.lte") && searchParams.get("filter.v.price.lte") === maxPrice.toString()) {
+            searchParams.delete("filter.v.price.lte");
+        }
+    }
+
+    return searchParams; 
   }
 
   onActiveFilterClick(event) {
@@ -384,7 +409,6 @@ class PriceRange extends HTMLElement {
     if (!sliderRange) return;
 
     const [minInput, maxInput] = this.querySelectorAll('input');
-
     const form = this.closest('facet-filters-form') || document.querySelector('facet-filters-form');
     const event = new CustomEvent('input');
 
@@ -392,58 +416,39 @@ class PriceRange extends HTMLElement {
     const maxValue = parseFloat(maxInput.value.replace(',', '')) || parseFloat(sliderRange.dataset.max);
 
     if (sliderRange.noUiSlider) {
-      sliderRange.noUiSlider.destroy();
+        sliderRange.noUiSlider.destroy();
     }
-  
-    let isSliding = false;
-  
+    const direction = document.documentElement.dir === 'rtl' ? 'rtl' : 'ltr';
+
     noUiSlider.create(sliderRange, {
-      start: [minValue, maxValue],
-      connect: true,
-      step: 1,
-      handleAttributes: [
-        { 'aria-label': 'lower' },
-        { 'aria-label': 'upper' },
-      ],
-      range: {
-        'min': 0,
-        'max': parseFloat(sliderRange.dataset.max)
-      }
-    });
-  
-    sliderRange.noUiSlider.on('start', function() {
-      isSliding = true;
-    });
-  
-    sliderRange.noUiSlider.on('update', (values) => {
-        if (isSliding) {
-            minInput.value = values[0];
-            maxInput.value = values[1];
+        start: [minValue, maxValue],
+        direction: direction,
+        connect: true,
+        step: 10,
+        handleAttributes: [
+          { 'aria-label': 'lower' },
+          { 'aria-label': 'upper' },
+        ],
+        range: {
+            'min': 0,
+            'max': parseFloat(sliderRange.dataset.max)
         }
     });
-  
-    sliderRange.noUiSlider.on('end', function() {
-      isSliding = false;
-      form.querySelector('form').dispatchEvent(event);
+    
+    sliderRange.noUiSlider.on('update', (values) => {
+        minInput.value = Math.round(parseFloat(values[0]));
+        maxInput.value = Math.round(parseFloat(values[1]));
     });
-  
-    const updateSlider = (input, index) => {
-      input.addEventListener('change', () => {
-          let value = parseFloat(input.value.replace(',', ''));
-          if (isNaN(value)) {
-              value = 0;
-          }
-          
-          setTimeout(() => {
-              const updateValues = [null, null];
-              updateValues[index] = value;
-              sliderRange.noUiSlider.set(updateValues);
-          }, 50);
-      });
-  };
-  
-    updateSlider(minInput, 0);
-    updateSlider(maxInput, 1);
+    let debounceTimer;
+
+    sliderRange.noUiSlider.on('set', (values) => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        minInput.value = Math.round(parseFloat(values[0]));
+        maxInput.value = Math.round(parseFloat(values[1]));
+        form.querySelector('form')?.dispatchEvent(event);
+      }, 100);
+    });
   }
   
 }

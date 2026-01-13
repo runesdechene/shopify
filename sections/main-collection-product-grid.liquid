@@ -1,6 +1,4 @@
 {{ 'template-collection-product-grid.css' | asset_url | stylesheet_tag }}
-{{ 'rdc_template-collection-product-grid.css' | asset_url | stylesheet_tag }}
-{{ 'rdc_template-collection-product-grid.js' | asset_url | stylesheet_tag }}
 {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
 
 {%- if settings.card_show_quick_buy -%}
@@ -335,7 +333,8 @@
                     product_placeholder: product_placeholder,
                     section_width: section_width,
                     columns: columns_desktop,
-                    filter_type: filter_type
+                    filter_type: filter_type,
+                    drag_enabled: true
                   %}
                 </li>
               {%- endfor -%}
@@ -354,12 +353,8 @@
 
 {% schema %}
 {
-  "name": "RDC Product grid",
-  "class": "section",
-  "tag": "section",
-  "enabled_on": {
-    "templates": ["collection"]
-  },
+  "name": "Product grid",
+  "class": "section main-collection",
   "max_blocks": 5,
   "settings": [
     {

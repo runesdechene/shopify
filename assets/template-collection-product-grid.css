@@ -17,6 +17,11 @@
 .view-mode__button, .view-mode__button-mobile{
   position: relative;
   opacity: 0.4;
+  color: rgb(var(--color-foreground));
+}
+.view-mode__button svg, 
+.view-mode__button-mobile svg{
+  fill: currentColor;
 }
 .view-mode__button::before,.view-mode__button-mobile::before{
   content: '';

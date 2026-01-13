@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "Olet oikeutettu ilmaiseen toimitukseen."
-      }
+      },
+      "discounts": "Alennukset",
+      "discount_code": "Alennuskoodi",
+      "discount_code_error": "Alennuskoodia ei voi lisätä ostoskoriin",
+      "shipping_discount_error": "Alennus toimituskuluista näytetään kassalla lisäämällä osoite",
+      "discount_apply": "Lisää",
+      "discount_applied": "Lisätty alennuskoodi: {{ code }}",
+      "remove_discount": "Poista alennuskoodi: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Kotiin",

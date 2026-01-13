@@ -75,12 +75,13 @@ cart-items .title-wrapper-with-link {
 .cart-item__name {
   text-decoration: none;
   display: block;
-  color: rgb(var(--color-foreground));
+  color: rgb(var(--color-heading));
   font-family: var(--font-card-title-family);
   font-size: calc(var(--size-body)*var(--font-card-title-scale));
   letter-spacing: var(--font-card-title-spacing);
   text-transform: var(--font-card-title-transform);
   font-weight: var(--font-card-title-weight);
+  line-height: calc(1 + 0.35 / var(--font-card-title-scale));
 }
 
 .cart-item__price-wrapper > * {

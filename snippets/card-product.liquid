@@ -2,16 +2,29 @@
 {%-liquid
   assign show_rating =  settings.card_show_rating
   assign show_vendor = settings.card_show_vendor
-  assign show_secondary_image = settings.card_show_secondary_image
+  assign card_hover_type = settings.card_hover_type
   assign show_quick_buy = settings.card_show_quick_buy
   assign card_sale_badge_type = settings.card_sale_badge_type
   assign image_aspect_ratio = settings.card_image_size
   assign card_color_type = settings.card_color_type
   assign featured_media = card_product.featured_media
   assign card_show_video = settings.card_show_video
+  assign product_images = card_product.media | where: 'media_type', 'image'
+  assign show_secondary_image = false
+  assign drag_enabled = drag_enabled | default: false
+  
   if featured_media.media_type != 'image'
 		assign featured_media = featured_media.preview_image
 	endif
+
+  if card_hover_type == 'secondary_image'
+    assign show_secondary_image = true
+  endif
+
+  if card_hover_type == 'slider_image'
+    assign card_show_video = false
+  endif
+
   assign text_alignment = settings.card_text_alignment
   assign columns = columns | default: 4
   assign first_media = card_product.media.first.media_type
@@ -58,7 +71,9 @@
               {%- endif -%}
               
            {%- endcapture -%}
+           {% if card_hover_type != 'slider_image' %}
             <a class="product-link block"  href="{{ card_product.url }}" title="{{ card_product.title | escape }}" >
+            {% endif %}
             {%- if first_media == 'video' and card_show_video -%}
               {% liquid
                 assign widths = '200,300,400,500,600,700,800,1000,1200,1400,1600'
@@ -88,12 +103,19 @@
                 </viewport-media>
               </div>
             {%- else -%}
-              {%- render 'responsive-image' , image: featured_media, sizes: sizes, image_aspect_ratio:image_aspect_ratio, wrapper_class : 'responsive-image product-first-image' -%}
+              {% if card_hover_type == 'slider_image' %}
+                {% render 'card-product-slider-image', card_product: card_product, sizes: sizes, image_aspect_ratio:image_aspect_ratio, product_images: product_images, drag_enabled: drag_enabled %}
+              {% else %}
+                {%- render 'responsive-image' , image: featured_media, sizes: sizes, image_aspect_ratio:image_aspect_ratio, wrapper_class : 'responsive-image product-first-image' -%}
+              {% endif %}
             {%- endif -%}
             {%- if card_product.images[1] != null and show_secondary_image -%}
               {%- render 'responsive-image' , image: card_product.images[1], sizes: sizes, image_aspect_ratio: image_aspect_ratio, wrapper_class : 'responsive-image product-secondary-image' -%}
             {%- endif -%}
-            </a>
+
+            {% if card_hover_type != 'slider_image' %}
+              </a>
+            {% endif %}
             
             {%- if show_quick_buy -%}
               {%- liquid

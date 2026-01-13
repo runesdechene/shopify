@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "Anda berhak mendapatkan pengiriman gratis."
-      }
+      },
+      "discounts": "Diskon",
+      "discount_code": "Kode diskon",
+      "discount_code_error": "Kode diskon tidak dapat diterapkan ke keranjang Anda",
+      "shipping_discount_error": "Diskon pengiriman ditampilkan saat checkout setelah menambahkan alamat",
+      "discount_apply": "Terapkan",
+      "discount_applied": "Diskon diterapkan: {{ code }}",
+      "remove_discount": "Hapus kode diskon: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Rumah",

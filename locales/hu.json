@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "Ön jogosult az ingyenes szállításra."
-      }
+      },
+      "discounts": "Kedvezmények",
+      "discount_code": "Kedvezmény kód",
+      "discount_code_error": "A kedvezmény kód nem alkalmazható a kosárba",
+      "shipping_discount_error": "A kedvezmények a pénztárnál jelennek meg az alábbi cím hozzáadása után",
+      "discount_apply": "Alkalmaz",
+      "discount_applied": "Alkalmazott kedvezmény kód: {{ code }}",
+      "remove_discount": "Kedvezmény kód eltávolítása: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Otthon",

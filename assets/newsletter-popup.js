@@ -1,62 +1,129 @@
 class NewsletterPopup extends ModalDialog {
   constructor() {
     super();
-    this.delay = parseInt(this.dataset.delay) * 1000 || 2000;
-    this.reopenDays = parseInt(this.dataset.reopen) || 1;
-    this.sectionId = this.dataset.sectionId;
+    this.config = {
+      delay: (parseInt(this.dataset.delay) || 2) * 1000,
+      reopenDays: parseInt(this.dataset.reopen) || 1,
+      sectionId: this.dataset.sectionId
+    };
 
-    this.modalOpener = document.querySelector('.newsletter-modal__opener');
-    this.closeButton = this.modalOpener?.querySelector('.newsletter-modal__close');
-    this.showPopupAfterDelay();
-    this.initCloseButton();
+    this.elements = {
+      opener: document.querySelector('.newsletter-modal__opener'),
+      form: this.querySelector('form')
+    };
 
-    if (Shopify.designMode) {
-      document.addEventListener('shopify:section:select', (event) => {
-        if (event.detail.sectionId === this.sectionId) {
-          this.show();
-        }
-      });
-      document.addEventListener('shopify:section:deselect', (event) => {
-        if (event.detail.sectionId === this.sectionId) {
-          this.hide();
-        }
-      });
+    this.elements.closeButton = this.elements.opener?.querySelector('.newsletter-modal__close');
+    this.showTimeout = null;
+
+    this.init();
+  }
+
+  init() {
+    this.updateUI();
+    this.attachEvents();
+    this.setupDesignMode();
+  }
+
+  getState() {
+    const now = Date.now();
+    return {
+      subscribed: this.getFlag('newsletterSubscribed'),
+      popupExpired: this.isExpired('newsletterPopupClosed', now),
+      openerExpired: this.isExpired('newsletterOpenerClosed', now)
+    };
+  }
+
+  getFlag(key) {
+    return localStorage.getItem(key) === 'true';
+  }
+
+  isExpired(key, now) {
+    const timestamp = localStorage.getItem(key);
+    return !timestamp || now > parseInt(timestamp);
+  }
+
+  setExpiration(key) {
+    const expiration = Date.now() + this.config.reopenDays * 86400000;
+    localStorage.setItem(key, expiration);
+  }
+
+  updateUI() {
+    const state = this.getState();
+    this.toggleOpener(state.openerExpired);
+
+    if (!state.subscribed && state.popupExpired) {
+      this.schedulePopup();
     }
   }
 
-  showPopupAfterDelay() {
-    const modalClosed = localStorage.getItem('newsletterPopupClosed');
-    const openerClosed = localStorage.getItem('newsletterOpenerClosed');
-    const currentTime = new Date().getTime();
+  toggleOpener(show) {
+    if (!this.elements.opener) return;
+    const display = show ? '' : 'none';
+    if (this.elements.opener.style.display !== display) {
+      this.elements.opener.style.display = display;
+    }
+  }
 
-    if (!modalClosed || currentTime > parseInt(modalClosed)) {
-      setTimeout(() => {
-        this.show();
-      }, this.delay);
+  schedulePopup() {
+    this.clearSchedule();
+    this.showTimeout = setTimeout(() => this.show(), this.config.delay);
+  }
+
+  clearSchedule() {
+    if (this.showTimeout) {
+      clearTimeout(this.showTimeout);
+      this.showTimeout = null;
     }
-    if (openerClosed && currentTime <= parseInt(openerClosed)) {
-      this.hideModalOpener();
+  }
+
+  attachEvents() {
+    if (this.elements.form) {
+      this.elements.form.addEventListener('submit', () => this.handleSubmit());
     }
+
+    if (this.elements.closeButton) {
+      this.elements.closeButton.addEventListener('click', () => this.handleOpenerClose());
+    }
+
+    const trigger = this.elements.opener?.querySelector('[data-open-modal]');
+    if (trigger) {
+      trigger.addEventListener('click', () => this.handleManualOpen());
+    }
+  }
+
+  handleSubmit() {
+    localStorage.setItem('newsletterSubscribed', 'true');
+    localStorage.removeItem('newsletterPopupClosed');
+    this.toggleOpener(true);
+    super.hide();
+  }
+
+  handleOpenerClose() {
+    this.toggleOpener(false);
+    this.setExpiration('newsletterOpenerClosed');
+  }
+
+  handleManualOpen() {
+    this.clearSchedule();
+    this.show();
   }
 
   hide() {
+    this.clearSchedule();
     super.hide();
-    const expirationDate = new Date().getTime() + this.reopenDays * 24 * 60 * 60 * 1000;
-    localStorage.setItem('newsletterPopupClosed', expirationDate);
+    this.setExpiration('newsletterPopupClosed');
   }
-  initCloseButton() {
-    if (this.closeButton) {
-      this.closeButton.addEventListener('click', () => {
-        this.hideModalOpener();
-        const openerExpirationDate = new Date().getTime() + this.reopenDays * 24 * 60 * 60 * 1000;
-        localStorage.setItem('newsletterOpenerClosed', openerExpirationDate);
-      });
-    }
-  }
-  hideModalOpener() {
-    if (this.modalOpener) {
-      this.modalOpener.style.display = 'none';
-    }
+
+  setupDesignMode() {
+    if (!Shopify.designMode) return;
+
+    document.addEventListener('shopify:section:select', (e) => {
+      if (e.detail.sectionId === this.config.sectionId) this.show();
+    });
+
+    document.addEventListener('shopify:section:deselect', (e) => {
+      if (e.detail.sectionId === this.config.sectionId) this.hide();
+    });
   }
 }
 

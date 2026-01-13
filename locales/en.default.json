@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "You are eligible for free shipping."
-      }
+      },
+      "discounts": "Discounts",
+      "discount_code": "Discount code",
+      "discount_code_error":  "Discount code cannot be applied to your cart",
+      "shipping_discount_error": "Shipping discounts are shown at checkout after adding an address",
+      "discount_apply": "Apply",
+      "discount_applied": "Applied discount code: {{ code }}",
+      "remove_discount": "Remove discount code: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Home",

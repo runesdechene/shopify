@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "Вы имеете право на бесплатную доставку."
-      }
+      },
+      "discounts": "Скидки",
+      "discount_code": "Код скидки",
+      "discount_code_error": "Код скидки не может быть применен к вашей корзине",
+      "shipping_discount_error": "Скидки для доставки отображаются при оформлении заказа после добавления адреса",
+      "discount_apply": "Применить",
+      "discount_applied": "Применен код скидки: {{ code }}",
+      "remove_discount": "Удалить код скидки: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Дом",

@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "Είστε κατάλληλοι για δωρεάν αποστολή."
-      }
+      },
+      "discounts": "Έκπτωση",
+      "discount_code": "Κωδικός έκπτωσης",
+      "discount_code_error": "Ο κωδικός έκπτωσης δεν μπορεί να εφαρμοστεί στο καλάθι σας",
+      "shipping_discount_error": "Η έκπτωση για την αποστολή εμφανίζεται στο ταμείο μετά την προσθήκη διεύθυνσης",
+      "discount_apply": "Εφαρμογή",
+      "discount_applied": "Εφαρμόστηκε κωδικός έκπτωσης: {{ code }}",
+      "remove_discount": "Αφαίρεση κωδικού έκπτωσης: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Σπίτι",

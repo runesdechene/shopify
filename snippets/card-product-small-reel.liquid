@@ -28,9 +28,9 @@
             
         </a>
     </div>
-    <div class="product-card-sm__info flex-1 grow truncate">
+    <div class="product-card-sm__info flex-1 grow">
         <div class="product-card-sm__info__title mb-1">
-            <a class="cart-item__name truncate" href="{{ card_product.url }}">{{ card_product.title |  escape }}</a>
+            <a class="cart-item__name !line-clamp-2" href="{{ card_product.url }}">{{ card_product.title |  escape }}</a>
         </div>
         <div class="product-card-sm__info__price">
             {% render 'price', product: card_product, price_class: 'text-size-small', show_compare_at_price: true %}

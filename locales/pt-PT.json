@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "Você tem direito a frete grátis."
-      }
+      },
+      "discounts": "Descontos",
+      "discount_code": "Código de desconto",
+      "discount_code_error": "O código de desconto não pode ser aplicado ao seu carrinho",
+      "shipping_discount_error": "Os descontos de envio são mostrados no checkout após adicionar um endereço",
+      "discount_apply": "Aplicar",
+      "discount_applied": "Desconto aplicado: {{ code }}",
+      "remove_discount": "Remover desconto: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Lar",

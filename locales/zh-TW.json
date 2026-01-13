@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "您有資格享受免費送貨。"
-      }
+      },
+      "discounts": "折扣",
+      "discount_code": "折扣代码",
+      "discount_code_error": "折扣代码不能应用于您的购物车",
+      "shipping_discount_error": "运输折扣在添加地址后在结账时显示",
+      "discount_apply": "应用",
+      "discount_applied": "应用的折扣代码: {{ code }}",
+      "remove_discount": "删除折扣代码: {{ code }}"
     },
     "breadcrumbs": {
       "home": "家",

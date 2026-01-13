@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "Du er kvalifisert for gratis frakt."
-      }
+      },
+      "discounts": "Rabatter",
+      "discount_code": "Rabattkode",
+      "discount_code_error": "Rabattkoden kan ikke brukes på handlekurven",
+      "shipping_discount_error": "Rabatter for frakt vises ved kassen etter at du har lagt til en adresse",
+      "discount_apply": "Bruk",
+      "discount_applied": "Brukt rabattkode: {{ code }}",
+      "remove_discount": "Fjern rabattkode: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Hjem",

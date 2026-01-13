@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "Kwalifikujesz się do bezpłatnej wysyłki."
-      }
+      },
+      "discounts": "Rabaty",
+      "discount_code": "Kod rabatu",
+      "discount_code_error": "Kod rabatu nie może być zastosowany do twojego koszyka",
+      "shipping_discount_error": "Rabaty dla wysyłki są wyświetlane przy kasie po dodaniu adresu",
+      "discount_apply": "Zastosuj",
+      "discount_applied": "Zastosowany kod rabatu: {{ code }}",
+      "remove_discount": "Usuń kod rabatu: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Dom",

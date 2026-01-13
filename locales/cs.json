@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "Máte nárok na dopravu zdarma."
-      }
+      },
+      "discounts": "Slevy",
+      "discount_code": "Kód slevy",
+      "discount_code_error": "Kód slevy nemůže být přidán do vašeho košíku",
+      "shipping_discount_error": "Slevy na dopravu se zobrazují při platbě po přidání adresy",
+      "discount_apply": "Přidat",
+      "discount_applied": "Přidán kód slevy: {{ code }}",
+      "remove_discount": "Odstranit kód slevy: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Domov",

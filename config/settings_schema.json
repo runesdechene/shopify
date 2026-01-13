@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "Nimbus",
-    "theme_version": "1.6.0",
+    "theme_version": "1.7.0",
     "theme_author": "OranThemes",
     "theme_documentation_url": "https://oranthemes.gitbook.io/nimbus-theme",
     "theme_support_url": "https://oranthemes.com/contact/"
@@ -1057,10 +1057,15 @@
         "default": true
       },
       {
-        "type": "checkbox",
-        "id": "card_show_secondary_image",
-        "label": "Show secondary image on hover",
-        "default": true
+        "type": "select",
+        "id": "card_hover_type",
+        "label": "Hover produt card type",
+        "options": [
+          { "value": "secondary_image", "label": "Secondary image" },
+          { "value": "slider_image", "label": "Slider image" },
+          { "value": "none", "label": "None" }
+        ],
+        "default": "secondary_image"
       },
       {
         "type": "checkbox",
@@ -1113,8 +1118,7 @@
           }
         ],
         "default": "color",
-        "label": "Color type",
-        "info": "Variant images are hidden on mobile and small screens."
+        "label": "Color type"
       },
       {
         "type": "select",
@@ -1353,7 +1357,7 @@
             "label": "Popup notification"
           }
         ],
-        "default": "notification",
+        "default": "drawer",
         "label": "Cart type"
       },
       {
@@ -1419,6 +1423,19 @@
         "id": "show_button_view_cart",
         "label": "Show button view cart",
         "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_discount_code",
+        "label": "Show discount code",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "discount_code_info",
+        "label": "Discount code info",
+        "default": "Use code WELCOME10 for 10% off your order",
+        "visible_if": "{{ settings.show_discount_code == true }}"
       },
       {
         "type": "header",

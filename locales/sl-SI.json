@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "Upravičeni ste do brezplačne dostave."
-      }
+      },
+      "discounts": "Znižke",
+      "discount_code": "Koda znižke",
+      "discount_code_error": "Koda znižke ne more biti uporabljena za vaš košarico",
+      "shipping_discount_error": "Znižke za pošiljanje so prikazane pri pokladni po dodanju naslova",
+      "discount_apply": "Uporabi",
+      "discount_applied": "Uporabljena koda znižke: {{ code }}",
+      "remove_discount": "Odstrani kodo znižke: {{ code }}"
     },
     "breadcrumbs": {
       "home": "domov",

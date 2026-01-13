@@ -20,6 +20,11 @@
   {%- if settings.enable_css_subscriptions -%}
     {{ 'style-subscriptions.css' | asset_url | stylesheet_tag }}
   {%- endif -%}
+  {% assign upsell_add_on = section.blocks | where: 'type', 'upsell_add_on' %}
+  {% if upsell_add_on %}
+    {{ 'upsell-add-on.css' | asset_url | stylesheet_tag }}
+  {% endif %}
+
 
   {%- style -%}
     .section-{{ section.id }}-padding {
@@ -54,9 +59,9 @@
   {%- endif -%}
 
 
-{% render 'rdc_hiding_disabled_variants' %} 
-{% render 'rdc_colors_labels' %} 
   
+
+
   {%- if first_3d_model -%}
     {{ 'component-product-model.css' | asset_url | stylesheet_tag }}
     <link id="ModelViewerStyle" rel="stylesheet" href="https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css" media="print" onload="this.media='all'">
@@ -572,6 +577,8 @@
                     </div>
                 </div>
               {%- endif -%}
+            {%- when 'up_sell_add_on' -%}
+              {%- render 'upsell-add-on', block: block, product: product, section: section -%}
             {%- when 'custom_option' -%}
               {%- if block.settings.label != blank -%}
               <div class="product__options product__info-inner" {{ block.shopify_attributes }}>
@@ -3381,6 +3388,25 @@
           "limit": 6
         }
       ]
+    },
+    {
+      "type": "up_sell_add_on",
+      "name": "Upsell add on",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Up sell add-on"
+        },
+        {
+          "type": "product_list",
+          "id": "products",
+          "label": "Products",
+          "limit": 6
+        }
+      ]
     }
   ],
   "settings": [
@@ -3584,14 +3610,14 @@
         "id": "grouping_type",
         "label": "Grouping type",
         "options": [
-            {
-                "value": "variant_group",
-                "label": "Variant group"
-            },
-            {
-                "value": "alt_image_group",
-                "label": "Alt image group"  
-            }
+          {
+              "value": "variant_group",
+              "label": "Variant group"
+          },
+          {
+              "value": "alt_image_group",
+              "label": "Alt image group"  
+          }
         ],
         "default": "variant_group",
         "info": "Select how media should be grouped. With variant group, the media will be grouped by variant. With alt image group, the media will be grouped by the alt text of the image. use (#oran_) for alt image group"

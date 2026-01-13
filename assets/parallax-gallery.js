@@ -2,6 +2,9 @@ class ParallaxGallery extends HTMLElement {
   constructor() {
     super();
     this._onScroll = this._onScroll.bind(this);
+    this._update = this._update.bind(this);
+    this._ticking = false;
+    this._isIntersecting = false;
   }
 
   connectedCallback() {
@@ -19,24 +22,44 @@ class ParallaxGallery extends HTMLElement {
       offset: Number(item.dataset.offset) || 0,
     }));
 
-    window.addEventListener("scroll", this._onScroll);
-    this._onScroll();
+    // Intersection Observer element visible
+    this._observer = new IntersectionObserver(
+      (entries) => {
+        this._isIntersecting = entries[0].isIntersecting;
+        if (this._isIntersecting) {
+          this._update();
+        }
+      },
+      { rootMargin: "50px" } 
+    );
+    
+    this._observer.observe(this.container);
+    window.addEventListener("scroll", this._onScroll, { passive: true });
   }
 
   disconnectedCallback() {
     window.removeEventListener("scroll", this._onScroll);
+    if (this._observer) {
+      this._observer.disconnect();
+    }
   }
 
   _onScroll() {
+    if (!this._isIntersecting || this._ticking) return;
+    
+    window.requestAnimationFrame(this._update);
+    this._ticking = true;
+  }
+
+  _update() {
+    if (!this._isIntersecting) {
+      this._ticking = false;
+      return;
+    }
+
     const rect = this.container.getBoundingClientRect();
     const windowHeight = window.innerHeight;
     
-    const isVisible = 
-      rect.top < windowHeight &&
-      rect.bottom > 0;
-
-    if (!isVisible) return;
-
     const progress = (windowHeight - rect.top) / (windowHeight + rect.height);
     const scrollProgress = Math.max(0, Math.min(1, progress));
     
@@ -49,8 +72,10 @@ class ParallaxGallery extends HTMLElement {
         movement = -scrollProgress * offset;
       }
 
-      element.style.transform = `translate(0%, ${movement}px)`;
+      element.style.transform = `translate3d(0, ${movement}px, 0)`;
     });
+
+    this._ticking = false;
   }
 }
 

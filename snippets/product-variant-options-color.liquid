@@ -103,11 +103,12 @@
           <span class="sr-only">{{ value -}}</span> 
         </label>
       {%- elsif color_picker_type == 'native_color_swatch' -%}
+        {%- assign swatch_value_text = value | escape -%}
         {%
           render 'swatch-input',
           id: input_id,
           name: option.name,
-          value: value | escape,
+          value: swatch_value_text,
           swatch: value.swatch,
           product_form_id: product_form_id,
           checked: value.selected,

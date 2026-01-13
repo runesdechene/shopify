@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "Turite teisę į nemokamą pristatymą."
-      }
+      },
+      "discounts": "Nuolaidos",
+      "discount_code": "Nuolaidos kodas",
+      "discount_code_error": "Nuolaidos kodas negali būti pridėtas į jūsų krepšelį",
+      "shipping_discount_error": "Nuolaidos pristatymui rodomos pristatymo metu po adresų pridėjimo",
+      "discount_apply": "Pridėti",
+      "discount_applied": "Pridėtas nuolaidos kodas: {{ code }}",
+      "remove_discount": "Pašalinti nuolaidos kodą: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Pradžia",

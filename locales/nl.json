@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "U komt in aanmerking voor gratis verzending."
-      }
+      },
+      "discounts": "Kortingen",
+      "discount_code": "Kortingscode",
+      "discount_code_error": "Kortingscode kan niet worden toegepast op uw winkelwagen",
+      "shipping_discount_error": "Kortingen voor verzending worden getoond bij het afrekenen na het toevoegen van een adres",
+      "discount_apply": "Toepassen",
+      "discount_applied": "Toegepast kortingscode: {{ code }}",
+      "remove_discount": "Verwijder kortingscode: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Thuis",

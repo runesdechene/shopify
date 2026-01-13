@@ -1,0 +1,24 @@
+{% liquid
+  assign drag_enabled = drag_enabled | default: false
+%}
+<product-card-slider class="w-full h-full product-card-slider block">
+  <div
+  id="product-card-slider-{{ section.id }}-{{ card_product.id }}"
+  class="product-card-slider splide-slider splide"
+  data-splide='{"type":"slide", "focusableNodes":false, "speed":500, "perPage":1,"lazyLoad": "nearby","preloadPages":1, "perMove": 1,"waitForTransition": false,"rewind":false,"updateOnMove":true,"pagination":false,"arrows":true,"autoplay":false,"pauseOnHover":true,"pauseOnFocus":true, "gap": "0", "flickPower":200,"flickMaxPages":1, "drag":{{ drag_enabled }}}' 
+  aria-labelledby="Product Card Slider"
+  >
+      <div class="splide__track">
+      <div class="splide__list">
+      {%- for media in product_images -%}
+        <div class="splide__slide w-full"  data-variant-image-src="{{ media.src | image_url: width: 1000 }}" >
+          <a class="w-full h-full product-link grid" href="{{ card_product.url }}" title="{{ card_product.title | escape }}">
+            {%- render 'responsive-image' , image: media.preview_image, sizes: sizes, image_aspect_ratio: image_aspect_ratio, wrapper_class : 'responsive-image' -%}
+          </a>
+        </div>
+      {%- endfor -%}
+      </div>
+    </div>
+    <div class="product-card-slider__underline"></div>
+  </div>
+</product-card-slider>

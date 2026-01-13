@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "Sie haben Anspruch auf kostenlosen Versand."
-      }
+      },
+      "discounts": "Rabatt",  
+      "discount_code": "Rabattcode",
+      "discount_code_error": "Rabattcode kann nicht auf Ihren Warenkorb angewendet werden",
+      "shipping_discount_error": "Rabatt für Versand wird an der Kasse angezeigt, nachdem Sie eine Adresse hinzugefügt haben",
+      "discount_apply": "Anwenden",
+      "discount_applied": "Rabattcode angewendet: {{ code }}",
+      "remove_discount": "Rabattcode entfernen: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Heim",

@@ -303,7 +303,7 @@ assign matching_block_names = matching_block_names | split:","
                               <li class="list-menu__item facets__item {% if use_color %} list-color {% elsif use_block  %} list-block {% endif %}{% if forloop.index > show_more_number and filter_type == 'vertical' and use_color == false %} show-more-item hidden{% endif %}">
                                 {%- if presentation == 'swatch' -%}
                                   <div class="{{ label_class }}">
-                                    <div class="swatch-input-wrapper swatch-{{ settings.color_swatch_style }}">
+                                    <div class="swatch-input-wrapper swatch-{{ settings.color_swatch_style }} metafields-swatch" >
                                       {% render 'swatch-input',
                                         id: input_id,
                                         type: 'checkbox',
@@ -396,7 +396,7 @@ assign matching_block_names = matching_block_names | split:","
                     >
                       <summary class="facets__summary caption-large focus-offset">
                         <div>
-                          <span>{{ filter.label | escape }}</span>
+                          <span class="facets__summary-label ">{{ filter.label | escape }}</span>
                           {% render 'icon-caret' %}
                         </div>
                       </summary>

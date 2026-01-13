@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "Du er berettiget til gratis forsendelse."
-      }
+      },
+      "discounts": "Rabat",
+      "discount_code": "Rabatkode",
+      "discount_code_error": "Rabatkoden kan ikke anvendes på din kurv",
+      "shipping_discount_error": "Rabatten for forsendelse vises ved kassen efter at have tilføjet en adresse",
+      "discount_apply": "Anvend",
+      "discount_applied": "Anvendt rabatkode: {{ code }}",
+      "remove_discount": "Fjern rabatkode: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Hjem",

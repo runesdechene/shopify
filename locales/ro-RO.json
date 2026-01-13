@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "Sunteți eligibil pentru transport gratuit."
-      }
+      },
+      "discounts": "Reduceri",
+      "discount_code": "Cod redus",
+      "discount_code_error": "Codul redus nu poate fi aplicat la coșul dumneavoastră",
+      "shipping_discount_error": "Reducerile pentru transport se afișează la finalizare după adăugarea unei adrese",
+      "discount_apply": "Aplică",
+      "discount_applied": "Redus aplicat: {{ code }}",
+      "remove_discount": "Elimină codul redus: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Acasă",

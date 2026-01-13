@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "Vous avez droit à la livraison gratuite."
-      }
+      },
+      "discounts": "Réductions",
+      "discount_code": "Code de réduction",
+      "discount_code_error": "Le code de réduction ne peut pas être appliqué à votre panier",
+      "shipping_discount_error": "Les réductions de livraison s'affichent à la caisse après avoir ajouté une adresse",
+      "discount_apply": "Appliquer",
+      "discount_applied": "Code de réduction appliqué: {{ code }}",
+      "remove_discount": "Supprimer le code de réduction: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Maison",

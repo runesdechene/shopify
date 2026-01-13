@@ -149,6 +149,7 @@
   }
 }
 .shopable-video__item--product-in .product-card-sm__info{
+  --color-heading:255 255 255;
   --color-foreground:255 255 255;
 }
 .shopable-video__item-product .product-card-sm .quick-add{

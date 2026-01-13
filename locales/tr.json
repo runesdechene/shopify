@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "Ücretsiz kargo avantajından yararlanabilirsiniz."
-      }
+      },
+      "discounts": "İndirimler",
+      "discount_code": "İndirim kodu",
+      "discount_code_error": "İndirim kodu sepetinize uygulanamaz",
+      "shipping_discount_error": "Kargo indirimleri adres eklendikten sonra kasada görünür",
+      "discount_apply": "Uygula",
+      "discount_applied": "Uygulanan indirim kodu: {{ code }}",
+      "remove_discount": "İndirim kodunu kaldır: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Ev",

@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "Eres elegible para envío gratis."
-      }
+      },
+      "discounts": "Descuentos",
+      "discount_code": "Código de descuento",
+      "discount_code_error": "El código de descuento no puede ser aplicado a su carrito",
+      "shipping_discount_error": "Los descuentos de envío se muestran al finalizar la compra después de agregar una dirección",
+      "discount_apply": "Aplicar",
+      "discount_applied": "Código de descuento aplicado: {{ code }}",
+      "remove_discount": "Eliminar código de descuento: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Hogar",

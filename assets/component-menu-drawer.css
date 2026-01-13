@@ -82,14 +82,6 @@ details[open].menu-opening > .menu-drawer__submenu{
   opacity:0;
 }
 
-/* Fix: Ne pas cacher le contenu des sous-menus ouverts */
-.js .menu-drawer__submenu .menu-drawer__menu-item,
-.js details[open] .menu-drawer__submenu .menu-drawer__menu-item {
-  transform: translateX(0) !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
 @media screen and (min-width: 750px) {
   .menu-drawer {
     width: 40rem;
@@ -188,40 +180,6 @@ details[open].menu-opening > .menu-drawer__submenu{
   z-index: 1;
   transform: translateX(100%);
   visibility: hidden;
-  opacity: 0;
-}
-
-/* Fix: Afficher les sous-menus quand le details parent est ouvert */
-details[open] > .menu-drawer__submenu,
-.js details[open] > .menu-drawer__submenu {
-  transform: translateX(0) !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  display: block !important;
-}
-
-/* S'assurer que les sous-menus imbriqués fonctionnent aussi */
-details[open].menu-opening > .menu-drawer__submenu,
-.js details[open].menu-opening > .menu-drawer__submenu {
-  transform: translateX(0) !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  display: block !important;
-}
-
-/* Forcer l'affichage du contenu interne du sous-menu */
-.menu-drawer__submenu .menu-drawer__inner-submenu {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-.menu-drawer__submenu .menu-drawer__menu {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
 }
 
 .js .menu-drawer__submenu .menu-drawer__submenu {

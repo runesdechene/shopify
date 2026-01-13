@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "Bạn đủ điều kiện để được miễn phí vận chuyển."
-      }
+      },
+      "discounts": "Chiết khấu",
+      "discount_code": "Mã chiết khấu",
+      "discount_code_error": "Mã chiết khấu không thể được áp dụng cho giỏ hàng của bạn",
+      "shipping_discount_error": "Chiết khấu vận chuyển được hiển thị khi thanh toán sau khi thêm địa chỉ",
+      "discount_apply": "Áp dụng",
+      "discount_applied": "Chiết khấu đã áp dụng: {{ code }}",
+      "remove_discount": "Xóa mã chiết khấu: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Trang chủ",

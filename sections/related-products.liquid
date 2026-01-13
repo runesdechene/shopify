@@ -49,7 +49,7 @@ assign section_width = section.settings.section_width
           aria-labelledby="complementary-products--heading">
             
             <div class="splide__track mb:splide-right-overflow{% if enable_overflow_visible %} splide-right-overflow {% endif %}">
-                <div class="splide__list">
+                <div class="splide__list related-products-list">
                   {% for recommendation in recommendations.products %}
                     <div class="splide__slide">
                       <div class="h-full {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="--animation-order:{{ forloop.index }};">

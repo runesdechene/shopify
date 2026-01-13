@@ -364,6 +364,9 @@ a.product__text {
   .slide-counter__main{
     display: none;
   }
+  #product-modal-content media-gallery[data-desktop-layout="thumbnail"] .slide-counter__main{
+    display: block;
+  }
 }
 @media screen and (max-width: 768px) {
   .product__media-list .thumbnail-carousel:not(.is-initialized){

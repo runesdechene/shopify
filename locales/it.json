@@ -355,7 +355,14 @@
       },
       "free_shipping": {
         "eligibility_notice": "Hai diritto alla spedizione gratuita."
-      }
+      },
+      "discounts": "Sconti",
+      "discount_code": "Codice sconto",
+      "discount_code_error": "Il codice sconto non può essere applicato al tuo carrello",
+      "shipping_discount_error": "I sconti di spedizione vengono mostrati al checkout dopo l'aggiunta di un indirizzo",
+      "discount_apply": "Applica",
+      "discount_applied": "Codice sconto applicato: {{ code }}",
+      "remove_discount": "Rimuovi codice sconto: {{ code }}"
     },
     "breadcrumbs": {
       "home": "Casa",

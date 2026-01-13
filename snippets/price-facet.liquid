@@ -1,22 +1,11 @@
-{% liquid
-    assign currencies_using_comma_decimals = 'ANG,ARS,BRL,BYN,BYR,CLF,CLP,COP,CRC,CZK,DKK,EUR,HRK,HUF,IDR,ISK,MZN,NOK,PLN,RON,RUB,SEK,TRY,UYU,VES,VND' | split: ','
-    assign uses_comma_decimals = false
-    if currencies_using_comma_decimals contains cart.currency.iso_code
-      assign uses_comma_decimals = true
-    endif
 
-    if uses_comma_decimals
-      assign from_value = filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
-      assign to_value = filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
-      assign max = filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.'
-    else
-      assign from_value = filter.min_value.value | money_without_currency | replace: ',', ''
-      assign to_value = filter.max_value.value | money_without_currency | replace: ',', ''
-      assign max = filter.range_max | money_without_currency | replace: ',', ''
-    endif
-    assign to_value = to_value | default: max
-  %}
-<div class="price-slider mb-8 pl-4 pr-4">
+{%- liquid 
+    assign from_value = filter.min_value.value | default: 0.0 | divided_by: 100.0 | ceil
+    assign to_value = filter.max_value.value | default: filter.range_max | divided_by: 100.0 | ceil
+    assign max = filter.range_max | divided_by: 100.0 | ceil
+    assign to_value = to_value | default: max | at_least: 1 
+-%} 
+<div class="price-slider mb-10 px-8">
   <div class="price-slider-range" 
   data-min="0" 
   data-max="{{ max }}"
@@ -36,7 +25,7 @@
         value="{{ from_value }}"
       {%- endif -%}
       type="text"
-      inputmode="decimal"
+      inputmode="numeric"
       placeholder="0"
       data-pattern="\d| |,|\."
       data-min="0"
@@ -59,8 +48,8 @@
         value="{{ to_value }}"
       {%- endif -%}
       type="text"
-      inputmode="decimal"
-      placeholder="{{ filter.range_max | money_without_currency }}"
+      inputmode="numeric"
+      placeholder="{{ to_value }}"
       data-pattern="\d| |,|\."
       data-min="0"
       data-max="{{ max }}"

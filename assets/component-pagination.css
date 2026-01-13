@@ -40,7 +40,7 @@
 .pagination__item--current{
   background-color: rgb(var(--color-foreground));
   border-color: rgb(var(--color-foreground));
-  color: #fff;
+  color: rgb(var(--color-background));
 }
 
 .pagination__item .icon-caret {
