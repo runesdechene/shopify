@@ -39,7 +39,7 @@
       }
     },
     "main": {
-      "type": "main-product",
+      "type": "rdc_main-product",
       "blocks": {
         "title": {
           "type": "title",

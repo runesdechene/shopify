@@ -55,7 +55,7 @@
       }
     },
     "main": {
-      "type": "main-product",
+      "type": "rdc_main-product",
       "blocks": {
         "title": {
           "type": "title",
@@ -306,9 +306,7 @@
           }
         }
       },
-      "block_order": [
-        "judge_me_reviews_review_widget_J6Aj9B"
-      ],
+      "block_order": ["judge_me_reviews_review_widget_J6Aj9B"],
       "custom_css": [],
       "settings": {
         "section_width": "container",
@@ -328,9 +326,7 @@
           }
         }
       },
-      "block_order": [
-        "judge_me_reviews_featured_carousel_Nt8FKX"
-      ],
+      "block_order": ["judge_me_reviews_featured_carousel_Nt8FKX"],
       "disabled": true,
       "settings": {
         "section_width": "container",
@@ -531,11 +527,7 @@
           }
         }
       },
-      "block_order": [
-        "column_iCiCVD",
-        "column_NyVKTD",
-        "column_7TMjH4"
-      ],
+      "block_order": ["column_iCiCVD", "column_NyVKTD", "column_7TMjH4"],
       "disabled": true,
       "custom_css": [
         ".responsive-image {padding: 70px;}",
