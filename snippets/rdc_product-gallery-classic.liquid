@@ -306,7 +306,7 @@
           // No color filter - show all
           items.forEach(item => item.style.display = '');
         } else {
-          // Filter by color name in filename OR featured image for active variant
+          // Filter by color name in filename OR featured image for active variant OR 'total' in filename
           items.forEach(item => {
             const imageSrc = (item.dataset.imageSrc || '').toLowerCase();
             const isFeatured = item.dataset.isFeatured === 'true';
@@ -315,9 +315,10 @@
             
             const hasColorInName = imageSrc.includes(colorName);
             const isFeaturedForVariant = isFeatured && matchesVariant;
+            const hasTotal = imageSrc.includes('total');
             
-            // Show if: color name in filename OR (is featured AND matches current variant)
-            item.style.display = (hasColorInName || isFeaturedForVariant) ? '' : 'none';
+            // Show if: color name in filename OR (is featured AND matches current variant) OR has 'total'
+            item.style.display = (hasColorInName || isFeaturedForVariant || hasTotal) ? '' : 'none';
           });
         }
         
