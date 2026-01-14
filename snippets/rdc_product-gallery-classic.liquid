@@ -24,7 +24,7 @@
   .rdc-classic-gallery__item {
     background-color: #EEEDE6;
     border-radius: 8px;
-    overflow: hidden;
+    overflow: visible;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     border: 2px solid transparent;
     cursor: pointer;
@@ -49,7 +49,7 @@
   .rdc-classic-gallery__item--main {
     width: 100%;
     height: auto;
-    margin-bottom: 1rem;
+    margin-bottom: 3rem;
     position: relative;
   }
 
@@ -177,12 +177,24 @@
   .rdc-classic-gallery__item.hidden-by-filter {
     display: none;
   }
+  
+  .rdc-classic-gallery__caption {
+    position: absolute;
+    bottom: -3.4rem;
+    left: 0;
+    right: 0;
+    text-align: left;
+    color: #333;
+    font-size: 16px;
+    line-height: 1.5;
+  }
 
   .rdc-classic-gallery__item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+    border-radius: 8px;
   }
 
   @media (max-width: 767px) {
@@ -262,6 +274,7 @@
           data-is-featured="{{ is_featured }}"
           data-attached-to-variant="{{ media.attached_to_variant? }}"
           data-product-type="{% render 'rdc_product-type-mapping', product_type: product.type %}"
+          data-product-title="{{ product.title | escape }}"
         >
           {{
             media
@@ -299,6 +312,44 @@
       const modalCaption = document.getElementById('RdcModalCaption-{{ section.id }}');
       const modalClose = document.getElementById('RdcModalClose-{{ section.id }}');
       
+      // Update gallery caption with product type of visible main image
+      function updateGalleryCaption() {
+        // Remove all existing captions
+        const existingCaptions = gallery.querySelectorAll('.rdc-classic-gallery__caption');
+        existingCaptions.forEach(cap => cap.remove());
+        
+        // Find visible main image
+        const mainItems = gallery.querySelectorAll('.rdc-classic-gallery__item--main');
+        let visibleMainItem = null;
+        
+        for (const item of mainItems) {
+          if (item.style.display !== 'none') {
+            visibleMainItem = item;
+            break;
+          }
+        }
+        
+        // Create and append caption to visible main item
+        if (visibleMainItem) {
+          const img = visibleMainItem.querySelector('img');
+          const altText = img ? (img.alt || '').trim() : '';
+          const productType = visibleMainItem.dataset.productType || '';
+          const productTitle = visibleMainItem.dataset.productTitle || '';
+          
+          // If ALT is empty or equals product title (Shopify default), use product type mapping
+          // Otherwise use the custom ALT text
+          let captionText = productType;
+          if (altText && altText !== productTitle) {
+            captionText = altText;
+          }
+          
+          const caption = document.createElement('p');
+          caption.className = 'rdc-classic-gallery__caption';
+          caption.innerHTML = captionText;
+          visibleMainItem.appendChild(caption);
+        }
+      }
+      
       // Add zoom button to main image
       function addZoomButton() {
         // Remove ALL existing zoom buttons from entire gallery
@@ -331,12 +382,17 @@
             modalImage.src = img.src.replace(/_(small|compact|medium|large|grande|pico|icon|thumb|small|compact|medium|large|grande|1024x1024|2048x2048|master)\./, '_2048x2048.');
             modalImage.alt = img.alt;
             
-            // Set caption: always use product type mapping (ignore ALT text)
+            // Set caption: use product type mapping if ALT is empty or equals product title
+            const altText = (img.alt || '').trim();
             const productType = visibleMainItem.dataset.productType || '';
-            console.log('=== CAPTION DEBUG ===');
-            console.log('data-product-type:', productType);
-            console.log('visibleMainItem:', visibleMainItem);
-            modalCaption.innerHTML = productType;
+            const productTitle = visibleMainItem.dataset.productTitle || '';
+            
+            let captionText = productType;
+            if (altText && altText !== productTitle) {
+              captionText = altText;
+            }
+            
+            modalCaption.innerHTML = captionText;
             
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -399,9 +455,10 @@
           lastItem.classList.add('rdc-classic-gallery__item--single');
         }
         
-        // After applying classes, equalize row heights and add zoom button
+        // After applying classes, equalize row heights, add zoom button, and update caption
         setTimeout(equalizeRowHeights, 100);
         setTimeout(addZoomButton, 150);
+        setTimeout(updateGalleryCaption, 150);
       }
       
       // Equalize row heights based on shortest image (with items parameter)
@@ -603,8 +660,9 @@
                 equalizeRowHeightsWithItems(updatedItemsForHeight);
               }, 100);
               
-              // Move zoom button to new main image
+              // Move zoom button to new main image and update caption
               setTimeout(addZoomButton, 150);
+              setTimeout(updateGalleryCaption, 150);
             }, 50);
           }, 200);
         });
