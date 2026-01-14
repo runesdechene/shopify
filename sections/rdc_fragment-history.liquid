@@ -1,0 +1,197 @@
+{%- comment -%}
+  RDC Fragment History Section
+
+  Displays the story/history of the fragment (illustration) associated with the product.
+  Retrieves data from the "Reliques" metaobject linked to the product.
+{%- endcomment -%}
+
+{% style %}
+  .rdc-fragment-history {
+    padding: 4rem 0;
+  }
+
+  .rdc-fragment-history__container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .rdc-fragment-history h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    color: #534f4f;
+    text-align: center;
+    margin-bottom: 1rem;
+    font-family: var(--font-heading-family);
+  }
+
+  .rdc-fragment-history__heading {
+    font-size: 2.8rem;
+    font-weight: 400;
+    color: #534f4f;
+    text-align: center;
+    margin-bottom: 3rem;
+    font-family: var(--font-heading-family);
+  }
+
+  .rdc-fragment-history__content {
+    font-size: 1.6rem;
+    line-height: 1.8;
+    color: #534f4f;
+    text-align: center;
+  }
+
+  .rdc-fragment-history__content p {
+    margin-bottom: 1.5rem;
+  }
+
+  .rdc-fragment-history__tags {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 3rem;
+  }
+
+  .rdc-fragment-history__tag {
+    background: #eeede6;
+    padding: 0.8rem 1.6rem;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    color: #534f4f;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  @media screen and (max-width: 749px) {
+    .rdc-fragment-history__heading {
+      font-size: 2.2rem;
+    }
+
+    .rdc-fragment-history__content {
+      font-size: 1.4rem;
+    }
+  }
+{% endstyle %}
+
+<section class="rdc-fragment-history" data-section-id="{{ section.id }}">
+  <div class="rdc-fragment-history__container">
+    {%- if product.metafields.custom.illustration != blank -%}
+      {%- assign relique = product.metafields.custom.illustration.value -%}
+
+      {%- comment -%} Heading {%- endcomment -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="rdc-fragment-history__heading">
+          {{ section.settings.heading }}
+        </h2>
+      {%- elsif relique.name != blank -%}
+        <h1>{{ relique.name }}</h1>
+        <h2 class="rdc-fragment-history__heading">L'histoire derrière ce fragment</h2>
+      {%- endif -%}
+
+      {%- comment -%} Content from metaobject {%- endcomment -%}
+      {%- if section.settings.content_source == 'metaobject' -%}
+        {%- if relique.citation != blank -%}
+          <div class="rdc-fragment-history__content rte">
+            {{ relique.citation | metafield_text }}
+          </div>
+        {%- endif -%}
+      {%- else -%}
+        {%- comment -%} Custom content from section settings {%- endcomment -%}
+        {%- if section.settings.custom_content != blank -%}
+          <div class="rdc-fragment-history__content rte">
+            {{ section.settings.custom_content }}
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- comment -%} Display tags if enabled {%- endcomment -%}
+      {%- if section.settings.show_tags and relique.tags != blank -%}
+        <div class="rdc-fragment-history__tags">
+          {%- for tag in relique.tags.value -%}
+            <span class="rdc-fragment-history__tag">{{ tag }}</span>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+    {%- else -%}
+      {%- comment -%} Fallback if no illustration metaobject {%- endcomment -%}
+      {%- if section.settings.custom_content != blank -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="rdc-fragment-history__heading">
+            {{ section.settings.heading }}
+          </h2>
+        {%- endif -%}
+        <div class="rdc-fragment-history__content rte">
+          {{ section.settings.custom_content }}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Fragment History",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "L'histoire du fragment",
+      "info": "Leave blank to use 'L'histoire de [Fragment Name]'"
+    },
+    {
+      "type": "select",
+      "id": "content_source",
+      "label": "Content source",
+      "options": [
+        {
+          "value": "metaobject",
+          "label": "From illustration metaobject"
+        },
+        {
+          "value": "custom",
+          "label": "Custom content"
+        }
+      ],
+      "default": "metaobject",
+      "info": "Choose whether to display content from the illustration metaobject or use custom content"
+    },
+    {
+      "type": "richtext",
+      "id": "custom_content",
+      "label": "Custom content",
+      "info": "Only used if 'Custom content' is selected as content source, or if no illustration is linked to the product"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Show tags",
+      "default": true,
+      "info": "Display tags from the illustration metaobject"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Fragment History"
+    }
+  ]
+}
+{% endschema %}

@@ -128,68 +128,6 @@
             "middle_label": "<b> Standard unisexe</b> (prendre une en dessous pour femme)",
             "right_label": "<b>Grand</b> (Prendre une en dessous pour homme)"
           }
-        },
-        "separator_BcFrTM": {
-          "type": "separator",
-          "settings": {
-            "show_border": false,
-            "divider_space": 0.5
-          }
-        },
-        "collapsible_tab_6kicUP": {
-          "type": "collapsible_tab",
-          "settings": {
-            "heading": "Taille & coupe",
-            "heading_size": "h6",
-            "icon": "ruler",
-            "content": "",
-            "content_liquid": "{% if product.type contains \"L'Iconique\" %}\n  {% render \"rdc_taille_creator.liquid\" %}\n{% elsif product.type contains \"Le léger\" %}\n  {% render \"rdc_taille_crafter.liquid\" %}\n{% elsif product.type contains \"L'inébranlable\" %}\n  {% render \"rdc_taille_freestyler.liquid\" %}\n{% elsif product.type contains \"Débardeur Homme\" %}\n  {% render \"rdc_taille_stancer.liquid\" %}\n{% elsif product.type contains \"Le Hoodie\" %}\n  {% render \"rdc_taille_drummer.liquid\" %}\n{% elsif product.type contains \"Le Zippé\" %}\n  {% render \"rdc_taille_cultivator.liquid\" %}\n{% elsif product.type contains \"Le Solide\" %}\n  {% render \"rdc_tailles_slammer.liquid\" %}\n{% elsif product.type contains \"Débardeur Femme\" %}\n  {% render \"rdc_taille_ava.liquid\" %}\n{% endif %}",
-            "page": "",
-            "open_by_default": false
-          }
-        },
-        "collapsible_tab_bVRE3V": {
-          "type": "collapsible_tab",
-          "settings": {
-            "heading": "Entretien",
-            "heading_size": "h6",
-            "icon": "iron",
-            "content": "<ul><li>Lavage à 30°C maximum, </li><li>Éviter les assouplissants trop agressifs. </li><li>Ne pas repasser sur le motif.</li></ul>",
-            "content_liquid": "",
-            "page": "",
-            "open_by_default": false
-          }
-        },
-        "collapsible_tab_4UNrkz": {
-          "type": "collapsible_tab",
-          "settings": {
-            "heading": "Informations produit",
-            "heading_size": "h6",
-            "icon": "shirt",
-            "content": "",
-            "content_liquid": "{% if product.type contains \"L'Iconique\" or product.type contains \"Débardeur Femme\" or product.type contains \"Débardeur Homme\" %}\n  <ul>\n    <li>100% Coton biologique brossé</li>\n    <li>Tissage et coutures issues du commerce équitable</li>\n    <li>Maillage de textile supérieur</li>\n    <li>Savoir-faire d’impression</li>\n    <li>100% Français (DTG la plus récente)</li>\n    <li>Grammage épais de qualité (180g/m²)</li>\n  </ul>\n\n{% elsif product.type contains \"Le léger\" %}\n  <ul>\n    <li>100% Coton biologique brossé</li>\n    <li>Tissage et coutures issues du commerce équitable</li>\n    <li>Maillage de textile supérieur</li>\n    <li>Savoir-faire d’impression</li>\n    <li>100% Français (DTG la plus récente)</li>\n    <li>Grammage léger de qualité (150g/m²)</li>\n  </ul>\n\n{% elsif product.type contains \"Le Hoodie\" %}\n  <ul>\n    <li>100% Coton biologique brossé</li>\n    <li>Tissage et coutures issues du commerce équitable</li>\n    <li>Maillage de textile supérieur</li>\n    <li>Savoir-faire d’impression</li>\n    <li>100% Français (DTG la plus récente)</li>\n    <li>Grammage de qualité et ultra doux (280g/m²)</li>\n  </ul>\n\n{% elsif product.type contains \"Le Zippé\" or product.type contains \"L'inflexible\" %}\n  <ul>\n    <li>100% Coton biologique brossé</li>\n    <li>Tissage et coutures issues du commerce équitable</li>\n    <li>Maillage de textile supérieur</li>\n    <li>Savoir-faire d’impression</li>\n    <li>100% Français (DTG la plus récente)</li>\n    <li>Grammage lourd de qualité (350g/m²)</li>\n  </ul>\n\n{% elsif product.type contains \"Le Solide\" %}\n  <ul>\n    <li>100% Coton biologique brossé</li>\n    <li>Tissage et coutures issues du commerce équitable</li>\n    <li>Maillage de textile supérieur</li>\n    <li>Savoir-faire d’impression</li>\n    <li>100% Français (DTG la plus récente)</li>\n    <li>Grammage lourd de qualité (240g/m²)</li>\n  </ul>\n{% endif %}",
-            "page": "",
-            "open_by_default": false
-          }
-        },
-        "collapsible_tab_Lh8GPY": {
-          "type": "collapsible_tab",
-          "settings": {
-            "heading": "Délai de livraison",
-            "heading_size": "h6",
-            "icon": "check_mark",
-            "content": "<p>Chez Runes de Chêne, chaque commande que vous passez sur notre site internet est imprimée à la demande par nos soins, entre nos festivals nomades. Cela nous permet de limiter les pertes textiles et de réduire notre empreinte écologique. <br/>Veuillez donc noter que les délais de livraison sont en moyenne compris entre 15 et 25 jours.</p>",
-            "content_liquid": "",
-            "page": "",
-            "open_by_default": false
-          }
-        },
-        "separator_CgCj4T": {
-          "type": "separator",
-          "settings": {
-            "show_border": false,
-            "divider_space": 1
-          }
         }
       },
       "block_order": [
@@ -201,13 +139,7 @@
         "variant_picker",
         "buy_buttons",
         "aussi_disponible_z8cYjW",
-        "fit_guide_bXLzqH",
-        "separator_BcFrTM",
-        "collapsible_tab_6kicUP",
-        "collapsible_tab_bVRE3V",
-        "collapsible_tab_4UNrkz",
-        "collapsible_tab_Lh8GPY",
-        "separator_CgCj4T"
+        "fit_guide_bXLzqH"
       ],
       "custom_css": [
         ".rating-wrapper {margin: 0 !important;}",
@@ -241,6 +173,18 @@
         "border_color": "rgba(0,0,0,0)",
         "padding_top": 40,
         "padding_bottom": 12
+      }
+    },
+    "rdc_fragment_history_TdqawN": {
+      "type": "rdc_fragment-history",
+      "name": "Fragment History",
+      "settings": {
+        "heading": "L'histoire du fragment",
+        "content_source": "metaobject",
+        "custom_content": "",
+        "show_tags": true,
+        "bg_color": "",
+        "text_color": ""
       }
     },
     "174065208557f01da1": {
@@ -528,6 +472,7 @@
     "countdown_bar_rYcUTw",
     "breadcrumbs_ka3wVn",
     "main",
+    "rdc_fragment_history_TdqawN",
     "174065208557f01da1",
     "1740648643762116ab",
     "information-products",
