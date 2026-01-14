@@ -79,6 +79,7 @@
         },
         "custom_liquid_d9wLpx": {
           "type": "custom_liquid",
+          "disabled": true,
           "settings": {
             "custom_liquid": "<div class=\"container-bonus\">\n<div class=\"bonus bonus--green\">100% Cotton bio brossé</div>\n<div class=\"bonus bonus--gold\">Impression familliale</div>\n<div class=\"bonus bonus--red\">Création originale</div>\n<div class=\"bonus bonus--violette\">🚫 Sans IA</div>\n<div class=\"bonus bonus--blue\">🐓 Designed in France</div>\n</div>\n\n\n{% style %}\n.container-bonus \n{\ndisplay: flex;\ngap: 10px;\nflex-wrap: wrap;\n}\n.bonus {\nfont-size: 14px;\nfont-family: var(--font-heading-family);\nborder-radius: 20px;\npadding: 7px 12px 5px 12px;\n}\n\n.bonus--sauge\n{\nbackground: #ddf6ef;\ncolor: #306657;\n}\n.bonus--green\n{\nbackground: #dfeee4;\ncolor: #306638;\n}\n.bonus--gold\n{\nbackground: #eee9df;\ncolor: #59451e;\n}\n.bonus--red\n{\nbackground: #eee2df;\ncolor: #4c3420;\n}\n.bonus--violette\n{\nbackground: #eadfee;\ncolor: #40184e;\n}\n.bonus--blue\n{\nbackground: #e0dff0;\ncolor: #1b184e;\n}\n{% endstyle %}"
           }

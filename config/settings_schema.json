@@ -97,7 +97,7 @@
       },
       {
         "type": "color",
-        "id": "header_link_color_hover", 
+        "id": "header_link_color_hover",
         "label": "Links hover",
         "default": "#3F72E5"
       },
@@ -280,7 +280,7 @@
         "id": "type_header_font",
         "default": "assistant_n4",
         "label": "Font family",
-        "info": "Selecting a different font can affect the speed of your store. [Learn more about system fonts.](https:\/\/help.shopify.com\/manual\/online-store\/os\/store-speed\/improving-speed#fonts)"
+        "info": "Selecting a different font can affect the speed of your store. [Learn more about system fonts.](https://help.shopify.com/manual/online-store/os/store-speed/improving-speed#fonts)"
       },
       {
         "type": "range",
@@ -335,7 +335,7 @@
         "id": "type_body_font",
         "default": "assistant_n4",
         "label": "Font family",
-        "info": "Selecting a different font can affect the speed of your store. [Learn more about system fonts.](https:\/\/help.shopify.com\/manual\/online-store\/os\/store-speed\/improving-speed#fonts)"
+        "info": "Selecting a different font can affect the speed of your store. [Learn more about system fonts.](https://help.shopify.com/manual/online-store/os/store-speed/improving-speed#fonts)"
       },
       {
         "type": "range",
@@ -986,7 +986,7 @@
         "options": [
           {
             "value": "fade",
-            "label": "Fade" 
+            "label": "Fade"
           },
           {
             "value": "loading",
@@ -1036,7 +1036,6 @@
   {
     "name": "Product cards",
     "settings": [
-      
       {
         "type": "checkbox",
         "id": "enable_box_card",
@@ -1078,10 +1077,18 @@
         "id": "button_quick_buy_type",
         "label": "Quick buy button type",
         "options": [
-          { "group": "Primary color","value": "primary","label": "Primary" },
-          { "group": "Primary color","value": "outline","label": "Outline" },
-          { "group": "White color","value": "primary-white","label": "Solid White" },
-          { "group": "Accent color","value": "secondary","label": "Secondary" }
+          { "group": "Primary color", "value": "primary", "label": "Primary" },
+          { "group": "Primary color", "value": "outline", "label": "Outline" },
+          {
+            "group": "White color",
+            "value": "primary-white",
+            "label": "Solid White"
+          },
+          {
+            "group": "Accent color",
+            "value": "secondary",
+            "label": "Secondary"
+          }
         ],
         "default": "primary-white"
       },
@@ -1090,7 +1097,7 @@
         "id": "card_show_rating",
         "label": "Show product rating",
         "default": true,
-        "info": "To display a rating, add a product rating app. [Learn more](https:\/\/help.shopify.com\/manual\/online-store\/themes\/os20\/themes-by-shopify\/dawn\/sections#featured-collection-show-product-rating)"
+        "info": "To display a rating, add a product rating app. [Learn more](https://help.shopify.com/manual/online-store/themes/os20/themes-by-shopify/dawn/sections#featured-collection-show-product-rating)"
       },
       {
         "type": "select",
@@ -1392,7 +1399,7 @@
         "type": "url",
         "id": "cart_empty_button_link",
         "label": "Empty button link",
-        "default": "\/collections\/all"
+        "default": "/collections/all"
       },
       {
         "type": "checkbox",
@@ -1440,7 +1447,7 @@
       {
         "type": "header",
         "content": "Free shipping bar",
-        "info": "Show a shipping bar advancement on cart page and cart drawer. Configure your [shipping rates](\/admin\/settings\/shipping) to match the amount."
+        "info": "Show a shipping bar advancement on cart page and cart drawer. Configure your [shipping rates](/admin/settings/shipping) to match the amount."
       },
       {
         "type": "checkbox",
@@ -1470,7 +1477,7 @@
         "type": "richtext",
         "id": "cart_message",
         "label": "Message",
-        "default": "<p>New customers save 10% with code <b>WELCOME10<\/b><\/p>"
+        "default": "<p>New customers save 10% with code <b>WELCOME10</b></p>"
       },
       {
         "type": "color",
@@ -1596,55 +1603,55 @@
         "type": "text",
         "id": "social_facebook_link",
         "label": "Facebook",
-        "placeholder": "https:\/\/facebook.com\/shopify"
+        "placeholder": "https://facebook.com/shopify"
       },
       {
         "type": "text",
         "id": "social_instagram_link",
         "label": "Instagram",
-        "placeholder": "https:\/\/instagram.com\/shopify"
+        "placeholder": "https://instagram.com/shopify"
       },
       {
         "type": "text",
         "id": "social_youtube_link",
         "label": "YouTube",
-        "placeholder": "https:\/\/youtube.com\/shopify"
+        "placeholder": "https://youtube.com/shopify"
       },
       {
         "type": "text",
         "id": "social_tiktok_link",
         "label": "TikTok",
-        "placeholder": "https:\/\/tiktok.com\/shopify"
+        "placeholder": "https://tiktok.com/shopify"
       },
       {
         "type": "text",
         "id": "social_twitter_link",
         "label": "Twitter",
-        "placeholder": "https:\/\/twitter.com\/shopify"
+        "placeholder": "https://twitter.com/shopify"
       },
       {
         "type": "text",
         "id": "social_snapchat_link",
         "label": "Snapchat",
-        "placeholder": "https:\/\/snapchat.com\/shopify"
+        "placeholder": "https://snapchat.com/shopify"
       },
       {
         "type": "text",
         "id": "social_pinterest_link",
         "label": "Pinterest",
-        "placeholder": "https:\/\/pinterest.com\/shopify"
+        "placeholder": "https://pinterest.com/shopify"
       },
       {
         "type": "text",
         "id": "social_tumblr_link",
         "label": "Tumblr",
-        "placeholder": "https:\/\/tumblr.com\/shopify"
+        "placeholder": "https://tumblr.com/shopify"
       },
       {
         "type": "text",
         "id": "social_vimeo_link",
         "label": "Vimeo",
-        "placeholder": "https:\/\/vimeo.com\/shopify"
+        "placeholder": "https://vimeo.com/shopify"
       }
     ]
   },

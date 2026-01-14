@@ -1,0 +1,10 @@
+/* RDC Custom Fonts - Cabin Condensed from Google Fonts */
+
+@import url("https://fonts.googleapis.com/css2?family=Cabin+Condensed:wght@400;500;600;700&display=swap");
+
+:root {
+  --font-accent-family: "Cabin Condensed", "Arial Narrow", "Arial", sans-serif;
+  --font-accent-style: normal;
+  --font-accent-weight: 400;
+  --font-accent-weight-bold: 700;
+}

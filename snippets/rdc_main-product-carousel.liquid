@@ -1,6 +1,11 @@
 {% comment %} RDC Custom Main Product Carousel Snippet Carousel horizontal pour
-afficher les images du produit filtrées par couleur {% endcomment %} {%- liquid
-assign media_count = product.media.size -%}
+afficher les images du produit filtrées par couleur {% endcomment %} 
+{%- liquid
+  assign media_count = product.media.size
+-%}
+{%- capture mapped_type -%}
+  {%- render 'rdc_product-type-mapping', product_type: product.type -%}
+{%- endcapture -%}
 
 <style>
   .rdc-carousel {
@@ -9,6 +14,12 @@ assign media_count = product.media.size -%}
     padding: 2rem 0;
     overflow-x: hidden;
     overflow-y: visible;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .rdc-carousel.is-ready {
+    opacity: 1;
   }
 
   .rdc-carousel__active-info {
@@ -106,7 +117,7 @@ assign media_count = product.media.size -%}
     text-align: center;
     margin-top: 1.5rem;
     padding: 0 2rem;
-    font-size: 0.9375rem;
+    font-size: 1.6rem;
     color: #b9b6b6;
     min-height: 1.5rem;
     transition: opacity 0.3s ease;
@@ -235,7 +246,7 @@ assign media_count = product.media.size -%}
   }
 </style>
 
-<div class="rdc-carousel" id="RdcProductCarousel">
+<div class="rdc-carousel" id="RdcProductCarousel" data-product-type="{{ mapped_type | strip | escape }}" data-product-title="{{ product.title | escape }}">
   <div class="rdc-carousel__wrapper">
     {%- if media_count > 4 -%}
     <button
@@ -342,9 +353,14 @@ assign media_count = product.media.size -%}
         if (!altTextDisplay) return;
 
         const altText = item.dataset.alt || "";
-        altTextDisplay.textContent = altText;
+        const productType = carousel.dataset.productType || "";
+        const productTitle = carousel.dataset.productTitle || "";
+        
+        // Si le texte ALT est vide ou correspond au titre du produit, afficher le type du produit
+        const displayText = (altText && altText !== productTitle) ? altText : productType;
+        altTextDisplay.innerHTML = displayText;
 
-        if (altText) {
+        if (displayText) {
           altTextDisplay.style.opacity = "1";
         } else {
           altTextDisplay.style.opacity = "0";
@@ -765,12 +781,17 @@ assign media_count = product.media.size -%}
         }
       }
 
-      // Appliquer le filtre au chargement
+      // Appliquer le filtre au chargement avec un délai pour l'initialisation
       applyColorFilter();
+      
+      // Afficher le carousel après 300ms pour laisser le temps aux images de s'initialiser
+      setTimeout(function() {
+        carousel.classList.add('is-ready');
+      }, 300);
 
       // Écouter les changements de couleur via les inputs radio
-      document.addEventListener("change", function (e) {
-        if (e.target.type === "radio") {
+      document.addEventListener('change', function(e) {
+        if (e.target.type === 'radio') {
           // Appliquer le filtre sur TOUS les changements de radio
           applyColorFilter();
         }

@@ -1,0 +1,27 @@
+{%- comment -%}
+  RDC Product Type Mapping
+
+  Ce snippet permet de mapper les types de produits vers des descriptions personnalisées.
+  Pour ajouter un nouveau mapping, ajoutez simplement un nouveau "when" dans le case.
+
+  Usage: {% render 'rdc_product-type-mapping', product_type: product.type %}
+  Output: La description mappée ou le type original si aucun mapping n'existe
+{%- endcomment -%}
+
+{%- liquid
+  assign product_type_lower = product_type | downcase | strip
+  assign mapped_description = ''
+
+  case product_type_lower
+    when "l'ancestral"
+      assign mapped_description = "Modèle <b>« L'Ancestral » unisexe oversized</b>"
+    when 't-shirt'
+      assign mapped_description = 'T-shirt unisexe coupe classique'
+    when 'hoodie'
+      assign mapped_description = 'Sweat à capuche unisexe oversized'
+    else
+      assign mapped_description = product_type
+  endcase
+
+  echo mapped_description
+-%}
