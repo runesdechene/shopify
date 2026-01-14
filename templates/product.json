@@ -54,16 +54,6 @@
         "padding_bottom": 12
       }
     },
-    "rdc_product_carousel_6DGpVx": {
-      "type": "rdc_product-carousel",
-      "name": "RDC Product Carousel",
-      "settings": {
-        "title": "Nos produits",
-        "subtitle": "DÉCOUVREZ",
-        "collection": "",
-        "products_to_show": 12
-      }
-    },
     "main": {
       "type": "rdc_main-product",
       "blocks": {
@@ -539,7 +529,6 @@
   "order": [
     "countdown_bar_rYcUTw",
     "breadcrumbs_ka3wVn",
-    "rdc_product_carousel_6DGpVx",
     "main",
     "174065208557f01da1",
     "1740648643762116ab",

@@ -16,6 +16,21 @@
     overflow: hidden;
   }
 
+  .rdc-carousel__active-info {
+    text-align: center;
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 1rem;
+    min-height: 1.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .rdc-carousel__active-info span {
+    font-weight: 500;
+  }
+
   .rdc-carousel__header {
     text-align: center;
     margin-bottom: 2rem;
@@ -192,6 +207,10 @@
 </style>
 
 <section class="rdc-carousel" id="RdcCarousel-{{ section.id }}">
+  <div class="rdc-carousel__active-info">
+    <div>Couleur: <span id="ActiveColorName-{{ section.id }}"></span></div>
+    <div>Image: <span id="ActiveImageName-{{ section.id }}"></span></div>
+  </div>
   <div class="rdc-carousel__wrapper">
     {%- if media_count > 4 -%}
       <button class="rdc-carousel__nav-button rdc-carousel__nav-button--prev disabled" type="button" aria-label="Précédent">
@@ -205,7 +224,7 @@
       <div class="rdc-carousel__track" id="RdcCarouselTrack-{{ section.id }}">
         {%- for media in product.media -%}
           {%- if media.media_type == 'image' -%}
-            <div class="rdc-carousel__item" data-index="{{ forloop.index0 }}" data-media-id="{{ media.id }}" data-aspect-ratio="{{ media.aspect_ratio }}">
+            <div class="rdc-carousel__item" data-index="{{ forloop.index0 }}" data-media-id="{{ media.id }}" data-aspect-ratio="{{ media.aspect_ratio }}" data-image-src="{{ media.src | split: '/' | last }}">
               <div class="rdc-carousel__product-card">
                 <div class="rdc-carousel__product-image">
                   {{
@@ -243,11 +262,58 @@
       }
 
       const track = carousel.querySelector('.rdc-carousel__track');
-      const items = Array.from(carousel.querySelectorAll('.rdc-carousel__item'));
+      let allItems = Array.from(carousel.querySelectorAll('.rdc-carousel__item'));
       const prevButton = carousel.querySelector('.rdc-carousel__nav-button--prev');
       const nextButton = carousel.querySelector('.rdc-carousel__nav-button--next');
 
-      if (!track || items.length === 0) return;
+      if (!track || allItems.length === 0) return;
+
+      // Fonction pour obtenir le nom de la couleur sélectionnée
+      function getSelectedColorName() {
+        const selectedVariant = document.querySelector('input[name="id"]:checked');
+        if (!selectedVariant) return '';
+
+        const variantId = selectedVariant.value;
+        const variantOption = document.querySelector(`option[value="${variantId}"]`);
+        if (!variantOption) return '';
+
+        const variantText = variantOption.textContent;
+        
+        // Extraire le nom de la couleur (généralement après le "/" ou le premier mot)
+        let colorName = '';
+        if (variantText.includes('/')) {
+          colorName = variantText.split('/')[0].trim();
+        } else {
+          colorName = variantText.split(' ')[0].trim();
+        }
+        
+        return colorName;
+      }
+
+      // Fonction pour mettre à jour l'affichage de la couleur
+      function updateColorDisplay() {
+        const colorName = getSelectedColorName();
+        const colorDisplay = document.getElementById('ActiveColorName-{{ section.id }}');
+        if (colorDisplay) {
+          colorDisplay.textContent = colorName;
+        }
+      }
+
+      // Fonction pour filtrer les images selon la couleur sélectionnée
+      function filterImagesByColor() {
+        const colorName = getSelectedColorName().toLowerCase();
+        if (!colorName) return allItems;
+
+        // Filtrer les images dont le nom de fichier contient le nom de la couleur
+        return allItems.filter(item => {
+          const imageSrc = (item.dataset.imageSrc || '').toLowerCase();
+          return imageSrc.includes(colorName);
+        });
+      }
+
+      // Fonction pour configurer le carousel avec les items filtrés
+      function setupCarousel(filteredItems) {
+        const items = filteredItems;
 
       // Réorganiser les items pour avoir la première image au centre
       // On veut avoir des images avant et après la première image
@@ -326,11 +392,30 @@
           }
         });
         
-        // Donner une largeur minimale aux items vides
+        // Calculer dynamiquement la largeur des items vides en fonction de l'image active
         const emptyItems = updatedItems.filter(item => item.classList.contains('rdc-carousel__item--empty'));
-        emptyItems.forEach(item => {
-          item.style.width = '1px';
-        });
+        
+        if (emptyItems.length > 0) {
+          // Trouver l'image active (en soustrayant les 2 items vides de currentIndex)
+          const activeRealIndex = currentIndex - 2;
+          let activeRatio = 0.75; // défaut
+          
+          if (activeRealIndex >= 0 && activeRealIndex < aspectRatios.length) {
+            activeRatio = aspectRatios[activeRealIndex];
+          }
+          
+          const activeWidth = commonHeight * activeRatio;
+          const centerOffset = (containerWidth / 2) - (activeWidth / 2);
+          
+          // Calculer la largeur totale nécessaire pour les items vides
+          // Pour centrer l'image active, les items vides doivent compenser
+          const totalEmptyWidth = Math.max(0, centerOffset);
+          const widthPerEmpty = totalEmptyWidth / emptyItems.length;
+          
+          emptyItems.forEach(item => {
+            item.style.width = `${widthPerEmpty}px`;
+          });
+        }
       }
       
       // Calculer les largeurs après la réorganisation
@@ -342,6 +427,13 @@
           
           if (index === currentIndex) {
             item.classList.add('is-active');
+            
+            // Mettre à jour le nom de l'image active
+            const activeImageName = item.dataset.imageSrc || '';
+            const nameDisplay = document.getElementById('ActiveImageName-{{ section.id }}');
+            if (nameDisplay) {
+              nameDisplay.textContent = activeImageName;
+            }
           } else if (index === currentIndex - 1) {
             item.classList.add('is-prev');
           } else if (index === currentIndex + 1) {
@@ -351,7 +443,7 @@
       }
 
       function updateCarouselPosition() {
-        // Recalculer les largeurs des items vides en fonction de l'image active
+        // Recalculer les largeurs (qui ajuste aussi les items vides)
         calculateItemWidths();
         
         const containerWidth = carousel.offsetWidth;
@@ -360,11 +452,10 @@
         const trackStyles = window.getComputedStyle(track);
         const gap = parseFloat(trackStyles.gap) || 24;
         
-        // Largeur de l'image active (pas du premier item)
+        // Largeur de l'image active
         const activeItemWidth = updatedItems[currentIndex]?.offsetWidth || 0;
         
         // Calculer l'offset pour centrer l'image active
-        // L'image active doit être au centre de l'écran
         const centerOffset = (containerWidth / 2) - (activeItemWidth / 2);
         
         // Position de l'item dans le track = somme des largeurs et gaps précédents
@@ -373,10 +464,10 @@
           itemPosition += (updatedItems[i]?.offsetWidth || 0) + gap;
         }
         
-        // Compenser les items vides avec un seul gap
-        const emptyItemsCompensation = 7;
+        // Correction de 5px par item avant l'image active
+        const correction = currentIndex * 4;
         
-        const offset = itemPosition - centerOffset - emptyItemsCompensation;
+        const offset = itemPosition - centerOffset - correction;
         track.style.transform = `translateX(-${offset}px)`;
 
         updateItemClasses();
@@ -431,6 +522,27 @@
       });
 
       updateCarouselPosition();
+      }
+
+      // Initialiser le carousel avec les items filtrés
+      let items = filterImagesByColor();
+      if (items.length === 0) items = allItems;
+      updateColorDisplay(); // Afficher la couleur initiale
+      setupCarousel(items);
+
+      // Écouter les changements de variante
+      const variantInputs = document.querySelectorAll('input[name="id"]');
+      variantInputs.forEach(input => {
+        input.addEventListener('change', function() {
+          // Mettre à jour l'affichage de la couleur
+          updateColorDisplay();
+          
+          // Réinitialiser le carousel avec les nouvelles images filtrées
+          let newItems = filterImagesByColor();
+          if (newItems.length === 0) newItems = allItems;
+          setupCarousel(newItems);
+        });
+      });
     }
 
     if (document.readyState === 'loading') {

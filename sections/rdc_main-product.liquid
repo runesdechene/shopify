@@ -3,6 +3,19 @@
 -%}
 
 {% style %}
+  @media screen and (min-width: 768px) {
+    .product {
+      max-width: 100% !important;
+      width: 100% !important;
+      flex-direction: column;
+      border: 1px solid black;
+    }
+
+    .product__media-wrapper {
+      display: none;
+    }
+  }
+
   @media screen and (min-width: 750px) {
     .product__info-wrapper {
       padding: 0 0 0 4rem !important;
@@ -101,7 +114,8 @@
   {%- endif -%}
 
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
-  <div class="{{ section.settings.section_width }}">
+  <div class="w-full">
+    <!-- {{ section.settings.section_width }} -->
     {%- comment -%} Afficher le nom de l'illustration (métaobjet Reliques) {%- endcomment -%}
     {%- if product.metafields.custom.illustration != blank -%}
       {%- assign relique = product.metafields.custom.illustration.value -%}
@@ -120,6 +134,11 @@
       class="product  product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} flex lg:flex-row flex-col "
       style="--media-width:{{ section.settings.media_width }}%;"
     >
+      {%- comment -%} Carousel d'images du produit filtré par couleur {%- endcomment -%}
+      <div class="product__carousel-wrapper">
+        {% render 'rdc_product-carousel', product: product %}
+      </div>
+
       <div class=" product__media-wrapper">
         {%- if product.media.size > 0 -%}
           {% render 'rdc_product-media-gallery', variant_images: variant_images %}
