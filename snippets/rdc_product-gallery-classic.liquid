@@ -210,6 +210,7 @@
           // Apply new layout class based on position
           if (index === 0) {
             item.classList.add('rdc-classic-gallery__item--main');
+            item.style.height = 'auto'; // Always reset main image height
           } else if (index === 1 || index === 2) {
             item.classList.add('rdc-classic-gallery__item--half');
           } else if (index === 3) {
@@ -316,10 +317,30 @@
         return variantIdInput ? variantIdInput.value : null;
       }
 
+      // Reset images to original DOM order
+      function resetImageOrder() {
+        const gridContainer = gallery.querySelector('.rdc-classic-gallery__grid');
+        
+        // Sort items by their original data-index attribute
+        const sortedItems = [...items].sort((a, b) => {
+          const indexA = parseInt(a.dataset.index) || 0;
+          const indexB = parseInt(b.dataset.index) || 0;
+          return indexA - indexB;
+        });
+        
+        // Reappend in original order
+        sortedItems.forEach(item => {
+          gridContainer.appendChild(item);
+        });
+      }
+
       // Filter images by color
       function filterByColor() {
         const colorName = getSelectedColorName().toLowerCase();
         const selectedVariantId = getSelectedVariantId();
+        
+        // Reset images to original order when variant changes
+        resetImageOrder();
         
         if (!colorName) {
           // No color filter - show all
