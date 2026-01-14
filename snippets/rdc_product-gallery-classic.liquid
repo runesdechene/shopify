@@ -15,63 +15,42 @@
     width: 100%;
   }
 
-  .rdc-classic-gallery__main {
-    width: 100%;
-    margin-bottom: 1.5rem;
-    background-color: #EEEDE6;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-
-  .rdc-classic-gallery__main-image {
-    display: none;
-  }
-
-  .rdc-classic-gallery__main-image.active {
-    display: block;
-  }
-
-  .rdc-classic-gallery__main-image.hidden-by-filter {
-    display: none !important;
-  }
-
-  .rdc-classic-gallery__main-image img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-
-  .rdc-classic-gallery__thumbnails {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+  .rdc-classic-gallery__grid {
+    display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
   }
 
-  .rdc-classic-gallery__thumbnail {
-    aspect-ratio: 1;
+  .rdc-classic-gallery__item {
     background-color: #EEEDE6;
     border-radius: 8px;
     overflow: hidden;
-    cursor: pointer;
-    opacity: 0.6;
     transition: opacity 0.3s ease;
     border: 2px solid transparent;
   }
 
-  .rdc-classic-gallery__thumbnail.hidden-by-filter {
+  /* Layout: 1 large image + 2x2 grid */
+  .rdc-classic-gallery__item--main {
+    width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+  }
+
+  .rdc-classic-gallery__item--main img {
+    height: auto;
+    object-fit: contain;
+  }
+
+  .rdc-classic-gallery__item--half {
+    width: calc(50% - 0.5rem);
+    height: 300px;
+  }
+
+  .rdc-classic-gallery__item.hidden-by-filter {
     display: none;
   }
 
-  .rdc-classic-gallery__thumbnail:hover {
-    opacity: 0.9;
-  }
-
-  .rdc-classic-gallery__thumbnail.active {
-    opacity: 1;
-    border-color: #534f4f;
-  }
-
-  .rdc-classic-gallery__thumbnail img {
+  .rdc-classic-gallery__item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -79,28 +58,43 @@
   }
 
   @media (max-width: 767px) {
-    .rdc-classic-gallery__thumbnails {
-      grid-template-columns: repeat(4, 1fr);
+    .rdc-classic-gallery__grid {
       gap: 0.5rem;
+    }
+
+    .rdc-classic-gallery__item:first-child {
+      height: auto;
+    }
+
+    /* Mobile: all items 50%-50% except first */
+    .rdc-classic-gallery__item:not(:first-child) {
+      width: calc(50% - 0.25rem);
+      height: 150px;
     }
   }
 
   @media (max-width: 480px) {
-    .rdc-classic-gallery__thumbnails {
-      grid-template-columns: repeat(3, 1fr);
+    .rdc-classic-gallery__item:first-child {
+      height: auto;
+    }
+
+    .rdc-classic-gallery__item:not(:first-child) {
+      height: 120px;
     }
   }
 </style>
 
 <div class="rdc-classic-gallery" id="RdcClassicGallery-{{ section.id }}">
-  {%- comment -%} Main image area {%- endcomment -%}
-  <div class="rdc-classic-gallery__main">
+  <div class="rdc-classic-gallery__grid">
+    {%- comment -%} Render all images - JavaScript will filter and reorder based on selected color {%- endcomment -%}
     {%- for media in product.media -%}
       {%- if media.media_type == 'image' -%}
         {%- comment -%} Get variant IDs associated with this image {%- endcomment -%}
         {%- assign variant_ids = '' -%}
+        {%- assign is_featured = false -%}
         {%- for variant in product.variants -%}
           {%- if variant.featured_media.id == media.id -%}
+            {%- assign is_featured = true -%}
             {%- if variant_ids == '' -%}
               {%- assign variant_ids = variant.id | append: '' -%}
             {%- else -%}
@@ -110,12 +104,14 @@
         {%- endfor -%}
         
         <div 
-          class="rdc-classic-gallery__main-image {% if media.id == featured_media.id %}active{% endif %}"
+          class="rdc-classic-gallery__item"
           data-media-id="{{ media.id }}"
           data-index="{{ forloop.index0 }}"
           data-image-src="{{ media.src | split: '/' | last }}"
           data-variant-ids="{{ variant_ids }}"
+          data-is-featured="{{ is_featured }}"
           data-attached-to-variant="{{ media.attached_to_variant? }}"
+          style="display: none;"
         >
           {{
             media
@@ -130,44 +126,6 @@
       {%- endif -%}
     {%- endfor -%}
   </div>
-
-  {%- comment -%} Thumbnail navigation {%- endcomment -%}
-  {%- if media_count > 1 -%}
-    <div class="rdc-classic-gallery__thumbnails">
-      {%- for media in product.media -%}
-        {%- if media.media_type == 'image' -%}
-          {%- comment -%} Get variant IDs associated with this image {%- endcomment -%}
-          {%- assign variant_ids = '' -%}
-          {%- for variant in product.variants -%}
-            {%- if variant.featured_media.id == media.id -%}
-              {%- if variant_ids == '' -%}
-                {%- assign variant_ids = variant.id | append: '' -%}
-              {%- else -%}
-                {%- assign variant_ids = variant_ids | append: ',' | append: variant.id -%}
-              {%- endif -%}
-            {%- endif -%}
-          {%- endfor -%}
-          
-          <div 
-            class="rdc-classic-gallery__thumbnail {% if media.id == featured_media.id %}active{% endif %}"
-            data-media-id="{{ media.id }}"
-            data-index="{{ forloop.index0 }}"
-            data-image-src="{{ media.src | split: '/' | last }}"
-            data-variant-ids="{{ variant_ids }}"
-            data-attached-to-variant="{{ media.attached_to_variant? }}"
-          >
-            {{
-              media
-              | image_url: width: 200
-              | image_tag:
-                loading: 'lazy',
-                alt: media.alt | escape
-            }}
-          </div>
-        {%- endif -%}
-      {%- endfor -%}
-    </div>
-  {%- endif -%}
 </div>
 
 <script>
@@ -176,8 +134,7 @@
       const gallery = document.getElementById('RdcClassicGallery-{{ section.id }}');
       if (!gallery) return;
 
-      const thumbnails = Array.from(gallery.querySelectorAll('.rdc-classic-gallery__thumbnail'));
-      const mainImages = Array.from(gallery.querySelectorAll('.rdc-classic-gallery__main-image'));
+      const items = Array.from(gallery.querySelectorAll('.rdc-classic-gallery__item'));
 
       // Clean color name from label text
       function cleanColorName(text) {
@@ -242,69 +199,60 @@
         return variantIdInput ? variantIdInput.value : null;
       }
 
-      // Filter images by color and variant
+      // Filter and reorder images based on color
       function applyColorFilter() {
         const colorName = getSelectedColorName().toLowerCase();
         const selectedVariantId = getSelectedVariantId();
 
+        // Hide all items first
+        items.forEach(item => {
+          item.style.display = 'none';
+          item.classList.remove('rdc-classic-gallery__item--main', 'rdc-classic-gallery__item--half');
+        });
+
         if (!colorName) {
-          // No color selected, hide all
-          thumbnails.forEach(thumb => thumb.classList.add('hidden-by-filter'));
-          mainImages.forEach(img => img.classList.add('hidden-by-filter'));
+          // No color selected - show first 5 images
+          items.slice(0, 5).forEach((item, index) => {
+            item.style.display = '';
+            if (index === 0) {
+              item.classList.add('rdc-classic-gallery__item--main');
+            } else {
+              item.classList.add('rdc-classic-gallery__item--half');
+            }
+          });
           return;
         }
 
-        let variantImageIndex = -1;
-        const visibleIndices = [];
-
-        // Filter images
-        thumbnails.forEach((thumb, index) => {
-          const imageSrc = (thumb.dataset.imageSrc || '').toLowerCase();
-          const variantIds = thumb.dataset.variantIds || '';
-          const matchesColor = imageSrc.includes(colorName);
+        // Separate images into color-matched and featured media
+        const colorMatched = [];
+        const featuredMedia = [];
+        
+        items.forEach((item) => {
+          const imageSrc = (item.dataset.imageSrc || '').toLowerCase();
+          const isFeatured = item.dataset.isFeatured === 'true';
+          const variantIds = item.dataset.variantIds || '';
           const matchesVariant = selectedVariantId && variantIds.split(',').includes(String(selectedVariantId));
+          
+          if (imageSrc.includes(colorName)) {
+            colorMatched.push(item);
+          } else if (isFeatured && matchesVariant) {
+            featuredMedia.push(item);
+          }
+        });
 
-          if (matchesColor || matchesVariant) {
-            thumb.classList.remove('hidden-by-filter');
-            mainImages[index].classList.remove('hidden-by-filter');
-            visibleIndices.push(index);
-
-            if (matchesVariant && variantImageIndex === -1) {
-              variantImageIndex = index;
-            }
+        // Combine: color-matched first, then featured media, limit to 5
+        const displayItems = [...colorMatched, ...featuredMedia].slice(0, 5);
+        
+        // Display and apply layout classes
+        displayItems.forEach((item, index) => {
+          item.style.display = '';
+          if (index === 0) {
+            item.classList.add('rdc-classic-gallery__item--main');
           } else {
-            thumb.classList.add('hidden-by-filter');
-            mainImages[index].classList.add('hidden-by-filter');
+            item.classList.add('rdc-classic-gallery__item--half');
           }
         });
-
-        // Set active image
-        if (variantImageIndex !== -1) {
-          setActiveImage(variantImageIndex);
-        } else if (visibleIndices.length > 0) {
-          setActiveImage(visibleIndices[0]);
-        }
       }
-
-      function setActiveImage(index) {
-        thumbnails.forEach((thumb, i) => {
-          thumb.classList.toggle('active', i === index);
-        });
-
-        mainImages.forEach((img, i) => {
-          img.classList.toggle('active', i === index);
-        });
-      }
-
-      // Click on visible thumbnails only
-      thumbnails.forEach((thumbnail, index) => {
-        thumbnail.addEventListener('click', function(e) {
-          e.preventDefault();
-          if (!thumbnail.classList.contains('hidden-by-filter')) {
-            setActiveImage(index);
-          }
-        });
-      });
 
       // Listen for variant changes
       document.addEventListener('change', function(event) {
@@ -313,7 +261,7 @@
         }
       });
 
-      // Initial filter
+      // Initial display
       setTimeout(applyColorFilter, 200);
     }
 

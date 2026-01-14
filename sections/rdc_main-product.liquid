@@ -9,6 +9,23 @@
     padding-inline: 5rem;
   }
 
+      @media screen and (min-width: 768px) {
+        .product {
+          display: grid;
+          grid-template-columns: 50% 1fr;
+          gap: 4rem;
+          align-items: start;
+        }
+
+        .product__media-wrapper {
+          width: 100%;
+        }
+
+        .product__info-wrapper {
+          width: 100%;
+        }
+      }
+
       @media screen and (max-width: 767px) {
         .product {
           flex-direction: column;
@@ -16,12 +33,9 @@
 
         .product__media-wrapper {
           margin-bottom: 3rem;
+          width: 100%;
         }
       }
-
-       .product__media-wrapper {
-          max-width: 60%;
-        }
 
       /* Style de l'info wrapper custom */
 
