@@ -47,12 +47,11 @@
 
       .product__description.rte {
         color: #534f4f;
-        text-align: center;
-        font-size: 1.7rem;
+        font-size: 1.8rem;
         font-style: italic;
         margin-bottom: 45px !important;
+        margin-top: 0 !important;
       }
-
 
       /* Mise en page centrée pour les sélecteurs de variantes */
 
@@ -296,6 +295,21 @@
           padding: 1rem;
         }
       }
+
+      /* Banner pour afficher la collection Reliques */
+      .product__relique-banner {
+        font-size: 2.8rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-family: var(--font-heading-family);
+        color: #d1ceceff;
+        padding: 0 5rem;
+        max-width: 1500px;
+        margin: auto;
+        display: flex;
+        gap: 2rem;
+      }
 {% endstyle %}
 
 <section
@@ -304,6 +318,20 @@
   {% render 'section-properties' %}
   data-section="{{ section.id }}"
 >
+  {%- comment -%} Afficher le nom de l'illustration (métaobjet Reliques) {%- endcomment -%}
+  {%- if product.metafields.custom.illustration != blank -%}
+    {%- assign relique = product.metafields.custom.illustration.value -%}
+    <div class="product__relique-banner">
+      Collection
+      {%- if relique.tags != blank -%}
+        {% for tag in relique.tags.value %}
+          {{ tag -}}
+          {%- unless forloop.last %}, {% endunless %}
+        {% endfor %}
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
   {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
   {{ 'rdc_product-info.css' | asset_url | stylesheet_tag }}
   {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
@@ -512,7 +540,7 @@
                     </show-more-toggle>
                   {%- else -%}
                     <div class="product__description rte quick-add-hidden" {{ block.shopify_attributes }}>
-                      {{ description_content }}
+                      « {{ description_content }} »
                     </div>
                   {%- endif -%}
                 {%- endif -%}
