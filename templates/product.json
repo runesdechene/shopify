@@ -91,10 +91,6 @@
             "max_height": 8
           }
         },
-        "siblings_j3h7Cg": {
-          "type": "siblings",
-          "settings": {}
-        },
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
@@ -115,6 +111,12 @@
             "show_pickup_availability": true,
             "show_back_in_stock": false,
             "text_back_in_stock": "Notify me"
+          }
+        },
+        "aussi_disponible_z8cYjW": {
+          "type": "aussi_disponible",
+          "settings": {
+            "heading": "Ce fragment est aussi disponible sur..."
           }
         },
         "fit_guide_bXLzqH": {
@@ -196,9 +198,9 @@
         "price_Fr4Txr",
         "custom_liquid_d9wLpx",
         "description",
-        "siblings_j3h7Cg",
         "variant_picker",
         "buy_buttons",
+        "aussi_disponible_z8cYjW",
         "fit_guide_bXLzqH",
         "separator_BcFrTM",
         "collapsible_tab_6kicUP",
