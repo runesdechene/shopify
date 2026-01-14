@@ -314,44 +314,63 @@
           if (clickedItem.style.display === 'none') return;
           if (clickedItem.classList.contains('rdc-classic-gallery__item--main')) return;
           
-          // Move clicked item to first position in DOM
-          const gridContainer = gallery.querySelector('.rdc-classic-gallery__grid');
-          gridContainer.insertBefore(clickedItem, gridContainer.firstChild);
+          // Get all visible items before reordering
+          const visibleItemsBefore = items.filter(item => item.style.display !== 'none');
           
-          // Update items array to reflect new DOM order
-          const updatedItems = Array.from(gallery.querySelectorAll('.rdc-classic-gallery__item'));
-          
-          // Reapply layout classes based on new DOM order
-          const visibleItems = updatedItems.filter(item => item.style.display !== 'none');
-          
-          visibleItems.forEach((item, index) => {
-            item.classList.remove('rdc-classic-gallery__item--main', 'rdc-classic-gallery__item--half', 'rdc-classic-gallery__item--large', 'rdc-classic-gallery__item--small');
-            
-            if (index === 0) {
-              item.classList.add('rdc-classic-gallery__item--main');
-              item.style.height = 'auto'; // Reset height for main image
-            } else if (index === 1 || index === 2) {
-              item.classList.add('rdc-classic-gallery__item--half');
-            } else if (index === 3) {
-              item.classList.add('rdc-classic-gallery__item--large');
-            } else if (index === 4) {
-              item.classList.add('rdc-classic-gallery__item--small');
-            } else if (index === 5 || index === 6) {
-              item.classList.add('rdc-classic-gallery__item--half');
-            } else if (index === 7) {
-              item.classList.add('rdc-classic-gallery__item--large');
-            } else if (index === 8) {
-              item.classList.add('rdc-classic-gallery__item--small');
-            } else {
-              item.classList.add('rdc-classic-gallery__item--half');
-            }
+          // Add fade out animation
+          visibleItemsBefore.forEach(item => {
+            item.style.opacity = '0.5';
+            item.style.transform = 'scale(0.98)';
           });
           
-          // Recalculate row heights after reordering with updated items
           setTimeout(() => {
-            const updatedItemsForHeight = Array.from(gallery.querySelectorAll('.rdc-classic-gallery__item'));
-            equalizeRowHeightsWithItems(updatedItemsForHeight);
-          }, 150);
+            // Move clicked item to first position in DOM
+            const gridContainer = gallery.querySelector('.rdc-classic-gallery__grid');
+            gridContainer.insertBefore(clickedItem, gridContainer.firstChild);
+            
+            // Update items array to reflect new DOM order
+            const updatedItems = Array.from(gallery.querySelectorAll('.rdc-classic-gallery__item'));
+            
+            // Reapply layout classes based on new DOM order
+            const visibleItems = updatedItems.filter(item => item.style.display !== 'none');
+            
+            visibleItems.forEach((item, index) => {
+              item.classList.remove('rdc-classic-gallery__item--main', 'rdc-classic-gallery__item--half', 'rdc-classic-gallery__item--large', 'rdc-classic-gallery__item--small');
+              
+              if (index === 0) {
+                item.classList.add('rdc-classic-gallery__item--main');
+                item.style.height = 'auto'; // Reset height for main image
+              } else if (index === 1 || index === 2) {
+                item.classList.add('rdc-classic-gallery__item--half');
+              } else if (index === 3) {
+                item.classList.add('rdc-classic-gallery__item--large');
+              } else if (index === 4) {
+                item.classList.add('rdc-classic-gallery__item--small');
+              } else if (index === 5 || index === 6) {
+                item.classList.add('rdc-classic-gallery__item--half');
+              } else if (index === 7) {
+                item.classList.add('rdc-classic-gallery__item--large');
+              } else if (index === 8) {
+                item.classList.add('rdc-classic-gallery__item--small');
+              } else {
+                item.classList.add('rdc-classic-gallery__item--half');
+              }
+            });
+            
+            // Fade back in
+            setTimeout(() => {
+              visibleItems.forEach(item => {
+                item.style.opacity = '1';
+                item.style.transform = 'scale(1)';
+              });
+              
+              // Recalculate row heights after reordering with updated items
+              setTimeout(() => {
+                const updatedItemsForHeight = Array.from(gallery.querySelectorAll('.rdc-classic-gallery__item'));
+                equalizeRowHeightsWithItems(updatedItemsForHeight);
+              }, 100);
+            }, 50);
+          }, 200);
         });
       });
 
