@@ -77,6 +77,18 @@
     max-width: calc(40% - 0.5rem);
     height: 300px;
   }
+  
+  .rdc-classic-gallery__item--single {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+  }
+  
+  .rdc-classic-gallery__item--single img {
+    height: auto;
+    max-height: 500px;
+    object-fit: contain;
+  }
 
   .rdc-classic-gallery__item.hidden-by-filter {
     display: none;
@@ -193,7 +205,7 @@
         
         visibleItems.forEach((item, index) => {
           // Remove all layout classes first
-          item.classList.remove('rdc-classic-gallery__item--main', 'rdc-classic-gallery__item--half', 'rdc-classic-gallery__item--large', 'rdc-classic-gallery__item--small');
+          item.classList.remove('rdc-classic-gallery__item--main', 'rdc-classic-gallery__item--half', 'rdc-classic-gallery__item--large', 'rdc-classic-gallery__item--small', 'rdc-classic-gallery__item--single');
           
           // Apply new layout class based on position
           if (index === 0) {
@@ -214,6 +226,13 @@
             item.classList.add('rdc-classic-gallery__item--half');
           }
         });
+        
+        // Check if last item is alone on its row (odd number of items after main)
+        if (visibleItems.length > 1 && (visibleItems.length - 1) % 2 === 1) {
+          const lastItem = visibleItems[visibleItems.length - 1];
+          lastItem.classList.remove('rdc-classic-gallery__item--half', 'rdc-classic-gallery__item--large', 'rdc-classic-gallery__item--small');
+          lastItem.classList.add('rdc-classic-gallery__item--single');
+        }
         
         // After applying classes, equalize row heights
         setTimeout(equalizeRowHeights, 100);
