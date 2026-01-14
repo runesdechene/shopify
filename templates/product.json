@@ -106,10 +106,6 @@
             "size_chart_page": "guide-des-tailles-t-shirt-unisexe"
           }
         },
-        "quantity_selector": {
-          "type": "quantity_selector",
-          "settings": {}
-        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
@@ -202,7 +198,6 @@
         "description",
         "siblings_j3h7Cg",
         "variant_picker",
-        "quantity_selector",
         "buy_buttons",
         "fit_guide_bXLzqH",
         "separator_BcFrTM",
