@@ -214,6 +214,49 @@
             item.classList.add('rdc-classic-gallery__item--half');
           }
         });
+        
+        // After applying classes, equalize row heights
+        setTimeout(equalizeRowHeights, 100);
+      }
+      
+      // Equalize row heights based on shortest image
+      function equalizeRowHeights() {
+        const visibleItems = items.filter(item => item.style.display !== 'none' && !item.classList.contains('rdc-classic-gallery__item--main'));
+        
+        // Group items into rows (pairs)
+        const rows = [];
+        for (let i = 0; i < visibleItems.length; i += 2) {
+          const row = [visibleItems[i]];
+          if (visibleItems[i + 1]) {
+            row.push(visibleItems[i + 1]);
+          }
+          rows.push(row);
+        }
+        
+        // For each row, find shortest natural height
+        rows.forEach(row => {
+          // Reset heights first
+          row.forEach(item => item.style.height = 'auto');
+          
+          setTimeout(() => {
+            const heights = row.map(item => {
+              const img = item.querySelector('img');
+              if (!img || !img.complete) return Infinity;
+              
+              const containerWidth = item.offsetWidth;
+              const naturalRatio = img.naturalHeight / img.naturalWidth;
+              return containerWidth * naturalRatio;
+            });
+            
+            const minHeight = Math.min(...heights);
+            
+            if (minHeight > 0 && minHeight !== Infinity) {
+              row.forEach(item => {
+                item.style.height = minHeight + 'px';
+              });
+            }
+          }, 50);
+        });
       }
 
       // Get selected color name
@@ -281,6 +324,7 @@
             
             if (index === 0) {
               item.classList.add('rdc-classic-gallery__item--main');
+              item.style.height = 'auto'; // Reset height for main image
             } else if (index === 1 || index === 2) {
               item.classList.add('rdc-classic-gallery__item--half');
             } else if (index === 3) {
@@ -297,6 +341,9 @@
               item.classList.add('rdc-classic-gallery__item--half');
             }
           });
+          
+          // Recalculate row heights after reordering
+          setTimeout(equalizeRowHeights, 150);
         });
       });
 
