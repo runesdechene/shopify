@@ -116,6 +116,15 @@
     object-fit: contain;
   }
   
+  .rdc-gallery-modal__caption {
+    text-align: center;
+    color: #333;
+    font-size: 16px;
+    margin-top: 1.5rem;
+    padding: 0 2rem;
+    line-height: 1.5;
+  }
+  
   .rdc-gallery-modal__close {
     position: absolute;
     bottom: 4rem;
@@ -252,6 +261,7 @@
           data-variant-ids="{{ variant_ids }}"
           data-is-featured="{{ is_featured }}"
           data-attached-to-variant="{{ media.attached_to_variant? }}"
+          data-product-type="{% render 'rdc_product-type-mapping', product_type: product.type %}"
         >
           {{
             media
@@ -273,6 +283,7 @@
   <button class="rdc-gallery-modal__close" id="RdcModalClose-{{ section.id }}">&times;</button>
   <div class="rdc-gallery-modal__content">
     <img class="rdc-gallery-modal__image" id="RdcModalImage-{{ section.id }}" src="" alt="">
+    <p class="rdc-gallery-modal__caption" id="RdcModalCaption-{{ section.id }}"></p>
   </div>
 </div>
 
@@ -285,6 +296,7 @@
       const items = Array.from(gallery.querySelectorAll('.rdc-classic-gallery__item'));
       const modal = document.getElementById('RdcGalleryModal-{{ section.id }}');
       const modalImage = document.getElementById('RdcModalImage-{{ section.id }}');
+      const modalCaption = document.getElementById('RdcModalCaption-{{ section.id }}');
       const modalClose = document.getElementById('RdcModalClose-{{ section.id }}');
       
       // Add zoom button to main image
@@ -318,6 +330,14 @@
           if (img) {
             modalImage.src = img.src.replace(/_(small|compact|medium|large|grande|pico|icon|thumb|small|compact|medium|large|grande|1024x1024|2048x2048|master)\./, '_2048x2048.');
             modalImage.alt = img.alt;
+            
+            // Set caption: always use product type mapping (ignore ALT text)
+            const productType = visibleMainItem.dataset.productType || '';
+            console.log('=== CAPTION DEBUG ===');
+            console.log('data-product-type:', productType);
+            console.log('visibleMainItem:', visibleMainItem);
+            modalCaption.innerHTML = productType;
+            
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
           }
