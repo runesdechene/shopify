@@ -12,7 +12,7 @@
     position: relative;
     width: 100%;
     padding: 2rem 0;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .rdc-carousel__active-info {
@@ -32,8 +32,11 @@
 
   .rdc-carousel__wrapper {
     position: relative;
-    width: 100%;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
     padding: 0;
+    overflow: visible;
+    transition: all 0.5s ease;
   }
 
   .rdc-carousel__container {
@@ -45,7 +48,7 @@
   .rdc-carousel__track {
     display: flex;
     gap: 1.5rem;
-    transition: transform 0.4s ease;
+    transition: margin-left 0.5s ease, transform 0.4s ease;
   }
 
   .rdc-carousel__item {
@@ -97,7 +100,7 @@
   .rdc-carousel__product-image img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
   }
 
   .rdc-carousel__product-card:hover .rdc-carousel__product-image img {
@@ -452,7 +455,7 @@
           }
         });
         
-        // Calculer la largeur de l'item vide pour centrer l'image active
+        // Calculer le margin-left du track pour centrer l'image active
         const gap = 24;
         const activeItem = updatedItems[currentIndex];
         if (activeItem && !activeItem.classList.contains('rdc-carousel__item--empty')) {
@@ -469,11 +472,15 @@
           }
           
           // Formule : (containerWidth / 2) - 50% de l'image active - largeur des images avant - gap * (nombre d'images avant + image active)
-          const emptyItemWidth = (containerWidth / 2) - (activeItemWidth / 2) - widthBeforeActive - ((gap * (imagesBeforeActiveCount + 1))/2);
+          const marginLeft = (containerWidth / 2) - (activeItemWidth / 2) - widthBeforeActive - ((gap * (imagesBeforeActiveCount + 1))/2);
           
+          // Appliquer le margin-left au track (peut être positif ou négatif)
+          track.style.marginLeft = `${marginLeft}px`;
+          
+          // Supprimer la largeur de l'item vide (ne sert plus)
           const emptyItem = updatedItems[0];
           if (emptyItem && emptyItem.classList.contains('rdc-carousel__item--empty')) {
-            emptyItem.style.width = `${Math.max(0, emptyItemWidth)}px`;
+            emptyItem.style.width = '0px';
           }
         }
       }
