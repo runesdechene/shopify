@@ -25,8 +25,24 @@
     background-color: #EEEDE6;
     border-radius: 8px;
     overflow: hidden;
-    transition: opacity 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     border: 2px solid transparent;
+    cursor: pointer;
+    pointer-events: auto;
+    position: relative;
+  }
+
+  .rdc-classic-gallery__item img {
+    pointer-events: none;
+  }
+
+  .rdc-classic-gallery__item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .rdc-classic-gallery__item--main:hover {
+    transform: none;
   }
 
   /* Layout: 1 large image + 2x2 grid */
@@ -43,6 +59,16 @@
 
   .rdc-classic-gallery__item--half {
     width: calc(50% - 0.5rem);
+    height: 300px;
+  }
+
+  .rdc-classic-gallery__item--large {
+    width: calc(60% - 0.5rem);
+    height: 300px;
+  }
+
+  .rdc-classic-gallery__item--small {
+    width: calc(40% - 0.5rem);
     height: 300px;
   }
 
@@ -207,15 +233,29 @@
         // Hide all items first
         items.forEach(item => {
           item.style.display = 'none';
-          item.classList.remove('rdc-classic-gallery__item--main', 'rdc-classic-gallery__item--half');
+          item.classList.remove('rdc-classic-gallery__item--main', 'rdc-classic-gallery__item--half', 'rdc-classic-gallery__item--large', 'rdc-classic-gallery__item--small');
         });
 
         if (!colorName) {
-          // No color selected - show first 5 images
-          items.slice(0, 5).forEach((item, index) => {
+          // No color selected - show all images
+          items.forEach((item, index) => {
             item.style.display = '';
+            item.style.pointerEvents = 'auto';
+            
             if (index === 0) {
               item.classList.add('rdc-classic-gallery__item--main');
+            } else if (index === 1 || index === 2) {
+              item.classList.add('rdc-classic-gallery__item--half');
+            } else if (index === 3) {
+              item.classList.add('rdc-classic-gallery__item--large');
+            } else if (index === 4) {
+              item.classList.add('rdc-classic-gallery__item--small');
+            } else if (index === 5 || index === 6) {
+              item.classList.add('rdc-classic-gallery__item--half');
+            } else if (index === 7) {
+              item.classList.add('rdc-classic-gallery__item--large');
+            } else if (index === 8) {
+              item.classList.add('rdc-classic-gallery__item--small');
             } else {
               item.classList.add('rdc-classic-gallery__item--half');
             }
@@ -240,19 +280,106 @@
           }
         });
 
-        // Combine: color-matched first, then featured media, limit to 5
-        const displayItems = [...colorMatched, ...featuredMedia].slice(0, 5);
+        // Combine: color-matched first, then featured media (NO LIMIT)
+        const displayItems = [...colorMatched, ...featuredMedia];
         
-        // Display and apply layout classes
+        // Display and apply layout classes with alternating pattern
         displayItems.forEach((item, index) => {
           item.style.display = '';
+          item.style.pointerEvents = 'auto';
+          
           if (index === 0) {
             item.classList.add('rdc-classic-gallery__item--main');
+          } else if (index === 1 || index === 2) {
+            item.classList.add('rdc-classic-gallery__item--half');
+          } else if (index === 3) {
+            item.classList.add('rdc-classic-gallery__item--large');
+          } else if (index === 4) {
+            item.classList.add('rdc-classic-gallery__item--small');
+          } else if (index === 5 || index === 6) {
+            item.classList.add('rdc-classic-gallery__item--half');
+          } else if (index === 7) {
+            item.classList.add('rdc-classic-gallery__item--large');
+          } else if (index === 8) {
+            item.classList.add('rdc-classic-gallery__item--small');
           } else {
             item.classList.add('rdc-classic-gallery__item--half');
           }
         });
       }
+
+      // Reorder gallery when clicking on an image
+      function reorderGallery(clickedItem) {
+        // Get all currently visible items
+        const visibleItems = items.filter(item => item.style.display !== 'none');
+        const clickedIndex = visibleItems.indexOf(clickedItem);
+        
+        if (clickedIndex <= 0) return; // Already first or not found
+
+        // Add fade animation
+        visibleItems.forEach(item => {
+          item.style.opacity = '0.5';
+        });
+
+        setTimeout(() => {
+          // Remove all layout classes
+          visibleItems.forEach(item => {
+            item.classList.remove('rdc-classic-gallery__item--main', 'rdc-classic-gallery__item--half', 'rdc-classic-gallery__item--large', 'rdc-classic-gallery__item--small');
+          });
+
+          // Reorder: move clicked item to first position
+          const reordered = [
+            clickedItem,
+            ...visibleItems.filter(item => item !== clickedItem)
+          ];
+
+          // Reapply layout classes with alternating pattern
+          reordered.forEach((item, index) => {
+            if (index === 0) {
+              item.classList.add('rdc-classic-gallery__item--main');
+            } else if (index === 1 || index === 2) {
+              item.classList.add('rdc-classic-gallery__item--half');
+            } else if (index === 3) {
+              item.classList.add('rdc-classic-gallery__item--large');
+            } else if (index === 4) {
+              item.classList.add('rdc-classic-gallery__item--small');
+            } else if (index === 5 || index === 6) {
+              item.classList.add('rdc-classic-gallery__item--half');
+            } else if (index === 7) {
+              item.classList.add('rdc-classic-gallery__item--large');
+            } else if (index === 8) {
+              item.classList.add('rdc-classic-gallery__item--small');
+            } else {
+              item.classList.add('rdc-classic-gallery__item--half');
+            }
+            
+            // Reorder in DOM
+            gallery.querySelector('.rdc-classic-gallery__grid').appendChild(item);
+          });
+
+          // Fade back in
+          setTimeout(() => {
+            visibleItems.forEach(item => {
+              item.style.opacity = '1';
+            });
+          }, 50);
+        }, 200);
+      }
+
+      // Add click listeners to all items
+      items.forEach(item => {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          // Make sure we're working with the item div, not the img inside
+          const clickedItem = e.currentTarget;
+          
+          if (clickedItem.style.display !== 'none') {
+            reorderGallery(clickedItem);
+          }
+        });
+      });
 
       // Listen for variant changes
       document.addEventListener('change', function(event) {
