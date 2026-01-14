@@ -12,7 +12,8 @@
     position: relative;
     width: 100%;
     padding: 2rem 0;
-    overflow: visible;
+    overflow-x: hidden;
+    overflow-y: visible;
   }
 
   .rdc-carousel__active-info {
@@ -171,13 +172,61 @@
       height: 20px;
     }
   }
+
+  /* Lightbox */
+  .rdc-lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .rdc-lightbox.active {
+    display: flex;
+  }
+
+  .rdc-lightbox__content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+  }
+
+  .rdc-lightbox__image {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+  }
+
+  .rdc-lightbox__close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+  }
+
+  .rdc-lightbox__close:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
 </style>
 
 <div class="rdc-carousel" id="RdcProductCarousel">
-  <div class="rdc-carousel__active-info">
-    <div>Couleur: <span id="ActiveColorName"></span></div>
-    <div>Image: <span id="ActiveImageName"></span></div>
-  </div>
   <div class="rdc-carousel__wrapper">
     {%- if media_count > 4 -%}
       <button class="rdc-carousel__nav-button rdc-carousel__nav-button--prev disabled" type="button" aria-label="Précédent">
@@ -229,6 +278,14 @@
   </div>
 </div>
 
+<!-- Lightbox -->
+<div class="rdc-lightbox" id="RdcLightbox">
+  <button class="rdc-lightbox__close" aria-label="Fermer">&times;</button>
+  <div class="rdc-lightbox__content">
+    <img class="rdc-lightbox__image" src="" alt="" id="RdcLightboxImage">
+  </div>
+</div>
+
 <script>
   (function() {
     function initProductCarousel() {
@@ -241,6 +298,36 @@
       const nextButton = carousel.querySelector('.rdc-carousel__nav-button--next');
 
       if (!track || allItems.length === 0) return;
+
+      // Fonctions pour la lightbox
+      const lightbox = document.getElementById('RdcLightbox');
+      const lightboxImage = document.getElementById('RdcLightboxImage');
+      const lightboxClose = lightbox.querySelector('.rdc-lightbox__close');
+
+      function openLightbox(src, alt) {
+        lightboxImage.src = src;
+        lightboxImage.alt = alt || '';
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) {
+          closeLightbox();
+        }
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+          closeLightbox();
+        }
+      });
 
       // Fonction pour nettoyer le texte du label et extraire le nom de la couleur
       function cleanColorName(text) {
@@ -269,27 +356,21 @@
 
       // Fonction pour obtenir le nom de la couleur sélectionnée depuis les swatch
       function getSelectedColorName() {
-        console.log('[RDC Carousel] Recherche de la couleur sélectionnée...');
-        
         // Méthode 1: Chercher dans les variant-radios (structure Shopify standard)
         const variantRadios = document.querySelectorAll('variant-radios input[type="radio"]:checked, .product-form__input input[type="radio"]:checked');
-        console.log('[RDC Carousel] Variant radios trouvés:', variantRadios.length);
         
         for (const radio of variantRadios) {
           const label = document.querySelector(`label[for="${radio.id}"]`);
           const labelText = label?.textContent.trim() || '';
-          console.log('[RDC Carousel] Label trouvé:', labelText);
           
           // Vérifier si c'est un fieldset de couleur
           const fieldset = radio.closest('fieldset');
           if (fieldset) {
             const legend = fieldset.querySelector('legend');
             const legendText = legend?.textContent.toLowerCase() || '';
-            console.log('[RDC Carousel] Legend du fieldset:', legendText);
             
             if (legendText.includes('couleur') || legendText.includes('color')) {
               const colorName = cleanColorName(labelText);
-              console.log('[RDC Carousel] Couleur nettoyée:', colorName);
               return colorName;
             }
           }
@@ -297,68 +378,39 @@
 
         // Méthode 2: Chercher tous les inputs radio avec name contenant "color" ou "couleur"
         const allColorInputs = document.querySelectorAll('input[type="radio"][name*="Color"], input[type="radio"][name*="Couleur"], input[type="radio"][name*="color"], input[type="radio"][name*="couleur"]');
-        console.log('[RDC Carousel] Inputs couleur trouvés:', allColorInputs.length);
         
         for (const input of allColorInputs) {
           if (input.checked) {
             const label = document.querySelector(`label[for="${input.id}"]`);
             const labelText = label?.textContent.trim() || input.value;
             const colorName = cleanColorName(labelText);
-            console.log('[RDC Carousel] Couleur nettoyée:', colorName);
             return colorName;
           }
         }
 
-        console.log('[RDC Carousel] Aucune couleur trouvée');
         return '';
       }
 
-      // Fonction pour mettre à jour l'affichage de la couleur
-      function updateColorDisplay() {
-        const colorName = getSelectedColorName();
-        console.log('[RDC Carousel] Mise à jour de l\'affichage avec la couleur:', colorName);
-        const colorDisplay = document.getElementById('ActiveColorName');
-        console.log('[RDC Carousel] Élément ActiveColorName trouvé:', colorDisplay);
-        if (colorDisplay) {
-          colorDisplay.textContent = colorName;
-          console.log('[RDC Carousel] Couleur affichée dans le DOM:', colorDisplay.textContent);
-        } else {
-          console.error('[RDC Carousel] Élément ActiveColorName non trouvé dans le DOM!');
-        }
-      }
 
       // Fonction pour filtrer les images selon la couleur sélectionnée
       function filterImagesByColor() {
         const colorName = getSelectedColorName().toLowerCase();
-        console.log('[RDC Carousel] Filtrage avec la couleur:', colorName);
         
         if (!colorName) {
-          console.log('[RDC Carousel] Pas de couleur, retour d\'un tableau vide');
           return [];
         }
-
-        // Afficher tous les noms de fichiers disponibles
-        console.log('[RDC Carousel] Noms de fichiers disponibles:');
-        allItems.forEach((item, index) => {
-          const imageSrc = item.dataset.imageSrc || '';
-          console.log(`  [${index}] ${imageSrc}`);
-        });
 
         // Filtrer les images dont le nom de fichier contient le nom de la couleur
         const filtered = allItems.filter(item => {
           const imageSrc = (item.dataset.imageSrc || '').toLowerCase();
-          const matches = imageSrc.includes(colorName);
-          console.log(`[RDC Carousel] "${imageSrc}" contient "${colorName}"? ${matches}`);
-          return matches;
+          return imageSrc.includes(colorName);
         });
         
-        console.log(`[RDC Carousel] ${filtered.length} images filtrées sur ${allItems.length} total`);
         return filtered;
       }
 
       // Fonction pour configurer le carousel avec les items filtrés
       function setupCarousel(filteredItems, activeIndex = 0) {
-        console.log('[RDC Carousel] Configuration du carousel avec', filteredItems.length, 'images, activeIndex:', activeIndex);
         
         // Cacher tous les items
         allItems.forEach(item => {
@@ -373,7 +425,6 @@
         // Utiliser les items filtrés visibles
         const items = filteredItems;
         if (items.length === 0) {
-          console.log('[RDC Carousel] Aucune image à afficher');
           return;
         }
 
@@ -494,11 +545,6 @@
           if (index === currentIndex) {
             item.classList.add('is-active');
             
-            const activeImageName = item.dataset.imageSrc || '';
-            const nameDisplay = document.getElementById('ActiveImageName');
-            if (nameDisplay) {
-              nameDisplay.textContent = activeImageName;
-            }
           } else if (index === currentIndex - 1) {
             item.classList.add('is-prev');
           } else if (index === currentIndex + 1) {
@@ -551,6 +597,12 @@
           if (index !== currentIndex) {
             currentIndex = index;
             updateCarouselPosition();
+          } else {
+            // Si on clique sur l'image déjà active, ouvrir la lightbox
+            const img = item.querySelector('img');
+            if (img) {
+              openLightbox(img.src, img.alt);
+            }
           }
         });
         
@@ -575,13 +627,9 @@
       function applyColorFilter() {
         const colorName = getSelectedColorName().toLowerCase();
         const selectedVariantId = getSelectedVariantId();
-        console.log('[RDC Carousel] Application du filtre avec la couleur:', colorName);
-        console.log('[RDC Carousel] Variante sélectionnée:', selectedVariantId);
         
-        updateColorDisplay();
         
         if (!colorName) {
-          console.log('[RDC Carousel] Pas de couleur, on cache toutes les images');
           allItems.forEach(item => {
             item.style.display = 'none';
           });
@@ -596,45 +644,30 @@
           const variantIds = item.dataset.variantIds || '';
           const isAttachedToVariant = item.dataset.attachedToVariant === 'true';
           
-          console.log('[RDC Carousel] Image:', imageSrc);
-          console.log('  - variantIds:', variantIds);
-          console.log('  - isAttachedToVariant:', isAttachedToVariant);
-          console.log('  - selectedVariantId:', selectedVariantId);
-          
           // Afficher si : le nom contient la couleur OU l'image est associée à la variante sélectionnée
           const matchesColor = imageSrc.includes(colorName);
           const matchesVariant = selectedVariantId && variantIds.split(',').includes(String(selectedVariantId));
           
-          console.log('  - matchesColor:', matchesColor);
-          console.log('  - matchesVariant:', matchesVariant);
-          console.log('  - variantIds.split(\',\'):', variantIds.split(','));
-          console.log('  - String(selectedVariantId):', String(selectedVariantId));
-          
           if (matchesColor || matchesVariant) {
             item.style.display = '';
-            console.log('[RDC Carousel] ✅ AFFICHER:', imageSrc);
             
             // Si c'est l'image de la variante, on garde son index
             if (matchesVariant && variantImageIndex === -1) {
               variantImageIndex = index;
-              console.log('[RDC Carousel] Image de variante trouvée à l\'index:', index);
             }
           } else {
             item.style.display = 'none';
-            console.log('[RDC Carousel] ❌ CACHER:', imageSrc);
           }
         });
         
         // Si on a trouvé une image de variante, on la rend active
         if (variantImageIndex !== -1) {
-          console.log('[RDC Carousel] Activation de l\'image de variante à l\'index:', variantImageIndex);
           // Récupérer les items filtrés visibles
           const visibleItems = allItems.filter(item => item.style.display !== 'none');
           // Trouver l'index de l'image de variante dans les items visibles
           const visibleIndex = visibleItems.findIndex(item => allItems.indexOf(item) === variantImageIndex);
           if (visibleIndex !== -1) {
             // Reconfigurer le carousel avec les items filtrés et activer l'image de variante
-            console.log('[RDC Carousel] Index dans les items visibles:', visibleIndex);
             setupCarousel(visibleItems, visibleIndex);
           }
         } else {
@@ -651,12 +684,7 @@
 
       // Écouter les changements de couleur via les inputs radio
       document.addEventListener('change', function(e) {
-        console.log('[RDC Carousel] Event change détecté sur:', e.target);
-        console.log('[RDC Carousel] Type:', e.target.type);
-        console.log('[RDC Carousel] Name:', e.target.name);
-        
         if (e.target.type === 'radio') {
-          console.log('[RDC Carousel] C\'est un radio button');
           // Appliquer le filtre sur TOUS les changements de radio
           applyColorFilter();
         }
