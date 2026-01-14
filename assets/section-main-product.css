@@ -47,16 +47,6 @@
   }
 }
 
-@media screen and (min-width: 990px) {
-  .product .product__media-wrapper {
-    max-width: var(--media-width,65%);
-    flex: 0 0 var(--media-width,65%);
-  }
-  .product .product__info-wrapper{
-    max-width: calc(100% - var(--media-width, 65%));
-    flex: 0 0  calc(100% - var(--media-width, 65%));
-  }
-}
 
 /* Dynamic checkout */
 

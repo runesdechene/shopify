@@ -1,0 +1,813 @@
+{% comment %} RDC Custom Main Product Carousel Snippet Carousel horizontal pour
+afficher les images du produit filtrées par couleur {% endcomment %} 
+{%- liquid
+  assign media_count = product.media.size
+-%}
+{%- capture mapped_type -%}
+  {%- render 'rdc_product-type-mapping', product_type: product.type -%}
+{%- endcapture -%}
+
+<style>
+  .rdc-carousel {
+    position: relative;
+    width: 100%;
+    padding: 2rem 0;
+    overflow-x: hidden;
+    overflow-y: visible;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .rdc-carousel.is-ready {
+    opacity: 1;
+  }
+
+  .rdc-carousel__active-info {
+    text-align: center;
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 1rem;
+    min-height: 1.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .rdc-carousel__active-info span {
+    font-weight: 500;
+  }
+
+  .rdc-carousel__wrapper {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    padding: 0;
+    overflow: visible;
+    transition: all 0.5s ease;
+  }
+
+  .rdc-carousel__container {
+    overflow: visible;
+    position: relative;
+    width: 100%;
+  }
+
+  .rdc-carousel__track {
+    display: flex;
+    gap: 1.5rem;
+    transition: margin-left 0.5s ease, transform 0.4s ease;
+  }
+
+  .rdc-carousel__item {
+    flex-shrink: 0;
+    max-width: 20vw;
+    opacity: 0.5;
+    transition: all 0.4s ease;
+  }
+
+  @media screen and (max-width: 1900px) {
+    .rdc-carousel__item {
+      max-width: 33.33vw;
+    }
+  }
+
+  .rdc-carousel__item--empty {
+    opacity: 0;
+    pointer-events: none;
+    max-width: none !important;
+  }
+
+  .rdc-carousel__item.is-active {
+    opacity: 1;
+    z-index: 2;
+  }
+
+  .rdc-carousel__item.is-prev,
+  .rdc-carousel__item.is-next {
+    opacity: 0.9;
+    z-index: 1;
+  }
+
+  .rdc-carousel__product-card {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+
+  .rdc-carousel__product-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .rdc-carousel__product-image {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #eeede6;
+  }
+
+  .rdc-carousel__product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .rdc-carousel__product-card:hover .rdc-carousel__product-image img {
+  }
+
+  .rdc-carousel__alt-text {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding: 0 2rem;
+    font-size: 1.6rem;
+    color: #b9b6b6;
+    min-height: 1.5rem;
+    transition: opacity 0.3s ease;
+  }
+
+  .rdc-carousel__nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.2s ease;
+    margin: 0 2rem;
+  }
+
+  .rdc-carousel__nav-button:hover {
+    background: #fff;
+  }
+
+  .rdc-carousel__nav-button.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  .rdc-carousel__nav-button--prev {
+    left: 0;
+  }
+
+  .rdc-carousel__nav-button--next {
+    right: 0;
+  }
+
+  .rdc-carousel__nav-button svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  @media (max-width: 1023px) {
+    .rdc-carousel__item {
+      width: 350px;
+      max-width: 40vw;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .rdc-carousel__item {
+      width: 280px;
+      max-width: 70vw;
+    }
+
+    .rdc-carousel__nav-button {
+      width: 40px;
+      height: 40px;
+      margin: 0 1rem;
+    }
+
+    .rdc-carousel__nav-button svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .rdc-carousel__alt-text {
+      font-size: 0.875rem;
+      padding: 0 1rem;
+    }
+  }
+
+  /* Lightbox */
+  .rdc-lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .rdc-lightbox.active {
+    display: flex;
+  }
+
+  .rdc-lightbox__content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+  }
+
+  .rdc-lightbox__image {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+  }
+
+  .rdc-lightbox__close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+  }
+
+  .rdc-lightbox__close:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+</style>
+
+<div class="rdc-carousel" id="RdcProductCarousel" data-product-type="{{ mapped_type | strip | escape }}" data-product-title="{{ product.title | escape }}">
+  <div class="rdc-carousel__wrapper">
+    {%- if media_count > 4 -%}
+    <button
+      class="rdc-carousel__nav-button rdc-carousel__nav-button--prev disabled"
+      type="button"
+      aria-label="Précédent"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
+    {%- endif -%}
+
+    <div class="rdc-carousel__container">
+      <div class="rdc-carousel__track" id="RdcCarouselTrack">
+        {%- for media in product.media -%} {%- if media.media_type == 'image'
+        -%} {%- assign variant_ids = '' -%} {%- for variant in product.variants
+        -%} {%- if variant.featured_media.id == media.id -%} {%- if variant_ids
+        == '' -%} {%- assign variant_ids = variant.id | append: '' -%} {%- else
+        -%} {%- assign variant_ids = variant_ids | append: ',' | append:
+        variant.id -%} {%- endif -%} {%- endif -%} {%- endfor -%}
+        <div
+          class="rdc-carousel__item"
+          data-index="{{ forloop.index0 }}"
+          data-media-id="{{ media.id }}"
+          data-aspect-ratio="{{ media.aspect_ratio }}"
+          data-image-src="{{ media.src | split : '/' | last }}"
+          data-variant-ids="{{ variant_ids }}"
+          data-attached-to-variant="{{ media.attached_to_variant? }}"
+          data-alt="{{ media.alt | escape }}"
+        >
+          <div class="rdc-carousel__product-card">
+            <div class="rdc-carousel__product-image">
+              {{
+                    media
+                    | image_url: width: 600
+                    | image_tag:
+                      loading: 'lazy',
+                      alt: media.alt | escape
+              }}
+            </div>
+          </div>
+        </div>
+        {%- endif -%} {%- endfor -%}
+      </div>
+    </div>
+
+    {%- if media_count > 4 -%}
+    <button
+      class="rdc-carousel__nav-button rdc-carousel__nav-button--next"
+      type="button"
+      aria-label="Suivant"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
+    {%- endif -%}
+  </div>
+
+  <div class="rdc-carousel__alt-text" id="RdcCarouselAltText"></div>
+</div>
+
+<!-- Lightbox -->
+<div class="rdc-lightbox" id="RdcLightbox">
+  <button class="rdc-lightbox__close" aria-label="Fermer">&times;</button>
+  <div class="rdc-lightbox__content">
+    <img class="rdc-lightbox__image" src="" alt="" id="RdcLightboxImage" />
+  </div>
+</div>
+
+<script>
+  (function () {
+    function initProductCarousel() {
+      const carousel = document.getElementById("RdcProductCarousel");
+      if (!carousel) return;
+
+      const track = carousel.querySelector(".rdc-carousel__track");
+      let allItems = Array.from(
+        carousel.querySelectorAll(".rdc-carousel__item")
+      );
+      const prevButton = carousel.querySelector(
+        ".rdc-carousel__nav-button--prev"
+      );
+      const nextButton = carousel.querySelector(
+        ".rdc-carousel__nav-button--next"
+      );
+      const altTextDisplay = document.getElementById("RdcCarouselAltText");
+
+      if (!track || allItems.length === 0) return;
+
+      // Fonction pour mettre à jour le texte ALT affiché
+      function updateAltText(item) {
+        if (!altTextDisplay) return;
+
+        const altText = item.dataset.alt || "";
+        const productType = carousel.dataset.productType || "";
+        const productTitle = carousel.dataset.productTitle || "";
+        
+        // Si le texte ALT est vide ou correspond au titre du produit, afficher le type du produit
+        const displayText = (altText && altText !== productTitle) ? altText : productType;
+        altTextDisplay.innerHTML = displayText;
+
+        if (displayText) {
+          altTextDisplay.style.opacity = "1";
+        } else {
+          altTextDisplay.style.opacity = "0";
+        }
+      }
+
+      // Fonctions pour la lightbox
+      const lightbox = document.getElementById("RdcLightbox");
+      const lightboxImage = document.getElementById("RdcLightboxImage");
+      const lightboxClose = lightbox.querySelector(".rdc-lightbox__close");
+
+      function openLightbox(src, alt) {
+        lightboxImage.src = src;
+        lightboxImage.alt = alt || "";
+        lightbox.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove("active");
+        document.body.style.overflow = "";
+      }
+
+      lightboxClose.addEventListener("click", closeLightbox);
+      lightbox.addEventListener("click", function (e) {
+        if (e.target === lightbox) {
+          closeLightbox();
+        }
+      });
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && lightbox.classList.contains("active")) {
+          closeLightbox();
+        }
+      });
+
+      // Fonction pour nettoyer le texte du label et extraire le nom de la couleur
+      function cleanColorName(text) {
+        // Supprimer les textes indésirables
+        let cleaned = text
+          .replace(/Variante épuisée ou indisponible/gi, "")
+          .replace(/Épuisé/gi, "")
+          .replace(/Indisponible/gi, "")
+          .replace(/Out of stock/gi, "")
+          .replace(/Unavailable/gi, "")
+          .trim();
+
+        // Si le texte contient un "/", prendre la première partie (couleur)
+        if (cleaned.includes("/")) {
+          cleaned = cleaned.split("/")[0].trim();
+        }
+
+        // Supprimer les tailles courantes (XXS, XS, S, M, L, XL, XXL, XXXL)
+        cleaned = cleaned
+          .replace(/\b(XXS|XS|S|M|L|XL|XXL|XXXL)\b/gi, "")
+          .trim();
+
+        // Supprimer "Recto" ou "Verso" si présent
+        cleaned = cleaned.replace(/\b(Recto|Verso)\b/gi, "").trim();
+
+        return cleaned;
+      }
+
+      // Fonction pour obtenir le nom de la couleur sélectionnée depuis les swatch
+      function getSelectedColorName() {
+        // Méthode 1: Chercher dans les variant-radios (structure Shopify standard)
+        const variantRadios = document.querySelectorAll(
+          'variant-radios input[type="radio"]:checked, .product-form__input input[type="radio"]:checked'
+        );
+
+        for (const radio of variantRadios) {
+          const label = document.querySelector(`label[for="${radio.id}"]`);
+          const labelText = label?.textContent.trim() || "";
+
+          // Vérifier si c'est un fieldset de couleur
+          const fieldset = radio.closest("fieldset");
+          if (fieldset) {
+            const legend = fieldset.querySelector("legend");
+            const legendText = legend?.textContent.toLowerCase() || "";
+
+            if (
+              legendText.includes("couleur") ||
+              legendText.includes("color")
+            ) {
+              const colorName = cleanColorName(labelText);
+              return colorName;
+            }
+          }
+        }
+
+        // Méthode 2: Chercher tous les inputs radio avec name contenant "color" ou "couleur"
+        const allColorInputs = document.querySelectorAll(
+          'input[type="radio"][name*="Color"], input[type="radio"][name*="Couleur"], input[type="radio"][name*="color"], input[type="radio"][name*="couleur"]'
+        );
+
+        for (const input of allColorInputs) {
+          if (input.checked) {
+            const label = document.querySelector(`label[for="${input.id}"]`);
+            const labelText = label?.textContent.trim() || input.value;
+            const colorName = cleanColorName(labelText);
+            return colorName;
+          }
+        }
+
+        return "";
+      }
+
+      // Fonction pour filtrer les images selon la couleur sélectionnée
+      function filterImagesByColor() {
+        const colorName = getSelectedColorName().toLowerCase();
+
+        if (!colorName) {
+          return [];
+        }
+
+        // Filtrer les images dont le nom de fichier contient le nom de la couleur
+        const filtered = allItems.filter((item) => {
+          const imageSrc = (item.dataset.imageSrc || "").toLowerCase();
+          return imageSrc.includes(colorName);
+        });
+
+        return filtered;
+      }
+
+      // Fonction pour configurer le carousel avec les items filtrés
+      function setupCarousel(filteredItems, activeIndex = 0) {
+        // Cacher tous les items
+        allItems.forEach((item) => {
+          item.style.display = "none";
+        });
+
+        // Afficher uniquement les items filtrés
+        filteredItems.forEach((item) => {
+          item.style.display = "";
+        });
+
+        // Utiliser les items filtrés visibles
+        const items = filteredItems;
+        if (items.length === 0) {
+          return;
+        }
+
+        // Réorganiser les items pour avoir l'image active au centre, entourée alternativement des autres images
+        const originalItems = Array.from(items);
+        const reorderedItems = [];
+
+        // Placer l'image active au centre
+        const activeItem = originalItems[activeIndex];
+
+        // Séparer les images avant et après l'image active
+        const itemsBefore = originalItems.slice(0, activeIndex);
+        const itemsAfter = originalItems.slice(activeIndex + 1);
+
+        // Construire la liste : alterner gauche, droite autour de l'image active
+        // Inverser itemsBefore pour que la plus proche soit juste à gauche
+        const leftImages = itemsBefore.reverse();
+        const rightImages = itemsAfter;
+
+        const maxLength = Math.max(leftImages.length, rightImages.length);
+
+        for (let i = 0; i < maxLength; i++) {
+          // Ajouter une image de gauche
+          if (i < leftImages.length) {
+            reorderedItems.push(leftImages[i]);
+          }
+          // Si c'est le premier tour, ajouter l'image active au milieu
+          if (i === 0) {
+            reorderedItems.push(activeItem);
+          }
+          // Ajouter une image de droite
+          if (i < rightImages.length) {
+            reorderedItems.push(rightImages[i]);
+          }
+        }
+
+        // Si pas d'images à gauche, ajouter l'image active au début
+        if (leftImages.length === 0) {
+          reorderedItems.unshift(activeItem);
+        }
+
+        // Trouver la position de l'image active dans la liste réorganisée
+        const activeIndexInReordered = reorderedItems.indexOf(activeItem);
+
+        // Créer un item vide pour le centrage dynamique
+        const emptyItem = document.createElement("div");
+        emptyItem.className = "rdc-carousel__item rdc-carousel__item--empty";
+        emptyItem.style.pointerEvents = "none";
+
+        // Vider et reconstruire le track avec l'item vide au début
+        track.innerHTML = "";
+        track.appendChild(emptyItem);
+        reorderedItems.forEach((item) => track.appendChild(item));
+
+        const updatedItems = Array.from(
+          track.querySelectorAll(".rdc-carousel__item")
+        );
+        // L'image active est à l'index activeIndexInReordered + 1 (après l'item vide)
+        let currentIndex = activeIndexInReordered + 1;
+
+        // Calculer les largeurs
+        function calculateItemWidths() {
+          const containerWidth = carousel.offsetWidth;
+
+          // Hauteur commune pour toutes les images
+          const commonHeight = 600; // Hauteur fixe pour toutes les images
+
+          // Calculer les largeurs de toutes les images
+          const realItems = updatedItems.filter(
+            (item) => !item.classList.contains("rdc-carousel__item--empty")
+          );
+          realItems.forEach((item) => {
+            const ratio = parseFloat(item.dataset.aspectRatio);
+            const aspectRatio = isNaN(ratio) ? 0.75 : ratio;
+
+            // Calculer la largeur en fonction du ratio et de la hauteur commune
+            const width = commonHeight * aspectRatio;
+            item.style.width = `${width}px`;
+
+            const imageContainer = item.querySelector(
+              ".rdc-carousel__product-image"
+            );
+            if (imageContainer) {
+              imageContainer.style.height = `${commonHeight}px`;
+            }
+          });
+
+          // Calculer le margin-left du track pour centrer l'image active
+          const gap = 24;
+          const activeItem = updatedItems[currentIndex];
+          if (
+            activeItem &&
+            !activeItem.classList.contains("rdc-carousel__item--empty")
+          ) {
+            const activeItemWidth = activeItem.offsetWidth || 0;
+
+            // Calculer la largeur totale des images AVANT l'image active (pas après, pas l'image active elle-même)
+            let widthBeforeActive = 0;
+            let imagesBeforeActiveCount = 0;
+            for (let i = 1; i < currentIndex; i++) {
+              // De 1 jusqu'à currentIndex EXCLU
+              if (
+                updatedItems[i] &&
+                !updatedItems[i].classList.contains("rdc-carousel__item--empty")
+              ) {
+                widthBeforeActive += updatedItems[i].offsetWidth;
+                imagesBeforeActiveCount++;
+              }
+            }
+
+            // Formule : (containerWidth / 2) - 50% de l'image active - largeur des images avant - gap * (nombre d'images avant + image active)
+            const marginLeft =
+              containerWidth / 2 -
+              activeItemWidth / 2 -
+              widthBeforeActive -
+              (gap * (imagesBeforeActiveCount + 1)) / 2;
+
+            // Appliquer le margin-left au track (peut être positif ou négatif)
+            track.style.marginLeft = `${marginLeft}px`;
+
+            // Supprimer la largeur de l'item vide (ne sert plus)
+            const emptyItem = updatedItems[0];
+            if (
+              emptyItem &&
+              emptyItem.classList.contains("rdc-carousel__item--empty")
+            ) {
+              emptyItem.style.width = "0px";
+            }
+          }
+        }
+
+        calculateItemWidths();
+
+        function updateItemClasses() {
+          updatedItems.forEach((item, index) => {
+            item.classList.remove("is-active", "is-prev", "is-next");
+
+            if (index === currentIndex) {
+              item.classList.add("is-active");
+              updateAltText(item);
+            } else if (index === currentIndex - 1) {
+              item.classList.add("is-prev");
+            } else if (index === currentIndex + 1) {
+              item.classList.add("is-next");
+            }
+          });
+        }
+
+        function updateCarouselPosition() {
+          calculateItemWidths();
+
+          // Pas de transform, l'item vide gère le centrage
+          track.style.transform = "translateX(0)";
+
+          updateItemClasses();
+
+          if (prevButton) {
+            prevButton.classList.toggle("disabled", currentIndex === 0);
+          }
+          if (nextButton) {
+            const maxScroll = Math.max(0, updatedItems.length - 1);
+            nextButton.classList.toggle("disabled", currentIndex >= maxScroll);
+          }
+        }
+
+        if (prevButton) {
+          prevButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            if (currentIndex > 0) {
+              currentIndex--;
+              updateCarouselPosition();
+            }
+          });
+        }
+
+        if (nextButton) {
+          nextButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            const maxScroll = Math.max(0, updatedItems.length - 1);
+            if (currentIndex < maxScroll) {
+              currentIndex++;
+              updateCarouselPosition();
+            }
+          });
+        }
+
+        updatedItems.forEach((item, index) => {
+          item.addEventListener("click", function (e) {
+            e.preventDefault();
+            if (index !== currentIndex) {
+              currentIndex = index;
+              updateCarouselPosition();
+            } else {
+              // Si on clique sur l'image déjà active, ouvrir la lightbox
+              const img = item.querySelector("img");
+              if (img) {
+                openLightbox(img.src, img.alt);
+              }
+            }
+          });
+
+          item.style.cursor = "pointer";
+        });
+
+        window.addEventListener("resize", () => {
+          calculateItemWidths();
+          updateCarouselPosition();
+        });
+
+        updateCarouselPosition();
+      }
+
+      // Fonction pour obtenir l'ID de la variante sélectionnée
+      function getSelectedVariantId() {
+        const variantIdInput = document.querySelector('input[name="id"]');
+        return variantIdInput ? variantIdInput.value : null;
+      }
+
+      // Fonction simple pour filtrer les images selon la couleur
+      function applyColorFilter() {
+        const colorName = getSelectedColorName().toLowerCase();
+        const selectedVariantId = getSelectedVariantId();
+
+        if (!colorName) {
+          allItems.forEach((item) => {
+            item.style.display = "none";
+          });
+          return;
+        }
+
+        let variantImageIndex = -1;
+
+        // Parcourir toutes les images
+        allItems.forEach((item, index) => {
+          const imageSrc = (item.dataset.imageSrc || "").toLowerCase();
+          const variantIds = item.dataset.variantIds || "";
+          const isAttachedToVariant = item.dataset.attachedToVariant === "true";
+
+          // Afficher si : le nom contient la couleur OU l'image est associée à la variante sélectionnée
+          const matchesColor = imageSrc.includes(colorName);
+          const matchesVariant =
+            selectedVariantId &&
+            variantIds.split(",").includes(String(selectedVariantId));
+
+          if (matchesColor || matchesVariant) {
+            item.style.display = "";
+
+            // Si c'est l'image de la variante, on garde son index
+            if (matchesVariant && variantImageIndex === -1) {
+              variantImageIndex = index;
+            }
+          } else {
+            item.style.display = "none";
+          }
+        });
+
+        // Si on a trouvé une image de variante, on la rend active
+        if (variantImageIndex !== -1) {
+          // Récupérer les items filtrés visibles
+          const visibleItems = allItems.filter(
+            (item) => item.style.display !== "none"
+          );
+          // Trouver l'index de l'image de variante dans les items visibles
+          const visibleIndex = visibleItems.findIndex(
+            (item) => allItems.indexOf(item) === variantImageIndex
+          );
+          if (visibleIndex !== -1) {
+            // Reconfigurer le carousel avec les items filtrés et activer l'image de variante
+            setupCarousel(visibleItems, visibleIndex);
+          }
+        } else {
+          // Sinon, reconfigurer le carousel normalement
+          const visibleItems = allItems.filter(
+            (item) => item.style.display !== "none"
+          );
+          if (visibleItems.length > 0) {
+            setupCarousel(visibleItems, 0);
+          }
+        }
+      }
+
+      // Appliquer le filtre au chargement avec un délai pour l'initialisation
+      applyColorFilter();
+      
+      // Afficher le carousel après 300ms pour laisser le temps aux images de s'initialiser
+      setTimeout(function() {
+        carousel.classList.add('is-ready');
+      }, 300);
+
+      // Écouter les changements de couleur via les inputs radio
+      document.addEventListener('change', function(e) {
+        if (e.target.type === 'radio') {
+          // Appliquer le filtre sur TOUS les changements de radio
+          applyColorFilter();
+        }
+      });
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initProductCarousel);
+    } else {
+      initProductCarousel();
+    }
+  })();
+</script>
