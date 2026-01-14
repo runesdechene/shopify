@@ -87,7 +87,6 @@
     position: relative;
     width: 100%;
     height: 100%;
-    max-height: 500px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -98,7 +97,6 @@
   .rdc-carousel__product-image img {
     width: 100%;
     height: 100%;
-    max-height: 500px;
     object-fit: contain;
   }
 
@@ -376,18 +374,46 @@
           return;
         }
 
-      // Réorganiser les items pour avoir l'image active au centre
+      // Réorganiser les items pour avoir l'image active au centre, entourée alternativement des autres images
       const originalItems = Array.from(items);
       const reorderedItems = [];
       
-      // Toujours réorganiser pour mettre l'image active en premier
-      // Les images seront centrées par justify-content: center
-      for (let i = activeIndex; i < originalItems.length; i++) {
-        reorderedItems.push(originalItems[i]);
+      // Placer l'image active au centre
+      const activeItem = originalItems[activeIndex];
+      
+      // Séparer les images avant et après l'image active
+      const itemsBefore = originalItems.slice(0, activeIndex);
+      const itemsAfter = originalItems.slice(activeIndex + 1);
+      
+      // Construire la liste : alterner gauche, droite autour de l'image active
+      // Inverser itemsBefore pour que la plus proche soit juste à gauche
+      const leftImages = itemsBefore.reverse();
+      const rightImages = itemsAfter;
+      
+      const maxLength = Math.max(leftImages.length, rightImages.length);
+      
+      for (let i = 0; i < maxLength; i++) {
+        // Ajouter une image de gauche
+        if (i < leftImages.length) {
+          reorderedItems.push(leftImages[i]);
+        }
+        // Si c'est le premier tour, ajouter l'image active au milieu
+        if (i === 0) {
+          reorderedItems.push(activeItem);
+        }
+        // Ajouter une image de droite
+        if (i < rightImages.length) {
+          reorderedItems.push(rightImages[i]);
+        }
       }
-      for (let i = 0; i < activeIndex; i++) {
-        reorderedItems.push(originalItems[i]);
+      
+      // Si pas d'images à gauche, ajouter l'image active au début
+      if (leftImages.length === 0) {
+        reorderedItems.unshift(activeItem);
       }
+      
+      // Trouver la position de l'image active dans la liste réorganisée
+      const activeIndexInReordered = reorderedItems.indexOf(activeItem);
       
       // Créer un item vide pour le centrage dynamique
       const emptyItem = document.createElement('div');
@@ -400,15 +426,15 @@
       reorderedItems.forEach(item => track.appendChild(item));
       
       const updatedItems = Array.from(track.querySelectorAll('.rdc-carousel__item'));
-      // L'image active est maintenant à l'index 1 (après l'item vide)
-      let currentIndex = 1;
+      // L'image active est à l'index activeIndexInReordered + 1 (après l'item vide)
+      let currentIndex = activeIndexInReordered + 1;
 
       // Calculer les largeurs
       function calculateItemWidths() {
         const containerWidth = carousel.offsetWidth;
         
         // Hauteur commune pour toutes les images
-        const commonHeight = 400; // Hauteur fixe pour toutes les images
+        const commonHeight = 600; // Hauteur fixe pour toutes les images
         
         // Calculer les largeurs de toutes les images
         const realItems = updatedItems.filter(item => !item.classList.contains('rdc-carousel__item--empty'));
