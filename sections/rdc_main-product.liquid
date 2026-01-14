@@ -70,6 +70,7 @@
       text-align: center;
       font-size: 1.7rem;
       font-style: italic;
+      margin-bottom: 45px !important;
     }
 
 
@@ -94,9 +95,8 @@
       background: #eeede6;
       padding: 15px;
       padding-top: 40px;
-      border-radius: 10px;
+      border-radius: 6px;
       position: relative;
-      border: 2px solid #cac6c6ff;
     }
 
     #variant-selects-{{ section.id }} .form__label {
@@ -106,14 +106,19 @@
       text-align: left;
       justify-content: flex-start;
       text-transform: uppercase;
-      font-weight: 600;
+      font-weight: 400;
       letter-spacing: 0.1em;
       margin-bottom: 0;
       font-size: 1rem;
       background: #eeede6;
       padding: 5px;
-      border-radius: 10px;
+      border-radius: 6px;
       border: 2px solid #cac6c6ff;
+    }
+
+    #variant-selects-{{ section.id }} .form__label .form__label-value,
+    #variant-selects-{{ section.id }} .form__label span[data-selected-swatch-value] {
+      font-weight: 700;
     }
 
     #variant-selects-{{ section.id }} .variant-picker,
@@ -121,36 +126,18 @@
       justify-content: center;
     }
 
-    /* Styles pour les swatches de couleur */
-    #variant-selects-{{ section.id }} .color-swatch {
-      border: 2px solid transparent;
-      transition: all 0.3s ease;
-      opacity: 0.6;
-    }
-
-    #variant-selects-{{ section.id }} .color-swatch:hover {
-      opacity: 0.8;
-      transform: scale(1.05);
-    }
-
-    #variant-selects-{{ section.id }} input:checked + .color-swatch {
-      border: 2px solid #000;
-      opacity: 1;
-      box-shadow: 0 0 0 2px #eeede6, 0 0 0 4px #000;
-    }
-
     /* Styles pour les boutons de variantes (taille, impression) */
-    #variant-selects-{{ section.id }} .variant-picker label {
+    #variant-selects-{{ section.id }} .product-form__input--pill label {
       transition: all 0.3s ease;
-      opacity: 0.6;
+      opacity: 0.8;
       border: 2px solid #cac6c6ff;
     }
 
-    #variant-selects-{{ section.id }} .variant-picker label:hover {
+    #variant-selects-{{ section.id }} .product-form__input--pill label:hover {
       opacity: 0.8;
     }
 
-    #variant-selects-{{ section.id }} .variant-picker input:checked + label {
+    #variant-selects-{{ section.id }} .product-form__input--pill input:checked + label {
       opacity: 1;
       font-weight: 700;
       border: 2px solid #cac6c6ff;
@@ -159,6 +146,69 @@
 
     .swatch-image:before, .swatch-block:before {
       box-shadow: none;
+    }
+
+    /* Styles personnalisés pour les swatches de couleur */
+
+    .swatch-block
+    {
+      border-radius: 20px;
+    }
+
+    .swatch-color
+    {
+      height: 4rem !important;
+      width: 4rem !important;
+    }
+
+    .swatch-color:before
+    {
+      box-shadow: 0 0 0 2px #96928aff;
+    }
+
+    #variant-selects-{{ section.id }} .swatch-input__input + .swatch-input__label {
+      --swatch-input--size: 4.5rem;
+      transition: all 0.3s ease;
+    }
+
+    #variant-selects-{{ section.id }} .swatch {
+      box-shadow: none;
+      border-radius: 10%;
+    }
+
+    #variant-selects-{{ section.id }} .swatch-input__input:hover + .swatch-input__label .swatch {
+      border-color: #000;
+      transform: scale(1.05);
+    }
+
+    #variant-selects-{{ section.id }} .swatch-input__input:checked + .swatch-input__label {
+    }
+
+    #variant-selects-{{ section.id }} .swatch-input__input:checked + .swatch-input__label .swatch {
+      border: none !important;
+    }
+
+    #variant-selects-{{ section.id }} .swatch-input__input:not(:checked) + .swatch-input__label {
+      opacity: 0.6;
+    }
+
+    #variant-selects-{{ section.id }} .swatch-input__input:not(:checked) + .swatch-input__label:hover {
+      opacity: 0.8;
+    }
+
+    #variant-selects-{{ section.id }} .swatch-input__input:checked + .swatch-input__label {
+      opacity: 1;
+    }
+
+    /* Boutons d'achats */
+
+    .product-form__submit
+    {
+      background: #413d3dff !important;
+      color: white !important;
+      border: none;
+      padding: 3rem 2rem;
+      font-family: "GTStandard-M" !important;
     }
 {% endstyle %}
 

@@ -65,6 +65,12 @@ afficher les images du produit filtrées par couleur {% endcomment %}
     transition: all 0.4s ease;
   }
 
+  @media screen and (max-width: 1900px) {
+    .rdc-carousel__item {
+      max-width: 33.33vw;
+    }
+  }
+
   .rdc-carousel__item--empty {
     opacity: 0;
     pointer-events: none;
