@@ -375,7 +375,7 @@
             const visibleItems = updatedItems.filter(item => item.style.display !== 'none');
             
             visibleItems.forEach((item, index) => {
-              item.classList.remove('rdc-classic-gallery__item--main', 'rdc-classic-gallery__item--half', 'rdc-classic-gallery__item--large', 'rdc-classic-gallery__item--small');
+              item.classList.remove('rdc-classic-gallery__item--main', 'rdc-classic-gallery__item--half', 'rdc-classic-gallery__item--large', 'rdc-classic-gallery__item--small', 'rdc-classic-gallery__item--single');
               
               if (index === 0) {
                 item.classList.add('rdc-classic-gallery__item--main');
@@ -396,6 +396,13 @@
                 item.classList.add('rdc-classic-gallery__item--half');
               }
             });
+            
+            // Check if last item is alone on its row (odd number of items after main)
+            if (visibleItems.length > 1 && (visibleItems.length - 1) % 2 === 1) {
+              const lastItem = visibleItems[visibleItems.length - 1];
+              lastItem.classList.remove('rdc-classic-gallery__item--half', 'rdc-classic-gallery__item--large', 'rdc-classic-gallery__item--small');
+              lastItem.classList.add('rdc-classic-gallery__item--single');
+            }
             
             // Fade back in
             setTimeout(() => {
