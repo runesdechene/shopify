@@ -270,11 +270,15 @@
         
         for (const radio of variantRadios) {
           const fieldset = radio.closest('fieldset');
+          
           if (fieldset) {
+            // Check if fieldset has color class OR legend contains color/couleur
+            const hasColorClass = fieldset.classList.contains('product-form__input--color');
             const legend = fieldset.querySelector('legend');
             const legendText = legend?.textContent.toLowerCase() || '';
+            const hasColorLegend = legendText.includes('couleur') || legendText.includes('color');
             
-            if (legendText.includes('couleur') || legendText.includes('color')) {
+            if (hasColorClass || hasColorLegend) {
               const label = document.querySelector(`label[for="${radio.id}"]`);
               let colorName = label?.textContent.trim() || '';
               colorName = colorName.replace(/Variante épuisée ou indisponible/gi, '').replace(/Épuisé/gi, '').trim();
@@ -283,21 +287,37 @@
             }
           }
         }
+        
         return '';
+      }
+
+      // Get selected variant ID
+      function getSelectedVariantId() {
+        const variantIdInput = document.querySelector('input[name="id"]');
+        return variantIdInput ? variantIdInput.value : null;
       }
 
       // Filter images by color
       function filterByColor() {
         const colorName = getSelectedColorName().toLowerCase();
+        const selectedVariantId = getSelectedVariantId();
         
         if (!colorName) {
           // No color filter - show all
           items.forEach(item => item.style.display = '');
         } else {
-          // Filter by color name in filename
+          // Filter by color name in filename OR featured image for active variant
           items.forEach(item => {
             const imageSrc = (item.dataset.imageSrc || '').toLowerCase();
-            item.style.display = imageSrc.includes(colorName) ? '' : 'none';
+            const isFeatured = item.dataset.isFeatured === 'true';
+            const variantIds = item.dataset.variantIds || '';
+            const matchesVariant = selectedVariantId && variantIds.split(',').includes(String(selectedVariantId));
+            
+            const hasColorInName = imageSrc.includes(colorName);
+            const isFeaturedForVariant = isFeatured && matchesVariant;
+            
+            // Show if: color name in filename OR (is featured AND matches current variant)
+            item.style.display = (hasColorInName || isFeaturedForVariant) ? '' : 'none';
           });
         }
         
