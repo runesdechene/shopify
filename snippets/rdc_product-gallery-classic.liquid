@@ -50,11 +50,82 @@
     width: 100%;
     height: auto;
     margin-bottom: 1rem;
+    position: relative;
   }
 
   .rdc-classic-gallery__item--main img {
     height: auto;
     object-fit: contain;
+  }
+  
+  .rdc-classic-gallery__zoom-button {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: transform 0.2s;
+    z-index: 10;
+  }
+  
+  .rdc-classic-gallery__zoom-button:hover {
+    transform: scale(1.1);
+  }
+  
+  .rdc-classic-gallery__zoom-button svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .rdc-gallery-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .rdc-gallery-modal.active {
+    display: flex;
+  }
+  
+  .rdc-gallery-modal__content {
+    max-width: 90%;
+    max-height: 90%;
+    position: relative;
+  }
+  
+  .rdc-gallery-modal__image {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+  }
+  
+  .rdc-gallery-modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    font-size: 24px;
+    line-height: 1;
   }
 
   .rdc-classic-gallery__item--half {
@@ -128,6 +199,8 @@
   }
 </style>
 
+{{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
+
 <div class="rdc-classic-gallery" id="RdcClassicGallery-{{ section.id }}">
   <div class="rdc-classic-gallery__grid">
     {%- comment -%} Render all images - JavaScript will filter and reorder based on selected color {%- endcomment -%}
@@ -191,6 +264,14 @@
   </div>
 </div>
 
+<!-- Zoom Modal -->
+<div class="rdc-gallery-modal" id="RdcGalleryModal-{{ section.id }}">
+  <button class="rdc-gallery-modal__close" id="RdcModalClose-{{ section.id }}">&times;</button>
+  <div class="rdc-gallery-modal__content">
+    <img class="rdc-gallery-modal__image" id="RdcModalImage-{{ section.id }}" src="" alt="">
+  </div>
+</div>
+
 <script>
   (function() {
     function initClassicGallery() {
@@ -198,6 +279,65 @@
       if (!gallery) return;
 
       const items = Array.from(gallery.querySelectorAll('.rdc-classic-gallery__item'));
+      const modal = document.getElementById('RdcGalleryModal-{{ section.id }}');
+      const modalImage = document.getElementById('RdcModalImage-{{ section.id }}');
+      const modalClose = document.getElementById('RdcModalClose-{{ section.id }}');
+      
+      // Add zoom button to main image
+      function addZoomButton() {
+        // Remove ALL existing zoom buttons from entire gallery
+        const allZoomButtons = gallery.querySelectorAll('.rdc-classic-gallery__zoom-button');
+        allZoomButtons.forEach(btn => btn.remove());
+        
+        // Find the VISIBLE main image (not display:none)
+        const mainItems = gallery.querySelectorAll('.rdc-classic-gallery__item--main');
+        let visibleMainItem = null;
+        
+        for (const item of mainItems) {
+          if (item.style.display !== 'none') {
+            visibleMainItem = item;
+            break;
+          }
+        }
+        
+        if (!visibleMainItem) return;
+        
+        // Create zoom button
+        const zoomButton = document.createElement('button');
+        zoomButton.className = 'rdc-classic-gallery__zoom-button';
+        zoomButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" /></svg>';
+        zoomButton.setAttribute('aria-label', 'Zoom image');
+        
+        zoomButton.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const img = visibleMainItem.querySelector('img');
+          if (img) {
+            modalImage.src = img.src.replace(/_(small|compact|medium|large|grande|pico|icon|thumb|small|compact|medium|large|grande|1024x1024|2048x2048|master)\./, '_2048x2048.');
+            modalImage.alt = img.alt;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+          }
+        });
+        
+        visibleMainItem.appendChild(zoomButton);
+      }
+      
+      // Close modal
+      function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+      
+      modalClose.addEventListener('click', closeModal);
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal();
+      });
+      
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+          closeModal();
+        }
+      });
       
       // Apply layout classes to visible items
       function applyLayoutClasses() {
@@ -235,8 +375,9 @@
           lastItem.classList.add('rdc-classic-gallery__item--single');
         }
         
-        // After applying classes, equalize row heights
+        // After applying classes, equalize row heights and add zoom button
         setTimeout(equalizeRowHeights, 100);
+        setTimeout(addZoomButton, 150);
       }
       
       // Equalize row heights based on shortest image (with items parameter)
@@ -437,6 +578,9 @@
                 const updatedItemsForHeight = Array.from(gallery.querySelectorAll('.rdc-classic-gallery__item'));
                 equalizeRowHeightsWithItems(updatedItemsForHeight);
               }, 100);
+              
+              // Move zoom button to new main image
+              setTimeout(addZoomButton, 150);
             }, 50);
           }, 200);
         });
@@ -452,6 +596,9 @@
       // Initial setup
       applyLayoutClasses();
       setTimeout(filterByColor, 100);
+      
+      // Add zoom button after initial setup
+      setTimeout(addZoomButton, 500);
     }
 
     if (document.readyState === 'loading') {
