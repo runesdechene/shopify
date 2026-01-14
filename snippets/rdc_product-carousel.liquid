@@ -45,7 +45,6 @@
   .rdc-carousel__track {
     display: flex;
     gap: 1.5rem;
-    justify-content: center;
     transition: transform 0.4s ease;
   }
 
@@ -59,6 +58,7 @@
   .rdc-carousel__item--empty {
     opacity: 0;
     pointer-events: none;
+    max-width: none !important;
   }
 
   .rdc-carousel__item.is-active {
@@ -389,13 +389,19 @@
         reorderedItems.push(originalItems[i]);
       }
       
-      // Vider et reconstruire le track avec les items filtrés (sans items vides)
+      // Créer un item vide pour le centrage dynamique
+      const emptyItem = document.createElement('div');
+      emptyItem.className = 'rdc-carousel__item rdc-carousel__item--empty';
+      emptyItem.style.pointerEvents = 'none';
+      
+      // Vider et reconstruire le track avec l'item vide au début
       track.innerHTML = '';
+      track.appendChild(emptyItem);
       reorderedItems.forEach(item => track.appendChild(item));
       
       const updatedItems = Array.from(track.querySelectorAll('.rdc-carousel__item'));
-      // L'image active est maintenant à l'index 0 (première image après réorganisation)
-      let currentIndex = 0;
+      // L'image active est maintenant à l'index 1 (après l'item vide)
+      let currentIndex = 1;
 
       // Calculer les largeurs
       function calculateItemWidths() {
@@ -404,7 +410,9 @@
         // Hauteur commune pour toutes les images
         const commonHeight = 400; // Hauteur fixe pour toutes les images
         
-        updatedItems.forEach((item) => {
+        // Calculer les largeurs de toutes les images
+        const realItems = updatedItems.filter(item => !item.classList.contains('rdc-carousel__item--empty'));
+        realItems.forEach((item) => {
           const ratio = parseFloat(item.dataset.aspectRatio);
           const aspectRatio = isNaN(ratio) ? 0.75 : ratio;
           
@@ -417,6 +425,31 @@
             imageContainer.style.height = `${commonHeight}px`;
           }
         });
+        
+        // Calculer la largeur de l'item vide pour centrer l'image active
+        const gap = 24;
+        const activeItem = updatedItems[currentIndex];
+        if (activeItem && !activeItem.classList.contains('rdc-carousel__item--empty')) {
+          const activeItemWidth = activeItem.offsetWidth || 0;
+          
+          // Calculer la largeur totale des images AVANT l'image active (pas après, pas l'image active elle-même)
+          let widthBeforeActive = 0;
+          let imagesBeforeActiveCount = 0;
+          for (let i = 1; i < currentIndex; i++) { // De 1 jusqu'à currentIndex EXCLU
+            if (updatedItems[i] && !updatedItems[i].classList.contains('rdc-carousel__item--empty')) {
+              widthBeforeActive += updatedItems[i].offsetWidth;
+              imagesBeforeActiveCount++;
+            }
+          }
+          
+          // Formule : (containerWidth / 2) - 50% de l'image active - largeur des images avant - gap * (nombre d'images avant + image active)
+          const emptyItemWidth = (containerWidth / 2) - (activeItemWidth / 2) - widthBeforeActive - ((gap * (imagesBeforeActiveCount + 1))/2);
+          
+          const emptyItem = updatedItems[0];
+          if (emptyItem && emptyItem.classList.contains('rdc-carousel__item--empty')) {
+            emptyItem.style.width = `${Math.max(0, emptyItemWidth)}px`;
+          }
+        }
       }
       
       calculateItemWidths();
@@ -444,20 +477,8 @@
       function updateCarouselPosition() {
         calculateItemWidths();
         
-        const containerWidth = carousel.offsetWidth;
-        const trackStyles = window.getComputedStyle(track);
-        const gap = parseFloat(trackStyles.gap) || 24;
-        const activeItemWidth = updatedItems[currentIndex]?.offsetWidth || 0;
-        const centerOffset = (containerWidth / 2) - (activeItemWidth / 2);
-        
-        let itemPosition = 0;
-        for (let i = 0; i < currentIndex; i++) {
-          itemPosition += (updatedItems[i]?.offsetWidth || 0) + gap;
-        }
-        
-        const correction = currentIndex * 4;
-        const offset = itemPosition - centerOffset - correction;
-        track.style.transform = `translateX(-${offset}px)`;
+        // Pas de transform, l'item vide gère le centrage
+        track.style.transform = 'translateX(0)';
 
         updateItemClasses();
 
