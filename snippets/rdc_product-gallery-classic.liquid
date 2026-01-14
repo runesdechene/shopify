@@ -219,9 +219,9 @@
         setTimeout(equalizeRowHeights, 100);
       }
       
-      // Equalize row heights based on shortest image
-      function equalizeRowHeights() {
-        const visibleItems = items.filter(item => item.style.display !== 'none' && !item.classList.contains('rdc-classic-gallery__item--main'));
+      // Equalize row heights based on shortest image (with items parameter)
+      function equalizeRowHeightsWithItems(itemsArray) {
+        const visibleItems = itemsArray.filter(item => item.style.display !== 'none' && !item.classList.contains('rdc-classic-gallery__item--main'));
         
         // Group items into rows (pairs)
         const rows = [];
@@ -257,6 +257,11 @@
             }
           }, 50);
         });
+      }
+      
+      // Equalize row heights (uses global items array)
+      function equalizeRowHeights() {
+        equalizeRowHeightsWithItems(items);
       }
 
       // Get selected color name
@@ -342,8 +347,11 @@
             }
           });
           
-          // Recalculate row heights after reordering
-          setTimeout(equalizeRowHeights, 150);
+          // Recalculate row heights after reordering with updated items
+          setTimeout(() => {
+            const updatedItemsForHeight = Array.from(gallery.querySelectorAll('.rdc-classic-gallery__item'));
+            equalizeRowHeightsWithItems(updatedItemsForHeight);
+          }, 150);
         });
       });
 
