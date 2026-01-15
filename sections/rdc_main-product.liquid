@@ -87,7 +87,7 @@
         font-weight: 400;
         letter-spacing: 0.1em;
         margin-bottom: 0;
-        padding: 10px;
+        padding: 10px 10px 10px 0;
         border-radius: 6px;
         font-family: var(--font-accent-family);
       }
@@ -305,6 +305,66 @@
         display: flex;
         gap: 2rem;
       }
+
+      /* Force de vente sous le titre */
+      .product__force-vente {
+        font-size: 1.6rem;
+        color: #534f4f;
+        margin-top: 0 !important;
+        margin-bottom: 2rem !important;
+        font-weight: 400;
+        font-family: var(--font-accent-family);
+        line-height: 1.5;
+      }
+
+      /* Éléments list après la description */
+      .product__elements {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .product__elements-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .product__elements-item {
+        background: #EEEDE6;
+        color: #534f4f;
+        border-radius: 20px;
+        padding: 2px;
+        padding-left: 15px;
+        padding-right: 20px;
+        font-size: 1.4rem;
+        font-weight: 400;
+        font-family: var(--font-accent-family);
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 1.4rem;
+      }
+
+      .product__elements-icon {
+        width: 34px;
+        height: 34px;
+        flex-shrink: 0;
+        display: block;
+        object-fit: contain;
+        border-radius: 50%;
+        margin-left: -15px;
+      }
+
+      /* Fallback checkmark for items without custom icon */
+      .product__elements-item[data-icon="default"]::before {
+        content: "✓";
+        font-weight: 700;
+        color: #534f4f;
+        margin-right: -0.3rem;
+      }
 {% endstyle %}
 
 <section
@@ -448,6 +508,26 @@
                 <h1 class="product__title {{ block.settings.heading_size }}" {{ block.shopify_attributes }}>
                   {{ product.title | escape }}
                 </h1>
+
+                {%- comment -%} Display force-de-vente from Produits metaobject if product.type matches {%- endcomment -%}
+                {%- if product.type != blank -%}
+                  {%- assign product_type_lower = product.type | downcase | strip -%}
+                  {%- assign force_vente_text = '' -%}
+
+                  {%- for produit in shop.metaobjects.produits.values -%}
+                    {%- assign produit_nom = produit.nom.value | downcase | strip -%}
+                    {%- if produit_nom == product_type_lower -%}
+                      {%- if produit.force_de_vente != blank -%}
+                        {%- assign force_vente_text = produit.force_de_vente.value -%}
+                        {%- break -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+
+                  {%- if force_vente_text != blank -%}
+                    <p class="product__force-vente">{{ force_vente_text }}</p>
+                  {%- endif -%}
+                {%- endif -%}
               {%- when 'price' -%}
                 <div class="product__price" id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
                   {%- render 'price',
@@ -520,6 +600,45 @@
                   {%- else -%}
                     <div class="product__description rte quick-add-hidden" {{ block.shopify_attributes }}>
                       {{ description_content }}
+                    </div>
+                  {%- endif -%}
+                {%- endif -%}
+
+                {%- comment -%} Display Éléments list from Produits metaobject if product.type matches {%- endcomment -%}
+                {%- if product.type != blank -%}
+                  {%- assign product_type_lower = product.type | downcase | strip -%}
+                  {%- assign elements_list = '' -%}
+
+                  {%- for produit in shop.metaobjects.produits.values -%}
+                    {%- assign produit_nom = produit.nom.value | downcase | strip -%}
+                    {%- if produit_nom == product_type_lower -%}
+                      {%- if produit.elements != blank -%}
+                        {%- assign elements_list = produit.elements.value -%}
+                        {%- break -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+
+                  {%- if elements_list != blank -%}
+                    <div class="product__elements">
+                      <ul class="product__elements-list">
+                        {%- for element in elements_list -%}
+                          {%- assign icon_name = '' -%}
+                          {%- capture icon_name -%}{% render 'rdc_element-icon-mapping', element_text: element %}{%- endcapture -%}
+                          {%- assign icon_name = icon_name | strip -%}
+                          <li class="product__elements-item" data-icon="{{ icon_name }}">
+                            {%- if icon_name != 'default' -%}
+                              <img
+                                src="{{ 'rdc_icon-' | append: icon_name | append: '.png' | asset_url }}"
+                                alt=""
+                                class="product__elements-icon"
+                                loading="lazy"
+                              >
+                            {%- endif -%}
+                            <span>{{ element }}</span>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
                     </div>
                   {%- endif -%}
                 {%- endif -%}
