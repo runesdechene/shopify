@@ -212,9 +212,9 @@
     class="rdc-fragment-history__wrapper"
     {% if bg_image != blank %}
       {% if is_asset %}
-        style="background-image: url('{{ bg_image | asset_url }}'); {%- if relique.mot_de_l_artiste != blank -%}padding-bottom: 10rem; margin-bottom: 40px;{% else %}padding-bottom: 5rem;{% endif %}"
+        style="background-image: url('{{ bg_image | asset_url }}'); {%- if relique.mot_de_l_artiste != blank -%}padding-bottom: 15rem; margin-bottom: 40px;{% else %}padding-bottom: 5rem;{% endif %}"
       {% else %}
-        style="background-image: url('{{ bg_image | image_url: width: 1920 }}');  {%- if relique.mot_de_l_artiste != blank -%}padding-bottom: 10rem; margin-bottom: 40px;{% else %}padding-bottom: 5rem;{% endif %}"
+        style="background-image: url('{{ bg_image | image_url: width: 1920 }}');  {%- if relique.mot_de_l_artiste != blank -%}padding-bottom: 15rem; margin-bottom: 40px;{% else %}padding-bottom: 5rem;{% endif %}"
       {% endif %}
     {% endif %}
   >

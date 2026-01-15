@@ -1,0 +1,258 @@
+{%- comment -%}
+  RDC Element Popup Modal
+  
+  Popup modal pour afficher les détails d'un élément produit.
+  S'ouvre au clic sur un élément de la liste.
+{%- endcomment -%}
+
+<div id="rdc-element-modal" class="rdc-element-modal" style="display: none;">
+  <div class="rdc-element-modal__overlay"></div>
+  <div class="rdc-element-modal__container">
+    <button class="rdc-element-modal__close" aria-label="Fermer">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    
+    <div class="rdc-element-modal__content">
+      <div class="rdc-element-modal__icon-wrapper">
+        <img src="" alt="" class="rdc-element-modal__icon" id="modal-element-icon">
+      </div>
+      
+      <h3 class="rdc-element-modal__title" id="modal-element-title"></h3>
+      
+      <div class="rdc-element-modal__body" id="modal-element-body"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .rdc-element-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .rdc-element-modal__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.3s ease;
+  }
+
+  .rdc-element-modal__container {
+    position: relative;
+    background: #FDFBF8;
+    border-radius: 20px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+  }
+
+  .rdc-element-modal__close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: rgba(83, 79, 79, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 1;
+  }
+
+  .rdc-element-modal__close:hover {
+    background: rgba(83, 79, 79, 0.2);
+    transform: scale(1.1);
+  }
+
+  .rdc-element-modal__close svg {
+    color: #534f4f;
+  }
+
+  .rdc-element-modal__content {
+    padding: 3rem;
+  }
+
+  .rdc-element-modal__icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    border-radius: 15px;
+  }
+
+  .rdc-element-modal__icon {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: 50%;
+  }
+
+  .rdc-element-modal__title {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #534f4f;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-family: var(--font-heading-family);
+  }
+
+  .rdc-element-modal__body {
+    font-size: 1.6rem;
+    line-height: 1.7;
+    color: #534f4f;
+    font-family: var(--font-body-family);
+  }
+
+  .rdc-element-modal__body p {
+    margin-bottom: 1.5rem;
+  }
+
+  .rdc-element-modal__body ul {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+  }
+
+  .rdc-element-modal__body li {
+    padding-left: 2rem;
+    margin-bottom: 0.8rem;
+    position: relative;
+  }
+
+  .rdc-element-modal__body li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #534f4f;
+    font-weight: 700;
+  }
+
+  .rdc-element-modal__body strong {
+    font-weight: 700;
+    color: #413d3d;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .rdc-element-modal {
+      padding: 1rem;
+    }
+
+    .rdc-element-modal__content {
+      padding: 2rem;
+    }
+
+    .rdc-element-modal__title {
+      font-size: 2rem;
+    }
+
+    .rdc-element-modal__body {
+      font-size: 1.4rem;
+    }
+
+    .rdc-element-modal__icon {
+      width: 60px;
+      height: 60px;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    const modal = document.getElementById('rdc-element-modal');
+    if (!modal) return;
+
+    const overlay = modal.querySelector('.rdc-element-modal__overlay');
+    const closeBtn = modal.querySelector('.rdc-element-modal__close');
+    const iconImg = document.getElementById('modal-element-icon');
+    const titleEl = document.getElementById('modal-element-title');
+    const bodyEl = document.getElementById('modal-element-body');
+
+    function openModal(elementData) {
+      iconImg.src = elementData.iconSrc;
+      iconImg.alt = elementData.title;
+      titleEl.textContent = elementData.title;
+      bodyEl.innerHTML = elementData.content;
+      
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', closeModal);
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && modal.style.display === 'flex') {
+        closeModal();
+      }
+    });
+
+    // Add click event listeners to all clickable elements
+    document.addEventListener('click', function(e) {
+      const elementItem = e.target.closest('.product__elements-item--clickable');
+      if (elementItem) {
+        const iconSrc = elementItem.getAttribute('data-element-icon-src');
+        const title = elementItem.getAttribute('data-element-title');
+        const content = elementItem.getAttribute('data-element-content');
+        
+        if (iconSrc && title && content) {
+          openModal({
+            iconSrc: iconSrc,
+            title: title,
+            content: content
+          });
+        }
+      }
+    });
+
+    // Expose function globally for backward compatibility
+    window.openElementModal = openModal;
+  })();
+</script>

@@ -364,7 +364,7 @@
 
       .product__elements-item:hover {
         transform: scale(1.05);
-        cursor: default;
+        cursor: pointer;
       }
 
       .product__elements-icon {
@@ -645,7 +645,14 @@
                           {%- assign icon_name = '' -%}
                           {%- capture icon_name -%}{% render 'rdc_element-icon-mapping', element_text: element %}{%- endcapture -%}
                           {%- assign icon_name = icon_name | strip -%}
-                          <li class="product__elements-item" data-icon="{{ icon_name }}">
+                          {%- capture element_content -%}{% render 'rdc_element-content-mapping', element_text: element %}{%- endcapture -%}
+                          <li
+                            class="product__elements-item product__elements-item--clickable"
+                            data-icon="{{ icon_name }}"
+                            data-element-title="{{ element }}"
+                            data-element-icon-src="{{ 'rdc_icon-' | append: icon_name | append: '.png' | asset_url }}"
+                            data-element-content="{{ element_content | escape }}"
+                          >
                             {%- if icon_name != 'default' -%}
                               <img
                                 src="{{ 'rdc_icon-' | append: icon_name | append: '.png' | asset_url }}"
@@ -670,7 +677,15 @@
                                 {%- assign icon_name_tissu = '' -%}
                                 {%- capture icon_name_tissu -%}{% render 'rdc_element-icon-mapping', element_text: tissu_text %}{%- endcapture -%}
                                 {%- assign icon_name_tissu = icon_name_tissu | strip -%}
-                                <li class="product__elements-item" data-icon="{{ icon_name_tissu }}">
+                                {%- capture tissu_content -%}{% render 'rdc_element-content-mapping', element_text: tissu_text %}{%- endcapture -%}
+                                <li
+                                  class="product__elements-item product__elements-item--clickable"
+                                  data-icon="{{ icon_name_tissu }}"
+                                  data-element-title="{{ tissu_text }}"
+                                  data-element-icon-src="{{ 'rdc_icon-' | append: icon_name_tissu | append: '.png' | asset_url }}"
+                                  data-element-content="{{ tissu_content | escape }}"
+                                  style="cursor: pointer;"
+                                >
                                   {%- if icon_name_tissu != 'default' -%}
                                     <img
                                       src="{{ 'rdc_icon-' | append: icon_name_tissu | append: '.png' | asset_url }}"
@@ -4304,3 +4319,5 @@
   ]
 }
 {% endschema %}
+
+{%- render 'rdc_element-popup' -%}
