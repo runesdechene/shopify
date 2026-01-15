@@ -519,23 +519,23 @@
                   {{ product.title | escape }}
                 </h1>
 
-                {%- comment -%} Display resume from Produits metaobject if product.type matches {%- endcomment -%}
+                {%- comment -%} Display force_de_vente from Produits metaobject if product.type matches {%- endcomment -%}
                 {%- if product.type != blank -%}
                   {%- assign product_type_lower = product.type | downcase | strip -%}
-                  {%- assign resume_text = '' -%}
+                  {%- assign force_vente_text = '' -%}
 
                   {%- for produit in shop.metaobjects.produits.values -%}
                     {%- assign produit_nom = produit.nom.value | downcase | strip -%}
                     {%- if produit_nom == product_type_lower -%}
-                      {%- capture resume_text -%}
-                        Modèle<b> « {{ produit.nom.value }} »</b>{% if produit.type != blank %} {{ produit.type.value | downcase }}{% endif %}{% if produit.coupe != blank %} {{ produit.coupe.value | downcase }}{% endif %}{% if produit.tissu != blank %} {{ produit.tissu.value | join: ', ' | downcase }}{% endif %}
-                      {%- endcapture -%}
-                      {%- break -%}
+                      {%- if produit.force_de_vente != blank -%}
+                        {%- assign force_vente_text = produit.force_de_vente.value -%}
+                        {%- break -%}
+                      {%- endif -%}
                     {%- endif -%}
                   {%- endfor -%}
 
-                  {%- if resume_text != blank -%}
-                    <p class="product__resume">{{ resume_text }}</p>
+                  {%- if force_vente_text != blank -%}
+                    <p class="product__resume">{{ force_vente_text }}</p>
                   {%- endif -%}
                 {%- endif -%}
               {%- when 'price' -%}
@@ -648,6 +648,35 @@
                             <span>{{ element }}</span>
                           </li>
                         {%- endfor -%}
+
+                        {%- comment -%} Add tissu field as 6th element if it exists {%- endcomment -%}
+                        {%- if product.type != blank -%}
+                          {%- assign product_type_lower_tissu = product.type | downcase | strip -%}
+                          {%- for produit in shop.metaobjects.produits.values -%}
+                            {%- assign produit_nom_tissu = produit.nom.value | downcase | strip -%}
+                            {%- if produit_nom_tissu == product_type_lower_tissu -%}
+                              {%- if produit.tissu != blank -%}
+                                {%- assign tissu_value = produit.tissu.value | join: ', ' -%}
+                                {%- assign tissu_text = tissu_value | append: ' de tissu' -%}
+                                {%- assign icon_name_tissu = '' -%}
+                                {%- capture icon_name_tissu -%}{% render 'rdc_element-icon-mapping', element_text: tissu_text %}{%- endcapture -%}
+                                {%- assign icon_name_tissu = icon_name_tissu | strip -%}
+                                <li class="product__elements-item" data-icon="{{ icon_name_tissu }}">
+                                  {%- if icon_name_tissu != 'default' -%}
+                                    <img
+                                      src="{{ 'rdc_icon-' | append: icon_name_tissu | append: '.png' | asset_url }}"
+                                      alt=""
+                                      class="product__elements-icon"
+                                      loading="lazy"
+                                    >
+                                  {%- endif -%}
+                                  <span>{{ tissu_text }}</span>
+                                </li>
+                                {%- break -%}
+                              {%- endif -%}
+                            {%- endif -%}
+                          {%- endfor -%}
+                        {%- endif -%}
                       </ul>
                     </div>
                   {%- endif -%}
