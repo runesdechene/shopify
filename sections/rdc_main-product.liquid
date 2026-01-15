@@ -42,6 +42,27 @@
         }
       }
 
+      /* Dual Gallery System - Responsive Toggle */
+      /* Desktop: Show custom gallery, hide default */
+      @media screen and (min-width: 768px) {
+        .rdc-gallery-desktop {
+          display: block;
+        }
+        .rdc-gallery-mobile {
+          display: none;
+        }
+      }
+
+      /* Mobile: Hide custom gallery, show default */
+      @media screen and (max-width: 767px) {
+        .rdc-gallery-desktop {
+          display: none;
+        }
+        .rdc-gallery-mobile {
+          display: block;
+        }
+      }
+
       /* Style de l'info wrapper custom */
 
       .product__3price {
@@ -479,7 +500,15 @@
     >
       <div class="product__media-wrapper">
         {%- if product.media.size > 0 -%}
-          {% render 'rdc_product-gallery-classic', variant_images: variant_images %}
+          {%- comment -%} Desktop: Custom gallery with grid layout {%- endcomment -%}
+          <div class="rdc-gallery-desktop">
+            {% render 'rdc_product-gallery-classic', variant_images: variant_images %}
+          </div>
+
+          {%- comment -%} Mobile: Custom mobile gallery with carousel {%- endcomment -%}
+          <div class="rdc-gallery-mobile">
+            {% render 'rdc_product-gallery-mobile', variant_images: variant_images %}
+          </div>
         {%- else -%}
           {% render 'placeholder-image',
             product_placeholder: 'product-1',
@@ -1349,6 +1378,8 @@
     </script>
   </div>
 </section>
+
+{%- render 'rdc_element-popup' -%}
 
 {% schema %}
 {
@@ -4319,5 +4350,3 @@
   ]
 }
 {% endschema %}
-
-{%- render 'rdc_element-popup' -%}
