@@ -273,7 +273,7 @@
           data-variant-ids="{{ variant_ids }}"
           data-is-featured="{{ is_featured }}"
           data-attached-to-variant="{{ media.attached_to_variant? }}"
-          data-product-type="{% render 'rdc_product-type-mapping', product_type: product.type %}"
+          data-resume="{%- if product.type != blank -%}{%- assign product_type_lower = product.type | downcase | strip -%}{%- for produit in shop.metaobjects.produits.values -%}{%- assign produit_nom = produit.nom.value | downcase | strip -%}{%- if produit_nom == product_type_lower -%}Modèle<b> « {{ produit.nom.value }} »</b>{% if produit.type != blank %} {{ produit.type.value | downcase }}{% endif %}{% if produit.coupe != blank %} {{ produit.coupe.value | downcase }}{% endif %}{% if produit.tissu != blank %} {{ produit.tissu.value | join: ', ' | downcase }}{% endif %}{%- break -%}{%- endif -%}{%- endfor -%}{%- endif -%}"
           data-product-title="{{ product.title | escape }}"
         >
           {{
@@ -333,12 +333,12 @@
         if (visibleMainItem) {
           const img = visibleMainItem.querySelector('img');
           const altText = img ? (img.alt || '').trim() : '';
-          const productType = visibleMainItem.dataset.productType || '';
+          const resume = visibleMainItem.dataset.resume || '';
           const productTitle = visibleMainItem.dataset.productTitle || '';
           
-          // If ALT is empty or equals product title (Shopify default), use product type mapping
+          // If ALT is empty or equals product title (Shopify default), use resume from metaobject
           // Otherwise use the custom ALT text
-          let captionText = productType;
+          let captionText = resume;
           if (altText && altText !== productTitle) {
             captionText = altText;
           }
@@ -382,12 +382,12 @@
             modalImage.src = img.src.replace(/_(small|compact|medium|large|grande|pico|icon|thumb|small|compact|medium|large|grande|1024x1024|2048x2048|master)\./, '_2048x2048.');
             modalImage.alt = img.alt;
             
-            // Set caption: use product type mapping if ALT is empty or equals product title
+            // Set caption: use resume from metaobject if ALT is empty or equals product title
             const altText = (img.alt || '').trim();
-            const productType = visibleMainItem.dataset.productType || '';
+            const resume = visibleMainItem.dataset.resume || '';
             const productTitle = visibleMainItem.dataset.productTitle || '';
             
-            let captionText = productType;
+            let captionText = resume;
             if (altText && altText !== productTitle) {
               captionText = altText;
             }

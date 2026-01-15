@@ -125,16 +125,6 @@
             "heading": "Ce fragment est aussi disponible sur..."
           }
         },
-        "fit_guide_bXLzqH": {
-          "type": "fit_guide",
-          "settings": {
-            "heading": "Comment ça taille ?",
-            "active_segmment": "{{ product.metafields.custom.fit_guide | metafield_text }}",
-            "left_label": "Petit (Prendre une taille au dessus)",
-            "middle_label": "Standard unisexe (prendre une en dessous pour femme)",
-            "right_label": "Grand (Prendre une en dessous pour homme)"
-          }
-        },
         "collapsible_tab_HVLjpr": {
           "type": "collapsible_tab",
           "settings": {
@@ -194,7 +184,6 @@
         "custom_liquid_x4gR7Q",
         "buy_buttons",
         "aussi_disponible_z8cYjW",
-        "fit_guide_bXLzqH",
         "collapsible_tab_HVLjpr",
         "collapsible_tab_3YPLif",
         "collapsible_tab_8XtMtD",

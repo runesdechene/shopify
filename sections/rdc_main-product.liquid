@@ -200,9 +200,19 @@
         font-family: var(--font-body-family);
       }
 
+      /* Social proof sous les boutons de paiement */
+      .product__social-proof {
+        margin-top: -25px !important;
+        text-align: center;
+        font-size: 1.4rem;
+        color: #534f4f;
+        font-family: var(--font-body-family);
+        line-height: 1.6;
+      }
+
       /* Aussi disponible section */
       .rdc-aussi-disponible {
-        margin-top: 3rem;
+        margin-top: 3rem !important;
         text-align: center;
       }
 
@@ -306,8 +316,8 @@
         gap: 2rem;
       }
 
-      /* Force de vente sous le titre */
-      .product__force-vente {
+      /* Résumé sous le titre */
+      .product__resume {
         font-size: 1.6rem;
         color: #534f4f;
         margin-top: 0 !important;
@@ -509,23 +519,23 @@
                   {{ product.title | escape }}
                 </h1>
 
-                {%- comment -%} Display force-de-vente from Produits metaobject if product.type matches {%- endcomment -%}
+                {%- comment -%} Display resume from Produits metaobject if product.type matches {%- endcomment -%}
                 {%- if product.type != blank -%}
                   {%- assign product_type_lower = product.type | downcase | strip -%}
-                  {%- assign force_vente_text = '' -%}
+                  {%- assign resume_text = '' -%}
 
                   {%- for produit in shop.metaobjects.produits.values -%}
                     {%- assign produit_nom = produit.nom.value | downcase | strip -%}
                     {%- if produit_nom == product_type_lower -%}
-                      {%- if produit.force_de_vente != blank -%}
-                        {%- assign force_vente_text = produit.force_de_vente.value -%}
-                        {%- break -%}
-                      {%- endif -%}
+                      {%- capture resume_text -%}
+                        Modèle<b> « {{ produit.nom.value }} »</b>{% if produit.type != blank %} {{ produit.type.value | downcase }}{% endif %}{% if produit.coupe != blank %} {{ produit.coupe.value | downcase }}{% endif %}{% if produit.tissu != blank %} {{ produit.tissu.value | join: ', ' | downcase }}{% endif %}
+                      {%- endcapture -%}
+                      {%- break -%}
                     {%- endif -%}
                   {%- endfor -%}
 
-                  {%- if force_vente_text != blank -%}
-                    <p class="product__force-vente">{{ force_vente_text }}</p>
+                  {%- if resume_text != blank -%}
+                    <p class="product__resume">{{ resume_text }}</p>
                   {%- endif -%}
                 {%- endif -%}
               {%- when 'price' -%}
@@ -918,6 +928,9 @@
                   section_id: section.id,
                   show_pickup_availability: block.settings.show_pickup_availability
                 -%}
+                <div class="product__social-proof">
+                  ⭐ 4.6/5 sur + de 5700 clients, et au travers + de 34 festivals en France
+                </div>
               {%- when 'aussi_disponible' -%}
                 {%- render 'rdc_aussi-disponible', block: block, product: product, section_id: section.id -%}
               {%- when 'rating' -%}
