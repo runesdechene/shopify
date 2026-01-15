@@ -228,11 +228,7 @@
       "name": "Fragment History",
       "settings": {
         "heading": "L'histoire du fragment",
-        "content_source": "metaobject",
-        "custom_content": "",
-        "show_tags": true,
-        "bg_color": "",
-        "text_color": ""
+        "custom_content": ""
       }
     },
     "174065208557f01da1": {
