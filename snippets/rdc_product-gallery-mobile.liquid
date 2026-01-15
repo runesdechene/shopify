@@ -14,7 +14,7 @@
   .rdc-mobile-gallery {
     position: relative;
     display: flex;
-    gap: 0.5rem;
+    gap: 1rem;
     margin-bottom: 1rem;
   }
 
@@ -24,6 +24,13 @@
     overflow: hidden;
     background: #EEEDE6;
     border-radius: 8px;
+  }
+
+   @media screen and (max-width: 767px) {
+      .rdc-mobile-gallery__main {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
   }
 
   .rdc-mobile-gallery__main-image {
@@ -43,6 +50,14 @@
     margin-bottom: 1.5rem;
     padding: 0 0.5rem;
   }
+
+   @media screen and (max-width: 767px) {
+  .rdc-mobile-gallery__caption {
+    margin-top: 5px;
+    margin-bottom: 0;
+    padding-left: 25px;
+  }
+   }
 
   .rdc-mobile-gallery__thumbnails {
     display: flex;

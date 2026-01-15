@@ -50,13 +50,19 @@
           flex-direction: column;
         }
 
+
         .product__media-wrapper {
-          margin-bottom: 3rem;
           width: 100%;
         }
 
         .product__info-wrapper {
           padding-inline: 25px;
+          padding-top: 0;
+        }
+
+        .section-padding-galery-mobile
+        {
+          padding-top: 0;
         }
       }
 
@@ -357,6 +363,12 @@
         gap: 2rem;
       }
 
+       @media screen and (max-width: 749px) {
+      .product__relique-banner {
+      display: none;
+    }
+  }
+
       /* Résumé sous le titre */
       .product__resume {
         font-size: 1.6rem;
@@ -381,6 +393,30 @@
         display: flex;
         flex-wrap: wrap;
         gap: 1rem;
+      }
+
+      @media screen and (max-width: 749px) {
+        .product__elements-list {
+          display: flex;
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+          gap: 0.75rem;
+          padding-bottom: 0.5rem;
+          margin-right: -25px;
+          margin-left: -25px;
+          padding-inline: 25px;
+        }
+
+        .product__elements-list::-webkit-scrollbar {
+          display: none;
+        }
+
+        .product__elements-item {
+          flex-shrink: 0;
+          white-space: nowrap;
+        }
       }
 
       .product__elements-item {
@@ -427,7 +463,7 @@
 
 <section
   id="MainProduct-{{ section.id }}"
-  class="section-main-product section-padding section-bg"
+  class="section-main-product section-padding section-bg section-padding-galery-mobile"
   {% render 'section-properties' %}
   data-section="{{ section.id }}"
 >
@@ -511,7 +547,7 @@
   {%- endif -%}
 
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
-  <div class="container container-without-padding">
+  <div class="container container-without-padding ">
     <div
       class="product  product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} flex lg:flex-row flex-col "
       style="--media-width:{{ section.settings.media_width }}%;"
