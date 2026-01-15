@@ -13,15 +13,17 @@
 <style>
   .rdc-mobile-gallery {
     position: relative;
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
   }
 
   .rdc-mobile-gallery__main {
     position: relative;
-    width: 100%;
+    flex: 1;
     overflow: hidden;
     background: #EEEDE6;
     border-radius: 8px;
-    margin-bottom: 1rem;
   }
 
   .rdc-mobile-gallery__main-image {
@@ -44,11 +46,13 @@
 
   .rdc-mobile-gallery__thumbnails {
     display: flex;
+    flex-direction: column;
     gap: 0.5rem;
-    overflow-x: auto;
-    padding: 0.5rem;
+    overflow-y: auto;
+    max-height: 500px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    flex-shrink: 0;
   }
 
   .rdc-mobile-gallery__thumbnails::-webkit-scrollbar {
@@ -168,10 +172,7 @@
     </div>
   </div>
 
-  <!-- Caption below main image -->
-  <div class="rdc-mobile-gallery__caption" id="RdcMobileCaption-{{ section.id }}"></div>
-
-  <!-- Thumbnail navigation -->
+  <!-- Thumbnail navigation on the right -->
   <div class="rdc-mobile-gallery__thumbnails" id="RdcMobileThumbnails-{{ section.id }}">
     {%- for media in product.media -%}
       {%- if media.media_type == 'image' -%}
@@ -212,6 +213,9 @@
     {%- endfor -%}
   </div>
 </div>
+
+<!-- Caption below gallery -->
+<div class="rdc-mobile-gallery__caption" id="RdcMobileCaption-{{ section.id }}"></div>
 
 <!-- Zoom Modal for mobile -->
 <div class="rdc-mobile-modal" id="RdcMobileModal-{{ section.id }}">
