@@ -74,7 +74,6 @@
       #variant-selects-{{ section.id }} > fieldset,
       #variant-selects-{{ section.id }} > div {
         width: 100%;
-        /* background: #eeede6; */
         padding: 0;
         padding-bottom: 15px;
         border-radius: 6px;
@@ -160,9 +159,6 @@
       #variant-selects-{{ section.id }} .swatch-input__input:hover + .swatch-input__label .swatch {
         border-color: #000;
         transform: scale(1.05);
-      }
-
-      #variant-selects-{{ section.id }} .swatch-input__input:checked + .swatch-input__label {
       }
 
       #variant-selects-{{ section.id }} .swatch-input__input:checked + .swatch-input__label .swatch {
@@ -351,22 +347,6 @@
     {{ 'upsell-add-on.css' | asset_url | stylesheet_tag }}
   {% endif %}
 
-  <!--
-    >
-    {%- style -%}
-      .section-{{ section.id }}-padding {
-        padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-        padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-      }
-
-      @media screen and (min-width: 750px) {
-        .section-{{ section.id }}-padding {
-          padding-top: {{ section.settings.padding_top }}px;
-          padding-bottom: {{ section.settings.padding_bottom }}px;
-        }
-      }
-    {%- endstyle -%}
-  -->
   <script>
     try {
       const items = JSON.parse(localStorage.getItem('recently-viewed') || '[]');
