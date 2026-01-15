@@ -141,8 +141,14 @@
 
   @media screen and (max-width: 749px) {
     .rdc-fragment-history {
-      padding: 4rem 1.5rem;
+      padding: 0;
       min-height: 500px;
+    }
+
+    .rdc-fragment-history__wrapper {
+      padding: 45px;
+      padding-top: 80px;
+      clip-path: polygon(0 0, 100% 3%, 100% 100%, 0% 97%);
     }
 
     .rdc-fragment-history__icon {
@@ -151,30 +157,36 @@
     }
 
     .rdc-fragment-history__name {
-      font-size: 2.4rem;
+      font-size: 2.8rem;
     }
 
     .rdc-fragment-history__subtitle {
-      font-size: 1.2rem;
+      font-size: 1.5rem;
+      font-weight: 700;
     }
 
     .rdc-fragment-history__content {
-      font-size: 1.4rem;
+      font-size: 1.6rem;
       text-align: left;
     }
 
     .rdc-fragment-history__author {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
+      position: relative;
+      border-radius: 0;
     }
 
     .rdc-fragment-history__author-content {
-      text-align: center;
+      text-align: justify;
+      padding-top: 20px;
     }
 
     .rdc-fragment-history__author-aside {
       margin-top: 1.5rem;
+      right: 50%;
+      top: -70px;
+      border: 7px solid #ece7dc;
+      border-radius: 50%;
+      transform: translateX(50%);
     }
   }
 {% endstyle %}
