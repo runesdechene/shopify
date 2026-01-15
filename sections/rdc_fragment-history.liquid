@@ -8,16 +8,16 @@
 {% style %}
   .rdc-fragment-history {
     position: relative;
-    margin-bottom: -180px;
+    display: none; /* retiré par condition liquid si fragment trouvé */
+    margin-bottom: -50px;
   }
 
   .rdc-fragment-history__wrapper {
     min-height: 600px;
-    margin-top: 10rem;
-    padding-top: 10rem;
-    padding-bottom: 15rem;
+    margin-top: 4rem;
+    padding-top: 15rem;
     background-size: cover;
-    background-position: center;
+    background-position: bottom;
     background-repeat: no-repeat;
     clip-path: polygon(0 0, 100% 10%, 100% 100%, 0% 90%);
   }
@@ -32,8 +32,8 @@
   }
 
   .rdc-fragment-history__icon {
-    width: 80px;
-    height: 80px;
+    width: 110px;
+    height: 110px;
     margin: 0 auto 2rem;
     display: block;
   }
@@ -47,6 +47,8 @@
     font-family: var(--font-heading-family);
     text-transform: uppercase;
     letter-spacing: 0.2em;
+    box-shadow: 0 0 40px 30px #f7f1e5;
+    background: #f7f1e5;
   }
 
   .rdc-fragment-history__subtitle {
@@ -58,6 +60,8 @@
     font-family: var(--font-accent-family);
     text-transform: uppercase;
     letter-spacing: 0.15em;
+    box-shadow: 0 0 80px 30px #f7f1e5;
+    background: #f7f1e5;
   }
 
   .rdc-fragment-history__content {
@@ -67,7 +71,7 @@
     text-align: justify;
     margin-bottom: 4rem;
     font-family: var(--font-fragment-family);
-    box-shadow: 0 0 20px 20px #f7f1e5;
+    box-shadow: 0 0 40px 30px #f7f1e5;
     background: #f7f1e5;
   }
 
@@ -181,8 +185,8 @@
 
   if product.metafields.custom.illustration != blank
     assign relique = product.metafields.custom.illustration.value
-    if relique.image_fond != blank
-      assign bg_image = relique.image_fond
+    if relique.image_fond_de_fragment != blank
+      assign bg_image = relique.image_fond_de_fragment
     endif
   endif
 
@@ -199,14 +203,18 @@
 <section
   class="rdc-fragment-history"
   data-section-id="{{ section.id }}"
+  style="
+    {%- if relique.description != blank -%}display: block;{% endif %}
+    {%- if relique.mot_de_l_artiste != blank and relique.artiste != blank -%}margin-bottom: -180px;{% endif %}
+  "
 >
   <div
     class="rdc-fragment-history__wrapper"
     {% if bg_image != blank %}
       {% if is_asset %}
-        style="background-image: url('{{ bg_image | asset_url }}');"
+        style="background-image: url('{{ bg_image | asset_url }}'); {%- if relique.mot_de_l_artiste != blank -%}padding-bottom: 10rem; margin-bottom: 40px;{% else %}padding-bottom: 5rem;{% endif %}"
       {% else %}
-        style="background-image: url('{{ bg_image | image_url: width: 1920 }}');"
+        style="background-image: url('{{ bg_image | image_url: width: 1920 }}');  {%- if relique.mot_de_l_artiste != blank -%}padding-bottom: 10rem; margin-bottom: 40px;{% else %}padding-bottom: 5rem;{% endif %}"
       {% endif %}
     {% endif %}
   >

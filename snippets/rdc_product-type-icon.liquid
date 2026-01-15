@@ -9,24 +9,24 @@
 
 {%- liquid
   assign product_type_lower = product_type | downcase | strip
-  assign icon_file = ""
+  assign icon_file = "icon_tshirt.png"
   
   case product_type_lower
     when "sweatshirt", "hoodie", "sweat"
       assign icon_file = "icon_sweat.png"
     when "l'iconique", "tshirt", "t-shirt classique", "tee"
       assign icon_file = "icon_tshirt.png"
-      when "l'ancestral"
+    when "l'ancestral"
       assign icon_file = "icon_tshirt_oversize.png"
     when "débardeur homme", "tank top", "debardeur"
       assign icon_file = "icon_debardeur.png"
     when "veste zippée", "veste", "zip hoodie", "jacket", "le zippé"
       assign icon_file = "icon_zip.png"
-    else
-      assign icon_file = "icon_tshirt.png"
   endcase
 -%}
 
-<div class="rdc-product-type-icon" data-product-type="{{ product_type_lower }}">
-  <img src="{{ icon_file | asset_url }}" alt="{{ product_type }}" loading="lazy">
-</div>
+{%- if icon_file != blank -%}
+  <div class="rdc-product-type-icon" data-product-type="{{ product_type_lower }}">
+    <img src="{{ icon_file | asset_url }}" alt="{{ product_type }}" width="60" height="60" loading="lazy">
+  </div>
+{%- endif -%}

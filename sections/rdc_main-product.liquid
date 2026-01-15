@@ -263,14 +263,16 @@
         justify-content: center;
       }
 
-      .rdc-product-type-icon svg {
+      .rdc-product-type-icon img {
         width: 100%;
         height: 100%;
-        stroke: #534f4f;
+        object-fit: contain;
+        opacity: 0.8;
+        transition: opacity 0.3s ease;
       }
 
-      .rdc-aussi-disponible__link:hover .rdc-product-type-icon svg {
-        stroke: #000;
+      .rdc-aussi-disponible__link:hover .rdc-product-type-icon img {
+        opacity: 1;
       }
 
       .rdc-aussi-disponible__label {
@@ -356,6 +358,13 @@
         display: inline-flex;
         align-items: center;
         gap: 1.4rem;
+        transition: all 0.3s ease;
+      }
+
+
+      .product__elements-item:hover {
+        transform: scale(1.05);
+        cursor: default;
       }
 
       .product__elements-icon {
