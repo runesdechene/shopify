@@ -3,10 +3,24 @@
 -%}
 
 {% style %}
+  /* Mobile: full-width */
   .container
   {
-    max-width: 1500px;
-    padding-inline: 5rem;
+    max-width: 100%;
+    padding-inline: 25px;
+  }
+
+  .container-without-padding
+  {
+    padding-inline: 0;
+  }
+
+  /* Desktop: constrained width with padding */
+  @media screen and (min-width: 768px) {
+    .container {
+      max-width: 1500px;
+      padding-inline: 5rem;
+    }
   }
 
   .product__info-container
@@ -39,6 +53,10 @@
         .product__media-wrapper {
           margin-bottom: 3rem;
           width: 100%;
+        }
+
+        .product__info-wrapper {
+          padding-inline: 25px;
         }
       }
 
@@ -493,7 +511,7 @@
   {%- endif -%}
 
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
-  <div class="container">
+  <div class="container container-without-padding">
     <div
       class="product  product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} flex lg:flex-row flex-col "
       style="--media-width:{{ section.settings.media_width }}%;"
