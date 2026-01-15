@@ -132,8 +132,8 @@
           "type": "icon",
           "settings": {
             "icon": "chat_bubble",
-            "title": "Toujours Joignable",
-            "text": "<p>Réponse sous 24h par le chat du site</p>",
+            "title": "Equipe familiale",
+            "text": "<p>Joignable depuis le t'chat du site.</p>",
             "button_label": "",
             "button_link": ""
           }
@@ -162,8 +162,9 @@
           "type": "icon",
           "settings": {
             "icon": "sheild",
-            "title": "Paiement sécurisé",
-            "text": "<p>Visa, Mastercard, ShopPay</p>",
+            "custom_icon": "shopify://shop_images/icon_coq.svg",
+            "title": "Entreprise Française",
+            "text": "<p>Qui paye ses impots, son URSSAF & sa TVA</p>",
             "button_label": "",
             "button_link": ""
           }
@@ -213,7 +214,7 @@
             "heading": "",
             "image": "shopify://shop_images/2025_footer_logo_491a3465-ef08-4c93-9728-3e0f342839cb.webp",
             "image_width": 425,
-            "subtext": "<p>Runes de chêne, c'est l'alliage entre une curiosité intemporelle pour l'Histoire et la Nature, et une ligne de vêtement ultra-quali imaginés et imprimés en France.</p><p>Véritable hommage à l'authenticité et à la détermination de nos ancêtres, nos collections inspirent à l'aventure en ravivant notre envie de découverte et de camaraderie.</p>",
+            "subtext": "<p>Runes de chêne, c'est l'alliage entre une curiosité intemporelle pour l'Histoire et la Nature, et une ligne de vêtement ultra-quali imaginés et imprimés en France.</p><p>Véritable hommage à l'authenticité et à la détermination de nos ancêtres, nos collections inspirent à l'aventure en ravivant notre envie de découverte et de camaraderie.</p><p>SIRET : 844 256 537 00011<br/>RUNES DE CHÊNE | LA HOUSSAYE<br/>contact@runesdechene.com<br/></p>",
             "show_social": false,
             "open_details": false
           }
