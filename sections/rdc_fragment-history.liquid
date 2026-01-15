@@ -8,22 +8,26 @@
 {% style %}
   .rdc-fragment-history {
     position: relative;
+  }
+
+  .rdc-fragment-history__wrapper {
     min-height: 600px;
-    padding: 6rem 2rem;
+    margin-top: 10rem;
+    padding-top: 10rem;
+    padding-bottom: 15rem;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    clip-path: polygon(0 0, 100% 10%, 100% 100%, 0% 90%);
   }
 
   .rdc-fragment-history__container {
     position: relative;
     z-index: 2;
-    max-width: 800px;
+    max-width: 600px;
     margin: 0 auto;
     text-align: center;
+    padding-bottom: 8rem;
   }
 
   .rdc-fragment-history__icon {
@@ -34,34 +38,36 @@
   }
 
   .rdc-fragment-history__name {
-    font-size: 3.2rem;
+    font-size: 4.2rem;
     font-weight: 700;
     color: #534f4f;
     text-align: center;
     margin-bottom: 0.5rem;
     font-family: var(--font-heading-family);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.2em;
   }
 
   .rdc-fragment-history__subtitle {
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     font-weight: 400;
     color: #534f4f;
     text-align: center;
     margin-bottom: 3rem;
-    font-family: var(--font-body-family);
+    font-family: var(--font-accent-family);
     text-transform: uppercase;
     letter-spacing: 0.15em;
   }
 
   .rdc-fragment-history__content {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     line-height: 1.8;
-    color: #534f4f;
+    color: #473838ff;
     text-align: justify;
     margin-bottom: 4rem;
-    font-family: var(--font-body-family);
+    font-family: var(--font-fragment-family);
+    box-shadow: 0 0 20px 20px #f7f1e5;
+    background: #f7f1e5;
   }
 
   .rdc-fragment-history__content p {
@@ -69,14 +75,16 @@
   }
 
   .rdc-fragment-history__author {
-    background: rgba(238, 237, 230, 0.8);
+    transform: translateY(-20rem);
+    background: #ece7dcff;
     padding: 3rem 4rem;
     border-radius: 15px;
     display: flex;
     align-items: center;
     gap: 2rem;
-    max-width: 900px;
-    margin: 0 auto;
+    max-width: 700px;
+    margin: auto;
+    box-shadow: 0 0 10px 10px #f7f7f480;
   }
 
   .rdc-fragment-history__author-content {
@@ -85,6 +93,9 @@
   }
 
   .rdc-fragment-history__author-aside {
+    position: absolute;
+    right: -20px;
+    top: -20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -92,11 +103,12 @@
   }
 
   .rdc-fragment-history__author-avatar {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     object-fit: cover;
     flex-shrink: 0;
+    box-shadow: 0 0 10px 10px #f7f7f480;
   }
 
   .rdc-fragment-history__author-label {
@@ -105,10 +117,11 @@
     margin-bottom: 1rem;
     font-family: var(--font-heading-family);
     font-weight: 600;
+    letter-spacing: 0.05rem;
   }
 
   .rdc-fragment-history__author-date {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     color: #a79f9fff;
     font-family: var(--font-heading-family);
     padding-left: 1rem;
@@ -119,14 +132,6 @@
     line-height: 1.6;
     color: #534f4f;
     font-family: var(--font-body-family);
-  }
-
-  .rdc-fragment-history__author-name {
-    font-weight: 700;
-    font-size: 1.8rem;
-    font-family: var(--font-accent-family);
-    color: #534f4f;
-    text-align: center;
   }
 
   @media screen and (max-width: 749px) {
@@ -193,93 +198,95 @@
 <section
   class="rdc-fragment-history"
   data-section-id="{{ section.id }}"
-  {% if bg_image != blank %}
-    {% if is_asset %}
-      style="background-image: url('{{ bg_image | asset_url }}');"
-    {% else %}
-      style="background-image: url('{{ bg_image | image_url: width: 1920 }}');"
-    {% endif %}
-  {% endif %}
 >
-  <div class="rdc-fragment-history__container">
-    {%- if product.metafields.custom.illustration != blank -%}
-      {%- assign relique = product.metafields.custom.illustration.value -%}
+  <div
+    class="rdc-fragment-history__wrapper"
+    {% if bg_image != blank %}
+      {% if is_asset %}
+        style="background-image: url('{{ bg_image | asset_url }}');"
+      {% else %}
+        style="background-image: url('{{ bg_image | image_url: width: 1920 }}');"
+      {% endif %}
+    {% endif %}
+  >
+    <div class="rdc-fragment-history__container">
+      {%- if product.metafields.custom.illustration != blank -%}
+        {%- assign relique = product.metafields.custom.illustration.value -%}
 
-      {%- comment -%} Book icon {%- endcomment -%}
-      <img
-        src="{{ 'rdc_icon_livre_fragment.png' | asset_url }}"
-        alt="Fragment icon"
-        class="rdc-fragment-history__icon"
-        loading="lazy"
-      >
-
-      {%- comment -%} Fragment name {%- endcomment -%}
-      {%- if relique.nom != blank -%}
-        <h1 class="rdc-fragment-history__name">{{ relique.nom }}</h1>
-      {%- endif -%}
-
-      {%- comment -%} Subtitle {%- endcomment -%}
-      <p class="rdc-fragment-history__subtitle">L'histoire derrière ce fragment</p>
-
-      {%- comment -%} Content from reliques metaobject {%- endcomment -%}
-      {%- if relique.citation != blank -%}
-        <div class="rdc-fragment-history__content rte">
-          {{ relique.citation | metafield_text }}
-        </div>
-      {%- endif -%}
-
-      {%- comment -%} Author section {%- endcomment -%}
-      {%- if relique.artiste != blank -%}
-        {%- assign artiste = relique.artiste.value -%}
-        <div class="rdc-fragment-history__author">
-          <div class="rdc-fragment-history__author-content">
-            <p class="rdc-fragment-history__author-label">
-              Le mot de l'artiste
-              {%- if relique.date != blank -%}
-                <span class="rdc-fragment-history__author-date">{{ relique.date | date: '%Y' }}</span>
-              {%- else -%}
-                <span class="rdc-fragment-history__author-date">{{ 'now' | date: '%Y' }}</span>
-              {%- endif -%}
-            </p>
-            {%- if relique.mot_de_l_artiste != blank -%}
-              <div class="rdc-fragment-history__author-text">
-                {{ relique.mot_de_l_artiste | metafield_tag }}
-              </div>
-            {%- endif -%}
-          </div>
-          <div class="rdc-fragment-history__author-aside">
-            {%- if artiste.image != blank -%}
-              <img
-                src="{{ artiste.image | image_url: width: 160 }}"
-                alt="{{ artiste.nom }}"
-                class="rdc-fragment-history__author-avatar"
-                loading="lazy"
-              >
-            {%- endif -%}
-            <p class="rdc-fragment-history__author-name">{{ artiste.nom }}</p>
-          </div>
-        </div>
-      {%- endif -%}
-
-    {%- else -%}
-      {%- comment -%} Fallback if no fragment metaobject {%- endcomment -%}
-      {%- if section.settings.custom_content != blank -%}
+        {%- comment -%} Book icon {%- endcomment -%}
         <img
           src="{{ 'rdc_icon_livre_fragment.png' | asset_url }}"
           alt="Fragment icon"
           class="rdc-fragment-history__icon"
           loading="lazy"
         >
-        {%- if section.settings.heading != blank -%}
-          <h1 class="rdc-fragment-history__name">{{ section.settings.heading }}</h1>
+
+        {%- comment -%} Fragment name {%- endcomment -%}
+        {%- if relique.nom != blank -%}
+          <h1 class="rdc-fragment-history__name">{{ relique.nom }}</h1>
         {%- endif -%}
+
+        {%- comment -%} Subtitle {%- endcomment -%}
         <p class="rdc-fragment-history__subtitle">L'histoire derrière ce fragment</p>
-        <div class="rdc-fragment-history__content rte">
-          {{ section.settings.custom_content }}
-        </div>
+
+        {%- comment -%} Content from reliques metaobject {%- endcomment -%}
+        {%- if relique.description != blank -%}
+          <div class="rdc-fragment-history__content rte">
+            {{ relique.description | metafield_tag }}
+          </div>
+        {%- endif -%}
+      {%- else -%}
+        {%- comment -%} Fallback if no fragment metaobject {%- endcomment -%}
+        {%- if section.settings.custom_content != blank -%}
+          <img
+            src="{{ 'rdc_icon_livre_fragment.png' | asset_url }}"
+            alt="Fragment icon"
+            class="rdc-fragment-history__icon"
+            loading="lazy"
+          >
+          {%- if section.settings.heading != blank -%}
+            <h1 class="rdc-fragment-history__name">{{ section.settings.heading }}</h1>
+          {%- endif -%}
+          <p class="rdc-fragment-history__subtitle">L'histoire derrière ce fragment</p>
+          <div class="rdc-fragment-history__content rte">
+            {{ section.settings.custom_content }}
+          </div>
+        {%- endif -%}
       {%- endif -%}
-    {%- endif -%}
+    </div>
   </div>
+  {%- comment -%} Author section {%- endcomment -%}
+  {%- if relique.artiste != blank -%}
+    {%- assign artiste = relique.artiste.value -%}
+    <div class="rdc-fragment-history__author">
+      <div class="rdc-fragment-history__author-content">
+        <p class="rdc-fragment-history__author-label">
+          Le mot de l'artiste
+
+          {%- if relique.date != blank -%}
+            <span class="rdc-fragment-history__author-date">{{ artiste.nom }}, {{ relique.date | date: '%Y' }}</span>
+          {%- else -%}
+            <span class="rdc-fragment-history__author-date">{{ artiste.nom }}, {{ 'now' | date: '%Y' }}</span>
+          {%- endif -%}
+        </p>
+        {%- if relique.mot_de_l_artiste != blank -%}
+          <div class="rdc-fragment-history__author-text">
+            {{ relique.mot_de_l_artiste | metafield_tag }}
+          </div>
+        {%- endif -%}
+      </div>
+      <div class="rdc-fragment-history__author-aside">
+        {%- if artiste.image != blank -%}
+          <img
+            src="{{ artiste.image | image_url: width: 160 }}"
+            alt="{{ artiste.nom }}"
+            class="rdc-fragment-history__author-avatar"
+            loading="lazy"
+          >
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
 </section>
 
 {% schema %}
