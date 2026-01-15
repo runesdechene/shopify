@@ -102,6 +102,12 @@
             "size_chart_page": "guide-des-tailles-t-shirt-unisexe"
           }
         },
+        "custom_liquid_x4gR7Q": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<div style=\"font-size: 1.3rem; color: #534f4f; margin-bottom: -15px;\">⚠️ Couleurs en éditions limitées - Tirage à très petites séries </div>"
+          }
+        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
@@ -185,6 +191,7 @@
         "custom_liquid_d9wLpx",
         "description",
         "variant_picker",
+        "custom_liquid_x4gR7Q",
         "buy_buttons",
         "aussi_disponible_z8cYjW",
         "fit_guide_bXLzqH",
