@@ -396,26 +396,49 @@
       }
 
       @media screen and (max-width: 749px) {
+        @keyframes scroll-elements {
+          0% {
+            transform: translateX(0);
+          }
+          50% {
+            transform: translateX(var(--scroll-distance, -100vw));
+          }
+          100% {
+            transform: translateX(0);
+          }
+        }
+
         .product__elements-list {
           display: flex;
           flex-wrap: nowrap;
-          overflow-x: auto;
-          -webkit-overflow-scrolling: touch;
+          overflow-x: hidden;
           scrollbar-width: none;
           gap: 0.75rem;
           padding-bottom: 0.5rem;
           margin-right: -25px;
           margin-left: -25px;
           padding-inline: 25px;
+          position: relative;
+          --scroll-distance: -100vw;
         }
 
         .product__elements-list::-webkit-scrollbar {
           display: none;
         }
 
+        .product__elements-list > * {
+          animation: scroll-elements 15s ease-in-out infinite;
+        }
+
         .product__elements-item {
           flex-shrink: 0;
           white-space: nowrap;
+        }
+
+        /* Pause animation on hover/touch */
+        .product__elements-list:hover > *,
+        .product__elements-list:active > * {
+          animation-play-state: paused;
         }
       }
 
@@ -1356,6 +1379,45 @@
     {% render 'modal-product-popup', section: section, product: product %}
     {% render 'modal-size-guide', section: section, product: product %}
     {% render 'modal-back-in-stock', section: section, product: product %}
+
+    <script>
+      // Calculate scroll distance for elements list animation
+      (function () {
+        function updateElementsScrollDistance() {
+          if (window.innerWidth > 749) return; // Only on mobile
+
+          const elementsList = document.querySelector('.product__elements-list');
+          if (!elementsList) return;
+
+          // Get the total scroll width of the content
+          const scrollWidth = elementsList.scrollWidth;
+          // Get the visible width
+          const clientWidth = elementsList.clientWidth;
+          // Calculate the distance to scroll (negative value)
+          const scrollDistance = -(scrollWidth - clientWidth);
+
+          // Set CSS variable
+          elementsList.style.setProperty('--scroll-distance', `${scrollDistance}px`);
+        }
+
+        // Update on load
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', updateElementsScrollDistance);
+        } else {
+          updateElementsScrollDistance();
+        }
+
+        // Update on resize
+        let resizeTimer;
+        window.addEventListener('resize', function () {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(updateElementsScrollDistance, 250);
+        });
+
+        // Update after images load (in case icons affect width)
+        window.addEventListener('load', updateElementsScrollDistance);
+      })();
+    </script>
 
     {%- if section.settings.show_sticky_add_to_cart_bar -%}
       {% render 'product-add-to-cart-sticky',
