@@ -25,7 +25,7 @@ class FragmentsCarousel {
     this.fixedActionsContainer = section.querySelector(
       ".fragments-fixed-actions"
     );
-    this.fixedBtnShop = section.querySelector(".fragment-btn-shop");
+    this.fixedBtnShop = section.querySelector(".fragment-btn");
 
     this.currentIndex = 0;
     this.totalCards = this.cards.length;
@@ -185,6 +185,8 @@ class FragmentsCarousel {
     setTimeout(() => {
       const middleIndex = Math.floor(this.totalCards / 2);
       this.scrollToCard(middleIndex);
+      // Mettre à jour le bouton avec le nombre de produits
+      this.updateFixedButtons();
     }, 100);
   }
 
@@ -966,59 +968,41 @@ class FragmentsCarousel {
    * Mettre à jour les boutons fixes en fonction de la carte active
    */
   updateFixedButtons() {
-    if (!this.fixedBtnShop || !this.fixedBtnArticle) return;
+    if (!this.fixedBtnShop) return;
 
     const currentCard = this.cards[this.currentIndex];
     if (!currentCard) return;
 
-    // Récupérer le titre de la carte pour le bouton shop
-    const cardTitle =
-      currentCard.dataset.cardTitle ||
-      currentCard.querySelector(".fragment-card-title")?.textContent ||
-      "";
+    // Récupérer le nombre de produits associés
+    const productCount = parseInt(currentCard.dataset.productCount) || 0;
 
-    // Récupérer l'URL de l'article
-    const articleUrl = currentCard.dataset.articleUrl || "";
-
-    // Récupérer le filter GID pour savoir si le bouton ACHETER doit être actif
+    // Récupérer le filter GID pour savoir si le bouton doit être actif
     const filterGid = currentCard.dataset.filterGid || "";
 
-    // Mettre à jour le bouton ACHETER
-    this.fixedBtnShop.dataset.cardTitle = cardTitle;
-
+    // Mettre à jour le bouton
     if (filterGid) {
-      // GID disponible : bouton actif
-      this.fixedBtnShop.textContent = "💖 ACHETER";
+      // Bouton actif si filterGid existe
+      if (productCount > 0) {
+        // Afficher le nombre de produits
+        const productText = productCount === 1 ? "produit" : "produits";
+        this.fixedBtnShop.textContent = `Découvrir ${productCount} ${productText}`;
+      } else {
+        // Aucune collection trouvée : texte générique
+        this.fixedBtnShop.textContent = "Voir les produits";
+      }
       this.fixedBtnShop.style.opacity = "1";
       this.fixedBtnShop.style.pointerEvents = "auto";
       this.fixedBtnShop.style.cursor = "pointer";
       this.fixedBtnShop.style.backgroundColor = ""; // Réinitialiser la couleur
       this.fixedBtnShop.style.color = ""; // Réinitialiser la couleur du texte
     } else {
-      // Pas de GID : bouton grisé
-      this.fixedBtnShop.textContent = "❌ INDISPONIBLE";
+      // Pas de filterGid : bouton désactivé
+      this.fixedBtnShop.textContent = "Aucun produit";
       this.fixedBtnShop.style.opacity = "0.5";
       this.fixedBtnShop.style.pointerEvents = "none";
       this.fixedBtnShop.style.cursor = "not-allowed";
       this.fixedBtnShop.style.backgroundColor = "#707070ff"; // Gris
       this.fixedBtnShop.style.color = "#fff"; // Texte blanc
-    }
-
-    // Mettre à jour le bouton LIRE LE RÉCIT
-    if (articleUrl && articleUrl !== "#" && articleUrl !== "") {
-      // Article disponible
-      this.fixedBtnArticle.href = articleUrl;
-      this.fixedBtnArticle.textContent = "📜 LIRE LE RÉCIT";
-      this.fixedBtnArticle.style.opacity = "1";
-      this.fixedBtnArticle.style.pointerEvents = "auto";
-      this.fixedBtnArticle.style.cursor = "pointer";
-    } else {
-      // Pas d'article
-      this.fixedBtnArticle.href = "#";
-      this.fixedBtnArticle.textContent = "⏳ RÉCIT EN COURS";
-      this.fixedBtnArticle.style.opacity = "0.5";
-      this.fixedBtnArticle.style.pointerEvents = "none";
-      this.fixedBtnArticle.style.cursor = "not-allowed";
     }
   }
 
