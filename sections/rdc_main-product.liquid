@@ -666,7 +666,8 @@
                     sale_badge_type: block.settings.sale_badge_type,
                     price_class: 'price--large flex items-center gap-4'
                   -%}
-                  <div class="product__3price">
+                  <div class="product__3price" style="position: relative; width: auto; display: inline-block; padding-right: 60px;">
+                    <img src="{{ 'rdc_icon_klarna.png' | asset_url }}" alt="" style="position: absolute; right: 0; height: 20px; top: 3px;"/>
                     ou 3 paiements de
                     <b>{{ product.selected_or_first_available_variant.price | divided_by: 3 | money }} TTC</b>
                   </div>
