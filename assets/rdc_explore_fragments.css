@@ -16,11 +16,23 @@ footer,
 .rdc-fragments-section {
   height: 100vh;
   max-height: 100vh;
-  background: transparent;
+  background: #f8f3e7;
+  background-image: url('/assets/rdc_fond_default.webp');
+  background-size: cover;
+  background-position: center;
   color: #e8e8e8;
   padding: 0;
   position: relative;
   overflow: hidden;
+}
+
+.rdc-fragments-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+/* Non actif pour l'instant */
 }
 
 /* ========================================
@@ -42,9 +54,9 @@ footer,
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(221, 220, 219, 0.9);
+  background: #e6dcc7;
   border-radius: 12px;
-  color: #5d6d7e;
+  color: #5e5444c2;
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
@@ -53,10 +65,9 @@ footer,
 }
 
 .fragments-back-btn:hover {
-  background: #5d6d7e;
-  color: #ffffff;
+  background: #e6dcc7;
+  color: #4e463ac2;
   transform: translateX(-3px);
-  box-shadow: 0 4px 12px rgba(93, 109, 126, 0.3);
 }
 
 .fragments-back-btn svg {
@@ -77,31 +88,27 @@ footer,
   text-transform: uppercase;
   font-family: var(--font-heading-family);
   line-height: 1.2;
+  background: rgba(248, 243, 231, 0.7);
+  box-shadow: 0 0 150px 80px rgba(248, 243, 231, 0.7);
 }
 
 .fragments-subtitle {
   font-size: 3rem;
   font-weight: 500;
-  color: #b8b8b8;
-  text-transform: uppercase;
+  color: #a39b8cd2;
+  text-transform: uppercase; 
+  background: rgba(248, 243, 231, 0.7);
+  box-shadow: 0 0 100px 10px rgba(248, 243, 231, 0.7);
 }
 
 .fragments-meta {
   display: block;
-  font-size: 1.4rem;
-  color: #9ca3af;
-  margin: 10px 0 0 0;
-  font-family: var(--font-body-family);
-  letter-spacing: 0.05rem;
-}
-
-.fragments-description {
   font-size: 1.8rem;
-  color: rgb(75, 66, 65);
-  line-height: 1.6;
-  max-width: 700px;
-  margin: 0 auto 40px;
-  animation: fadeInUp 0.8s ease 0.4s both;
+  color: #c0afa1;
+  margin: 0;
+  font-weight: 500;
+  font-family: var(--font-accent-family);
+  letter-spacing: 0.05rem;
 }
 
 /* ========================================
@@ -356,7 +363,7 @@ footer,
   scroll-snap-align: center;
   cursor: pointer;
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  opacity: 0.5;
+  opacity: 1;
   transform: scale(0.85);
   display: flex;
   align-items: center;
@@ -365,8 +372,7 @@ footer,
   box-sizing: border-box;
 }
 
-.fragment-card.is-center {
-  opacity: 1;
+.fragment-card.is-center  {
   transform: scale(1);
   z-index: 10;
 }
@@ -379,9 +385,14 @@ footer,
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  padding: 0 40px 130px;
+  padding: 0 40px 30px;
+  margin-bottom: 100px;
+  border-radius: 30%;
   box-sizing: border-box;
+  background: rgba(248, 243, 231, 0.7);
+  box-shadow: 0 0 150px 80px rgba(248, 243, 231, 0.7);
 }
+
 
 /* Animation pour les cartes filtrées */
 .fragment-card.hidden {
@@ -406,18 +417,18 @@ footer,
   overflow: hidden;
   transition: all 0.4s ease;
 }
+.fragment-image
+{
+  transition: opacity 0.5s;
+}
 
-/* Image de fond de la carte */
-.fragment-card-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: 1;
+/* Gestion de l'opacité entre actif et non actif */
+.fragment-image, .fragment-card-content-col {
+  opacity: 0.5;
+}
+
+.fragment-card.is-center .fragment-image, .fragment-card.is-center .fragment-card-content-col {
+  opacity: 0.8;
 }
 
 /* Pas d'overlay - image pure */
@@ -456,28 +467,26 @@ footer,
 .fragment-new-badge {
   display: inline-block;
   margin-top: 15px;
-  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
   color: #1a1d21;
   padding: 8px 20px;
   font-size: 1.3rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
-  font-family: var(--font-heading-family);
   animation: badgePulse 2s ease-in-out infinite;
+}
+
+.fragment-new-badge img {
+  height: 50px;
 }
 
 @keyframes badgePulse {
   0%,
   100% {
     transform: scale(1);
-    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
   }
   50% {
     transform: scale(1.05);
-    box-shadow: 0 6px 16px rgba(212, 175, 55, 0.6);
   }
 }
 
@@ -541,7 +550,7 @@ footer,
 .fragment-card-summary {
   font-size: 1.8rem;
   line-height: 1.6;
-  color: #5d6d7e;
+  color: #665f56;
   margin: 0;
   text-align: center;
   max-width: 500px;

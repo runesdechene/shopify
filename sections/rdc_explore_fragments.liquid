@@ -2,6 +2,7 @@
 {{ 'rdc_explore_fragments_dark.css' | asset_url | stylesheet_tag }}
 
 <div class="rdc-fragments-section" data-section-id="{{ section.id }}">
+  <div class="rdc-fragments-overlay"></div>
   <div class="fragments-hero">
     {%- comment -%} Bouton de retour {%- endcomment -%}
     {% if section.settings.show_back_button %}
@@ -11,10 +12,10 @@
         </svg>
       </a>
     {% endif %}
-    
+
     {%- comment -%} Récupérer les metaobjects Reliques {%- endcomment -%}
     {%- assign reliques = shop.metaobjects.reliques.values -%}
-    
+
     {%- comment -%} Compter les artistes uniques {%- endcomment -%}
     {%- assign all_artists = '' -%}
     {% for relique in reliques %}
@@ -31,14 +32,14 @@
     {% endfor %}
     {%- assign artists_array = all_artists | split: '|' -%}
     {%- assign artists_count = artists_array.size -%}
-    
+
     {%- comment -%} Titre et sous-titre alignés à gauche {%- endcomment -%}
     <div class="fragments-header-title">
       <h1 class="fragments-title">
-        {{ section.settings.title | default: "EXPLORER" }}
-        <span class="fragments-subtitle">{{ section.settings.subtitle | default: "NOS CRÉATIONS" }}</span>
+        {{ section.settings.title | default: 'EXPLORER' }}
+        <span class="fragments-subtitle">{{ section.settings.subtitle | default: 'NOS CRÉATIONS' }}</span>
       </h1>
-      
+
       <p class="fragments-meta">
         {{ reliques.size }} illustrations disponibles, {{ artists_count }} artiste{% if artists_count > 1 %}s{% endif %}
       </p>
@@ -46,10 +47,8 @@
 
     {%- comment -%} Filtres de catégories personnalisés (en haut à droite) {%- endcomment -%}
     <div class="fragments-filters">
-      <button class="fragments-filter active" data-filter="all">
-        ✨ Toutes les reliques
-      </button>
-      
+      <button class="fragments-filter active" data-filter="all">✨ Toutes les reliques</button>
+
       {%- comment -%} Collecter tous les tags uniques depuis les metaobjects {%- endcomment -%}
       {%- assign all_tags = '' -%}
       {% for relique in reliques %}
@@ -66,7 +65,7 @@
           {% endfor %}
         {% endif %}
       {% endfor %}
-      
+
       {%- comment -%} Afficher un bouton pour chaque tag unique {%- endcomment -%}
       {%- assign tags_array = all_tags | split: '|' -%}
       {% for tag in tags_array %}
@@ -79,7 +78,15 @@
     {%- comment -%} Bouton toggle thème sombre {%- endcomment -%}
     <div class="theme-toggle-container">
       <button class="theme-toggle" id="theme-toggle-{{ section.id }}" aria-label="Basculer le thème">
-        <svg class="theme-icon sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg
+          class="theme-icon sun-icon"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
           <circle cx="12" cy="12" r="5"></circle>
           <line x1="12" y1="1" x2="12" y2="3"></line>
           <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -90,7 +97,15 @@
           <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
         </svg>
-        <svg class="theme-icon moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg
+          class="theme-icon moon-icon"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
         </svg>
         <span class="theme-toggle-slider"></span>
@@ -99,9 +114,9 @@
 
     {%- comment -%} Barre de recherche {%- endcomment -%}
     <div class="fragments-search">
-      <input 
-        type="text" 
-        class="fragments-search-input" 
+      <input
+        type="text"
+        class="fragments-search-input"
         placeholder="{{ section.settings.search_placeholder | default: 'Rechercher un fragment...' }}"
         id="fragments-search-{{ section.id }}"
       >
@@ -112,7 +127,7 @@
   <div class="fragments-carousel-container">
     <div class="fragments-carousel" id="fragments-carousel-{{ section.id }}">
       {%- comment -%} Cartes depuis les metaobjects Reliques {%- endcomment -%}
-      
+
       {% if reliques.size > 0 %}
         {% for relique in reliques %}
           {%- comment -%} Convertir la liste de tags en chaîne {%- endcomment -%}
@@ -126,10 +141,10 @@
               {%- endif -%}
             {% endfor %}
           {% endif %}
-          
+
           {%- comment -%} Récupérer l'URL et la date de l'article {%- endcomment -%}
-          {%- assign article_url = "" -%}
-          {%- assign article_published_at = "" -%}
+          {%- assign article_url = '' -%}
+          {%- assign article_published_at = '' -%}
           {%- if relique.recit != blank -%}
             {%- if relique.recit.url -%}
               {%- assign article_url = relique.recit.url -%}
@@ -141,61 +156,61 @@
               {%- assign article_url = relique.recit -%}
             {%- endif -%}
           {%- endif -%}
-          
-          <div class="fragment-card" 
-               data-index="{{ forloop.index0 }}"
-               data-block-id="{{ relique.id }}"
-               data-card-title="{{ relique.nom }}"
-               data-filter-gid="{{ relique.filter_gid }}"
-               data-excerpt="{{ relique.description | metafield_text | strip_html | truncate: 200 | escape }}"
-               data-tags="{{ tags_string }}"
-               data-article-url="{{ article_url }}"
-               data-article-published-at="{{ article_published_at }}"
-               data-debug-recit="{{ relique.recit }}">
-            
+
+          <div
+            class="fragment-card"
+            data-index="{{ forloop.index0 }}"
+            data-block-id="{{ relique.id }}"
+            data-card-title="{{ relique.nom }}"
+            data-filter-gid="{{ relique.filter_gid }}"
+            data-excerpt="{{ relique.description | metafield_text | strip_html | truncate: 200 | escape }}"
+            data-tags="{{ tags_string }}"
+            data-article-url="{{ article_url }}"
+            data-article-published-at="{{ article_published_at }}"
+            data-debug-recit="{{ relique.recit }}"
+          >
             <div class="fragment-card-wrapper">
               {%- comment -%} Image en haut {%- endcomment -%}
               <div class="fragment-card-image-col">
                 {% if relique.image_pour_fond_clair != blank or relique.image_pour_fond_sombre != blank %}
-                  <img 
-                    src="{{ relique.image_pour_fond_clair | image_url: width: 600 }}" 
-                    alt="{{ relique.nom }}" 
+                  <img
+                    src="{{ relique.image_pour_fond_clair | image_url: width: 600 }}"
+                    alt="{{ relique.nom }}"
                     class="fragment-image"
                     data-light-image="{{ relique.image_pour_fond_clair | image_url: width: 600 }}"
-                    data-dark-image="{{ relique.image_pour_fond_sombre | image_url: width: 600 }}">
+                    data-dark-image="{{ relique.image_pour_fond_sombre | image_url: width: 600 }}"
+                  >
                 {% else %}
                   <div class="fragment-image-placeholder"></div>
                 {% endif %}
               </div>
-              
+
               {%- comment -%} Infos sous l'image : Titre, Artiste, Résumé {%- endcomment -%}
               <div class="fragment-card-content-col">
                 <h2 class="fragment-card-title">{{ relique.nom | default: "Titre de l'illustration" }}</h2>
-                
+
                 {% if relique.artiste != blank %}
                   <p class="fragment-card-artist">
                     Artiste : {{ relique.artiste }}
                     {% if relique.date != blank %}
-                      ({{ relique.date | date: "%Y" }})
+                      ({{ relique.date | date: '%Y' }})
                     {% endif %}
                   </p>
                 {% endif %}
-                
+
                 {% if relique.resume != blank %}
                   <p class="fragment-card-summary">
                     {{ relique.resume }}
                   </p>
                 {% endif %}
-                
+
                 {%- comment -%} Badge NOUVEAU (sera géré par JS) {%- endcomment -%}
-                <div class="fragment-new-badge" style="display: none;">
-                  NOUVEAU FRAGMENT !
-                </div>
+                <div class="fragment-new-badge" style="display: none;"><img src="/assets/rdc_new_badge.png"></div>
               </div>
             </div>
           </div>
         {% endfor %}
-        
+
       {% else %}
         {%- comment -%} Fallback: Carte de test si aucun metaobject n'existe {%- endcomment -%}
         <div class="fragment-card" data-index="0">
@@ -233,12 +248,8 @@
   {%- comment -%} Bouton d'action double fixe {%- endcomment -%}
   <div class="fragments-fixed-actions" id="fragments-fixed-actions-{{ section.id }}">
     <div class="fragment-dual-btn">
-      <button type="button" class="fragment-btn fragment-btn-shop" data-action="shop">
-       💖 ACHETER
-      </button>
-      <a href="#" class="fragment-btn fragment-btn-article" data-action="article">
-        📜 LIRE LE RÉCIT
-      </a>
+      <button type="button" class="fragment-btn fragment-btn-shop" data-action="shop">💖 ACHETER</button>
+      <a href="#" class="fragment-btn fragment-btn-article" data-action="article"> 📜 LIRE LE RÉCIT </a>
     </div>
   </div>
 
@@ -246,18 +257,29 @@
   {%- assign opacity_value = section.settings.bottom_images_opacity | default: 100 | divided_by: 100.0 -%}
   <div class="bottom-decoration-images" style="opacity: {{ opacity_value }};">
     {% if section.settings.bottom_image_left != blank %}
-      <img src="{{ section.settings.bottom_image_left | image_url: width: 400 }}" alt="Décoration gauche" class="bottom-image bottom-image-left">
+      <img
+        src="{{ section.settings.bottom_image_left | image_url: width: 400 }}"
+        alt="Décoration gauche"
+        class="bottom-image bottom-image-left"
+      >
     {% endif %}
-    
+
     {% if section.settings.bottom_image_center != blank %}
-      <img src="{{ section.settings.bottom_image_center | image_url: width: 1920 }}" alt="Décoration centre" class="bottom-image bottom-image-center">
+      <img
+        src="{{ section.settings.bottom_image_center | image_url: width: 1920 }}"
+        alt="Décoration centre"
+        class="bottom-image bottom-image-center"
+      >
     {% endif %}
-    
+
     {% if section.settings.bottom_image_right != blank %}
-      <img src="{{ section.settings.bottom_image_right | image_url: width: 400 }}" alt="Décoration droite" class="bottom-image bottom-image-right">
+      <img
+        src="{{ section.settings.bottom_image_right | image_url: width: 400 }}"
+        alt="Décoration droite"
+        class="bottom-image bottom-image-right"
+      >
     {% endif %}
   </div>
-
 </div>
 
 <script src="{{ 'rdc_explore_fragments.js' | asset_url }}" defer="defer"></script>

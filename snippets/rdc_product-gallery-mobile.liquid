@@ -80,15 +80,25 @@
     flex-direction: column;
     gap: 0.5rem;
     overflow-y: auto;
-    max-height: 500px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     flex-shrink: 0;
+    align-self: stretch;
   }
 
+  /* Desktop: Match main image height */
+  @media screen and (min-width: 768px) {
+    .rdc-mobile-gallery__thumbnails {
+      max-height: none;
+      height: 100%;
+    }
+  }
+
+  /* Mobile: Keep max-height for scroll */
   @media screen and (max-width: 767px) {
     .rdc-mobile-gallery__thumbnails {
       padding-right: 10px;
+      max-height: 500px;
     }
   }
 
