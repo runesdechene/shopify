@@ -1,6 +1,12 @@
 {{ 'rdc_explore_fragments.css' | asset_url | stylesheet_tag }}
 {{ 'rdc_explore_fragments_dark.css' | asset_url | stylesheet_tag }}
 
+{% style %}
+  .rdc-fragments-section {
+    background-image: url('{{ "rdc_fond_default.webp" | asset_url }}');
+  }
+{% endstyle %}
+
 <div class="rdc-fragments-section" data-section-id="{{ section.id }}">
   <div class="rdc-fragments-background-actif"></div>
   <div class="fragments-hero">
@@ -216,7 +222,9 @@
                 {% endif %}
 
                 {%- comment -%} Badge NOUVEAU (sera géré par JS) {%- endcomment -%}
-                <div class="fragment-new-badge" style="display: none;"><img src="/assets/rdc_new_badge.png"></div>
+                <div class="fragment-new-badge" style="display: none;">
+                  <img src="{{ 'rdc_new_badge.png' | asset_url }}">
+                </div>
               </div>
             </div>
           </div>

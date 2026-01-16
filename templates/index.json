@@ -15,25 +15,53 @@
         "slide_VxeAMT": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/SG207481.jpg",
+            "image": "shopify://shop_images/SG206606.jpg",
             "slide_link": "",
             "video_background": false,
             "content_width": 700,
-            "content_position": "bottom-left",
+            "content_position": "middle-center",
             "mobile_content_position": "bottom-center",
             "content_space": "gap-y-2",
-            "subheading": "",
-            "heading": "Frimats d'Hiver",
-            "heading_tag": "div",
-            "heading_size": "h0",
-            "content": "La saison des sweats est ouverte !",
-            "description_size": "large",
-            "color_text": "#fdfdfd",
-            "overlay_color": "#4e5966",
-            "overlay_opacity": 47,
+            "subheading": "Illustrations d'artistes  inspirées par le patrimoine",
+            "heading": "Portez l'Histoire",
+            "heading_tag": "h1",
+            "heading_size": "hxl",
+            "content": "",
+            "description_size": "small",
+            "color_text": "#ffffff",
+            "overlay_color": "#6e6461",
+            "overlay_opacity": 51,
             "overlay_gradient": "",
-            "button_text_1": "Explorer nos modèles",
-            "button_link_1": "shopify://collections/sweatshirts",
+            "button_text_1": "EXPLORER",
+            "button_link_1": "shopify://pages/fragments",
+            "button_type_1": "outline-white",
+            "button_text_2": "",
+            "button_link_2": "shopify://collections/le-solide",
+            "button_type_2": "outline-white"
+          }
+        },
+        "slide_BB8THj": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/inbound1586543768637071326.jpg",
+            "slide_link": "",
+            "video_background": false,
+            "content_width": 700,
+            "content_position": "middle-center",
+            "mobile_content_position": "bottom-center",
+            "content_space": "gap-y-2",
+            "subheading": "Illustrations d'artistes  inspirées par la Nature",
+            "heading": "Portez vos Totems",
+            "heading_tag": "h1",
+            "heading_size": "hxl",
+            "content": "",
+            "description_size": "large",
+            "color_text": "#ffffff",
+            "overlay_color": "#61646e",
+            "overlay_opacity": 51,
+            "overlay_gradient": "",
+            "button_text_1": "Découvrir les fragments",
+            "button_link_1": "shopify://pages/fragments",
             "button_type_1": "outline-white",
             "button_text_2": "",
             "button_link_2": "shopify://collections/le-solide",
@@ -72,6 +100,7 @@
         },
         "slide_WF69mM": {
           "type": "slide",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/inbound8884338897298839741_etendue.jpg",
             "mobile_image": "shopify://shop_images/inbound8884338897298839741.jpg",
@@ -102,12 +131,15 @@
       },
       "block_order": [
         "slide_VxeAMT",
+        "slide_BB8THj",
         "slide_WyUCEX",
         "slide_WF69mM"
       ],
       "custom_css": [
-        ".rte {font-family: var(--font-heading-family); font-size: 2.4rem; opacity: 0.7;}",
-        ".slideshow-item__background img {object-position: top left; /* Ancrage en haut à gauche */}"
+        ".rte {font-family: var(--font-heading-family); font-size: 2.4rem; opacity: 0.9;}",
+        ".slideshow-item__background img {object-position: top left; /* Ancrage en haut à gauche */}",
+        "h1 {letter-spacing: 1rem;}",
+        ".btn {border-radius: 0; padding: 26px 50px;}"
       ],
       "settings": {
         "slide_width": "w-full",
@@ -209,7 +241,7 @@
         "heading_7QUcqU": {
           "type": "heading",
           "settings": {
-            "heading": "EXPLOREZ L'HISTOIRE EN LA revêtant",
+            "heading": "Portez des fragments d'Histoire",
             "heading_tag": "h1",
             "heading_size": "h0"
           }
@@ -217,7 +249,7 @@
         "text_kywhrR": {
           "type": "text",
           "settings": {
-            "text": "<p>Runes de Chêne, c’est une ligne de vêtements de haute qualité, illustrée par des artistes qui racontent<strong> l’Histoire, la nature et le folklore européen</strong>, loin des clichés.<br/><strong>Durable. Rebelle. Française.</strong><br/></p>",
+            "text": "<p>Depuis 2019, Runes de Chêne crée des vêtements durables inspirés par<strong> l’Histoire, la Nature et le folklore européen.</strong> Chaque création mêle illustration d’artiste et texte explicatif, pour porter des symboles chargés de sens et réenchanter le monde moderne.</p><p>Engagée. Française.<strong> Rebelle.</strong></p>",
             "large_text": true
           }
         }
@@ -228,9 +260,9 @@
         "text_kywhrR"
       ],
       "custom_css": [
-        ".rich-text {max-width: 900px;}",
-        "h1 {color: #2f2524; font-size: 4.6rem;}",
-        "p {font-size: 17px;}"
+        ".rich-text {max-width: 800px;}",
+        "h1 {color: #3f362c; font-size: 3.8rem;}",
+        "p {font-size: 20px; color: #534b43; letter-spacing: 0.05rem; font-family: var(--font-accent-family);}"
       ],
       "name": "introduction 1",
       "settings": {
@@ -405,6 +437,7 @@
     },
     "rdc_column_content_colored_title_JVdpxV": {
       "type": "rdc_column_content_colored_title",
+      "disabled": true,
       "custom_css": [
         "h2 {font-size: 3.8rem; text-transform: uppercase; margin-bottom: 0;}",
         "h1 {font-size: 5.8rem;}",
@@ -453,7 +486,7 @@
         "swipe_on_mobile": true,
         "bg_color": "",
         "text_color": "",
-        "padding_top": 88,
+        "padding_top": 4,
         "padding_bottom": 56
       }
     },

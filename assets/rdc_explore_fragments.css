@@ -35,13 +35,18 @@ footer,
   height: 100vh;
   max-height: 100vh;
   background: #f8f3e7;
-  background-image: url('/assets/rdc_fond_default.webp');
   background-size: cover;
   background-position: center;
   color: #e8e8e8;
   padding: 80px 0;
   position: relative;
   overflow: hidden;
+}
+
+@media screen and (max-width: 749px) {
+  .fragments-header-title {
+    padding: 30px 0 0 0;
+  }
 }
 
 .rdc-fragments-background-actif {
@@ -84,6 +89,12 @@ footer,
   text-decoration: none;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+}
+
+@media screen and (max-width: 749px) {
+  .fragments-back-btn  {
+    visibility: hidden;
+  }
 }
 
 .fragments-back-btn:hover {
@@ -180,6 +191,12 @@ footer,
   gap: 12px;
   max-width: 600px;
   animation: fadeInUp 0.8s ease 0.8s both;
+}
+
+@media screen and (max-width: 749px) {
+  .fragments-filters {
+    padding-bottom: 5px;
+  }
 }
 
 .fragments-filter {
@@ -979,7 +996,7 @@ footer,
   }
 
   .fragments-carousel {
-    padding: 0 15vw;
+    padding: 30px 0 15vw 0;
     gap: 0;
   }
 
@@ -1048,7 +1065,7 @@ footer,
   /* Inverser la position du counter et des boutons */
   .fragments-counter {
     bottom: auto;
-    top: 5px;
+    bottom: 70px;
   }
 
   .fragment-card 
