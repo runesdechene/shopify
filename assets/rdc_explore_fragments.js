@@ -26,7 +26,6 @@ class FragmentsCarousel {
       ".fragments-fixed-actions"
     );
     this.fixedBtnShop = section.querySelector(".fragment-btn-shop");
-    this.fixedBtnArticle = section.querySelector(".fragment-btn-article");
 
     this.currentIndex = 0;
     this.totalCards = this.cards.length;

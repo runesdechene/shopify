@@ -720,58 +720,25 @@ footer,
   display: flex;
   gap: 15px;
   z-index: 100;
-}
 
-.fragment-dual-btn {
-  display: flex;
-  background: rgba(220, 220, 220, 0.9);
-  border-radius: 50px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  position: relative;
 }
 
 .fragment-btn {
   display: inline-block;
   padding: 18px 40px;
-  font-size: 1.6rem;
-  font-weight: 600;
-  font-family: var(--font-heading-family);
+  font-size: 1.7rem;
+  font-weight: 800;
+  font-family: var(--font-accent-family);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.3s ease;
   border: none;
-  color: #ffffff;
-}
-
-.fragment-btn-shop {
-  background: #1e19f9b3;
-  border-right: 1px solid rgba(235, 235, 235, 1);
-  border-radius: 50px 0 0 50px;
-}
-
-.fragment-btn-shop:hover {
-  background: #2e2bf5b3;
-  box-shadow: 0 8px 30px rgba(30, 25, 249, 0.4);
-  transform: scale(1.02);
-  z-index: 1;
-}
-
-.fragment-btn-article {
-  background: rgb(253, 253, 253);
-  color: #555;
-  border-radius: 0 50px 50px 0;
-}
-
-.fragment-btn-article:hover {
-  color: #111;
-  background: rgb(253, 253, 253);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
-  transform: scale(1.02);
-  z-index: 1;
+  color: #e9e4e4;
+  background: rgb(109, 30, 30);
+  border-radius: 10px;
+  padding: 24px 90px;
 }
 
 /* ========================================
