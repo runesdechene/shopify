@@ -2,7 +2,7 @@
 {{ 'rdc_explore_fragments_dark.css' | asset_url | stylesheet_tag }}
 
 <div class="rdc-fragments-section" data-section-id="{{ section.id }}">
-  <div class="rdc-fragments-overlay"></div>
+  <div class="rdc-fragments-background-actif"></div>
   <div class="fragments-hero">
     {%- comment -%} Bouton de retour {%- endcomment -%}
     {% if section.settings.show_back_button %}

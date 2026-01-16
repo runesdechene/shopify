@@ -26,12 +26,16 @@ footer,
   overflow: hidden;
 }
 
-.rdc-fragments-overlay {
+.rdc-fragments-background-actif {
   position: absolute;
   top: 0;
   left: 0;
   height: 100vh;
   width: 100vw;
+  opacity: 0;
+  background-size: cover;
+  background-position: bottom;
+  transition: opacity 0.5s ease;
 /* Non actif pour l'instant */
 }
 
