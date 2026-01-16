@@ -245,14 +245,14 @@ footer,
 }
 
 /* ========================================
-   TOGGLE THÈME SOMBRE
+   TOGGLE THÈME SOMBRE - DÉSACTIVÉ TEMPORAIREMENT
    ======================================== */
 
 .theme-toggle-container {
   position: absolute;
   top: 40px;
   right: 40px;
-  display: flex;
+  display: none; /* Désactivé - images de fond non adaptées au thème sombre */
   align-items: center;
   gap: 12px;
   animation: fadeInUp 0.8s ease 0.8s both;
@@ -647,22 +647,21 @@ footer,
   transform: translateY(-50%);
   width: 50px;
   height: 50px;
-  background: rgba(255, 253, 249, 0.95);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  z-index: 10;
-  color: #756666;
+  z-index: 10; 
+  
+  background: #e6dcc7;
+  color: #5e5444c2;
 }
 
 .carousel-nav:hover {
-  background: #fff;
-  border-color: #5d6d7e;
+  color: #4d4437c2;
   transform: translateY(-50%) scale(1.1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .carousel-nav-prev {

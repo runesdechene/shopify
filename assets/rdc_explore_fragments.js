@@ -917,13 +917,13 @@ class FragmentsCarousel {
     const toggleBtn = this.section.querySelector(".theme-toggle");
     if (!toggleBtn) return;
 
-    // Charger le thème sauvegardé
-    const savedTheme = localStorage.getItem("rdc-theme");
-    if (savedTheme === "dark") {
-      this.section.classList.add("dark-theme");
-      toggleBtn.classList.add("active");
-      this.updateImagesForTheme(true);
-    }
+    // Charger le thème sauvegardé - DÉSACTIVÉ TEMPORAIREMENT
+    // const savedTheme = localStorage.getItem("rdc-theme");
+    // if (savedTheme === "dark") {
+    //   this.section.classList.add("dark-theme");
+    //   toggleBtn.classList.add("active");
+    //   this.updateImagesForTheme(true);
+    // }
 
     // Gérer le clic sur le toggle
     toggleBtn.addEventListener("click", () => {
@@ -1048,25 +1048,25 @@ class FragmentsCarousel {
   }
 
   /**
-   * Vérifier et afficher les badges NOUVEAU pour les articles récents (moins de 3 mois)
+   * Vérifier et afficher les badges NOUVEAU pour les fragments récents (moins de 6 mois)
    */
   checkNewBadges() {
     const now = new Date();
-    const threeMonthsAgo = new Date();
-    threeMonthsAgo.setMonth(now.getMonth() - 3);
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(now.getMonth() - 6);
 
     this.cards.forEach((card) => {
-      const publishedAt = card.dataset.articlePublishedAt;
+      const fragmentDate = card.dataset.fragmentDate;
       const badge = card.querySelector(".fragment-new-badge");
 
       if (!badge) return;
 
-      // Si l'article existe et a une date de publication
-      if (publishedAt && publishedAt !== "") {
-        const publishDate = new Date(publishedAt);
+      // Si le fragment a une date
+      if (fragmentDate && fragmentDate !== "") {
+        const creationDate = new Date(fragmentDate);
 
-        // Si l'article a moins de 3 mois
-        if (publishDate >= threeMonthsAgo) {
+        // Si le fragment a moins de 6 mois
+        if (creationDate >= sixMonthsAgo) {
           badge.style.display = "block";
           console.log(
             "🆕 Badge NOUVEAU affiché pour:",
@@ -1076,7 +1076,7 @@ class FragmentsCarousel {
           badge.style.display = "none";
         }
       } else {
-        // Pas d'article ou pas de date
+        // Pas de date
         badge.style.display = "none";
       }
     });

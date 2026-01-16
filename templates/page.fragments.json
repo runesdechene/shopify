@@ -27,10 +27,9 @@
       "settings": {
         "title": "EXPLORER",
         "subtitle": "Nos fragments d'Histoire",
-        "bottom_image_left": "shopify://shop_images/foret_gauche_grise.webp",
-        "bottom_image_center": "shopify://shop_images/foret_centre_grise.webp",
-        "bottom_image_right": "shopify://shop_images/foret_droite_grise.webp",
-        "bottom_images_opacity": 20
+        "show_back_button": true,
+        "back_url": "/",
+        "bottom_images_opacity": 90
       }
     },
     "rdc_explore_illustration_CfCePX": {
@@ -41,6 +40,8 @@
         "title": "EXPLORER",
         "subtitle": "NOS CRÉATIONS",
         "search_placeholder": "Rechercher un fragment...",
+        "show_back_button": true,
+        "back_url": "/",
         "bottom_image_left": "shopify://shop_images/foret_gauche_grise.webp",
         "bottom_image_center": "shopify://shop_images/foret_centre_grise_e14b2b87-44d0-428d-b573-496b984d2c10.webp",
         "bottom_image_right": "shopify://shop_images/foret_droite_grise.webp",
