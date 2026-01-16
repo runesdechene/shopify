@@ -9,17 +9,25 @@
   .rdc-fragment-history {
     position: relative;
     display: none; /* retiré par condition liquid si fragment trouvé */
-    margin-bottom: -50px;
+    margin-bottom: 0px;
   }
 
   .rdc-fragment-history__wrapper {
     min-height: 600px;
     margin-top: 4rem;
     padding-top: 15rem;
+    background-color: #f8f3e7;
     background-size: cover;
     background-position: bottom;
     background-repeat: no-repeat;
     clip-path: polygon(0 0, 100% 10%, 100% 100%, 0% 90%);
+  }
+
+  @media screen and (max-width: 767px) {
+    .rdc-fragment-history__wrapper {
+      background-size: contain;
+      background-position: bottom;
+    }
   }
 
   .rdc-fragment-history__container {
@@ -29,6 +37,12 @@
     margin: 0 auto;
     text-align: center;
     padding-bottom: 8rem;
+  }
+
+  @media screen and (max-width: 767px) {
+    .rdc-fragment-history__container {
+      padding-bottom: 0;
+    }
   }
 
   .rdc-fragment-history__icon {
@@ -75,6 +89,13 @@
     background: #f7f1e5;
   }
 
+  @media screen and (max-width: 767px) {
+    .rdc-fragment-history__content {
+      box-shadow: 0 0 40px 30px rgba(247, 241, 229, 0.76);
+      background: rgba(247, 241, 229, 0.76);
+    }
+  }
+
   .rdc-fragment-history__content p {
     margin-bottom: 1.5rem;
   }
@@ -90,6 +111,12 @@
     max-width: 700px;
     margin: auto;
     box-shadow: 0 0 10px 10px #f7f7f480;
+  }
+
+  @media screen and (max-width: 767px) {
+    .rdc-fragment-history__author {
+      transform: translateY(-5rem);
+    }
   }
 
   .rdc-fragment-history__author-content {
@@ -148,7 +175,7 @@
     .rdc-fragment-history__wrapper {
       padding: 45px;
       padding-top: 80px;
-      clip-path: polygon(0 0, 100% 3%, 100% 100%, 0% 97%);
+      clip-path: polygon(0 0, 100% 3%, 100% 100%, 0% 100%);
     }
 
     .rdc-fragment-history__icon {
@@ -212,13 +239,32 @@
   endif
 -%}
 
+{%- if relique.description != blank -%}
+  {% style %}
+    .rdc-fragment-history {
+      display: block;
+    }
+  {% endstyle %}
+{% endif %}
+
+{%- if relique.description != blank and relique.artiste != blank -%}
+  {% style %}
+    @media screen and (max-width: 768px) {
+      .rdc-fragment-history {
+        margin-bottom: 0;
+      }
+    }
+    @media screen and (min-width: 768px) {
+      .rdc-fragment-history {
+        margin-bottom: -150px;
+      }
+    }
+  {% endstyle %}
+{% endif %}
+
 <section
   class="rdc-fragment-history"
   data-section-id="{{ section.id }}"
-  style="
-    {%- if relique.description != blank -%}display: block;{% endif %}
-    {%- if relique.mot_de_l_artiste != blank and relique.artiste != blank -%}margin-bottom: -180px;{% endif %}
-  "
 >
   <div
     class="rdc-fragment-history__wrapper"
