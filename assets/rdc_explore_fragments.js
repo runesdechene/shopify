@@ -352,6 +352,7 @@ class FragmentsCarousel {
       this.updateExcerpt(this.currentIndex);
     }
     this.updateFixedButtons();
+    this.updateBackgroundImage();
   }
 
   /**
@@ -1019,6 +1020,30 @@ class FragmentsCarousel {
       this.fixedBtnArticle.style.opacity = "0.5";
       this.fixedBtnArticle.style.pointerEvents = "none";
       this.fixedBtnArticle.style.cursor = "not-allowed";
+    }
+  }
+
+  /**
+   * Mettre à jour l'image de fond en fonction de la carte active
+   */
+  updateBackgroundImage() {
+    const backgroundElement = this.section.querySelector(
+      ".rdc-fragments-background-actif"
+    );
+    if (!backgroundElement) return;
+
+    const currentCard = this.cards[this.currentIndex];
+    if (!currentCard) return;
+
+    const backgroundImageUrl = currentCard.dataset.backgroundImage;
+
+    if (backgroundImageUrl && backgroundImageUrl !== "") {
+      // Si une image de fond existe pour ce fragment
+      backgroundElement.style.backgroundImage = `url(${backgroundImageUrl})`;
+      backgroundElement.style.opacity = "1";
+    } else {
+      // Pas d'image de fond pour ce fragment
+      backgroundElement.style.opacity = "0";
     }
   }
 

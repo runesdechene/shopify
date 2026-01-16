@@ -34,7 +34,7 @@ footer,
   width: 100vw;
   opacity: 0;
   background-size: cover;
-  background-position: bottom;
+  background-position: top;
   transition: opacity 0.5s ease;
 /* Non actif pour l'instant */
 }
