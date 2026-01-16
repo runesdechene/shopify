@@ -19,13 +19,13 @@
     {%- comment -%} Compter les artistes uniques {%- endcomment -%}
     {%- assign all_artists = '' -%}
     {% for relique in reliques %}
-      {% if relique.artiste != blank %}
-        {%- assign clean_artist = relique.artiste | strip -%}
-        {%- unless all_artists contains clean_artist -%}
+      {% if relique.artiste.value != blank %}
+        {%- assign artist_name = relique.artiste.value.nom.value | strip -%}
+        {%- unless all_artists contains artist_name -%}
           {%- if all_artists == '' -%}
-            {%- assign all_artists = clean_artist -%}
+            {%- assign all_artists = artist_name -%}
           {%- else -%}
-            {%- assign all_artists = all_artists | append: '|' | append: clean_artist -%}
+            {%- assign all_artists = all_artists | append: '|' | append: artist_name -%}
           {%- endif -%}
         {%- endunless -%}
       {% endif %}
@@ -190,9 +190,9 @@
               <div class="fragment-card-content-col">
                 <h2 class="fragment-card-title">{{ relique.nom | default: "Titre de l'illustration" }}</h2>
 
-                {% if relique.artiste != blank %}
+                {% if relique.artiste.value != blank %}
                   <p class="fragment-card-artist">
-                    Artiste : {{ relique.artiste }}
+                    Artiste : {{ relique.artiste.value.nom.value }}
                     {% if relique.date != blank %}
                       ({{ relique.date | date: '%Y' }})
                     {% endif %}

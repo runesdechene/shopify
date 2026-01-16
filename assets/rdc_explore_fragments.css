@@ -536,7 +536,7 @@ footer,
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #49424d;
+  color: #494141;
   margin: 0;
   line-height: 1.1;
   font-family: var(--font-heading-family);
@@ -545,7 +545,7 @@ footer,
 
 .fragment-card-artist {
   font-size: 1.6rem;
-  color: #9ca3af;
+  color: #796e6d;
   margin: 0;
   font-family: var(--font-heading-family);
   text-align: center;
@@ -558,6 +558,7 @@ footer,
   margin: 0;
   text-align: center;
   max-width: 500px;
+  font-family: var(--font-accent-family);
 }
 
 .fragment-card-section-title {
@@ -646,8 +647,7 @@ footer,
   transform: translateY(-50%);
   width: 50px;
   height: 50px;
-  background: rgba(255, 255, 255, 0.95);
-  border: 2px solid #e8ecef;
+  background: rgba(255, 253, 249, 0.95);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -655,7 +655,7 @@ footer,
   cursor: pointer;
   transition: all 0.3s ease;
   z-index: 10;
-  color: #5d6d7e;
+  color: #756666;
 }
 
 .carousel-nav:hover {
