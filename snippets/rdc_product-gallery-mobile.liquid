@@ -19,6 +19,13 @@
     margin-bottom: 1rem;
   }
 
+  /* Desktop: Thumbnails on left, main image on right */
+  @media screen and (min-width: 768px) {
+    .rdc-mobile-gallery {
+      flex-direction: row-reverse;
+    }
+  }
+
   .rdc-mobile-gallery__main {
     position: relative;
     flex: 1;
@@ -76,15 +83,22 @@
   }
 
   .rdc-mobile-gallery__thumb {
-    flex: 0 0 80px;
+    flex: 0 0 auto;
     width: 80px;
-    height: 80px;
+    height: auto;
     background: #EEEDE6;
     border-radius: 6px;
     overflow: hidden;
     cursor: pointer;
     border: 2px solid transparent;
     transition: all 0.3s ease;
+  }
+
+  /* Desktop: Larger thumbnails */
+  @media screen and (min-width: 768px) {
+    .rdc-mobile-gallery__thumb {
+      width: 120px;
+    }
   }
 
   .rdc-mobile-gallery__thumb.active {
@@ -97,8 +111,8 @@
 
   .rdc-mobile-gallery__thumb img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    object-fit: contain;
     display: block;
   }
 

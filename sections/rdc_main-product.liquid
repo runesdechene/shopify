@@ -38,6 +38,9 @@
 
         .product__media-wrapper {
           width: 100%;
+          position: sticky;
+          top: 2rem;
+          align-self: start;
         }
 
         .product__info-wrapper {
@@ -67,13 +70,14 @@
       }
 
       /* Dual Gallery System - Responsive Toggle */
+      /* TEMPORARY: Desktop gallery disabled for testing mobile gallery on desktop */
       /* Desktop: Show custom gallery, hide default */
       @media screen and (min-width: 768px) {
         .rdc-gallery-desktop {
-          display: block;
+          display: none; /* DISABLED FOR TESTING */
         }
         .rdc-gallery-mobile {
-          display: none;
+          display: block; /* ENABLED FOR TESTING */
         }
       }
 
