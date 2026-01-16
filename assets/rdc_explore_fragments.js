@@ -785,11 +785,12 @@ class FragmentsCarousel {
         const isCentered = card.classList.contains("is-center");
 
         if (isCentered) {
-          // Ouvrir l'article
-          const articleUrl = card.dataset.articleUrl;
-          if (articleUrl) {
-            console.log("✨ Opening article:", articleUrl);
-            window.location.href = articleUrl;
+          // Rediriger vers la collection avec filtre
+          const filterGid = card.dataset.filterGid;
+          if (filterGid) {
+            const collectionUrl = `/collections/tous-les-produits?filter.p.m.custom.illustration=${filterGid}`;
+            console.log("🛍️ Redirection vers collection:", collectionUrl);
+            window.location.href = collectionUrl;
           }
         } else {
           console.log("➡️ Scrolling to card", index);
