@@ -9,6 +9,58 @@
  */
 {
   "sections": {
+    "rdc_slideshow_LadLAk": {
+      "type": "rdc_slideshow",
+      "blocks": {
+        "slide_rCyB3M": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/SG206624_1.jpg",
+            "slide_link": "",
+            "video_background": false,
+            "content_width": 500,
+            "content_position": "bottom-left",
+            "mobile_content_position": "middle-center",
+            "content_space": "gap-y-4",
+            "subheading": "FRAGMENT BYZANTIN",
+            "heading": "Mémoire des \nVarègues",
+            "heading_tag": "div",
+            "heading_size": "hxl",
+            "content": "Add descriptive text for your slide here.",
+            "description_size": "medium",
+            "color_text": "#e6e6e6",
+            "overlay_color": "#565353",
+            "overlay_opacity": 58,
+            "overlay_gradient": "",
+            "button_text_1": "",
+            "button_link_1": "",
+            "button_type_1": "primary",
+            "button_text_2": "",
+            "button_link_2": "",
+            "button_type_2": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "slide_rCyB3M"
+      ],
+      "name": "RDC Slideshow",
+      "settings": {
+        "slide_width": "w-full",
+        "desktop_height": "desktop-height-full",
+        "mobile_height": "mobile-height-500",
+        "auto_rotate": true,
+        "change_slides_speed": 5,
+        "transition": "slide",
+        "controls": "numbers",
+        "accessibility_info": "Slideshow about our brand",
+        "bg_color": "",
+        "controls_color": "#ffffff",
+        "controls_color_arrows": "#000000",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
     "slideshow_tjmRRq": {
       "type": "slideshow",
       "blocks": {
@@ -135,6 +187,7 @@
         "slide_WyUCEX",
         "slide_WF69mM"
       ],
+      "disabled": true,
       "custom_css": [
         ".rte {font-family: var(--font-heading-family); font-size: 2.4rem; opacity: 0.9;}",
         ".slideshow-item__background img {object-position: top left; /* Ancrage en haut à gauche */}",
@@ -165,7 +218,9 @@
           "settings": {
             "text": "100% Biologique",
             "link": "",
-            "outline_text": false
+            "outline_text": false,
+            "background_color": "",
+            "text_color": ""
           }
         },
         "text_PWAE4G": {
@@ -173,7 +228,9 @@
           "settings": {
             "text": "Impressions maison en Bretagne",
             "link": "",
-            "outline_text": false
+            "outline_text": false,
+            "background_color": "",
+            "text_color": ""
           }
         },
         "text_xPUhEF": {
@@ -181,7 +238,9 @@
           "settings": {
             "text": "Illustrations d'Artistes",
             "link": "",
-            "outline_text": false
+            "outline_text": false,
+            "background_color": "",
+            "text_color": ""
           }
         },
         "text_kiHCnh": {
@@ -189,7 +248,9 @@
           "settings": {
             "text": "Coton brossé haut-de-gamme",
             "link": "",
-            "outline_text": false
+            "outline_text": false,
+            "background_color": "",
+            "text_color": ""
           }
         },
         "text_WdGx3N": {
@@ -197,7 +258,9 @@
           "settings": {
             "text": "Ecosourcé",
             "link": "",
-            "outline_text": false
+            "outline_text": false,
+            "background_color": "",
+            "text_color": ""
           }
         }
       },
@@ -1680,6 +1743,7 @@
     }
   },
   "order": [
+    "rdc_slideshow_LadLAk",
     "slideshow_tjmRRq",
     "scrolling_text_pJV99N",
     "rich_text_tnTpBm",
