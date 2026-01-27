@@ -1,4 +1,4 @@
-import { Component } from '@theme/component';
+import { Component } from "@theme/component";
 import {
   center,
   closest,
@@ -8,9 +8,9 @@ import {
   preventDefault,
   viewTransition,
   scheduler,
-} from '@theme/utilities';
-import { Scroller, scrollIntoView } from '@theme/scrolling';
-import { SlideshowSelectEvent } from '@theme/events';
+} from "@theme/utilities";
+import { Scroller, scrollIntoView } from "@theme/scrolling";
+import { SlideshowSelectEvent } from "@theme/events";
 
 // The threshold for determining visibility of slides.
 const SLIDE_VISIBLITY_THRESHOLD = 0.7;
@@ -32,7 +32,7 @@ const SLIDE_VISIBLITY_THRESHOLD = 0.7;
  */
 export class Slideshow extends Component {
   static get observedAttributes() {
-    return ['initial-slide'];
+    return ["initial-slide"];
   }
 
   /**
@@ -45,12 +45,12 @@ export class Slideshow extends Component {
     // the slideshow[initial-slide] and slideshow-slide[hidden] attributes.
     // We need to re-select() the slide after the morph is complete, but not before
     // slideshow-slide elements have their [hidden] attribute updated.
-    if (name === 'initial-slide' && oldValue !== newValue) {
+    if (name === "initial-slide" && oldValue !== newValue) {
       queueMicrotask(() => {
         // Only select if the component is connected and initialized
         if (!this.isConnected || !this.#scroll || !this.refs.slides) return;
         const index = parseInt(newValue, 10) || 0;
-        const slide_id = this.refs.slides[index]?.getAttribute('slide-id');
+        const slide_id = this.refs.slides[index]?.getAttribute("slide-id");
         if (slide_id) {
           this.select({ id: slide_id }, undefined, { animate: false });
         }
@@ -58,7 +58,7 @@ export class Slideshow extends Component {
     }
   }
 
-  requiredRefs = ['scroller'];
+  requiredRefs = ["scroller"];
 
   async connectedCallback() {
     super.connectedCallback();
@@ -71,7 +71,9 @@ export class Slideshow extends Component {
     }
 
     const slideCount = this.slides?.length || 0;
-    slideCount <= 1 ? this.#setupSlideshowWithoutControls() : this.#setupSlideshow();
+    slideCount <= 1
+      ? this.#setupSlideshowWithoutControls()
+      : this.#setupSlideshow();
   }
 
   disconnectedCallback() {
@@ -79,16 +81,19 @@ export class Slideshow extends Component {
 
     if (this.#scroll) {
       const { scroller } = this.refs;
-      scroller.removeEventListener('mousedown', this.#handleMouseDown);
+      scroller.removeEventListener("mousedown", this.#handleMouseDown);
       this.#scroll.destroy();
     }
 
     const slideCount = this.slides?.length || 0;
     if (slideCount > 1) {
-      this.removeEventListener('mouseenter', this.suspend);
-      this.removeEventListener('mouseleave', this.resume);
-      this.removeEventListener('pointerenter', this.#handlePointerEnter);
-      document.removeEventListener('visibilitychange', this.#handleVisibilityChange);
+      this.removeEventListener("mouseenter", this.suspend);
+      this.removeEventListener("mouseleave", this.resume);
+      this.removeEventListener("pointerenter", this.#handlePointerEnter);
+      document.removeEventListener(
+        "visibilitychange",
+        this.#handleVisibilityChange,
+      );
     }
 
     if (this.#resizeObserver) {
@@ -103,7 +108,7 @@ export class Slideshow extends Component {
 
   /** Indicates whether the slideshow is nested inside another slideshow. */
   get isNested() {
-    return this.parentElement?.closest('slideshow-component') !== null;
+    return this.parentElement?.closest("slideshow-component") !== null;
   }
 
   get initialSlide() {
@@ -125,25 +130,27 @@ export class Slideshow extends Component {
     const currentSlide = this.slides?.[this.current];
 
     for (const slide of this.refs.slides) {
-      if (slide.hasAttribute('reveal')) {
-        slide.removeAttribute('reveal');
-        slide.setAttribute('aria-hidden', 'true');
+      if (slide.hasAttribute("reveal")) {
+        slide.removeAttribute("reveal");
+        slide.setAttribute("aria-hidden", "true");
       }
     }
 
     // Figure out the raw desired index (could be -1 if user is on first slide and clicks prev)
     let requestedIndex = (() => {
-      if (typeof input === 'number') return input;
-      if (typeof input === 'string') return parseInt(input, 10);
-      if ('id' in input) {
-        const requestedSlide = this.refs.slides.find((slide) => slide.getAttribute('slide-id') == input.id);
+      if (typeof input === "number") return input;
+      if (typeof input === "string") return parseInt(input, 10);
+      if ("id" in input) {
+        const requestedSlide = this.refs.slides.find(
+          (slide) => slide.getAttribute("slide-id") == input.id,
+        );
 
         if (!requestedSlide || !this.slides) return;
 
         // Force the slide to be revealed if it is hidden
-        if (requestedSlide.hasAttribute('hidden')) {
-          requestedSlide.setAttribute('reveal', '');
-          requestedSlide.setAttribute('aria-hidden', 'false');
+        if (requestedSlide.hasAttribute("hidden")) {
+          requestedSlide.setAttribute("reveal", "");
+          requestedSlide.setAttribute("aria-hidden", "false");
         }
 
         return this.slides.indexOf(requestedSlide);
@@ -154,12 +161,18 @@ export class Slideshow extends Component {
     const { slides } = this;
 
     // Guard checks: no slides, invalid index, or selecting the same slide
-    if (!slides?.length || requestedIndex === undefined || isNaN(requestedIndex)) return;
+    if (
+      !slides?.length ||
+      requestedIndex === undefined ||
+      isNaN(requestedIndex)
+    )
+      return;
 
     const requestedSlideElement = slides?.[requestedIndex];
     if (currentSlide === requestedSlideElement) return;
 
-    if (!this.infinite) requestedIndex = clamp(requestedIndex, 0, slides.length - 1);
+    if (!this.infinite)
+      requestedIndex = clamp(requestedIndex, 0, slides.length - 1);
 
     event?.preventDefault();
 
@@ -171,7 +184,10 @@ export class Slideshow extends Component {
     if (requestedIndex < 0) index = lastIndex;
     else if (requestedIndex > lastIndex) index = 0;
 
-    const isAdjacentSlide = Math.abs(index - current) <= 1 && requestedIndex >= 0 && requestedIndex <= lastIndex;
+    const isAdjacentSlide =
+      Math.abs(index - current) <= 1 &&
+      requestedIndex >= 0 &&
+      requestedIndex <= lastIndex;
     const { visibleSlides } = this;
     const instant = prefersReducedMotion() || !animate;
 
@@ -184,7 +200,7 @@ export class Slideshow extends Component {
       if (!targetSlide || !currentSlide) return;
 
       // Create a placeholder in the original DOM position of targetSlide
-      const placeholder = document.createElement('slideshow-slide');
+      const placeholder = document.createElement("slideshow-slide");
       targetSlide.before(placeholder);
 
       // Decide whether targetSlide goes before or after currentSlide
@@ -215,7 +231,7 @@ export class Slideshow extends Component {
 
     const previousIndex = this.current;
 
-    slide.setAttribute('aria-hidden', 'false');
+    slide.setAttribute("aria-hidden", "false");
 
     if (this.#scroll) {
       this.#scroll.to(slide, { instant });
@@ -223,17 +239,17 @@ export class Slideshow extends Component {
 
     this.current = this.slides?.indexOf(slide) || 0;
 
-    this.#centerSelectedThumbnail(index, instant ? 'instant' : 'smooth');
+    this.#centerSelectedThumbnail(index, instant ? "instant" : "smooth");
 
     this.dispatchEvent(
       new SlideshowSelectEvent({
         index,
         previousIndex,
         userInitiated: event != null,
-        trigger: 'select',
+        trigger: "select",
         slide,
-        id: slide.getAttribute('slide-id'),
-      })
+        id: slide.getAttribute("slide-id"),
+      }),
     );
   }
 
@@ -269,7 +285,7 @@ export class Slideshow extends Component {
     this.paused = false;
 
     this.#interval = setInterval(() => {
-      if (this.matches(':hover') || document.hidden) return;
+      if (this.matches(":hover") || document.hidden) return;
 
       this.next();
     }, interval);
@@ -284,14 +300,14 @@ export class Slideshow extends Component {
   }
 
   get paused() {
-    return this.hasAttribute('paused');
+    return this.hasAttribute("paused");
   }
 
   set paused(value) {
     if (value) {
-      this.setAttribute('paused', '');
+      this.setAttribute("paused", "");
     } else {
-      this.removeAttribute('paused');
+      this.removeAttribute("paused");
     }
   }
 
@@ -318,7 +334,7 @@ export class Slideshow extends Component {
   }
 
   get autoplayInterval() {
-    const interval = this.getAttribute('autoplay');
+    const interval = this.getAttribute("autoplay");
     const value = parseInt(`${interval}`, 10);
 
     if (Number.isNaN(value)) return undefined;
@@ -348,15 +364,20 @@ export class Slideshow extends Component {
     if (current) current.textContent = `${value + 1}`;
 
     for (const controls of [thumbnails, dots]) {
-      controls?.forEach((el, i) => el.setAttribute('aria-selected', `${i === value}`));
+      controls?.forEach((el, i) =>
+        el.setAttribute("aria-selected", `${i === value}`),
+      );
     }
 
     if (previous) previous.disabled = Boolean(!this.infinite && value === 0);
-    if (next) next.disabled = Boolean(!this.infinite && slides && this.nextIndex >= slides.length);
+    if (next)
+      next.disabled = Boolean(
+        !this.infinite && slides && value >= slides.length - 1,
+      );
   }
 
   get infinite() {
-    return this.getAttribute('infinite') != null;
+    return this.getAttribute("infinite") != null;
   }
 
   get visibleSlides() {
@@ -394,7 +415,7 @@ export class Slideshow extends Component {
    * @param {boolean} value - The value to set the disabled attribute to.
    */
   set disabled(value) {
-    this.setAttribute('disabled', String(value));
+    this.setAttribute("disabled", String(value));
   }
   /**
    * Whether the slideshow is disabled.
@@ -402,7 +423,8 @@ export class Slideshow extends Component {
    */
   get disabled() {
     return (
-      this.getAttribute('disabled') === 'true' || (this.hasAttribute('mobile-disabled') && !mediaQueryLarge.matches)
+      this.getAttribute("disabled") === "true" ||
+      (this.hasAttribute("mobile-disabled") && !mediaQueryLarge.matches)
     );
   }
 
@@ -447,7 +469,7 @@ export class Slideshow extends Component {
    */
   #setupSlideshowWithoutControls() {
     this.current = 0;
-    if (this.hasAttribute('auto-hide-controls')) {
+    if (this.hasAttribute("auto-hide-controls")) {
       const { slideshowControls } = this.refs;
       if (slideshowControls instanceof HTMLElement) {
         slideshowControls.hidden = true;
@@ -455,7 +477,7 @@ export class Slideshow extends Component {
     }
 
     if (this.refs.slides?.[0]) {
-      this.refs.slides[0].setAttribute('aria-hidden', 'false');
+      this.refs.slides[0].setAttribute("aria-hidden", "false");
     }
   }
 
@@ -474,12 +496,12 @@ export class Slideshow extends Component {
       onScrollEnd: this.#onTransitionEnd,
     });
 
-    scroller.addEventListener('mousedown', this.#handleMouseDown);
+    scroller.addEventListener("mousedown", this.#handleMouseDown);
 
-    this.addEventListener('mouseenter', this.suspend);
-    this.addEventListener('mouseleave', this.resume);
-    this.addEventListener('pointerenter', this.#handlePointerEnter);
-    document.addEventListener('visibilitychange', this.#handleVisibilityChange);
+    this.addEventListener("mouseenter", this.suspend);
+    this.addEventListener("mouseleave", this.resume);
+    this.addEventListener("pointerenter", this.#handlePointerEnter);
+    document.addEventListener("visibilitychange", this.#handleVisibilityChange);
 
     this.#updateControlsVisibility();
 
@@ -492,7 +514,7 @@ export class Slideshow extends Component {
     // Batch reads and writes to the DOM
     scheduler.schedule(() => {
       let visibleSlidesAmount = 0;
-      const initialSlideId = this.initialSlide?.getAttribute('slide-id');
+      const initialSlideId = this.initialSlide?.getAttribute("slide-id");
 
       // Wait for next frame to ensure layout is fully calculated before setting initial scroll position
       // This prevents race conditions on Safari mobile when section_width is 'full-width'
@@ -516,7 +538,7 @@ export class Slideshow extends Component {
           this.#updateVisibleSlides();
         }
 
-        if (this.hasAttribute('auto-hide-controls')) {
+        if (this.hasAttribute("auto-hide-controls")) {
           this.#updateControlsVisibility();
         }
       });
@@ -543,20 +565,20 @@ export class Slideshow extends Component {
         index,
         previousIndex,
         userInitiated: true,
-        trigger: 'scroll',
+        trigger: "scroll",
         slide,
-        id: slide.getAttribute('slide-id'),
-      })
+        id: slide.getAttribute("slide-id"),
+      }),
     );
   };
 
   #onTransitionInit = () => {
-    this.setAttribute('transitioning', '');
+    this.setAttribute("transitioning", "");
   };
 
   #onTransitionEnd = () => {
     this.#updateVisibleSlides();
-    this.removeAttribute('transitioning');
+    this.removeAttribute("transitioning");
   };
 
   /**
@@ -576,7 +598,10 @@ export class Slideshow extends Component {
     const { axis } = this.#scroll;
     const { scroller } = this.refs;
     const centers = visibleSlides.map((slide) => center(slide, axis));
-    const referencePoint = visibleSlides.length > 1 ? scroller.getBoundingClientRect()[axis] : center(scroller, axis);
+    const referencePoint =
+      visibleSlides.length > 1
+        ? scroller.getBoundingClientRect()[axis]
+        : center(scroller, axis);
     const closestCenter = closest(centers, referencePoint);
     const closestVisibleSlide = visibleSlides[centers.indexOf(closestCenter)];
 
@@ -602,7 +627,7 @@ export class Slideshow extends Component {
 
     // Check if the event target is within a 3D model interactive element
     // This prevents the slideshow from capturing drag events when interacting with 3D models
-    if (event.target.closest('model-viewer')) {
+    if (event.target.closest("model-viewer")) {
       return;
     }
 
@@ -636,15 +661,22 @@ export class Slideshow extends Component {
         this.setPointerCapture(event.pointerId);
 
         // Prevent clicks once the user starts dragging
-        document.addEventListener('click', preventDefault, { once: true, signal });
+        document.addEventListener("click", preventDefault, {
+          once: true,
+          signal,
+        });
 
         const movingRight = initialDelta < 0;
         const movingLeft = initialDelta > 0;
 
         // Check if the current slideshow should handle this drag
-        const closestSlideshow = this.parentElement?.closest('slideshow-component');
-        const isNested = closestSlideshow instanceof Slideshow && closestSlideshow !== this;
-        const cannotMoveInDirection = (movingRight && this.atStart) || (movingLeft && this.atEnd);
+        const closestSlideshow = this.parentElement?.closest(
+          "slideshow-component",
+        );
+        const isNested =
+          closestSlideshow instanceof Slideshow && closestSlideshow !== this;
+        const cannotMoveInDirection =
+          (movingRight && this.atStart) || (movingLeft && this.atEnd);
 
         // Abort and let the parent slideshow handle the drag if we're moving in a direction where nested slideshow can't move
         if (isNested && cannotMoveInDirection) {
@@ -653,7 +685,7 @@ export class Slideshow extends Component {
         }
 
         this.pause();
-        this.setAttribute('dragging', '');
+        this.setAttribute("dragging", "");
       }
 
       // Stop the event from bubbling up to parent slideshow components
@@ -684,7 +716,10 @@ export class Slideshow extends Component {
       const direction = Math.sign(velocity);
       const next = this.#sync();
 
-      const modifier = current !== next || Math.abs(velocity) < 10 || distanceTravelled < 10 ? 0 : direction;
+      const modifier =
+        current !== next || Math.abs(velocity) < 10 || distanceTravelled < 10
+          ? 0
+          : direction;
       const newIndex = clamp(next + modifier, 0, slides.length - 1);
 
       const newSlide = slides[newIndex];
@@ -694,7 +729,7 @@ export class Slideshow extends Component {
 
       this.#scroll.to(newSlide);
 
-      this.removeAttribute('dragging');
+      this.removeAttribute("dragging");
       this.releasePointerCapture(event.pointerId);
 
       this.#centerSelectedThumbnail(newIndex);
@@ -704,10 +739,10 @@ export class Slideshow extends Component {
           index: newIndex,
           previousIndex: currentIndex,
           userInitiated: true,
-          trigger: 'drag',
+          trigger: "drag",
           slide: newSlide,
-          id: newSlide.getAttribute('slide-id'),
-        })
+          id: newSlide.getAttribute("slide-id"),
+        }),
       );
 
       this.current = newIndex;
@@ -723,24 +758,26 @@ export class Slideshow extends Component {
 
     this.#scroll.snap = false;
 
-    document.addEventListener('pointermove', onPointerMove, { signal });
-    document.addEventListener('pointerup', onPointerUp, { signal });
+    document.addEventListener("pointermove", onPointerMove, { signal });
+    document.addEventListener("pointerup", onPointerUp, { signal });
     /**
      * pointerDown calls onPointerUp to fix an issue where the first tap-and-drag
      * on the zoom dialog is captured by the pointerMove/pointerUp listeners,
      * sometimes causing the slideshow to change slides unexpectedly
      */
-    document.addEventListener('pointerdown', onPointerUp, { signal });
-    document.addEventListener('pointercancel', onPointerUp, { signal });
-    document.addEventListener('pointercapturelost', onPointerUp, { signal });
+    document.addEventListener("pointerdown", onPointerUp, { signal });
+    document.addEventListener("pointercancel", onPointerUp, { signal });
+    document.addEventListener("pointercapturelost", onPointerUp, { signal });
   };
 
   #handlePointerEnter = () => {
-    this.setAttribute('actioned', '');
+    this.setAttribute("actioned", "");
   };
 
   get slides() {
-    return this.refs.slides?.filter((slide) => !slide.hasAttribute('hidden') || slide.hasAttribute('reveal'));
+    return this.refs.slides?.filter(
+      (slide) => !slide.hasAttribute("hidden") || slide.hasAttribute("reveal"),
+    );
   }
 
   /**
@@ -748,7 +785,7 @@ export class Slideshow extends Component {
    * @type {number}
    */
   get initialSlideIndex() {
-    const initialSlide = this.getAttribute('initial-slide');
+    const initialSlide = this.getAttribute("initial-slide");
     if (initialSlide == null) return 0;
 
     return parseInt(initialSlide, 10);
@@ -757,10 +794,11 @@ export class Slideshow extends Component {
   /**
    * Pause the slideshow when the page is hidden.
    */
-  #handleVisibilityChange = () => (document.hidden ? this.pause() : this.resume());
+  #handleVisibilityChange = () =>
+    document.hidden ? this.pause() : this.resume();
 
   #updateControlsVisibility() {
-    if (!this.hasAttribute('auto-hide-controls')) return;
+    if (!this.hasAttribute("auto-hide-controls")) return;
 
     const { scroller, slideshowControls } = this.refs;
 
@@ -784,13 +822,16 @@ export class Slideshow extends Component {
       (entries) => {
         const allEntries = [
           ...entries,
-          ...(this.#intersectionObserver ? this.#intersectionObserver.takeRecords() : []),
+          ...(this.#intersectionObserver
+            ? this.#intersectionObserver.takeRecords()
+            : []),
         ];
 
         for (const entry of allEntries) {
           const slide = /** @type {HTMLElement} */ (entry.target);
           const isCurrentlyVisible = this.#visibleSlides.includes(slide);
-          const shouldBeVisible = entry.intersectionRatio >= SLIDE_VISIBLITY_THRESHOLD;
+          const shouldBeVisible =
+            entry.intersectionRatio >= SLIDE_VISIBLITY_THRESHOLD;
 
           if (shouldBeVisible && !isCurrentlyVisible) {
             this.#visibleSlides.push(slide);
@@ -802,15 +843,17 @@ export class Slideshow extends Component {
           }
         }
 
-        this.#visibleSlides.sort((a, b) => slides.indexOf(a) - slides.indexOf(b));
+        this.#visibleSlides.sort(
+          (a, b) => slides.indexOf(a) - slides.indexOf(b),
+        );
         this.#updateVisibleSlides();
       },
       {
         root: scroller,
         threshold: SLIDE_VISIBLITY_THRESHOLD,
         // Add small margin to account for sub-pixel rendering
-        rootMargin: '1px',
-      }
+        rootMargin: "1px",
+      },
     );
 
     // Observe all slides - observer will fire initial callback asynchronously
@@ -824,21 +867,23 @@ export class Slideshow extends Component {
    * @param {number} index - The index of the selected thumbnail
    * @param {ScrollBehavior} [behavior] - The scroll behavior.
    */
-  #centerSelectedThumbnail(index, behavior = 'smooth') {
+  #centerSelectedThumbnail(index, behavior = "smooth") {
     const selectedThumbnail = this.refs.thumbnails?.[index];
     if (!selectedThumbnail) return;
 
     const { thumbnailsContainer } = this.refs;
-    if (!thumbnailsContainer || !(thumbnailsContainer instanceof HTMLElement)) return;
+    if (!thumbnailsContainer || !(thumbnailsContainer instanceof HTMLElement))
+      return;
 
     const { slideshowControls } = this.refs;
-    if (!slideshowControls || !(slideshowControls instanceof HTMLElement)) return;
+    if (!slideshowControls || !(slideshowControls instanceof HTMLElement))
+      return;
 
     scrollIntoView(selectedThumbnail, {
       ancestor: thumbnailsContainer,
       behavior,
-      block: 'center',
-      inline: 'center',
+      block: "center",
+      inline: "center",
     });
   }
 
@@ -853,7 +898,7 @@ export class Slideshow extends Component {
       // Update aria-hidden based on visibility
       slides.forEach((slide) => {
         const isVisible = visibleSlides.includes(slide);
-        slide.setAttribute('aria-hidden', `${!isVisible}`);
+        slide.setAttribute("aria-hidden", `${!isVisible}`);
       });
     });
 
@@ -861,6 +906,6 @@ export class Slideshow extends Component {
   }
 }
 
-if (!customElements.get('slideshow-component')) {
-  customElements.define('slideshow-component', Slideshow);
+if (!customElements.get("slideshow-component")) {
+  customElements.define("slideshow-component", Slideshow);
 }
