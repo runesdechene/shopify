@@ -39,19 +39,19 @@
       }
     },
     "main": {
-      "type": "rdc_main-product",
+      "type": "main-product",
       "blocks": {
+        "vendor": {
+          "type": "text",
+          "settings": {
+            "text": "{{ product.vendor }}",
+            "text_style": "subheading"
+          }
+        },
         "title": {
           "type": "title",
           "settings": {
             "heading_size": "h1"
-          }
-        },
-        "price_BDiFeE": {
-          "type": "price",
-          "settings": {
-            "show_sale_badge": true,
-            "sale_badge_type": "percentage"
           }
         },
         "rating_UhVAtV": {
@@ -59,6 +59,13 @@
           "settings": {
             "target_to_section": true,
             "section_id": "#judgeme_product_reviews"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "show_sale_badge": true,
+            "sale_badge_type": "fixed"
           }
         },
         "description": {
@@ -75,6 +82,22 @@
             "divider_space": 2
           }
         },
+        "sku_yqmVAY": {
+          "type": "sku",
+          "settings": {
+            "text_style": "subheading"
+          }
+        },
+        "inventory_xyPUV8": {
+          "type": "inventory",
+          "settings": {
+            "inventory_threshold": 9,
+            "inventory_base_quantity": 100,
+            "show_inventory_ping": true,
+            "show_inventory_quantity": true,
+            "show_progress_bar": true
+          }
+        },
         "siblings_j3h7Cg": {
           "type": "siblings",
           "settings": {}
@@ -86,8 +109,8 @@
             "hide_sold_out_variants": false,
             "color_picker_type": "native_color_swatch",
             "style": "solid",
-            "option_name": "Taille",
-            "size_chart_page": "guide-des-tailles-t-shirt-unisexe"
+            "option_name": "Size",
+            "size_chart_page": ""
           }
         },
         "quantity_selector": {
@@ -105,6 +128,18 @@
             "text_back_in_stock": "Notify me"
           }
         },
+        "rich_text_gJV7TU": {
+          "type": "rich-text",
+          "settings": {
+            "align": "start",
+            "icon": "fire",
+            "width": 32,
+            "heading": "Big deal",
+            "content": "<p>Use the code IMPACT20 to receive a 20% discount on your order</p>",
+            "background": "#fff0e9",
+            "color": "#ff5b00"
+          }
+        },
         "separator_BcFrTM": {
           "type": "separator",
           "settings": {
@@ -115,10 +150,10 @@
         "collapsible_tab_6kicUP": {
           "type": "collapsible_tab",
           "settings": {
-            "heading": "Taille & coupe",
+            "heading": "Details",
             "heading_size": "h6",
-            "icon": "ruler",
-            "content": "<p><strong>Coupe unisexe retravaillée.<br/><br/></strong>Il est conseillé pour un homme de corpulence moyenne d'1m88 de porter du XL pour avoir le produit juste au corps.<br/><br/>Pour femme, nous conseillons une taille en dessous de votre coupe habituelle.</p>",
+            "icon": "none",
+            "content": "<ul><li>Our model is 175cm tall with a 60cm waist and is wearing a size 8, S or 26.</li><li>41% Cotton, 41% Modal, 18% Elastane</li><li>Fitted style.</li><li>Made in China</li></ul>",
             "content_liquid": "",
             "page": "",
             "open_by_default": false
@@ -127,10 +162,10 @@
         "collapsible_tab_bVRE3V": {
           "type": "collapsible_tab",
           "settings": {
-            "heading": "Entretien",
+            "heading": "Product care",
             "heading_size": "h6",
-            "icon": "iron",
-            "content": "<ul><li>Lavage à 30°C maximum, </li><li>Éviter les assouplissants trop agressifs. </li><li>Ne pas repasser sur le motif.</li></ul>",
+            "icon": "none",
+            "content": "<p>Hand or machine wash on a cool, gentle cycle with similar colours. Avoid harsh chemicals or stain removers, which can affect the colour. </p>",
             "content_liquid": "",
             "page": "",
             "open_by_default": false
@@ -139,22 +174,10 @@
         "collapsible_tab_4UNrkz": {
           "type": "collapsible_tab",
           "settings": {
-            "heading": "Informations produit",
+            "heading": "Shipping & returns",
             "heading_size": "h6",
-            "icon": "shirt",
-            "content": "<ul><li>100% Coton biologique brossé</li><li>Tissage et coutures issues du commerce équitable</li><li>Maillage de textile supérieur</li><li>Savoir faire d’impression 100% Français (DTG la plus récente)</li><li>Grammage qualitatif (180g/m²)</li></ul>",
-            "content_liquid": "",
-            "page": "",
-            "open_by_default": false
-          }
-        },
-        "collapsible_tab_Lh8GPY": {
-          "type": "collapsible_tab",
-          "settings": {
-            "heading": "Délai de livraison",
-            "heading_size": "h6",
-            "icon": "check_mark",
-            "content": "<p>Chez Runes de Chêne, chaque commande que vous passez sur notre site internet est imprimée à la demande par nos soins. Cela nous permet de limiter les pertes textiles et de réduire notre empreinte écologique. <br/>Veuillez noter que les délais de livraison sont en moyenne compris entre 7 et 14 jours.</p>",
+            "icon": "none",
+            "content": "<p>We aim to dispatch Standard and Express orders on the next business day.</p><p>Free shipping on all orders above $99 and over within Australia. $10 flat rate for all orders under $99.</p>",
             "content_liquid": "",
             "page": "",
             "open_by_default": false
@@ -166,35 +189,70 @@
             "show_border": false,
             "divider_space": 1
           }
+        },
+        "complementary_7gy8hM": {
+          "type": "complementary",
+          "settings": {
+            "block_heading": "Pairs well with",
+            "column_width": 60,
+            "product_list_limit": 10,
+            "enable_quick_add": true
+          }
+        },
+        "icon_with_text_6bTTF3": {
+          "type": "icon-with-text",
+          "settings": {
+            "layout": "vertical",
+            "icon_size": 20,
+            "icon_1": "lock",
+            "heading_1": "Safe Payment",
+            "icon_2": "truck",
+            "heading_2": "Free Express Shipping*",
+            "icon_3": "box",
+            "heading_3": "Delivery 2-5 days",
+            "icon_4": "shoe",
+            "heading_4": ""
+          }
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share:"
+          }
         }
       },
       "block_order": [
+        "vendor",
         "title",
-        "price_BDiFeE",
         "rating_UhVAtV",
+        "price",
         "description",
         "separator_fTXQic",
+        "sku_yqmVAY",
+        "inventory_xyPUV8",
         "siblings_j3h7Cg",
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
+        "rich_text_gJV7TU",
         "separator_BcFrTM",
         "collapsible_tab_6kicUP",
         "collapsible_tab_bVRE3V",
         "collapsible_tab_4UNrkz",
-        "collapsible_tab_Lh8GPY",
-        "separator_CgCj4T"
+        "separator_CgCj4T",
+        "complementary_7gy8hM",
+        "icon_with_text_6bTTF3",
+        "share"
       ],
-      "custom_css": [],
       "settings": {
         "section_width": "container",
         "enable_sticky_info": true,
         "enable_max_width_content": false,
         "show_sticky_add_to_cart_bar": true,
-        "media_width": 60,
+        "media_width": 55,
         "media_aspect_ratio": "adapt",
         "thumbnail_aspect_ratio": "square",
-        "gallery_layout": "thumbnail",
+        "gallery_layout": "thumbnail_left",
         "media_position": "left",
         "show_lightbox": true,
         "enable_video_autoplay": true,

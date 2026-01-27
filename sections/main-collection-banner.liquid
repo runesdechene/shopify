@@ -62,7 +62,7 @@
               <ul class="list-unstyled flex gap-x-12 gap-y-4 flex-wrap justify-{{ align_content }}">
                 {%- for link in section.settings.navigation.links -%}
                   <li class="">
-                    <a href="{{ link.url }}" class="link"> {{ link.title }}</a>
+                    <a href="{{ link.url }}" class="{% if link.active %} link {% endif %}"> {{ link.title }}</a>
                   </li>
                 {%- endfor -%}
                 </ul>

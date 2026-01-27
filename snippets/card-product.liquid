@@ -103,7 +103,7 @@
                 </viewport-media>
               </div>
             {%- else -%}
-              {% if card_hover_type == 'slider_image' %}
+              {% if card_hover_type == 'slider_image' and card_product.media.size > 1 %}
                 {% render 'card-product-slider-image', card_product: card_product, sizes: sizes, image_aspect_ratio:image_aspect_ratio, product_images: product_images, drag_enabled: drag_enabled %}
               {% else %}
                 {%- render 'responsive-image' , image: featured_media, sizes: sizes, image_aspect_ratio:image_aspect_ratio, wrapper_class : 'responsive-image product-first-image' -%}

@@ -83,11 +83,13 @@
               {%- when '@app' -%}
                 {% render block %}
               {%- when 'subtotal' -%}
+                {%- if settings.show_discount_code -%}
                 <div id="main-footer-cart-discount" class="mb-4">
                     <div class="js-contents-discount ">
                     {% render 'cart-discounts' %}
                     </div>
                   </div>
+                {%- endif -%}
                 <div class="js-contents" {{ block.shopify_attributes }}>
                   {%- if settings.show_free_shipping_bar and cart != empty -%}
                       {% render 'free-shipping' , total_price : cart.total_price, custom_class: 'mb-8' %}

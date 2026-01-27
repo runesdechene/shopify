@@ -102,7 +102,7 @@
         "text_piGhfm": {
           "type": "text",
           "settings": {
-            "text": "<p>En tant <strong>qu'Eclaireurs</strong>, il vous arrivera d'utiliser des images pour promouvoir la marque. Mais aussi vous tenir à jours sur nos ressources actives, comme les flyers. Cette page harmonise vos voix.</p>",
+            "text": "<p>En tant <strong>qu'Ambassadeurs</strong>, il vous arrivera d'utiliser des images pour promouvoir la marque. Mais aussi vous tenir à jours sur nos ressources actives, comme les flyers. Cette page harmonise vos voix.</p>",
             "large_text": true
           }
         }
@@ -201,21 +201,12 @@
             "content": "<p>En quelques mots ça donne ça :</p><p></p><p>« Runes de Chêne, c'est une marque qui propose de porter des<strong> Fragments d'Histoire</strong> - des illustrations d'artistes, faites à la main, qui revalorisent le patrimoine, l'archéologie et les récits de nos ancêtres loin des clichés ; et qui sont imprimés en Bretagne, avec une dimension humaine et écologique.»</p>",
             "category": "Astuces"
           }
-        },
-        "text_jwVgc4": {
-          "type": "text",
-          "settings": {
-            "title": "4. La différence entre éclaireur & ambassadeurs",
-            "content": "<p>Sur cet onglet de ressources, vous verrez alors certaines reservées aux éclaireurs, d'autres aux ambassadeurs. <strong>Les ambassadeurs sont les éclaireurs les plus motivés </strong>et sont selectionnés en fonction de leur investissement longue durée, et après avoir rencontré l'équipe en vrai.</p>",
-            "category": "Astuces"
-          }
         }
       },
       "block_order": [
         "text_Tm3Mgx",
         "text_f9GpDV",
-        "text_B9ywFq",
-        "text_jwVgc4"
+        "text_B9ywFq"
       ],
       "name": "astuces",
       "settings": {
@@ -369,6 +360,7 @@
         "image_JFHLmP",
         "image_mABmhb"
       ],
+      "disabled": true,
       "name": "ressources ambassadeurs",
       "settings": {
         "section_width": "container",
@@ -428,11 +420,10 @@
         "image_AVECbB",
         "image_3rgAhM"
       ],
-      "disabled": true,
       "name": "ressources ambassadeurs",
       "settings": {
         "section_width": "container",
-        "heading": "Stories à la une réservées aux ambassadeurs",
+        "heading": "Stories à la une pour ambassadeurs",
         "subheading": "",
         "heading_size": "h3",
         "show_filters": true,
@@ -510,7 +501,7 @@
           "settings": {
             "image": "shopify://shop_images/ambassadeur_story.png",
             "category": "Réseaux sociaux",
-            "title": "Recrutement d'éclaireurs/ambassadeurs",
+            "title": "Recrutement d'ambassadeurs",
             "description": "Post à mettre en story accompagné d'un lien vers le formulaire dans l'encadrement blanc"
           }
         },
@@ -559,15 +550,6 @@
             "description": ""
           }
         },
-        "image_QGJ4nr": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Sticker_-_Eclaireurs_8d4b8f59-7c46-4550-b34f-ddf621f26c88.jpg",
-            "category": "Stickers",
-            "title": "Badge Eclaireur",
-            "description": ""
-          }
-        },
         "image_RhYkEt": {
           "type": "image",
           "disabled": true,
@@ -586,7 +568,6 @@
         "image_pEiPgD",
         "image_TjcJx9",
         "image_3XLNLA",
-        "image_QGJ4nr",
         "image_RhYkEt"
       ],
       "name": "ressources graphiques",

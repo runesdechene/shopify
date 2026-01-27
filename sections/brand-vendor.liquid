@@ -1,0 +1,298 @@
+{% liquid
+  assign section_width = section.settings.section_width
+%}
+<div class="section_brand-vendor section-padding section-bg" {% render 'section-properties' %}>
+  <div class="{{ section_width }}">
+    <div class="brand-vendor__inner grid gap-y-4">
+      <div class="brand-vendor__grid flex md:flex-wrap gap-x-8 flex-scroll-mobile">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'character' %}
+            <div class="brand-vendor__character " >
+              <a data-anchor href="#jump-{{ block.settings.character | downcase }}" class="body-1 brand-vendor__character-link uppercase min-w-14 flex items-center min-h-14">{{ block.settings.character }}</a>
+            </div>
+        {% endcase %}
+      {% endfor %}
+      </div>
+      <div class="brand-vendor__list">
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'character' %}
+              {% if block.settings.linklist != blank %}
+              <div class="brand-vendor__item py-6 border-b" id="jump-{{ block.settings.character | downcase }}">
+                <div class="brand-vendor__title h5 uppercase pr-12 heading-1 w-36 flex-shrink-0">{{ block.settings.character }}</div>
+                {% if block.settings.linklist != blank %}
+                  <ul class="brand-vendor__menu grid flex-1 grid-cols-1 md:grid-cols-2 lg:grid-cols-5">
+                    {% for link in block.settings.linklist.links %}
+                      <li class="brand-vendor__list-item py-2 flex items-center">
+                        <a href="{{ link.url }}" class="brand-vendor__list-item-link">{{ link.title }}</a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </div>
+              {% endif %}
+          {% endcase %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Brand & Vendor",
+  "tag": "section",
+  "class": "section_brand_vendor",
+  "disabled_on": {
+    "groups": ["header", "footer", "aside"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Width",
+      "options": [
+        {
+            "value": "container",
+            "label": "Container"
+        },
+        {
+            "value": "container-fluid",
+            "label": "Stretched"
+        },
+        {
+            "value": "w-full",
+            "label": "Full width"
+        }
+      ],
+      "default": "container"
+    },
+    {
+        "type": "header",
+        "content": "Colors"
+    },
+    {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background"
+    },
+    {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "character",
+      "name": "Character",
+      "settings": [
+        {
+          "type": "text",
+          "id": "character",
+          "label": "Character",
+          "info": "Example: A"
+        },
+        {
+          "type": "link_list",
+          "id": "linklist",
+          "label": "Menu"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand & Vendor",
+      "blocks": [
+        {
+          "type": "character",
+          "settings": {
+            "character": "A"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "B"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "C"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "D"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "E"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "F"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "G"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "H"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "I"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "J"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "K"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "L"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "M"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "N"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "O"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "P"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "Q"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "R"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "S"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "T"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "U"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "V"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "W"
+          }
+        },    
+        {
+          "type": "character",
+          "settings": {
+            "character": "X"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "Y"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "Z"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "0-9"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

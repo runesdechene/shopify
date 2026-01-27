@@ -35,6 +35,11 @@
     animation-name: direction-right;
 
 }
+.scrolling-text__item-color .scrolling-text__content{
+    border-radius: 60px;
+    background-color: rgb(var(--color-background));
+    padding:1rem 1.5rem;
+}
 @keyframes direction-left {
   0% {
     transform: translateX(0%); }

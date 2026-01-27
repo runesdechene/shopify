@@ -133,7 +133,7 @@
         ".btn {display: none;}"
       ],
       "settings": {
-        "section_width": "container-fluid",
+        "section_width": "container-full",
         "logo_position": "middle-left-center",
         "logo": "shopify://shop_images/2025_footer_logo.webp",
         "logo_width": 250,
@@ -153,7 +153,8 @@
         "enable_language_selector_mobile": true,
         "margin_bottom": 0,
         "padding_top": 16,
-        "padding_bottom": 16
+        "padding_bottom": 16,
+        "padding_inline": 20
       }
     }
   },

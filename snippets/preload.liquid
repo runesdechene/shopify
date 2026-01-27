@@ -8,3 +8,8 @@
     <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
     {% comment %}theme-check-enable AssetPreload{% endcomment %}
 {%- endunless -%}
+{%- unless settings.type_accent_font.system? -%}
+    {% comment %}theme-check-disable AssetPreload{% endcomment %}
+    <link rel="preload" as="font" href="{{ settings.type_accent_font | font_url }}" type="font/woff2" crossorigin>
+    {% comment %}theme-check-enable AssetPreload{% endcomment %}
+{%- endunless -%}

@@ -2472,10 +2472,6 @@ body {
   pointer-events: auto;
 }
 
-.\!visible {
-  visibility: visible !important;
-}
-
 .visible {
   visibility: visible;
 }
@@ -2997,6 +2993,14 @@ body {
   height: 100%;
 }
 
+.min-h-12 {
+  min-height: 3rem;
+}
+
+.min-h-14 {
+  min-height: 3.5rem;
+}
+
 .w-16 {
   width: 4rem;
 }
@@ -3044,6 +3048,18 @@ body {
 .w-max {
   width: -moz-max-content;
   width: max-content;
+}
+
+.w-36 {
+  width: 9rem;
+}
+
+.min-w-12 {
+  min-width: 3rem;
+}
+
+.min-w-14 {
+  min-width: 3.5rem;
 }
 
 .max-w-2xl {
@@ -3128,10 +3144,6 @@ body {
 
 .grow-0 {
   flex-grow: 0;
-}
-
-.basis-1 {
-  flex-basis: 0.25rem;
 }
 
 .basis-1\/2 {
@@ -4742,6 +4754,10 @@ body {
   padding-top: 2rem;
 }
 
+.pr-12 {
+  padding-right: 3rem;
+}
+
 .text-left {
   text-align: left;
 }
@@ -6337,7 +6353,7 @@ input[type=submit],.button,.btn, .shopify-payment-button__button--unbranded, .sh
 .btn-outline{
   color: rgb(var(--btn-outline-text));
   background-color: transparent;
-  border: var(--thickness-btn-outline) solid rgb(var(--btn-outline-border));
+  border: var(--thickness-btn-outline) var(--btn-outline-style) rgb(var(--btn-outline-border));
 }
 
 .btn-outline::before{
@@ -6351,7 +6367,7 @@ input[type=submit],.button,.btn, .shopify-payment-button__button--unbranded, .sh
 .btn-outline-white{
   color: white;
   background-color:transparent;
-  border: var(--thickness-btn-outline) solid white;
+  border: var(--thickness-btn-outline) var(--btn-outline-style) white;
 }
 
 .btn-outline-white::before{
@@ -7706,6 +7722,7 @@ volume-pricing show-more-button {
   letter-spacing: var(--font-card-title-spacing);
   text-transform: var(--font-card-title-transform);
   font-weight: var(--font-card-title-weight);
+  line-height: calc(1 + .35 / var(--font-card-title-scale));
 }
 
 .card-information > .rating {
@@ -8409,8 +8426,16 @@ volume-pricing show-more-button {
     flex-direction: row-reverse;
   }
 
+  .md\:flex-wrap {
+    flex-wrap: wrap;
+  }
+
   .md\:items-center {
     align-items: center;
+  }
+
+  .md\:justify-between {
+    justify-content: space-between;
   }
 
   .md\:gap-4 {

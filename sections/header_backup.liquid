@@ -1,18 +1,13 @@
-<link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}">
+<link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}" >
 <link rel="stylesheet" href="{{ 'component-mega-menu.css' | asset_url }}">
 <link rel="stylesheet" href="{{ 'component-search.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-menu-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
-<link
-  rel="stylesheet"
-  href="{{ 'component-cart-notification.css' | asset_url }}"
-  media="print"
-  onload="this.media='all'"
->
-{%- if settings.cart_type == 'drawer' and template != 'cart' -%}
-  <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-cart-notification.css' | asset_url }}" media="print" onload="this.media='all'">
+{%- if settings.cart_type == "drawer" and template != 'cart' -%}
+<link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 {%- endif -%}
 
-{%- if settings.cart_type == 'drawer' -%}
+{%- if settings.cart_type == "drawer" -%}
   {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
   {{ 'component-cart.css' | asset_url | stylesheet_tag }}
   {{ 'component-totals.css' | asset_url | stylesheet_tag }}
@@ -20,55 +15,44 @@
 {%- endif -%}
 
 <style>
-  header:hover .slideshow-item__background
-  {
-  border: 1px solid red;
+  header-drawer {
+    justify-self: start;
+    margin-left: -1rem;
   }
 
-    header-drawer {
-      justify-self: start;
-      margin-left: -1rem;
-    }
-
-    {%- if section.settings.logo_position != "middle-center-drawer" -%}
-      @media screen and (min-width: 1070px) {
-        header-drawer {
-          display: none;
-        }
+  {%- if section.settings.logo_position != "middle-center-drawer" -%}
+    @media screen and (min-width: 1070px) {
+      header-drawer {
+        display: none;
       }
-    {%- endif -%}
-
-    .menu-drawer-container {
-      display: flex;
     }
+  {%- endif -%}
 
-    .list-menu {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
+  .menu-drawer-container {
+    display: flex;
+  }
 
-    .list-menu--inline {
-      display: inline-flex;
-      flex-wrap: wrap;
-    }
+  .list-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
 
-    summary.list-menu__item {
-      padding-right: 2.7rem;
-    }
+  .list-menu--inline {
+    display: inline-flex;
+    flex-wrap: wrap;
+  }
 
-    .list-menu__item {
-      display: flex;
-      align-items: center;
-      line-height: calc(1 + 0.3 / var(--font-body-scale));
-    }
+  summary.list-menu__item {
+    padding-right: 2.7rem;
+  }
 
+  .list-menu__item {
+    display: flex;
+    align-items: center;
+    line-height: calc(1 + 0.3 / var(--font-body-scale));
+  }
 
-    /* Hacks Icons */
-
-    .header__icons{
-      padding-right: 20px;
-    }
 </style>
 
 {%- style -%}
@@ -109,7 +93,7 @@
     position: absolute;
     width: 100%;
     background-color: transparent;
-    transition: all var(--duration-medium) var(--ease-out-slow);
+    transition: all var(--duration-medium) var(--ease-out-slow); 
   }
   .header--transparent.header-wrapper--border-bottom:not(:hover):not(.is-sticky){
     border-bottom-color: rgba(var(--color-header-transparent-background) / 0.2);
@@ -124,7 +108,7 @@
   .header.header--transparent:not(:hover):not(.is-sticky) .header__heading-logo.header__heading-logo-light{
     opacity: 1;
   }
-
+  
   .header.header--transparent:not(:hover):not(.is-sticky) .header__menu-item, .header.header--transparent:not(:hover):not(.is-sticky) .header__icon, .header.header--transparent:not(:hover):not(.is-sticky) .header__icon .icon, .header.header--transparent:not(:hover):not(.is-sticky) .desktop-localization-wrapper .localization-selector.link, .header.header--transparent:not(:hover):not(.is-sticky) .header__heading-link span, .header.header--transparent:not(:hover):not(.is-sticky) .header__icons--nav-item{
     color: rgb(var(--color-header-transparent-background));
   }
@@ -190,29 +174,27 @@
   class="header-wrapper"
 {%- endcapture -%}
 {% if section.settings.sticky_header_type != 'none' %}
-  <sticky-header data-sticky-type="{{ section.settings.sticky_header_type }}" {{ class_header }}>
+  <sticky-header data-sticky-type="{{ section.settings.sticky_header_type }}" {{ class_header }} >
 {% else %}
   <div {{ class_header }}>
 {% endif %}
 
-{%- liquid
-  assign social_links = false
-  assign localization_forms = false
+  {%- liquid
+    assign social_links = false
+    assign localization_forms = false
 
-  if settings.social_twitter_link != blank or settings.social_facebook_link != blank or settings.social_pinterest_link != blank or settings.social_instagram_link != blank or settings.social_youtube_link != blank or settings.social_vimeo_link != blank or settings.social_tiktok_link != blank or settings.social_tumblr_link != blank or settings.social_snapchat_link != blank
-    assign social_links = true
-  endif
+    if settings.social_twitter_link != blank or settings.social_facebook_link != blank or settings.social_pinterest_link != blank or settings.social_instagram_link != blank or settings.social_youtube_link != blank or settings.social_vimeo_link != blank or settings.social_tiktok_link != blank or settings.social_tumblr_link != blank or settings.social_snapchat_link != blank
+      assign social_links = true
+    endif
 
-  if localization.available_countries.size > 1 and section.settings.enable_country_selector or section.settings.enable_language_selector and localization.available_languages.size > 1
-    assign localization_forms = true
-  endif
--%}
-
-<header
-  class="header header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} {% if section.settings.logo_position == 'middle-center-drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %} {% if section.settings.transparent_header and template == 'index' %} header--transparent {% endif %} {% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}"
-  style="--logo-width_desktop:{{ section.settings.logo_width }}px;--logo-width_mobile:{{ section.settings.logo_width_mobile }}px;--header-padding-top:{{ section.settings.padding_top }}px;--header-padding-bottom:{{ section.settings.padding_bottom }}px;--header-margin-bottom:{{  section.settings.margin_bottom }}px;padding-inline:{{  section.settings.padding_inline }}px;"
->
-  <div class="{{ section.settings.section_width }} header__in">
+    if localization.available_countries.size > 1 and section.settings.enable_country_selector or section.settings.enable_language_selector and localization.available_languages.size > 1
+      assign localization_forms = true
+    endif
+  -%}
+  
+  <header class="header header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} {% if section.settings.logo_position == 'middle-center-drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %} {% if section.settings.transparent_header and template == 'index' %} header--transparent {% endif %} {% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}" 
+    style="--logo-width_desktop:{{ section.settings.logo_width }}px;--logo-width_mobile:{{ section.settings.logo_width_mobile }}px;--header-padding-top:{{ section.settings.padding_top }}px;--header-padding-bottom:{{ section.settings.padding_bottom }}px;--header-margin-bottom:{{  section.settings.margin_bottom }}px;">
+    <div class="{{ section.settings.section_width }} header__in">
     {%- liquid
       if section.settings.menu != blank
         render 'header-drawer', section: section, blocks: section.blocks
@@ -222,22 +204,23 @@
         render 'header-search', input_id: 'Search-In-Modal-1'
       endif
     -%}
-
+    
     {%- if section.settings.logo_position != 'middle-center' -%}
       <div class="header__logo">
-        {% render 'logo' %}
+      {% render 'logo' %}
       </div>
     {%- endif -%}
-
+    
     {%- liquid
+
       if section.settings.menu != blank
-        render 'header-dropdown-menu', blocks: section.blocks
+        render 'header-dropdown-menu' ,  blocks: section.blocks
       endif
     %}
 
     {%- if section.settings.logo_position == 'middle-center' -%}
       <div class="header__logo">
-        {% render 'logo' %}
+      {% render 'logo' %}
       </div>
     {%- endif -%}
 
@@ -248,10 +231,7 @@
           <ul class="hidden xl:flex pl-0 list-unstyled  items-center gap-x-10 header__icons--nav mr-4">
             {%- for link in block.settings.menu_next_icon.links -%}
               <li>
-                <a
-                  href="{{ link.url }}"
-                  class="link no-underline {% if block.settings.enable_style_menu %} header__menu-item {% else %} header__icons--nav-item {% endif %}"
-                >
+                <a href="{{ link.url }}" class="link no-underline {% if block.settings.enable_style_menu %} header__menu-item {% else %} header__icons--nav-item {% endif %}">
                   {{ link.title }}
                 </a>
               </li>
@@ -259,18 +239,14 @@
           </ul>
         {%- endif -%}
       {%- endfor -%}
-
+      
       <div class="desktop-localization-wrapper pr-5">
         {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
           <localization-form class="hidden lg:block" data-prevent-hide>
             {%- form 'localization', id: 'HeaderCountryForm', class: 'localization-form' -%}
               <div>
                 <h2 class="visually-hidden" id="HeaderCountryLabel">{{ 'localization.country_label' | t }}</h2>
-                {%- render 'country-localization',
-                  localPosition: 'HeaderCountry',
-                  enable_country_name: section.settings.enable_country_name,
-                  enable_country_flag: section.settings.enable_country_flag
-                -%}
+                {%- render 'country-localization', localPosition: 'HeaderCountry', enable_country_name : section.settings.enable_country_name, enable_country_flag : section.settings.enable_country_flag  -%}
               </div>
             {%- endform -%}
           </localization-form>
@@ -287,14 +263,11 @@
           </localization-form>
         {%- endif -%}
       </div>
-
+     
       {% render 'header-search', input_id: 'Search-In-Modal' %}
 
       {%- if shop.customer_accounts_enabled -%}
-        <a
-          href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
-          class="header__icon header__icon--account link focus-inset{% if section.settings.menu != blank %} small-hide{% endif %}"
-        >
+        <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="header__icon header__icon--account link focus-inset{% if section.settings.menu != blank %} small-hide{% endif %}">
           <account-icon>
             {%- if customer and customer.has_avatar? -%}
               {{ customer | avatar }}
@@ -321,15 +294,8 @@
         {%- endcase -%}
       {%- endfor -%}
 
-      <a
-        href="{{ routes.cart_url }}"
-        class="header__icon header__icon--cart link focus-inset"
-        id="cart-icon-bubble"
-        {% if settings.cart_type == 'drawer' %}
-          data-no-transition
-        {% endif %}
-      >
-        {% render 'icon-cart' %}
+      <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble" {% if settings.cart_type == 'drawer' %} data-no-transition {% endif %}>
+       {% render 'icon-cart' %}
         <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
         {%- if cart != empty -%}
           <div class="cart-count-bubble">
@@ -341,164 +307,164 @@
         {%- endif -%}
       </a>
     </div>
-  </div>
-</header>
+    </div>
+  </header>
 {% if section.settings.sticky_header_type != 'none' %}</sticky-header>{% else %}</div>{% endif %}
 
-{%- if settings.cart_type == 'notification' -%}
-  {%- render 'cart-notification', width_header: section.settings.section_width -%}
+{%- if settings.cart_type == "notification" -%}
+  {%- render 'cart-notification', width_header : section.settings.section_width -%}
 {%- endif -%}
 
 <script>
-  class StickyHeader extends HTMLElement {
-    constructor() {
-      super();
-    }
-
-    connectedCallback() {
-      this.header = document.querySelector('.section-header');
-      this.headerIsAlwaysSticky = this.getAttribute('data-sticky-type') === 'always';
-      this.headerInner = this.header.querySelector('.header');
-      this.headerBounds = {};
-
-      this.setHeaderHeight();
-
-      window.matchMedia('(max-width: 1069px)').addEventListener('change', this.setHeaderHeight.bind(this));
-
-      if (this.headerIsAlwaysSticky) {
-        this.header.classList.add('shopify-section-header-sticky');
-      }
-
-      this.currentScrollTop = 0;
-      this.preventReveal = false;
-      this.predictiveSearch = this.querySelector('predictive-search');
-
-      this.onScrollHandler = this.onScroll.bind(this);
-      this.hideHeaderOnScrollUp = () => (this.preventReveal = true);
-
-      this.addEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
-      window.addEventListener('scroll', this.onScrollHandler, false);
-
-      this.createObserver();
-      window.addEventListener('resize', this.createObserver.bind(this));
-    }
-
-    setHeaderHeight() {
-      const resizeObserver = new ResizeObserver(() => {
-        document.documentElement.style.setProperty('--header-height', `${this.headerInner.offsetHeight}px`);
-      });
-      resizeObserver.observe(this.headerInner);
-    }
-
-    disconnectedCallback() {
-      this.removeEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
-      window.removeEventListener('scroll', this.onScrollHandler);
-      window.removeEventListener('resize', this.createObserver.bind(this));
-    }
-
-    createObserver() {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          this.headerBounds = entries[0].intersectionRect;
-        },
-        { threshold: [0] }
-      );
-
-      observer.observe(this.header);
-    }
-
-    onScroll() {
-      requestAnimationFrame(() => {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-        if (this.predictiveSearch && this.predictiveSearch.isOpen) return;
-
-        if (scrollTop > this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
-          this.header.classList.add('scrolled-past-header');
-          this.headerInner.classList.add('is-sticky');
-          if (this.preventHide) return;
-          this.hide();
-        } else if (scrollTop < this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
-          this.header.classList.add('scrolled-past-header');
-          this.headerInner.classList.add('is-sticky');
-          if (!this.preventReveal) {
-            this.reveal();
-          } else {
-            window.clearTimeout(this.isScrolling);
-            this.isScrolling = setTimeout(() => {
-              this.preventReveal = false;
-            }, 66);
-            this.hide();
-          }
-        } else if (scrollTop <= this.headerBounds.top) {
-          this.header.classList.remove('scrolled-past-header');
-          this.headerInner.classList.remove('is-sticky');
-          this.reset();
-        }
-
-        this.currentScrollTop = scrollTop;
-      });
-    }
-
-    hide() {
-      if (this.headerIsAlwaysSticky) return;
-      this.header.classList.add('shopify-section-header-hidden', 'shopify-section-header-sticky');
-      this.closeMenuDisclosure();
-    }
-
-    reveal() {
-      if (this.headerIsAlwaysSticky) return;
-      this.header.classList.remove('shopify-section-header-hidden');
-      this.header.classList.add('shopify-section-header-sticky', 'animate');
-    }
-
-    reset() {
-      if (this.headerIsAlwaysSticky) return;
-      this.header.classList.remove('shopify-section-header-hidden', 'shopify-section-header-sticky', 'animate');
-    }
-
-    closeMenuDisclosure() {
-      this.disclosures = this.disclosures || this.header.querySelectorAll('header-menu');
-      this.disclosures.forEach((disclosure) => disclosure.close());
-    }
+ class StickyHeader extends HTMLElement {
+  constructor() {
+    super();
   }
 
-  customElements.define('sticky-header', StickyHeader);
+  connectedCallback() {
+    this.header = document.querySelector('.section-header');
+    this.headerIsAlwaysSticky = this.getAttribute('data-sticky-type') === 'always' ;
+    this.headerInner = this.header.querySelector('.header');
+    this.headerBounds = {};
 
-  (function () {
-    window.addEventListener('load', function () {
-      updateMenuPositions();
-      document.addEventListener('shopify:section:load', function () {
-        updateMenuPositions();
-      });
-    });
+    this.setHeaderHeight();
 
-    window.addEventListener('resize', function () {
-      updateMenuPositions();
+    window.matchMedia('(max-width: 1069px)').addEventListener('change', this.setHeaderHeight.bind(this));
+
+    if (this.headerIsAlwaysSticky) {
+      this.header.classList.add('shopify-section-header-sticky');
+    }
+
+    this.currentScrollTop = 0;
+    this.preventReveal = false;
+    this.predictiveSearch = this.querySelector('predictive-search');
+
+    this.onScrollHandler = this.onScroll.bind(this);
+    this.hideHeaderOnScrollUp = () => this.preventReveal = true;
+
+    this.addEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
+    window.addEventListener('scroll', this.onScrollHandler, false);
+
+    this.createObserver();
+    window.addEventListener('resize', this.createObserver.bind(this));
+  }
+
+  setHeaderHeight() {
+    const resizeObserver = new ResizeObserver(() => {
+      document.documentElement.style.setProperty('--header-height', `${this.headerInner.offsetHeight}px`);
     });
-    document.addEventListener('shopify:section:load', function () {
-      updateMenuPositions();
-    });
-    function updateMenuPositions() {
-      const dropdownMenus = document.querySelectorAll('.list-menu li.list-menu__has-dropdown');
-      dropdownMenus.forEach((menu) => {
-        const menuRect = menu.getBoundingClientRect();
-        const menuRight = window.innerWidth - menuRect.right;
-        if (menuRight < 450) {
-          menu.classList.add('near-edge');
+    resizeObserver.observe(this.headerInner);
+  }
+
+  disconnectedCallback() {
+    this.removeEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
+    window.removeEventListener('scroll', this.onScrollHandler);
+    window.removeEventListener('resize', this.createObserver.bind(this));
+  }
+
+  createObserver() {
+    const observer = new IntersectionObserver((entries) => {
+      this.headerBounds = entries[0].intersectionRect;
+    }, { threshold: [0] });
+
+    observer.observe(this.header);
+  }
+
+  onScroll() {
+    requestAnimationFrame(() => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+      if (this.predictiveSearch && this.predictiveSearch.isOpen) return;
+
+      if (scrollTop > this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
+        this.header.classList.add('scrolled-past-header');
+        this.headerInner.classList.add('is-sticky');
+        if (this.preventHide) return;
+        this.hide();
+      } else if (scrollTop < this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
+        this.header.classList.add('scrolled-past-header');
+        this.headerInner.classList.add('is-sticky');
+        if (!this.preventReveal) {
+          this.reveal();
         } else {
-          menu.classList.remove('near-edge');
+          window.clearTimeout(this.isScrolling);
+          this.isScrolling = setTimeout(() => {
+            this.preventReveal = false;
+          }, 66);
+          this.hide();
         }
-      });
-    }
+      } else if (scrollTop <= this.headerBounds.top) {
+        this.header.classList.remove('scrolled-past-header');
+        this.headerInner.classList.remove('is-sticky');
+        this.reset();
+      }
 
-    const announcementHeader = document.querySelector('.shopify-section-group-header-group');
-    const announcementScrollingHeight = announcementHeader?.querySelector('.section-scrolling-text')?.clientHeight;
+      this.currentScrollTop = scrollTop;
+    });
+  }
 
-    if (announcementScrollingHeight) {
-      document.documentElement.style.setProperty('--announcement-scrolling-height', `${announcementScrollingHeight}px`);
+  hide() {
+    if (this.headerIsAlwaysSticky) return;
+    this.header.classList.add('shopify-section-header-hidden', 'shopify-section-header-sticky');
+    this.closeMenuDisclosure();
+  }
+
+  reveal() {
+    if (this.headerIsAlwaysSticky) return;
+    this.header.classList.remove('shopify-section-header-hidden');
+    this.header.classList.add('shopify-section-header-sticky', 'animate');
+  }
+
+  reset() {
+    if (this.headerIsAlwaysSticky) return;
+    this.header.classList.remove('shopify-section-header-hidden', 'shopify-section-header-sticky', 'animate');
+  }
+
+  closeMenuDisclosure() {
+    this.disclosures = this.disclosures || this.header.querySelectorAll('header-menu');
+    this.disclosures.forEach(disclosure => disclosure.close());
+  }
+}
+
+customElements.define('sticky-header', StickyHeader);
+
+(function() {
+window.addEventListener('load', function() {
+  updateMenuPositions();
+  document.addEventListener('shopify:section:load', function() {
+    updateMenuPositions();
+  });
+});
+
+window.addEventListener('resize', function() {
+  updateMenuPositions();
+});
+document.addEventListener('shopify:section:load', function() {
+  updateMenuPositions();
+});
+function updateMenuPositions() {
+  const dropdownMenus = document.querySelectorAll('.list-menu li.list-menu__has-dropdown');
+  dropdownMenus.forEach(menu => {
+    const menuRect = menu.getBoundingClientRect();
+    const menuRight = window.innerWidth - menuRect.right;
+    if (menuRight < 450) {
+      menu.classList.add('near-edge');
+    } else {
+      menu.classList.remove('near-edge');
     }
-  })();
+  });
+}
+
+
+const announcementHeader = document.querySelector('.shopify-section-group-header-group');
+const announcementScrollingHeight = announcementHeader?.querySelector('.section-scrolling-text')?.clientHeight;
+
+if (announcementScrollingHeight) {
+  document.documentElement.style.setProperty('--announcement-scrolling-height', `${announcementScrollingHeight}px`);
+}
+
+})();
+
 </script>
 
 <script type="application/ld+json">
@@ -525,7 +491,7 @@
 </script>
 
 {%- if request.page_type == 'index' -%}
-  {% assign potential_action_target = request.origin | append: routes.search_url | append: '?q={search_term_string}' %}
+  {% assign potential_action_target = request.origin | append: routes.search_url | append: "?q={search_term_string}" %}
   <script type="application/ld+json">
     {
       "@context": "http://schema.org",
@@ -549,7 +515,7 @@
     {
       "type": "select",
       "id": "section_width",
-      "label": "Width2",
+      "label": "Width",
       "options": [
         {
           "value": "container",
@@ -558,10 +524,6 @@
         {
           "value": "container-fluid",
           "label": "Stretched"
-        },
-        {
-          "value": "container-full",
-          "label": "Full"
         }
       ],
       "default": "container"
@@ -599,30 +561,30 @@
       "label": "Desktop logo position"
     },
     {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo image"
-    },
-    {
-      "type": "range",
-      "id": "logo_width",
-      "min": 50,
-      "max": 300,
-      "step": 10,
-      "default": 100,
-      "unit": "px",
-      "label": "Desktop logo width"
-    },
-    {
-      "type": "range",
-      "id": "logo_width_mobile",
-      "min": 50,
-      "max": 300,
-      "step": 10,
-      "default": 100,
-      "unit": "px",
-      "label": "Mobile logo width"
-    },
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo image"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "min": 50,
+        "max": 300,
+        "step": 10,
+        "default": 100,
+        "unit": "px",
+        "label": "Desktop logo width"
+      },
+      {
+        "type": "range",
+        "id": "logo_width_mobile",
+        "min": 50,
+        "max": 300,
+        "step": 10,
+        "default": 100,
+        "unit": "px",
+        "label": "Mobile logo width"
+      },
     {
       "type": "link_list",
       "id": "menu",
@@ -707,11 +669,11 @@
       "default": "#ffffff"
     },
     {
-      "type": "image_picker",
-      "id": "logo_light",
-      "label": "Logo image",
-      "info": "Displayed when transparent header is enabled. Uses the dimensions set on your main logo."
-    },
+			"type": "image_picker",
+			"id": "logo_light",
+			"label": "Logo image",
+			"info": "Displayed when transparent header is enabled. Uses the dimensions set on your main logo."
+		},
     {
       "type": "header",
       "content": "Mobile"
@@ -785,16 +747,6 @@
       "unit": "px",
       "label": "Padding bottom",
       "default": 20
-    },
-    {
-      "type": "range",
-      "id": "padding_inline",
-      "min": 0,
-      "max": 36,
-      "step": 4,
-      "unit": "px",
-      "label": "Padding inline",
-      "default": 20
     }
   ],
   "blocks": [
@@ -841,8 +793,8 @@
           "id": "menu_width",
           "label": "Width",
           "options": [
-            { "value": "container", "label": "Container" },
-            { "value": "container-fluid", "label": "Stretched" }
+            { "value": "container","label": "Container"},
+            { "value": "container-fluid","label": "Stretched"}
           ],
           "default": "container"
         },
@@ -925,14 +877,14 @@
           "id": "image_ratio_1",
           "label": "Image ratio",
           "options": [
-            { "value": "adapt", "label": "Adapt to image" },
-            { "value": "square", "label": "Square(1:1)" },
-            { "value": "portrait", "label": "Portrait (2:3)" },
-            { "value": "landscape", "label": "Lansdcape (4:3)" },
-            { "value": "landscape-v2", "label": "Lansdcape (5:3.5)" },
-            { "value": "wide", "label": "Wide (16:9)" }
+            { "value": "adapt","label": "Adapt to image" },
+            { "value": "square","label": "Square(1:1)" },
+            { "value": "portrait","label": "Portrait (2:3)" },
+            { "value": "landscape","label": "Lansdcape (4:3)" },
+            { "value": "landscape-v2","label": "Lansdcape (5:3.5)" },
+            { "value": "wide","label": "Wide (16:9)" }
           ],
-          "default": "adapt"
+          "default": "adapt" 
         },
         {
           "type": "url",
@@ -944,15 +896,15 @@
           "id": "align_text_1",
           "label": "Content alignment ",
           "options": [
-            { "value": "top-left", "label": "Top left" },
-            { "value": "top-center", "label": "Top center" },
-            { "value": "top-right", "label": "Top right" },
-            { "value": "center-left", "label": "Center left" },
-            { "value": "center-center", "label": "Center center" },
-            { "value": "center-right", "label": "Center right" },
-            { "value": "bottom-left", "label": "Bottom left" },
-            { "value": "bottom-center", "label": "Bottom center" },
-            { "value": "bottom-right", "label": "Bottom right" }
+            { "value": "top-left","label": "Top left" },
+            { "value": "top-center","label": "Top center" },
+            { "value": "top-right","label": "Top right" },
+            { "value": "center-left","label": "Center left" },
+            { "value": "center-center","label": "Center center" },
+            { "value": "center-right","label": "Center right" },
+            { "value": "bottom-left","label": "Bottom left" },
+            { "value": "bottom-center","label": "Bottom center" },
+            { "value": "bottom-right","label": "Bottom right" }
           ],
           "default": "center-center"
         },
@@ -973,12 +925,12 @@
           "id": "heading_size_1",
           "label": "Heading size",
           "options": [
-            { "value": "h1", "label": "Heading 1" },
-            { "value": "h2", "label": "Heading 2" },
-            { "value": "h3", "label": "Heading 3" },
-            { "value": "h4", "label": "Heading 4" },
-            { "value": "h5", "label": "Heading 5" },
-            { "value": "h6", "label": "Heading 6" }
+              { "value": "h1","label": "Heading 1" },
+              { "value": "h2","label": "Heading 2" },
+              { "value": "h3","label": "Heading 3" },
+              { "value": "h4","label": "Heading 4" },
+              { "value": "h5","label": "Heading 5" },
+              { "value": "h6","label": "Heading 6" }
           ],
           "default": "h3",
           "info": "Select heading size from H1 to H6."
@@ -994,13 +946,13 @@
           "id": "type_button_1",
           "label": "Button style",
           "options": [
-            { "group": "Primary color", "value": "primary", "label": "Primary" },
-            { "group": "Primary color", "value": "outline", "label": "Outline" },
-            { "group": "Primary color", "value": "underlined", "label": "Underlined" },
-            { "group": "White color", "value": "primary-white", "label": "Solid White" },
-            { "group": "White color", "value": "outline-white", "label": "Outline White" },
-            { "group": "White color", "value": "underlined-white", "label": "Underlined White" },
-            { "group": "Accent color", "value": "secondary", "label": "Secondary" }
+            { "group": "Primary color","value": "primary","label": "Primary" },
+            { "group": "Primary color","value": "outline","label": "Outline" },
+            { "group": "Primary color","value": "underlined","label": "Underlined" },
+            { "group": "White color","value": "primary-white","label": "Solid White" },
+            { "group": "White color","value": "outline-white","label": "Outline White" },
+            { "group": "White color","value": "underlined-white","label": "Underlined White" },
+            { "group": "Accent color","value": "secondary","label": "Secondary" }
           ],
           "default": "primary"
         },
@@ -1036,7 +988,7 @@
           "type": "color_background",
           "id": "overlay_gradient_1",
           "label": "Overlay gradient",
-          "default": "linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3) 90%)"
+          "default":"linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3) 90%)"
         },
         {
           "type": "header",
@@ -1053,14 +1005,14 @@
           "id": "image_ratio_2",
           "label": "Image ratio",
           "options": [
-            { "value": "adapt", "label": "Adapt to image" },
-            { "value": "square", "label": "Square(1:1)" },
-            { "value": "portrait", "label": "Portrait (2:3)" },
-            { "value": "landscape", "label": "Lansdcape (4:3)" },
-            { "value": "landscape-v2", "label": "Lansdcape (5:3.5)" },
-            { "value": "wide", "label": "Wide (16:9)" }
+            { "value": "adapt","label": "Adapt to image" },
+            { "value": "square","label": "Square(1:1)" },
+            { "value": "portrait","label": "Portrait (2:3)" },
+            { "value": "landscape","label": "Lansdcape (4:3)" },
+            { "value": "landscape-v2","label": "Lansdcape (5:3.5)" },
+            { "value": "wide","label": "Wide (16:9)" }
           ],
-          "default": "adapt"
+          "default": "adapt" 
         },
         {
           "type": "url",
@@ -1072,15 +1024,15 @@
           "id": "align_text_2",
           "label": "Content alignment ",
           "options": [
-            { "value": "top-left", "label": "Top left" },
-            { "value": "top-center", "label": "Top center" },
-            { "value": "top-right", "label": "Top right" },
-            { "value": "center-left", "label": "Center left" },
-            { "value": "center-center", "label": "Center center" },
-            { "value": "center-right", "label": "Center right" },
-            { "value": "bottom-left", "label": "Bottom left" },
-            { "value": "bottom-center", "label": "Bottom center" },
-            { "value": "bottom-right", "label": "Bottom right" }
+            { "value": "top-left","label": "Top left" },
+            { "value": "top-center","label": "Top center" },
+            { "value": "top-right","label": "Top right" },
+            { "value": "center-left","label": "Center left" },
+            { "value": "center-center","label": "Center center" },
+            { "value": "center-right","label": "Center right" },
+            { "value": "bottom-left","label": "Bottom left" },
+            { "value": "bottom-center","label": "Bottom center" },
+            { "value": "bottom-right","label": "Bottom right" }
           ],
           "default": "center-center"
         },
@@ -1101,12 +1053,12 @@
           "id": "heading_size_2",
           "label": "Heading size",
           "options": [
-            { "value": "h1", "label": "Heading 1" },
-            { "value": "h2", "label": "Heading 2" },
-            { "value": "h3", "label": "Heading 3" },
-            { "value": "h4", "label": "Heading 4" },
-            { "value": "h5", "label": "Heading 5" },
-            { "value": "h6", "label": "Heading 6" }
+              { "value": "h1","label": "Heading 1" },
+              { "value": "h2","label": "Heading 2" },
+              { "value": "h3","label": "Heading 3" },
+              { "value": "h4","label": "Heading 4" },
+              { "value": "h5","label": "Heading 5" },
+              { "value": "h6","label": "Heading 6" }
           ],
           "default": "h3",
           "info": "Select heading size from H1 to H6."
@@ -1122,13 +1074,13 @@
           "id": "type_button_2",
           "label": "Button style",
           "options": [
-            { "group": "Primary color", "value": "primary", "label": "Primary" },
-            { "group": "Primary color", "value": "outline", "label": "Outline" },
-            { "group": "Primary color", "value": "underlined", "label": "Underlined" },
-            { "group": "White color", "value": "primary-white", "label": "Solid White" },
-            { "group": "White color", "value": "outline-white", "label": "Outline White" },
-            { "group": "White color", "value": "underlined-white", "label": "Underlined White" },
-            { "group": "Accent color", "value": "secondary", "label": "Secondary" }
+            { "group": "Primary color","value": "primary","label": "Primary" },
+            { "group": "Primary color","value": "outline","label": "Outline" },
+            { "group": "Primary color","value": "underlined","label": "Underlined" },
+            { "group": "White color","value": "primary-white","label": "Solid White" },
+            { "group": "White color","value": "outline-white","label": "Outline White" },
+            { "group": "White color","value": "underlined-white","label": "Underlined White" },
+            { "group": "Accent color","value": "secondary","label": "Secondary" }
           ],
           "default": "primary"
         },
@@ -1164,7 +1116,7 @@
           "type": "color_background",
           "id": "overlay_gradient_2",
           "label": "Overlay gradient",
-          "default": "linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3) 90%)"
+          "default":"linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3) 90%)"
         },
         {
           "type": "header",
@@ -1181,14 +1133,14 @@
           "id": "image_ratio_3",
           "label": "Image ratio",
           "options": [
-            { "value": "adapt", "label": "Adapt to image" },
-            { "value": "square", "label": "Square(1:1)" },
-            { "value": "portrait", "label": "Portrait (2:3)" },
-            { "value": "landscape", "label": "Lansdcape (4:3)" },
-            { "value": "landscape-v2", "label": "Lansdcape (5:3.5)" },
-            { "value": "wide", "label": "Wide (16:9)" }
+            { "value": "adapt","label": "Adapt to image" },
+            { "value": "square","label": "Square(1:1)" },
+            { "value": "portrait","label": "Portrait (2:3)" },
+            { "value": "landscape","label": "Lansdcape (4:3)" },
+            { "value": "landscape-v2","label": "Lansdcape (5:3.5)" },
+            { "value": "wide","label": "Wide (16:9)" }
           ],
-          "default": "adapt"
+          "default": "adapt" 
         },
         {
           "type": "url",
@@ -1200,15 +1152,15 @@
           "id": "align_text_3",
           "label": "Content alignment ",
           "options": [
-            { "value": "top-left", "label": "Top left" },
-            { "value": "top-center", "label": "Top center" },
-            { "value": "top-right", "label": "Top right" },
-            { "value": "center-left", "label": "Center left" },
-            { "value": "center-center", "label": "Center center" },
-            { "value": "center-right", "label": "Center right" },
-            { "value": "bottom-left", "label": "Bottom left" },
-            { "value": "bottom-center", "label": "Bottom center" },
-            { "value": "bottom-right", "label": "Bottom right" }
+            { "value": "top-left","label": "Top left" },
+            { "value": "top-center","label": "Top center" },
+            { "value": "top-right","label": "Top right" },
+            { "value": "center-left","label": "Center left" },
+            { "value": "center-center","label": "Center center" },
+            { "value": "center-right","label": "Center right" },
+            { "value": "bottom-left","label": "Bottom left" },
+            { "value": "bottom-center","label": "Bottom center" },
+            { "value": "bottom-right","label": "Bottom right" }
           ],
           "default": "center-center"
         },
@@ -1229,12 +1181,12 @@
           "id": "heading_size_3",
           "label": "Heading size",
           "options": [
-            { "value": "h1", "label": "Heading 1" },
-            { "value": "h2", "label": "Heading 2" },
-            { "value": "h3", "label": "Heading 3" },
-            { "value": "h4", "label": "Heading 4" },
-            { "value": "h5", "label": "Heading 5" },
-            { "value": "h6", "label": "Heading 6" }
+              { "value": "h1","label": "Heading 1" },
+              { "value": "h2","label": "Heading 2" },
+              { "value": "h3","label": "Heading 3" },
+              { "value": "h4","label": "Heading 4" },
+              { "value": "h5","label": "Heading 5" },
+              { "value": "h6","label": "Heading 6" }
           ],
           "default": "h3",
           "info": "Select heading size from H1 to H6."
@@ -1250,13 +1202,13 @@
           "id": "type_button_3",
           "label": "Button style",
           "options": [
-            { "group": "Primary color", "value": "primary", "label": "Primary" },
-            { "group": "Primary color", "value": "outline", "label": "Outline" },
-            { "group": "Primary color", "value": "underlined", "label": "Underlined" },
-            { "group": "White color", "value": "primary-white", "label": "Solid White" },
-            { "group": "White color", "value": "outline-white", "label": "Outline White" },
-            { "group": "White color", "value": "underlined-white", "label": "Underlined White" },
-            { "group": "Accent color", "value": "secondary", "label": "Secondary" }
+            { "group": "Primary color","value": "primary","label": "Primary" },
+            { "group": "Primary color","value": "outline","label": "Outline" },
+            { "group": "Primary color","value": "underlined","label": "Underlined" },
+            { "group": "White color","value": "primary-white","label": "Solid White" },
+            { "group": "White color","value": "outline-white","label": "Outline White" },
+            { "group": "White color","value": "underlined-white","label": "Underlined White" },
+            { "group": "Accent color","value": "secondary","label": "Secondary" }
           ],
           "default": "primary"
         },
@@ -1292,7 +1244,7 @@
           "type": "color_background",
           "id": "overlay_gradient_3",
           "label": "Overlay gradient",
-          "default": "linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3) 90%)"
+          "default":"linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3) 90%)"
         },
         {
           "type": "header",
@@ -1309,14 +1261,14 @@
           "id": "image_ratio_4",
           "label": "Image ratio",
           "options": [
-            { "value": "adapt", "label": "Adapt to image" },
-            { "value": "square", "label": "Square(1:1)" },
-            { "value": "portrait", "label": "Portrait (2:3)" },
-            { "value": "landscape", "label": "Lansdcape (4:3)" },
-            { "value": "landscape-v2", "label": "Lansdcape (5:3.5)" },
-            { "value": "wide", "label": "Wide (16:9)" }
+            { "value": "adapt","label": "Adapt to image" },
+            { "value": "square","label": "Square(1:1)" },
+            { "value": "portrait","label": "Portrait (2:3)" },
+            { "value": "landscape","label": "Lansdcape (4:3)" },
+            { "value": "landscape-v2","label": "Lansdcape (5:3.5)" },
+            { "value": "wide","label": "Wide (16:9)" }
           ],
-          "default": "adapt"
+          "default": "adapt" 
         },
         {
           "type": "url",
@@ -1328,15 +1280,15 @@
           "id": "align_text_4",
           "label": "Content alignment ",
           "options": [
-            { "value": "top-left", "label": "Top left" },
-            { "value": "top-center", "label": "Top center" },
-            { "value": "top-right", "label": "Top right" },
-            { "value": "center-left", "label": "Center left" },
-            { "value": "center-center", "label": "Center center" },
-            { "value": "center-right", "label": "Center right" },
-            { "value": "bottom-left", "label": "Bottom left" },
-            { "value": "bottom-center", "label": "Bottom center" },
-            { "value": "bottom-right", "label": "Bottom right" }
+            { "value": "top-left","label": "Top left" },
+            { "value": "top-center","label": "Top center" },
+            { "value": "top-right","label": "Top right" },
+            { "value": "center-left","label": "Center left" },
+            { "value": "center-center","label": "Center center" },
+            { "value": "center-right","label": "Center right" },
+            { "value": "bottom-left","label": "Bottom left" },
+            { "value": "bottom-center","label": "Bottom center" },
+            { "value": "bottom-right","label": "Bottom right" }
           ],
           "default": "center-center"
         },
@@ -1357,12 +1309,12 @@
           "id": "heading_size_4",
           "label": "Heading size",
           "options": [
-            { "value": "h1", "label": "Heading 1" },
-            { "value": "h2", "label": "Heading 2" },
-            { "value": "h3", "label": "Heading 3" },
-            { "value": "h4", "label": "Heading 4" },
-            { "value": "h5", "label": "Heading 5" },
-            { "value": "h6", "label": "Heading 6" }
+              { "value": "h1","label": "Heading 1" },
+              { "value": "h2","label": "Heading 2" },
+              { "value": "h3","label": "Heading 3" },
+              { "value": "h4","label": "Heading 4" },
+              { "value": "h5","label": "Heading 5" },
+              { "value": "h6","label": "Heading 6" }
           ],
           "default": "h3",
           "info": "Select heading size from H1 to H6."
@@ -1378,13 +1330,13 @@
           "id": "type_button_4",
           "label": "Button style",
           "options": [
-            { "group": "Primary color", "value": "primary", "label": "Primary" },
-            { "group": "Primary color", "value": "outline", "label": "Outline" },
-            { "group": "Primary color", "value": "underlined", "label": "Underlined" },
-            { "group": "White color", "value": "primary-white", "label": "Solid White" },
-            { "group": "White color", "value": "outline-white", "label": "Outline White" },
-            { "group": "White color", "value": "underlined-white", "label": "Underlined White" },
-            { "group": "Accent color", "value": "secondary", "label": "Secondary" }
+            { "group": "Primary color","value": "primary","label": "Primary" },
+            { "group": "Primary color","value": "outline","label": "Outline" },
+            { "group": "Primary color","value": "underlined","label": "Underlined" },
+            { "group": "White color","value": "primary-white","label": "Solid White" },
+            { "group": "White color","value": "outline-white","label": "Outline White" },
+            { "group": "White color","value": "underlined-white","label": "Underlined White" },
+            { "group": "Accent color","value": "secondary","label": "Secondary" }
           ],
           "default": "primary"
         },
@@ -1420,7 +1372,7 @@
           "type": "color_background",
           "id": "overlay_gradient_4",
           "label": "Overlay gradient",
-          "default": "linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3) 90%)"
+          "default":"linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3) 90%)"
         },
         {
           "type": "header",
@@ -1437,14 +1389,14 @@
           "id": "image_ratio_5",
           "label": "Image ratio",
           "options": [
-            { "value": "adapt", "label": "Adapt to image" },
-            { "value": "square", "label": "Square(1:1)" },
-            { "value": "portrait", "label": "Portrait (2:3)" },
-            { "value": "landscape", "label": "Lansdcape (4:3)" },
-            { "value": "landscape-v2", "label": "Lansdcape (5:3.5)" },
-            { "value": "wide", "label": "Wide (16:9)" }
+            { "value": "adapt","label": "Adapt to image" },
+            { "value": "square","label": "Square(1:1)" },
+            { "value": "portrait","label": "Portrait (2:3)" },
+            { "value": "landscape","label": "Lansdcape (4:3)" },
+            { "value": "landscape-v2","label": "Lansdcape (5:3.5)" },
+            { "value": "wide","label": "Wide (16:9)" }
           ],
-          "default": "adapt"
+          "default": "adapt" 
         },
         {
           "type": "url",
@@ -1456,15 +1408,15 @@
           "id": "align_text_5",
           "label": "Content alignment ",
           "options": [
-            { "value": "top-left", "label": "Top left" },
-            { "value": "top-center", "label": "Top center" },
-            { "value": "top-right", "label": "Top right" },
-            { "value": "center-left", "label": "Center left" },
-            { "value": "center-center", "label": "Center center" },
-            { "value": "center-right", "label": "Center right" },
-            { "value": "bottom-left", "label": "Bottom left" },
-            { "value": "bottom-center", "label": "Bottom center" },
-            { "value": "bottom-right", "label": "Bottom right" }
+            { "value": "top-left","label": "Top left" },
+            { "value": "top-center","label": "Top center" },
+            { "value": "top-right","label": "Top right" },
+            { "value": "center-left","label": "Center left" },
+            { "value": "center-center","label": "Center center" },
+            { "value": "center-right","label": "Center right" },
+            { "value": "bottom-left","label": "Bottom left" },
+            { "value": "bottom-center","label": "Bottom center" },
+            { "value": "bottom-right","label": "Bottom right" }
           ],
           "default": "center-center"
         },
@@ -1485,12 +1437,12 @@
           "id": "heading_size_5",
           "label": "Heading size",
           "options": [
-            { "value": "h1", "label": "Heading 1" },
-            { "value": "h2", "label": "Heading 2" },
-            { "value": "h3", "label": "Heading 3" },
-            { "value": "h4", "label": "Heading 4" },
-            { "value": "h5", "label": "Heading 5" },
-            { "value": "h6", "label": "Heading 6" }
+              { "value": "h1","label": "Heading 1" },
+              { "value": "h2","label": "Heading 2" },
+              { "value": "h3","label": "Heading 3" },
+              { "value": "h4","label": "Heading 4" },
+              { "value": "h5","label": "Heading 5" },
+              { "value": "h6","label": "Heading 6" }
           ],
           "default": "h3",
           "info": "Select heading size from H1 to H6."
@@ -1506,13 +1458,13 @@
           "id": "type_button_5",
           "label": "Button style",
           "options": [
-            { "group": "Primary color", "value": "primary", "label": "Primary" },
-            { "group": "Primary color", "value": "outline", "label": "Outline" },
-            { "group": "Primary color", "value": "underlined", "label": "Underlined" },
-            { "group": "White color", "value": "primary-white", "label": "Solid White" },
-            { "group": "White color", "value": "outline-white", "label": "Outline White" },
-            { "group": "White color", "value": "underlined-white", "label": "Underlined White" },
-            { "group": "Accent color", "value": "secondary", "label": "Secondary" }
+            { "group": "Primary color","value": "primary","label": "Primary" },
+            { "group": "Primary color","value": "outline","label": "Outline" },
+            { "group": "Primary color","value": "underlined","label": "Underlined" },
+            { "group": "White color","value": "primary-white","label": "Solid White" },
+            { "group": "White color","value": "outline-white","label": "Outline White" },
+            { "group": "White color","value": "underlined-white","label": "Underlined White" },
+            { "group": "Accent color","value": "secondary","label": "Secondary" }
           ],
           "default": "primary"
         },
@@ -1548,7 +1500,7 @@
           "type": "color_background",
           "id": "overlay_gradient_5",
           "label": "Overlay gradient",
-          "default": "linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3) 90%)"
+          "default":"linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3) 90%)"
         },
         {
           "type": "header",
@@ -1565,14 +1517,14 @@
           "id": "image_ratio_6",
           "label": "Image ratio",
           "options": [
-            { "value": "adapt", "label": "Adapt to image" },
-            { "value": "square", "label": "Square(1:1)" },
-            { "value": "portrait", "label": "Portrait (2:3)" },
-            { "value": "landscape", "label": "Lansdcape (4:3)" },
-            { "value": "landscape-v2", "label": "Lansdcape (5:3.5)" },
-            { "value": "wide", "label": "Wide (16:9)" }
+            { "value": "adapt","label": "Adapt to image" },
+            { "value": "square","label": "Square(1:1)" },
+            { "value": "portrait","label": "Portrait (2:3)" },
+            { "value": "landscape","label": "Lansdcape (4:3)" },
+            { "value": "landscape-v2","label": "Lansdcape (5:3.5)" },
+            { "value": "wide","label": "Wide (16:9)" }
           ],
-          "default": "adapt"
+          "default": "adapt" 
         },
         {
           "type": "url",
@@ -1584,15 +1536,15 @@
           "id": "align_text_6",
           "label": "Content alignment ",
           "options": [
-            { "value": "top-left", "label": "Top left" },
-            { "value": "top-center", "label": "Top center" },
-            { "value": "top-right", "label": "Top right" },
-            { "value": "center-left", "label": "Center left" },
-            { "value": "center-center", "label": "Center center" },
-            { "value": "center-right", "label": "Center right" },
-            { "value": "bottom-left", "label": "Bottom left" },
-            { "value": "bottom-center", "label": "Bottom center" },
-            { "value": "bottom-right", "label": "Bottom right" }
+            { "value": "top-left","label": "Top left" },
+            { "value": "top-center","label": "Top center" },
+            { "value": "top-right","label": "Top right" },
+            { "value": "center-left","label": "Center left" },
+            { "value": "center-center","label": "Center center" },
+            { "value": "center-right","label": "Center right" },
+            { "value": "bottom-left","label": "Bottom left" },
+            { "value": "bottom-center","label": "Bottom center" },
+            { "value": "bottom-right","label": "Bottom right" }
           ],
           "default": "center-center"
         },
@@ -1613,12 +1565,12 @@
           "id": "heading_size_6",
           "label": "Heading size",
           "options": [
-            { "value": "h1", "label": "Heading 1" },
-            { "value": "h2", "label": "Heading 2" },
-            { "value": "h3", "label": "Heading 3" },
-            { "value": "h4", "label": "Heading 4" },
-            { "value": "h5", "label": "Heading 5" },
-            { "value": "h6", "label": "Heading 6" }
+              { "value": "h1","label": "Heading 1" },
+              { "value": "h2","label": "Heading 2" },
+              { "value": "h3","label": "Heading 3" },
+              { "value": "h4","label": "Heading 4" },
+              { "value": "h5","label": "Heading 5" },
+              { "value": "h6","label": "Heading 6" }
           ],
           "default": "h3",
           "info": "Select heading size from H1 to H6."
@@ -1634,13 +1586,13 @@
           "id": "type_button_6",
           "label": "Button style",
           "options": [
-            { "group": "Primary color", "value": "primary", "label": "Primary" },
-            { "group": "Primary color", "value": "outline", "label": "Outline" },
-            { "group": "Primary color", "value": "underlined", "label": "Underlined" },
-            { "group": "White color", "value": "primary-white", "label": "Solid White" },
-            { "group": "White color", "value": "outline-white", "label": "Outline White" },
-            { "group": "White color", "value": "underlined-white", "label": "Underlined White" },
-            { "group": "Accent color", "value": "secondary", "label": "Secondary" }
+            { "group": "Primary color","value": "primary","label": "Primary" },
+            { "group": "Primary color","value": "outline","label": "Outline" },
+            { "group": "Primary color","value": "underlined","label": "Underlined" },
+            { "group": "White color","value": "primary-white","label": "Solid White" },
+            { "group": "White color","value": "outline-white","label": "Outline White" },
+            { "group": "White color","value": "underlined-white","label": "Underlined White" },
+            { "group": "Accent color","value": "secondary","label": "Secondary" }
           ],
           "default": "primary"
         },
@@ -1676,7 +1628,7 @@
           "type": "color_background",
           "id": "overlay_gradient_6",
           "label": "Overlay gradient",
-          "default": "linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3) 90%)"
+          "default":"linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3) 90%)"
         }
       ]
     },
@@ -1720,8 +1672,8 @@
           "id": "menu_width",
           "label": "Width",
           "options": [
-            { "value": "container", "label": "Container" },
-            { "value": "container-fluid", "label": "Stretched" }
+            { "value": "container","label": "Container"},
+            { "value": "container-fluid","label": "Stretched"}
           ],
           "default": "container"
         },
@@ -1804,14 +1756,14 @@
           "id": "image_ratio_1",
           "label": "Image ratio",
           "options": [
-            { "value": "adapt", "label": "Adapt to image" },
-            { "value": "square", "label": "Square(1:1)" },
-            { "value": "portrait", "label": "Portrait (2:3)" },
-            { "value": "landscape", "label": "Lansdcape (4:3)" },
-            { "value": "landscape-v2", "label": "Lansdcape (5:3.5)" },
-            { "value": "wide", "label": "Wide (16:9)" }
+            { "value": "adapt","label": "Adapt to image" },
+            { "value": "square","label": "Square(1:1)" },
+            { "value": "portrait","label": "Portrait (2:3)" },
+            { "value": "landscape","label": "Lansdcape (4:3)" },
+            { "value": "landscape-v2","label": "Lansdcape (5:3.5)" },
+            { "value": "wide","label": "Wide (16:9)" }
           ],
-          "default": "adapt"
+          "default": "adapt" 
         },
         {
           "type": "url",
@@ -1823,9 +1775,9 @@
           "id": "align_text_1",
           "label": "Content alignment ",
           "options": [
-            { "value": "start", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
+            { "value": "start","label": "Left" },
+            { "value": "center","label": "Center" },
+            { "value": "right","label": "Right" }
           ],
           "default": "start"
         },
@@ -1846,12 +1798,12 @@
           "id": "heading_size_1",
           "label": "Heading size",
           "options": [
-            { "value": "h1", "label": "Heading 1" },
-            { "value": "h2", "label": "Heading 2" },
-            { "value": "h3", "label": "Heading 3" },
-            { "value": "h4", "label": "Heading 4" },
-            { "value": "h5", "label": "Heading 5" },
-            { "value": "h6", "label": "Heading 6" }
+              { "value": "h1","label": "Heading 1" },
+              { "value": "h2","label": "Heading 2" },
+              { "value": "h3","label": "Heading 3" },
+              { "value": "h4","label": "Heading 4" },
+              { "value": "h5","label": "Heading 5" },
+              { "value": "h6","label": "Heading 6" }
           ],
           "default": "h3",
           "info": "Select heading size from H1 to H6."
@@ -1867,13 +1819,13 @@
           "id": "type_button_1",
           "label": "Button style",
           "options": [
-            { "group": "Primary color", "value": "primary", "label": "Primary" },
-            { "group": "Primary color", "value": "outline", "label": "Outline" },
-            { "group": "Primary color", "value": "underlined", "label": "Underlined" },
-            { "group": "White color", "value": "primary-white", "label": "Solid White" },
-            { "group": "White color", "value": "outline-white", "label": "Outline White" },
-            { "group": "White color", "value": "underlined-white", "label": "Underlined White" },
-            { "group": "Accent color", "value": "secondary", "label": "Secondary" }
+            { "group": "Primary color","value": "primary","label": "Primary" },
+            { "group": "Primary color","value": "outline","label": "Outline" },
+            { "group": "Primary color","value": "underlined","label": "Underlined" },
+            { "group": "White color","value": "primary-white","label": "Solid White" },
+            { "group": "White color","value": "outline-white","label": "Outline White" },
+            { "group": "White color","value": "underlined-white","label": "Underlined White" },
+            { "group": "Accent color","value": "secondary","label": "Secondary" }
           ],
           "default": "primary"
         },
@@ -1904,14 +1856,14 @@
           "id": "image_ratio_2",
           "label": "Image ratio",
           "options": [
-            { "value": "adapt", "label": "Adapt to image" },
-            { "value": "square", "label": "Square(1:1)" },
-            { "value": "portrait", "label": "Portrait (2:3)" },
-            { "value": "landscape", "label": "Lansdcape (4:3)" },
-            { "value": "landscape-v2", "label": "Lansdcape (5:3.5)" },
-            { "value": "wide", "label": "Wide (16:9)" }
+            { "value": "adapt","label": "Adapt to image" },
+            { "value": "square","label": "Square(1:1)" },
+            { "value": "portrait","label": "Portrait (2:3)" },
+            { "value": "landscape","label": "Lansdcape (4:3)" },
+            { "value": "landscape-v2","label": "Lansdcape (5:3.5)" },
+            { "value": "wide","label": "Wide (16:9)" }
           ],
-          "default": "adapt"
+          "default": "adapt" 
         },
         {
           "type": "url",
@@ -1923,9 +1875,9 @@
           "id": "align_text_2",
           "label": "Content alignment ",
           "options": [
-            { "value": "start", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
+            { "value": "start","label": "Left" },
+            { "value": "center","label": "Center" },
+            { "value": "right","label": "Right" }
           ],
           "default": "start"
         },
@@ -1946,12 +1898,12 @@
           "id": "heading_size_2",
           "label": "Heading size",
           "options": [
-            { "value": "h1", "label": "Heading 1" },
-            { "value": "h2", "label": "Heading 2" },
-            { "value": "h3", "label": "Heading 3" },
-            { "value": "h4", "label": "Heading 4" },
-            { "value": "h5", "label": "Heading 5" },
-            { "value": "h6", "label": "Heading 6" }
+              { "value": "h1","label": "Heading 1" },
+              { "value": "h2","label": "Heading 2" },
+              { "value": "h3","label": "Heading 3" },
+              { "value": "h4","label": "Heading 4" },
+              { "value": "h5","label": "Heading 5" },
+              { "value": "h6","label": "Heading 6" }
           ],
           "default": "h3",
           "info": "Select heading size from H1 to H6."
@@ -1967,13 +1919,13 @@
           "id": "type_button_2",
           "label": "Button style",
           "options": [
-            { "group": "Primary color", "value": "primary", "label": "Primary" },
-            { "group": "Primary color", "value": "outline", "label": "Outline" },
-            { "group": "Primary color", "value": "underlined", "label": "Underlined" },
-            { "group": "White color", "value": "primary-white", "label": "Solid White" },
-            { "group": "White color", "value": "outline-white", "label": "Outline White" },
-            { "group": "White color", "value": "underlined-white", "label": "Underlined White" },
-            { "group": "Accent color", "value": "secondary", "label": "Secondary" }
+            { "group": "Primary color","value": "primary","label": "Primary" },
+            { "group": "Primary color","value": "outline","label": "Outline" },
+            { "group": "Primary color","value": "underlined","label": "Underlined" },
+            { "group": "White color","value": "primary-white","label": "Solid White" },
+            { "group": "White color","value": "outline-white","label": "Outline White" },
+            { "group": "White color","value": "underlined-white","label": "Underlined White" },
+            { "group": "Accent color","value": "secondary","label": "Secondary" }
           ],
           "default": "primary"
         },
@@ -2004,14 +1956,14 @@
           "id": "image_ratio_3",
           "label": "Image ratio",
           "options": [
-            { "value": "adapt", "label": "Adapt to image" },
-            { "value": "square", "label": "Square(1:1)" },
-            { "value": "portrait", "label": "Portrait (2:3)" },
-            { "value": "landscape", "label": "Lansdcape (4:3)" },
-            { "value": "landscape-v2", "label": "Lansdcape (5:3.5)" },
-            { "value": "wide", "label": "Wide (16:9)" }
+            { "value": "adapt","label": "Adapt to image" },
+            { "value": "square","label": "Square(1:1)" },
+            { "value": "portrait","label": "Portrait (2:3)" },
+            { "value": "landscape","label": "Lansdcape (4:3)" },
+            { "value": "landscape-v2","label": "Lansdcape (5:3.5)" },
+            { "value": "wide","label": "Wide (16:9)" }
           ],
-          "default": "adapt"
+          "default": "adapt" 
         },
         {
           "type": "url",
@@ -2023,9 +1975,9 @@
           "id": "align_text_3",
           "label": "Content alignment ",
           "options": [
-            { "value": "start", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
+            { "value": "start","label": "Left" },
+            { "value": "center","label": "Center" },
+            { "value": "right","label": "Right" }
           ],
           "default": "start"
         },
@@ -2046,12 +1998,12 @@
           "id": "heading_size_3",
           "label": "Heading size",
           "options": [
-            { "value": "h1", "label": "Heading 1" },
-            { "value": "h2", "label": "Heading 2" },
-            { "value": "h3", "label": "Heading 3" },
-            { "value": "h4", "label": "Heading 4" },
-            { "value": "h5", "label": "Heading 5" },
-            { "value": "h6", "label": "Heading 6" }
+              { "value": "h1","label": "Heading 1" },
+              { "value": "h2","label": "Heading 2" },
+              { "value": "h3","label": "Heading 3" },
+              { "value": "h4","label": "Heading 4" },
+              { "value": "h5","label": "Heading 5" },
+              { "value": "h6","label": "Heading 6" }
           ],
           "default": "h3",
           "info": "Select heading size from H1 to H6."
@@ -2067,13 +2019,13 @@
           "id": "type_button_3",
           "label": "Button style",
           "options": [
-            { "group": "Primary color", "value": "primary", "label": "Primary" },
-            { "group": "Primary color", "value": "outline", "label": "Outline" },
-            { "group": "Primary color", "value": "underlined", "label": "Underlined" },
-            { "group": "White color", "value": "primary-white", "label": "Solid White" },
-            { "group": "White color", "value": "outline-white", "label": "Outline White" },
-            { "group": "White color", "value": "underlined-white", "label": "Underlined White" },
-            { "group": "Accent color", "value": "secondary", "label": "Secondary" }
+            { "group": "Primary color","value": "primary","label": "Primary" },
+            { "group": "Primary color","value": "outline","label": "Outline" },
+            { "group": "Primary color","value": "underlined","label": "Underlined" },
+            { "group": "White color","value": "primary-white","label": "Solid White" },
+            { "group": "White color","value": "outline-white","label": "Outline White" },
+            { "group": "White color","value": "underlined-white","label": "Underlined White" },
+            { "group": "Accent color","value": "secondary","label": "Secondary" }
           ],
           "default": "primary"
         },
@@ -2104,14 +2056,14 @@
           "id": "image_ratio_4",
           "label": "Image ratio",
           "options": [
-            { "value": "adapt", "label": "Adapt to image" },
-            { "value": "square", "label": "Square(1:1)" },
-            { "value": "portrait", "label": "Portrait (2:3)" },
-            { "value": "landscape", "label": "Lansdcape (4:3)" },
-            { "value": "landscape-v2", "label": "Lansdcape (5:3.5)" },
-            { "value": "wide", "label": "Wide (16:9)" }
+            { "value": "adapt","label": "Adapt to image" },
+            { "value": "square","label": "Square(1:1)" },
+            { "value": "portrait","label": "Portrait (2:3)" },
+            { "value": "landscape","label": "Lansdcape (4:3)" },
+            { "value": "landscape-v2","label": "Lansdcape (5:3.5)" },
+            { "value": "wide","label": "Wide (16:9)" }
           ],
-          "default": "adapt"
+          "default": "adapt" 
         },
         {
           "type": "url",
@@ -2123,9 +2075,9 @@
           "id": "align_text_4",
           "label": "Content alignment ",
           "options": [
-            { "value": "start", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
+            { "value": "start","label": "Left" },
+            { "value": "center","label": "Center" },
+            { "value": "right","label": "Right" }
           ],
           "default": "start"
         },
@@ -2146,12 +2098,12 @@
           "id": "heading_size_4",
           "label": "Heading size",
           "options": [
-            { "value": "h1", "label": "Heading 1" },
-            { "value": "h2", "label": "Heading 2" },
-            { "value": "h3", "label": "Heading 3" },
-            { "value": "h4", "label": "Heading 4" },
-            { "value": "h5", "label": "Heading 5" },
-            { "value": "h6", "label": "Heading 6" }
+              { "value": "h1","label": "Heading 1" },
+              { "value": "h2","label": "Heading 2" },
+              { "value": "h3","label": "Heading 3" },
+              { "value": "h4","label": "Heading 4" },
+              { "value": "h5","label": "Heading 5" },
+              { "value": "h6","label": "Heading 6" }
           ],
           "default": "h3",
           "info": "Select heading size from H1 to H6."
@@ -2167,13 +2119,13 @@
           "id": "type_button_4",
           "label": "Button style",
           "options": [
-            { "group": "Primary color", "value": "primary", "label": "Primary" },
-            { "group": "Primary color", "value": "outline", "label": "Outline" },
-            { "group": "Primary color", "value": "underlined", "label": "Underlined" },
-            { "group": "White color", "value": "primary-white", "label": "Solid White" },
-            { "group": "White color", "value": "outline-white", "label": "Outline White" },
-            { "group": "White color", "value": "underlined-white", "label": "Underlined White" },
-            { "group": "Accent color", "value": "secondary", "label": "Secondary" }
+            { "group": "Primary color","value": "primary","label": "Primary" },
+            { "group": "Primary color","value": "outline","label": "Outline" },
+            { "group": "Primary color","value": "underlined","label": "Underlined" },
+            { "group": "White color","value": "primary-white","label": "Solid White" },
+            { "group": "White color","value": "outline-white","label": "Outline White" },
+            { "group": "White color","value": "underlined-white","label": "Underlined White" },
+            { "group": "Accent color","value": "secondary","label": "Secondary" }
           ],
           "default": "primary"
         },
@@ -2204,14 +2156,14 @@
           "id": "image_ratio_5",
           "label": "Image ratio",
           "options": [
-            { "value": "adapt", "label": "Adapt to image" },
-            { "value": "square", "label": "Square(1:1)" },
-            { "value": "portrait", "label": "Portrait (2:3)" },
-            { "value": "landscape", "label": "Lansdcape (4:3)" },
-            { "value": "landscape-v2", "label": "Lansdcape (5:3.5)" },
-            { "value": "wide", "label": "Wide (16:9)" }
+            { "value": "adapt","label": "Adapt to image" },
+            { "value": "square","label": "Square(1:1)" },
+            { "value": "portrait","label": "Portrait (2:3)" },
+            { "value": "landscape","label": "Lansdcape (4:3)" },
+            { "value": "landscape-v2","label": "Lansdcape (5:3.5)" },
+            { "value": "wide","label": "Wide (16:9)" }
           ],
-          "default": "adapt"
+          "default": "adapt" 
         },
         {
           "type": "url",
@@ -2223,9 +2175,9 @@
           "id": "align_text_5",
           "label": "Content alignment ",
           "options": [
-            { "value": "start", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
+            { "value": "start","label": "Left" },
+            { "value": "center","label": "Center" },
+            { "value": "right","label": "Right" }
           ],
           "default": "start"
         },
@@ -2246,12 +2198,12 @@
           "id": "heading_size_5",
           "label": "Heading size",
           "options": [
-            { "value": "h1", "label": "Heading 1" },
-            { "value": "h2", "label": "Heading 2" },
-            { "value": "h3", "label": "Heading 3" },
-            { "value": "h4", "label": "Heading 4" },
-            { "value": "h5", "label": "Heading 5" },
-            { "value": "h6", "label": "Heading 6" }
+              { "value": "h1","label": "Heading 1" },
+              { "value": "h2","label": "Heading 2" },
+              { "value": "h3","label": "Heading 3" },
+              { "value": "h4","label": "Heading 4" },
+              { "value": "h5","label": "Heading 5" },
+              { "value": "h6","label": "Heading 6" }
           ],
           "default": "h3",
           "info": "Select heading size from H1 to H6."
@@ -2267,13 +2219,13 @@
           "id": "type_button_5",
           "label": "Button style",
           "options": [
-            { "group": "Primary color", "value": "primary", "label": "Primary" },
-            { "group": "Primary color", "value": "outline", "label": "Outline" },
-            { "group": "Primary color", "value": "underlined", "label": "Underlined" },
-            { "group": "White color", "value": "primary-white", "label": "Solid White" },
-            { "group": "White color", "value": "outline-white", "label": "Outline White" },
-            { "group": "White color", "value": "underlined-white", "label": "Underlined White" },
-            { "group": "Accent color", "value": "secondary", "label": "Secondary" }
+            { "group": "Primary color","value": "primary","label": "Primary" },
+            { "group": "Primary color","value": "outline","label": "Outline" },
+            { "group": "Primary color","value": "underlined","label": "Underlined" },
+            { "group": "White color","value": "primary-white","label": "Solid White" },
+            { "group": "White color","value": "outline-white","label": "Outline White" },
+            { "group": "White color","value": "underlined-white","label": "Underlined White" },
+            { "group": "Accent color","value": "secondary","label": "Secondary" }
           ],
           "default": "primary"
         },
@@ -2304,14 +2256,14 @@
           "id": "image_ratio_6",
           "label": "Image ratio",
           "options": [
-            { "value": "adapt", "label": "Adapt to image" },
-            { "value": "square", "label": "Square(1:1)" },
-            { "value": "portrait", "label": "Portrait (2:3)" },
-            { "value": "landscape", "label": "Lansdcape (4:3)" },
-            { "value": "landscape-v2", "label": "Lansdcape (5:3.5)" },
-            { "value": "wide", "label": "Wide (16:9)" }
+            { "value": "adapt","label": "Adapt to image" },
+            { "value": "square","label": "Square(1:1)" },
+            { "value": "portrait","label": "Portrait (2:3)" },
+            { "value": "landscape","label": "Lansdcape (4:3)" },
+            { "value": "landscape-v2","label": "Lansdcape (5:3.5)" },
+            { "value": "wide","label": "Wide (16:9)" }
           ],
-          "default": "adapt"
+          "default": "adapt" 
         },
         {
           "type": "url",
@@ -2323,9 +2275,9 @@
           "id": "align_text_6",
           "label": "Content alignment ",
           "options": [
-            { "value": "start", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
+            { "value": "start","label": "Left" },
+            { "value": "center","label": "Center" },
+            { "value": "right","label": "Right" }
           ],
           "default": "start"
         },
@@ -2346,12 +2298,12 @@
           "id": "heading_size_6",
           "label": "Heading size",
           "options": [
-            { "value": "h1", "label": "Heading 1" },
-            { "value": "h2", "label": "Heading 2" },
-            { "value": "h3", "label": "Heading 3" },
-            { "value": "h4", "label": "Heading 4" },
-            { "value": "h5", "label": "Heading 5" },
-            { "value": "h6", "label": "Heading 6" }
+              { "value": "h1","label": "Heading 1" },
+              { "value": "h2","label": "Heading 2" },
+              { "value": "h3","label": "Heading 3" },
+              { "value": "h4","label": "Heading 4" },
+              { "value": "h5","label": "Heading 5" },
+              { "value": "h6","label": "Heading 6" }
           ],
           "default": "h3",
           "info": "Select heading size from H1 to H6."
@@ -2367,13 +2319,13 @@
           "id": "type_button_6",
           "label": "Button style",
           "options": [
-            { "group": "Primary color", "value": "primary", "label": "Primary" },
-            { "group": "Primary color", "value": "outline", "label": "Outline" },
-            { "group": "Primary color", "value": "underlined", "label": "Underlined" },
-            { "group": "White color", "value": "primary-white", "label": "Solid White" },
-            { "group": "White color", "value": "outline-white", "label": "Outline White" },
-            { "group": "White color", "value": "underlined-white", "label": "Underlined White" },
-            { "group": "Accent color", "value": "secondary", "label": "Secondary" }
+            { "group": "Primary color","value": "primary","label": "Primary" },
+            { "group": "Primary color","value": "outline","label": "Outline" },
+            { "group": "Primary color","value": "underlined","label": "Underlined" },
+            { "group": "White color","value": "primary-white","label": "Solid White" },
+            { "group": "White color","value": "outline-white","label": "Outline White" },
+            { "group": "White color","value": "underlined-white","label": "Underlined White" },
+            { "group": "Accent color","value": "secondary","label": "Secondary" }
           ],
           "default": "primary"
         },

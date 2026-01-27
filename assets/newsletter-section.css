@@ -34,6 +34,9 @@
   padding-right: 5rem;
   background-color: transparent;
 }
+.newsletter-form__input{
+  border-color: rgb(var(--color-foreground));
+}
 .newsletter__overlay::before{
   content: "";
   position: absolute;

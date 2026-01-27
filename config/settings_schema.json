@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "Nimbus",
-    "theme_version": "1.7.0",
+    "theme_version": "1.8.0",
     "theme_author": "OranThemes",
     "theme_documentation_url": "https://oranthemes.gitbook.io/nimbus-theme",
     "theme_support_url": "https://oranthemes.com/contact/"
@@ -359,6 +359,17 @@
       },
       {
         "type": "header",
+        "content": "Accent"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_accent_font",
+        "default": "assistant_n4",
+        "label": "Font family accent",
+        "info": "Selecting a different font can affect the speed of your store. [Learn more about system fonts.](https:\/\/help.shopify.com\/manual\/online-store\/os\/store-speed\/improving-speed#fonts)"
+      },
+      {
+        "type": "header",
         "content": "Navigation"
       },
       {
@@ -374,6 +385,10 @@
           {
             "value": "body_font",
             "label": "Body font"
+          },
+          {
+            "value": "accent_font",
+            "label": "Accent font"
           }
         ]
       },
@@ -492,12 +507,16 @@
         "default": "headings_font",
         "options": [
           {
-            "value": "headings_font",
+            "value": "headings_font", 
             "label": "Headings font"
           },
           {
             "value": "body_font",
             "label": "Body font"
+          },
+          {
+            "value": "accent_font",
+            "label": "Accent font"
           }
         ]
       },
@@ -598,6 +617,10 @@
           {
             "value": "body_font",
             "label": "Body font"
+          },
+          {
+            "value": "accent_font",
+            "label": "Accent font"
           }
         ]
       },
@@ -698,6 +721,10 @@
           {
             "value": "body_font",
             "label": "Body font"
+          },
+          {
+            "value": "accent_font",
+            "label": "Accent font"
           }
         ]
       },
@@ -867,6 +894,22 @@
         "unit": "px",
         "label": "Buttons outline thickness",
         "default": 1
+      },
+      {
+        "type": "select",
+        "id": "button_outline_style",
+        "label": "Border outline style",
+        "default": "solid",
+        "options": [
+          {
+            "value": "solid",
+            "label": "Solid"
+          },
+          {
+            "value": "dashed",
+            "label": "Dashed"
+          }
+        ]
       },
       {
         "type": "range",
@@ -1392,6 +1435,10 @@
           {
             "value": "cart_bag_05",
             "label": "Icon 05"
+          },
+          {
+            "value": "cart_bag_06",
+            "label": "Icon 06"
           }
         ]
       },
@@ -1435,7 +1482,7 @@
         "type": "checkbox",
         "id": "show_discount_code",
         "label": "Show discount code",
-        "default": false
+        "default": true
       },
       {
         "type": "text",

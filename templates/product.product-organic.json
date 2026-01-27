@@ -22,7 +22,7 @@
       }
     },
     "main": {
-      "type": "rdc_main-product",
+      "type": "main-product",
       "blocks": {
         "vendor": {
           "type": "text",
