@@ -1,5 +1,3 @@
-
-
 {% if section.blocks.size > 1 %}
   {% if section.settings.display_mode == 'full_frame' %}
     {% assign autoplay = section.settings.autoplay %}
@@ -244,27 +242,13 @@
       "visible_if": "{{ section.settings.display_mode == 'with_hints' or section.settings.display_mode == 'full_frame' and section.settings.section_width == 'page-width' }}"
     },
     {
-      "type": "select",
+      "type": "range",
       "id": "slide_height",
-      "options": [
-        {
-          "value": "auto",
-          "label": "t:options.auto"
-        },
-        {
-          "value": "small",
-          "label": "t:options.small"
-        },
-        {
-          "value": "medium",
-          "label": "t:options.medium"
-        },
-        {
-          "value": "large",
-          "label": "t:options.large"
-        }
-      ],
-      "default": "medium",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "default": 70,
       "label": "t:settings.media_height"
     },
     {
@@ -565,7 +549,7 @@
         "display_mode": "with_hints",
         "slideshow_gap": 18,
         "corner_radius": 20,
-        "slide_height": "medium",
+        "slide_height": 70,
         "content_position": "below-media",
         "icons_style": "arrows_large",
         "icons_shape": "none",
