@@ -1,60 +1,45 @@
-{%-liquid
-    assign button_type = button_type | default: 'link'
-    assign custom_class =  custom_class | default: nil
-    assign button_style = button_style | default: 'primary'
-    assign style_class = style_class | default : 'btn-primary'
-    assign button_text = button_text | default: nil
-    assign button_url = button_url | default: nil
-    assign link_target = link_target | default: false
-    assign aria_label =  aria_label | default : button_text
-    assign show_icon = show_icon | default: false
-    assign button_id = button_id | default: nil
-    assign attr = attr | default: nil
-    case button_style
-       when 'primary'
-           assign style_class = 'btn btn-primary'
-       when 'outline'
-           assign style_class = 'btn btn-outline'
-       when 'underlined'
-           assign style_class = 'btn btn-underlined'
-       when 'primary-white'
-           assign style_class = 'btn btn-primary-white'
-        when 'outline-white'
-           assign style_class = 'btn btn-outline-white'
-        when 'underlined-white'
-           assign style_class = 'btn btn-underlined btn-underlined-white'
-        when 'secondary'
-            assign style_class = 'btn btn-secondary' 
-        when 'link'
-           assign style_class = 'link'
-       else
-           assign style_class = 'btn btn-primary'
-    endcase
--%}
-{%- capture arrow_icon -%}
-    {%- if show_icon -%}
-        {% render 'icon-arrow-right' %}
-    {%- endif -%}
-{%- endcapture -%}
+{%- doc -%}
+  Intended for use in a block similar to the button block.
 
-{%- if button_type == 'link' -%}
-<a {% if link_target %} target="_blank" {% endif %} aria-label="{{ aria_label | escape }}" class="{{ style_class }} {{ custom_class }}" {% if button_url == blank %} role="link" aria-disabled="true" {% else %} href="{{ button_url }}"{% endif %} {{ attr }} >
-        {{ button_text }}
-        {{ arrow_icon }}
-    </a>
-{%- elsif button_type == 'button' -%}
-    <button id="{{ button_id }}" type="button" aria-label="{{ button_text | escape }}" class="{{ style_class }} {{ custom_class }}" {{ attr }}>
-        {{ button_text }}
-        {{ arrow_icon }}
-    </button>
-{%- elsif button_type == 'submit' -%}
-    <button id="{{ button_id }}" type="submit" class="{{ style_class }} {{ custom_class }}" {{ attr }}>
-        {{ button_text }}
-        {{ arrow_icon }}
-    </button>
-{%- elsif button_type == 'no-link' -%}
-    <span class="{{ style_class }} {{ custom_class }} " {{ attr }}> 
-        {{ button_text }}
-        {{ arrow_icon }}
-    </span>
-{%- endif -%}
+  @param {string} link - link to render
+  @param {object} [block] - The block
+
+  @example
+  {% render 'button', link: '/collections/all' %}
+{%- enddoc -%}
+
+{% assign block_settings = block.settings %}
+
+<a
+  {% if link == blank %}
+    role="link"
+    aria-disabled="true"
+  {% else %}
+    href="{{ link }}"
+  {% endif %}
+  class="
+    size-style
+    {{ block_settings.style_class }}
+    {{ block_settings.style_class }}--{{ block.id }}
+  "
+  style="{% render 'size-style', settings: block_settings %}"
+  {%- if block_settings.open_in_new_tab -%}
+    target="_blank"
+    rel="noopener noreferrer"
+  {%- endif -%}
+  {{ block.shopify_attributes }}
+>
+  {{ block_settings.label }}
+</a>
+
+{% stylesheet %}
+  .link {
+    text-decoration: none;
+    text-decoration-color: currentcolor;
+
+    &:hover {
+      color: var(--color-primary-hover);
+      text-decoration-color: transparent;
+    }
+  }
+{% endstylesheet %}

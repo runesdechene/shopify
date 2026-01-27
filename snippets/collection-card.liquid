@@ -1,81 +1,162 @@
+{%- doc -%}
+  This snippet is used to render a collection card.
+  To be used inside a block to inherit the block object settings.
 
-{%- liquid
-  assign image = image | default: collection.featured_image
-  assign collection_url = url | default: collection.url 
-  assign title = title | default: collection.title | escape
-  assign wrapper_class = nil
-  assign use_overlay = false
-  if card_type == 'content_with_overlay' or card_type == 'button'
-    assign wrapper_class = 'collection-card--overlay'
-    assign use_overlay = true
+  @param {string} card_image - The image to display in the collection card
+  @param {string} children - The content to render inside the collection card
+  @param {object} collection - The collection to render the card for
+  @param {object} block - The block object
+  @param {object} section - The section object
+
+  @example
+  {% render 'collection-card',
+    card_image: card_image,
+    children: children,
+    block: block,
+    collection: collection,
+    section: section
+  %}
+{%- enddoc -%}
+
+{% style %}
+  {% if request.visual_preview_mode %}
+    .collection-card {
+      min-width: 250px;
+    }
+  {% endif %}
+{% endstyle %}
+
+{% liquid
+  assign onboarding = false
+  assign block_settings = block.settings
+
+  if collection == blank
+    assign onboarding = true
   endif
--%}
-{% unless title_color == 'rgba(0,0,0,0)' or title_color == blank %}
-{%- capture style_attr -%}{{ style_attr }} --color-foreground: {{ title_color.rgb }};--color-heading: {{ title_color.rgb }};{%- endcapture -%}
-{% endunless %}
+%}
 
-
-  <div class="collection-card" {% if style_attr != blank %} style="{{ style_attr | strip }}"{%- endif -%}>
-    <div class="collection-card__inner {{ wrapper_class }} {% if enable_gradient %} collection-card__inner-gradient {% endif %}"  style="--overlay-color: {{ overlay_color.rgb }};--overlay-opacity: {{ overlay_opacity |  divided_by: 100.0 }};">
-      <div class="collection-card__media global-radius">
-          <a class="collection-card__media-link" {% if collection != blank %} href="{{ collection_url }}" {% else %} role="link" aria-disabled="true" {% endif %} aria-label="{{ title | default: collection.title | escape }}">
-            {%- if image != blank -%}
-              {%- capture sizes -%}
-                {%- if section_width == 'container' -%}
-                (min-width: {{ settings.page_width }}px)  calc(({{ settings.page_width }}px - ({{ columns | minus: 1 | times: column_gap }}rem)) / {{ columns }}),(min-width: 750px) {% if columns > 1 %}calc((100vw - 10rem) / 2){% else %}calc(100vw - 10rem){% endif %},calc(100vw - 3rem)
-                {%- else -%}
-                (min-width: {{ settings.page_width }}px)  calc((100vw - ({{ columns | minus: 1 | times: column_gap }}rem)) / {{ columns }}),(min-width: 750px) {% if columns > 1 %}calc((100vw - 10rem) / 2){% else %}calc(100vw - 10rem){% endif %},calc(100vw - 3rem)
-                {%- endif -%}
-              {%- endcapture -%}
-              {% render 'responsive-image' , image : image, sizes: sizes, image_aspect_ratio: image_aspect_ratio, alt: title %}
-            {%- else -%}
-              {% render 'placeholder-image', collection_placeholder : collection_placeholder, image_aspect_ratio: image_aspect_ratio %}
-            {%- endif -%}
-            {%- if show_button_arrow and use_overlay != true -%}
-                <span class="collection-card__media-icon">
-                {% render 'icon-arrow-up-right' %}
-              </span>
-            {%- endif -%}
-           
-          </a>
-      </div>
-      <div class="collection-card__info flex items-center flex-row gap-x-6 justify-{{ content_alignment }}{% if use_overlay %} p-8 absolute bottom-0 left-0 right-0 {% else %} pt-4 {% endif %} text-{{ content_alignment }}">
-        
-        {%- if card_type == 'button' -%}
-          <a class="btn btn-primary-white" {% if collection != blank %} href="{{ collection_url }}" {% else %} role="link" aria-disabled="true" {% endif %} >
-            {%- if collection_url != blank -%}
-              {{ title }}
-            {% else %}
-              {{ 'onboarding.collection_title' | t }}
-            {%- endif -%}  
-            {%- if show_button_arrow -%}
-              {% render 'icon-arrow-up-right' %}
-            {%- endif -%}
-          </a>
-        {%- else -%}
-          <div class="flex-1">
-            <a class="collection-card__link {{ heading_size }}" {% if collection != blank %} href="{{ collection_url }}" {% else %} role="link" aria-disabled="true" {% endif %}>
-                {%- if collection_url != blank -%}
-                  {{ title | default: collection.title | escape }}
-                {% else %}
-                  {{ 'onboarding.collection_title' | t }}
-                {%- endif -%}  
-            </a>
-            {%- if show_collection_count -%}
-              {%- if collection.all_products_count > 0  -%}
-                <p class="text-size-small light ">{{ 'sections.collection_list.product_count' | t: count: collection.all_products_count }}</p>
-              {%- else -%}
-                <p class="text-size-small light ">{{ 'onboarding.collection_product_count' | t }}</p>
-              {%- endif -%}
-            {%- endif -%}
-            </div>
-              {%- if show_button_arrow and use_overlay -%}
-              <a class="collection-card__media-icon" {% if collection != blank %} href="{{ collection_url }}" {% else %} role="link" aria-disabled="true" {% endif %} aria-label="{{ title }}">
-                {% render 'icon-arrow-up-right' %}
-              </a>
-              {%- endif -%}
-        {%- endif -%}
-        </div>
+<div
+  class="
+    collection-card
+    border-style
+    {% if block_settings.placement == 'on_image' %}collection-card--image-bg{% endif %}
+    {% if section.settings.layout_type == 'bento' %}collection-card--image-height-fixed{% endif %}
+    {% if section.settings.layout_type == 'editorial' %}collection-card--flexible-aspect-ratio{% endif %}
+    {% if block_settings.inherit_color_scheme == false %} color-{{ block_settings.color_scheme }}{% endif %}
+  "
+  data-block-id="{{ block.id }}"
+  {% if onboarding %}
+    data-placeholder="true"
+  {% endif %}
+  style="
+    {% render 'border-override', settings: block_settings %}
+    --horizontal-alignment: {{ block_settings.horizontal_alignment }};
+    --vertical-alignment: {{ block_settings.vertical_alignment }};
+    --background-overlay-color: {{ block_settings.overlay_color }};
+    --gap: {{ block_settings.collection_card_gap }}px;
+  "
+  {{- block.shopify_attributes -}}
+>
+  <a
+    class="collection-card__link"
+    {% unless onboarding %}
+      href="{{ collection.url }}"
+    {% endunless %}
+  >
+    <span class="visually-hidden">{{ collection.title }}</span>
+  </a>
+  <div class="collection-card__inner">
+    {{ card_image }}
+    <div class="collection-card__content layout-panel-flex--column">
+      {{ children }}
     </div>
   </div>
+</div>
 
+{% stylesheet %}
+  .collection-card {
+    --fixed-card-height: var(--height-small);
+
+    flex: 1 1 var(--card-width-small);
+  }
+
+  .collection-card > svg {
+    height: 100%;
+    width: 100%;
+    aspect-ratio: var(--ratio);
+  }
+
+  .collection-card--image-bg .collection-card__inner {
+    height: 100%;
+  }
+
+  .collection-card__inner {
+    gap: var(--gap);
+
+    a,
+    button {
+      /* only allow interactive elements to be clickable separate from .collection-card__link */
+      pointer-events: auto;
+    }
+  }
+
+  /* allow all blocks to be selectable in editor preview */
+  .shopify-design-mode .collection-card__content * {
+    pointer-events: auto;
+  }
+
+  .collection-card__content {
+    max-width: 100%;
+    --flex-wrap: wrap;
+  }
+
+  /* Nested image block rules */
+
+  .collection-card.collection-card--image-bg {
+    aspect-ratio: var(--ratio);
+  }
+
+  .collection-card.collection-card--image-bg .collection-card__content {
+    padding: var(--padding-lg);
+  }
+
+  .collection-card--image-height-fixed {
+    height: 100%;
+  }
+
+  /* Bento layout rules */
+  .collection-card--image-height-fixed .collection-card__image {
+    height: var(--fixed-card-height);
+    width: 100%;
+  }
+
+  .collection-card--image-height-fixed.collection-card--image-bg {
+    height: var(--fixed-card-height);
+    aspect-ratio: unset;
+  }
+
+  .collection-card__image .image-block__image {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+  }
+
+  .collection-card--image-bg .collection-card__image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  .collection-card__image svg {
+    height: 100%;
+    width: 100%;
+  }
+
+  .resource-list:not(.hidden--desktop) .collection-card--flexible-aspect-ratio {
+    &.collection-card.collection-card--image-bg,
+    &.collection-card .placeholder-svg {
+      aspect-ratio: 99;
+    }
+  }
+{% endstylesheet %}

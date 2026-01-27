@@ -1,57 +1,35 @@
-if (!window.customElements.get("recently-viewed-products")) {
-class RecentlyViewedProducts extends HTMLElement {
-    constructor() {
-        super();
-        this.observer = new IntersectionObserver(this.onIntersect.bind(this), { threshold: 0.2 });
-    }
+/**
+ * Updates the recently viewed products in localStorage.
+ */
+export class RecentlyViewed {
+  /** @static @constant {string} The key used to store the viewed products in session storage */
+  static #STORAGE_KEY = 'viewedProducts';
+  /** @static @constant {number} The maximum number of products to store */
+  static #MAX_PRODUCTS = 4;
 
-    connectedCallback() {
-        this.observer.observe(this);
-    }
+  /**
+   * Adds a product to the recently viewed products list.
+   * @param {string} productId - The ID of the product to add.
+   */
+  static addProduct(productId) {
+    let viewedProducts = this.getProducts();
 
-    async onIntersect(entries) {
-        for (const entry of entries) {
-            if (entry.isIntersecting) {
-                this.observer.unobserve(entry.target);
-                const query = this.buildQuery();
-                if (query) {
-                    this.loadProducts(query);
-                }
-            }
-        }
-    }
+    viewedProducts = viewedProducts.filter((/** @type {string} */ id) => id !== productId);
+    viewedProducts.unshift(productId);
+    viewedProducts = viewedProducts.slice(0, this.#MAX_PRODUCTS);
 
-    buildQuery() {
-        const items = JSON.parse(localStorage.getItem("recently-viewed") || "[]");
-        const excludeId = this.getAttribute("exclude-id");
-        if (excludeId) {
-            const index = items.indexOf(parseInt(excludeId));
-            if (index !== -1) items.splice(index, 1);
-        }
-        return items.slice(0, this.productLimit).map(id => `id:${id}`).join(" OR ");
-    }
+    localStorage.setItem(this.#STORAGE_KEY, JSON.stringify(viewedProducts));
+  }
 
-    async loadProducts(query) {
-        try {
-            const response = await fetch(`${theme.routes.root_url}search?q=${query}&resources[limit]=10&resources[type]=product&section_id=${this.sectionId}`);
-            const html = await response.text();
-            const products = new DOMParser().parseFromString(html, 'text/html').querySelector("recently-viewed-products");
-            if (products && products.hasChildNodes()) {
-                this.innerHTML = products.innerHTML;
-            }
-        } catch (error) {
-            console.error('Error fetching products:', error);
-        }
-    }
+  static clearProducts() {
+    localStorage.removeItem(this.#STORAGE_KEY);
+  }
 
-    get sectionId() {
-        return this.getAttribute("section-id");
-    }
-
-    get productLimit() {
-        return parseInt(this.getAttribute("products-limit")) || 4;
-    }
-}
-
-window.customElements.define("recently-viewed-products", RecentlyViewedProducts);
+  /**
+   * Retrieves the list of recently viewed products from session storage.
+   * @returns {string[]} The list of viewed products.
+   */
+  static getProducts() {
+    return JSON.parse(localStorage.getItem(this.#STORAGE_KEY) || '[]');
+  }
 }

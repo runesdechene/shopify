@@ -6,127 +6,110 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */
-{
+ */{
   "sections": {
-    "breadcrumbs_yrBGrh": {
-      "type": "breadcrumbs",
-      "settings": {
-        "section_width": "container-fluid",
-        "alignment": "center",
-        "text_size": "text-size-tiny",
-        "bg_color": "",
-        "text_color": "",
-        "padding_top": 24,
-        "padding_bottom": 12
-      }
-    },
-    "featured_blog_post_FRqt4r": {
-      "type": "featured-blog-post",
-      "disabled": true,
-      "settings": {
-        "section_width": "container",
-        "subheading": "",
-        "heading": "",
-        "heading_tag": "h2",
-        "heading_size_section": "h2",
-        "description": "",
-        "layout": "vertical",
-        "article": "le-blog/on-etait-present-a-echo-merveilles-et-cetait-incroyable",
-        "show_date": true,
-        "show_author": false,
-        "show_excerpt": true,
-        "show_category": true,
-        "show_read_more": true,
-        "post_button_type": "outline",
-        "media_size": "landscape-v2",
-        "desktop_image_width": "58",
-        "heading_size": "h3",
-        "layout_image": "left",
-        "vertical_alignment": "center",
-        "content_alignment": "start",
-        "link_url": "",
-        "link_text": "",
-        "button_type": "primary",
-        "show_icon": false,
-        "bg_color": "",
-        "text_color": "",
-        "post_bg_color": "#dee1c3",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "rich_text_aGN3dR": {
-      "type": "rich-text",
+    "main": {
+      "type": "main-blog",
       "blocks": {
-        "heading_MYjGnX": {
-          "type": "heading",
-          "settings": {
-            "heading": "Le blog",
-            "heading_tag": "h2",
-            "heading_size": "h2"
-          }
-        },
-        "text_tLwUCE": {
+        "title": {
           "type": "text",
+          "name": "Title",
           "settings": {
-            "text": "<p>Parce que derrière Runes de Chêne, vous avez 5 personnes qui s'affairent chaque jour pour rendre cette aventure possible, vous pouvez désormais suivre leurs péripéties. Enfin, lorsqu'ils trouvent le temps d'écrire. 😶‍🌫️</p>",
-            "large_text": false
-          }
+            "text": "<h1>{{ closest.blog.title }}</h1>",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 48,
+            "padding-block-end": 48,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "static-blog-post-card": {
+          "type": "_blog-post-card",
+          "static": true,
+          "settings": {
+            "alignment": "left"
+          },
+          "blocks": {
+            "heading": {
+              "type": "_heading",
+              "name": "t:names.title",
+              "static": true,
+              "settings": {
+                "type_preset": "h4",
+                "font": "var(--font-body--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "text": "",
+                "read_only": true,
+                "alignment": "left",
+                "show_alignment": false,
+                "padding-block-start": 0,
+                "padding-block-end": 10,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "blog-post-details": {
+              "type": "_blog-post-info-text",
+              "name": "t:names.details",
+              "static": true,
+              "settings": {
+                "show_date": false,
+                "show_author": false,
+                "type_preset": "",
+                "alignment": "left",
+                "show_alignment": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              },
+              "blocks": {}
+            },
+            "image": {
+              "type": "_blog-post-image",
+              "static": true,
+              "settings": {
+                "height": "large",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": []
         }
       },
       "block_order": [
-        "heading_MYjGnX",
-        "text_tLwUCE"
-      ],
-      "custom_css": [
-        "p {font-family: arial; font-size: 1.5rem;}"
+        "title"
       ],
       "settings": {
-        "section_width": "w-full",
-        "content_width": "max-w-5xl",
-        "content_alignment": "center",
-        "bg_color": "",
-        "text_color": "",
-        "padding_top": 24,
-        "padding_bottom": 0
-      }
-    },
-    "main": {
-      "type": "main-blog",
-      "custom_css": [
-        ".full-unstyled-link {font-size: 2.4rem; color: #4a4236;}",
-        ".btn {color: #364f47;}",
-        ".badge-article {display: none;}",
-        "p {font-family: arial; font-size: 1.5rem;}"
-      ],
-      "settings": {
-        "section_width": "container",
-        "show_title": false,
-        "show_tags": false,
-        "image_ratio": "landscape",
-        "show_image": true,
-        "show_date": true,
-        "show_author": false,
-        "show_excerpt": true,
-        "show_category": true,
-        "show_read_more": true,
-        "enable_button_underlined_white": false,
-        "posts_per_page": 6,
-        "columns_desktop": 3,
-        "column_gap": 3,
-        "column_gap_mobile": 3,
-        "bg_color": "",
-        "text_color": "",
-        "padding_top": 40,
-        "padding_bottom": 80
+        "color_scheme": "",
+        "padding-block-start": 0,
+        "padding-block-end": 48
       }
     }
   },
   "order": [
-    "breadcrumbs_yrBGrh",
-    "featured_blog_post_FRqt4r",
-    "rich_text_aGN3dR",
     "main"
   ]
 }

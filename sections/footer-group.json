@@ -8,275 +8,292 @@
  * ------------------------------------------------------------
  */
 {
-  "name": "Footer",
   "type": "footer",
+  "name": "t:names.footer",
   "sections": {
-    "rdc_section_forest_ieEKbz": {
-      "type": "rdc_section_forest",
-      "name": "Forêt Immersive",
-      "settings": {
-        "class": "invisible_fragments",
-        "bgcolor": "",
-        "center_image": "shopify://shop_images/foret_immersive_centre.webp",
-        "center_image_alt": "Forêt immersive centre",
-        "left_image": "shopify://shop_images/foret_immersive_gauche.webp",
-        "left_image_alt": "Forêt immersive gauche",
-        "right_image": "shopify://shop_images/foret_immersive_droite.webp",
-        "right_image_alt": "Forêt immersive droite",
-        "title": "",
-        "description": "",
-        "discord_link": "https://discord.gg/yFWJ8EPb",
-        "discord_text": "DISCORD ❯",
-        "show_newsletter": false,
-        "margintop": "",
-        "newsletter_title": "Rejoignez notre communauté",
-        "newsletter_description": "Recevez nos dernières nouvelles et offres exclusives",
-        "email_placeholder": "Votre adresse e-mail",
-        "button_text": "S'inscrire",
-        "success_message": "Merci ! Vous êtes inscrit(e) à notre newsletter."
-      }
-    },
-    "1743687575c5f588bc": {
-      "type": "apps",
-      "blocks": {
-        "instafeed_app_block_JpW8Cp": {
-          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
-          "settings": {
-            "title": "",
-            "title_color": "",
-            "title_size_v2": 0,
-            "alignment": "center",
-            "instafeed_margin_top": 0,
-            "instafeed_margin_bottom": 0,
-            "instafeed_margin_sides": 0,
-            "show_instagram_link": false,
-            "link_alignment": "left",
-            "link_color": "#000000",
-            "background_color": "#edebe5",
-            "feed_id": "",
-            "html_area": ""
-          }
-        }
-      },
-      "block_order": [
-        "instafeed_app_block_JpW8Cp"
-      ],
-      "disabled": true,
-      "settings": {
-        "section_width": "container",
-        "bg_color": "#e6e3da",
-        "text_color": "",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "rich_text_T9jP6d": {
-      "type": "rich-text",
-      "blocks": {
-        "separator_AqigXr": {
-          "type": "separator",
-          "settings": {
-            "show_border": false,
-            "space": 8
-          }
-        },
-        "heading_YQ4kdF": {
-          "type": "heading",
-          "settings": {
-            "heading": "Rejoindre la communautée runes de chêne",
-            "heading_tag": "h2",
-            "heading_size": "h3"
-          }
-        },
-        "button_qhtTBP": {
-          "type": "button",
-          "settings": {
-            "button_label": "CANAL DISCORD",
-            "button_link": "https://www.instagram.com/channel/AbYrqMNIKQMntP8q/",
-            "button_type": "outline",
-            "show_icon": false
-          }
-        },
-        "button_gd7a7r": {
-          "type": "button",
-          "settings": {
-            "button_label": "CANAL INSTAGRAM",
-            "button_link": "https://www.instagram.com/channel/AbYrqMNIKQMntP8q/",
-            "button_type": "outline",
-            "show_icon": false
-          }
-        }
-      },
-      "block_order": [
-        "separator_AqigXr",
-        "heading_YQ4kdF",
-        "button_qhtTBP",
-        "button_gd7a7r"
-      ],
-      "disabled": true,
-      "name": "Rich text",
-      "settings": {
-        "section_width": "w-full",
-        "content_width": "max-w-screen-lg",
-        "content_alignment": "center",
-        "bg_color": "#e6e3da",
-        "text_color": "#33322d",
-        "padding_top": 0,
-        "padding_bottom": 36
-      }
-    },
-    "text_with_icons_jRiWNP": {
-      "type": "text-with-icons",
-      "blocks": {
-        "icon_NMwyTm": {
-          "type": "icon",
-          "settings": {
-            "icon": "chat_bubble",
-            "title": "Equipe familiale",
-            "text": "<p>Joignable depuis le t'chat du site.</p>",
-            "button_label": "",
-            "button_link": ""
-          }
-        },
-        "icon_HrU8T4": {
-          "type": "icon",
-          "settings": {
-            "icon": "truck",
-            "title": "Livraison à prix compressés",
-            "text": "<p>En relais colis pour 3€</p>",
-            "button_label": "",
-            "button_link": ""
-          }
-        },
-        "icon_Fxhc76": {
-          "type": "icon",
-          "settings": {
-            "icon": "box",
-            "title": "Echange possible",
-            "text": "<p>Retour ou échange sous 14 jours. </p>",
-            "button_label": "",
-            "button_link": ""
-          }
-        },
-        "icon_R39HWF": {
-          "type": "icon",
-          "settings": {
-            "icon": "sheild",
-            "custom_icon": "shopify://shop_images/icon_coq.svg",
-            "title": "Entreprise Française",
-            "text": "<p>Qui paye ses impots, son URSSAF & sa TVA</p>",
-            "button_label": "",
-            "button_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "icon_NMwyTm",
-        "icon_HrU8T4",
-        "icon_Fxhc76",
-        "icon_R39HWF"
-      ],
-      "custom_css": [
-        "p {font-size: 1.5rem;}"
-      ],
-      "settings": {
-        "section_width": "container",
-        "subheading": "",
-        "heading": "",
-        "heading_tag": "h2",
-        "heading_size_section": "h2",
-        "description": "",
-        "layout": "vertical",
-        "item_type": "vertical",
-        "heading_size": "h6",
-        "column_alignment": "center",
-        "icon_background": "none",
-        "icon_width": 32,
-        "button_type": "underlined-white",
-        "show_icon": false,
-        "columns_mobile": "2",
-        "swipe_on_mobile": false,
-        "show_progress_bar": false,
-        "bg_color": "#e6e3da",
-        "text_color": "rgba(0,0,0,0)",
-        "icon_bg_color": "rgba(0,0,0,0)",
-        "icon_color": "",
-        "padding_top": 52,
-        "padding_bottom": 48
-      }
-    },
     "footer": {
       "type": "footer",
       "blocks": {
-        "text_8P7CaD": {
-          "type": "text",
+        "group_dxfQMA": {
+          "type": "group",
+          "name": "t:names.group",
           "settings": {
-            "heading": "",
-            "image": "shopify://shop_images/2025_footer_logo_491a3465-ef08-4c93-9728-3e0f342839cb.webp",
-            "image_width": 425,
-            "subtext": "<p>Runes de chêne, c'est l'alliage entre une curiosité intemporelle pour l'Histoire et la Nature, et une ligne de vêtement ultra-quali imaginés et imprimés en France.</p><p>Véritable hommage à l'authenticité et à la détermination de nos ancêtres, nos collections inspirent à l'aventure en ravivant notre envie de découverte et de camaraderie.</p><p>SIRET : 844 256 537 00011<br/>RUNES DE CHÊNE | LA HOUSSAYE<br/>contact@runesdechene.com<br/></p>",
-            "show_social": false,
-            "open_details": false
-          }
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 24,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 12,
+            "padding-block-end": 32,
+            "padding-inline-start": 0,
+            "padding-inline-end": 12
+          },
+          "blocks": {
+            "text_iNnkfy": {
+              "type": "text",
+              "name": "Heading",
+              "settings": {
+                "text": "<p>About us</p>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h5",
+                "font": "var(--font-primary--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_kM9J4y": {
+              "type": "text",
+              "name": "Text",
+              "settings": {
+                "text": "<p>Our passion is quality.  We create garments that can be enjoyed for generations to come.</p>",
+                "width": "100%",
+                "max_width": "narrow",
+                "alignment": "left",
+                "type_preset": "h4",
+                "font": "var(--font-primary--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_iNnkfy",
+            "text_kM9J4y"
+          ]
         },
-        "link_list_CaXjPr": {
-          "type": "link_list",
+        "group_x4FxXe": {
+          "type": "group",
+          "name": "t:names.group",
           "settings": {
-            "heading": "Liens utiles",
-            "menu": "liens-utiles",
-            "open_details": false
-          }
-        },
-        "link_list_7nmBjj": {
-          "type": "link_list",
-          "settings": {
-            "heading": "Collections",
-            "menu": "collections",
-            "open_details": false
-          }
-        },
-        "link_list_4j8WJb": {
-          "type": "link_list",
-          "settings": {
-            "heading": "Aller plus loin",
-            "menu": "footer",
-            "open_details": false
-          }
+            "content_direction": "row",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "flex-start",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "menu_EQKgTP": {
+              "type": "menu",
+              "name": "t:names.menu",
+              "settings": {
+                "menu": "footer",
+                "heading": "Shop",
+                "menu_spacing": 12,
+                "show_as_accordion": false,
+                "accordion_icon": "caret",
+                "accordion_dividers": false,
+                "inherit_color_scheme": true,
+                "color_scheme": "scheme-1",
+                "heading_preset": "h5",
+                "link_preset": "paragraph",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "menu_kJtfJ8": {
+              "type": "menu",
+              "name": "t:names.menu",
+              "settings": {
+                "menu": "",
+                "heading": "Support",
+                "menu_spacing": 12,
+                "show_as_accordion": false,
+                "accordion_icon": "caret",
+                "accordion_dividers": false,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "heading_preset": "h5",
+                "link_preset": "paragraph",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "menu_wjn6YT": {
+              "type": "menu",
+              "name": "t:names.menu",
+              "settings": {
+                "menu": "",
+                "heading": "Our story",
+                "menu_spacing": 12,
+                "show_as_accordion": false,
+                "accordion_icon": "caret",
+                "accordion_dividers": false,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "heading_preset": "h5",
+                "link_preset": "paragraph",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "menu_EQKgTP",
+            "menu_kJtfJ8",
+            "menu_wjn6YT"
+          ]
         }
       },
       "block_order": [
-        "text_8P7CaD",
-        "link_list_CaXjPr",
-        "link_list_7nmBjj",
-        "link_list_4j8WJb"
+        "group_dxfQMA",
+        "group_x4FxXe"
       ],
-      "custom_css": [
-        "p,a {font-size: 1.5rem; line-height: 2.1rem; text-align: justify;}"
+      "name": "t:names.footer",
+      "settings": {
+        "section_width": "page-width",
+        "gap": 0,
+        "color_scheme": "scheme-3",
+        "padding-block-start": 64,
+        "padding-block-end": 16
+      }
+    },
+    "utilities": {
+      "type": "footer-utilities",
+      "blocks": {
+        "copyright": {
+          "type": "footer-copyright",
+          "settings": {
+            "show_powered_by": true,
+            "font_size": "0.75rem",
+            "case": "none"
+          },
+          "blocks": {}
+        },
+        "footer_policy_list_BjQaXm": {
+          "type": "footer-policy-list",
+          "name": "t:names.policy_list",
+          "settings": {
+            "font_size": "0.75rem",
+            "case": "none"
+          },
+          "blocks": {}
+        },
+        "social_icons": {
+          "type": "social-links",
+          "settings": {
+            "facebook_url": "https://www.facebook.com",
+            "instagram_url": "https://www.instagram.com",
+            "youtube_url": "https://www.youtube.com",
+            "tiktok_url": "https://www.tiktok.com",
+            "twitter_url": "https://www.twitter.com",
+            "threads_url": "",
+            "linkedin_url": "",
+            "bluesky_url": "",
+            "snapchat_url": "",
+            "pinterest_url": "",
+            "tumblr_url": "",
+            "vimeo_url": "",
+            "custom_url": ""
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "copyright",
+        "footer_policy_list_BjQaXm",
+        "social_icons"
       ],
       "settings": {
-        "section_width": "container",
-        "heading_size": "h6",
-        "enable_follow_on_shop": true,
-        "enable_country_selector": false,
-        "enable_country_flag": true,
-        "enable_country_name": false,
-        "enable_language_selector": true,
-        "payment_enable": true,
-        "show_policy": true,
-        "border_color_newsletter": "#dddddd",
-        "show_divider": false,
-        "show_bottom_border": true,
-        "show_bottom_border_mobile": true,
-        "padding_top": 64,
-        "padding_bottom": 32
+        "section_width": "page-width",
+        "gap": 24,
+        "divider_thickness": 0,
+        "color_scheme": "scheme-3",
+        "padding-block-start": 12,
+        "padding-block-end": 16
       }
     }
   },
   "order": [
-    "rdc_section_forest_ieEKbz",
-    "1743687575c5f588bc",
-    "rich_text_T9jP6d",
-    "text_with_icons_jRiWNP",
-    "footer"
+    "footer",
+    "utilities"
   ]
 }
