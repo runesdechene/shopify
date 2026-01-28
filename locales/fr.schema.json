@@ -443,6 +443,9 @@
     "title_size": "Taille du titre",
     "show_summary": "Afficher le résumé",
     "image_height": "Hauteur de l'image",
+    "shuffle_collections": "Ordre aléatoire des collections",
+    "pinned_collection": "Collection épinglée",
+    "pinned_first_product": "Afficher le premier produit pour la collection épinglée",
     "random_product": "Produit aléatoire",
     "show": "Afficher",
     "small": "Petite",
@@ -1098,6 +1101,9 @@
     "new_arrivals": "Nouveautés"
   },
   "info": {
+    "shuffle_collections": "Mélange l'ordre des collections à chaque chargement de page",
+    "pinned_collection": "Cette collection sera toujours affichée en premier, même avec le mode aléatoire",
+    "pinned_first_product": "Désactive la sélection aléatoire du produit uniquement pour la collection épinglée",
     "carousel_layout_on_mobile": "Le carrousel est toujours utilisé sur mobile",
     "video_alt_text": "Décrivez la vidéo pour les utilisateurs de technologies d’assistance",
     "video_autoplay": "Les vidéos seront mises en sourdine par défaut",

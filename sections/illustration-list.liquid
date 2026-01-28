@@ -7,6 +7,25 @@
   elsif section.settings.layout_type == 'grid'
     assign max_items = section.settings.columns
   endif
+
+  # Shuffle collections if enabled
+  if section.settings.shuffle_collections and section_collections != blank
+    assign shuffle_seed = 'now' | date: '%S' | times: 1
+    assign collections_array = section_collections | sort: 'id'
+
+    # Simple shuffle using modulo based on current second
+    assign shuffled_collections = ''
+    assign collections_count = collections_array.size
+
+    for i in (0..collections_count)
+      assign offset = shuffle_seed | plus: i | modulo: collections_count
+      assign shuffled_collections = shuffled_collections | append: offset | append: ','
+    endfor
+  endif
+
+  # Handle pinned collection
+  assign pinned_collection = section.settings.pinned_collection
+  assign pinned_first_product = section.settings.pinned_first_product
 %}
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
@@ -38,24 +57,163 @@
   {% endif %}
 
   {% capture list_items %}
-    {% for collection in section_collections limit: max_items %}
-      <div class="resource-list__item">
-        {% render 'illustration-card',
-          collection: collection,
-          random_product: section.settings.random_product,
-          show_collection_title: section.settings.show_collection_title,
-          title_size: section.settings.title_size,
-          show_product_title: section.settings.show_product_title,
-          show_price: section.settings.show_price,
-          show_summary: section.settings.show_summary,
-          image_height: section.settings.image_height,
-          section: section
-        %}
-      </div>
-      {% unless forloop.last %}
+    {% comment %} First: render pinned collection if set {% endcomment %}
+    {% if pinned_collection != blank %}
+      {% assign is_pinned_in_list = false %}
+      {% for col in section_collections %}
+        {% if col.id == pinned_collection.id %}
+          {% assign is_pinned_in_list = true %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+      
+      {% if is_pinned_in_list %}
+        <div class="resource-list__item">
+          {% if pinned_first_product %}
+            {% render 'illustration-card',
+              collection: pinned_collection,
+              random_product: false,
+              show_collection_title: section.settings.show_collection_title,
+              title_size: section.settings.title_size,
+              show_product_title: section.settings.show_product_title,
+              show_price: section.settings.show_price,
+              show_summary: section.settings.show_summary,
+              image_height: section.settings.image_height,
+              section: section
+            %}
+          {% else %}
+            {% render 'illustration-card',
+              collection: pinned_collection,
+              random_product: section.settings.random_product,
+              show_collection_title: section.settings.show_collection_title,
+              title_size: section.settings.title_size,
+              show_product_title: section.settings.show_product_title,
+              show_price: section.settings.show_price,
+              show_summary: section.settings.show_summary,
+              image_height: section.settings.image_height,
+              section: section
+            %}
+          {% endif %}
+        </div>
         <!--@list/split-->
-      {% endunless %}
-    {% endfor %}
+      {% endif %}
+    {% endif %}
+    
+    {% comment %} Render remaining collections {% endcomment %}
+    {% assign rendered_count = 0 %}
+    {% if pinned_collection != blank and is_pinned_in_list %}
+      {% assign rendered_count = 1 %}
+    {% endif %}
+    
+    {% assign remaining_limit = max_items | minus: rendered_count %}
+    {% assign current_count = 0 %}
+    
+    {% if section.settings.shuffle_collections %}
+      {% comment %} Shuffle mode: start from a random offset in the collection list {% endcomment %}
+      {% assign shuffle_seed = 'now' | date: '%S' | plus: 0 %}
+      {% assign cols_size = section_collections.size %}
+      {% assign start_offset = shuffle_seed | modulo: cols_size %}
+      
+      {% comment %} First pass: from offset to end {% endcomment %}
+      {% for collection in section_collections %}
+        {% if forloop.index0 >= start_offset %}
+          {% if current_count < remaining_limit %}
+            {% assign skip_this = false %}
+            {% if pinned_collection != blank %}
+              {% if collection.id == pinned_collection.id %}
+                {% assign skip_this = true %}
+              {% endif %}
+            {% endif %}
+            
+            {% unless skip_this %}
+              <div class="resource-list__item">
+                {% render 'illustration-card',
+                  collection: collection,
+                  random_product: section.settings.random_product,
+                  show_collection_title: section.settings.show_collection_title,
+                  title_size: section.settings.title_size,
+                  show_product_title: section.settings.show_product_title,
+                  show_price: section.settings.show_price,
+                  show_summary: section.settings.show_summary,
+                  image_height: section.settings.image_height,
+                  section: section
+                %}
+              </div>
+              {% assign current_count = current_count | plus: 1 %}
+              {% if current_count < remaining_limit %}
+                <!--@list/split-->
+              {% endif %}
+            {% endunless %}
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+      
+      {% comment %} Second pass: from start to offset {% endcomment %}
+      {% for collection in section_collections %}
+        {% if forloop.index0 < start_offset %}
+          {% if current_count < remaining_limit %}
+            {% assign skip_this = false %}
+            {% if pinned_collection != blank %}
+              {% if collection.id == pinned_collection.id %}
+                {% assign skip_this = true %}
+              {% endif %}
+            {% endif %}
+            
+            {% unless skip_this %}
+              <div class="resource-list__item">
+                {% render 'illustration-card',
+                  collection: collection,
+                  random_product: section.settings.random_product,
+                  show_collection_title: section.settings.show_collection_title,
+                  title_size: section.settings.title_size,
+                  show_product_title: section.settings.show_product_title,
+                  show_price: section.settings.show_price,
+                  show_summary: section.settings.show_summary,
+                  image_height: section.settings.image_height,
+                  section: section
+                %}
+              </div>
+              {% assign current_count = current_count | plus: 1 %}
+              {% if current_count < remaining_limit %}
+                <!--@list/split-->
+              {% endif %}
+            {% endunless %}
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      {% comment %} Normal mode: render in order {% endcomment %}
+      {% for collection in section_collections %}
+        {% if current_count < remaining_limit %}
+          {% assign skip_this = false %}
+          {% if pinned_collection != blank %}
+            {% if collection.id == pinned_collection.id %}
+              {% assign skip_this = true %}
+            {% endif %}
+          {% endif %}
+          
+          {% unless skip_this %}
+            <div class="resource-list__item">
+              {% render 'illustration-card',
+                collection: collection,
+                random_product: section.settings.random_product,
+                show_collection_title: section.settings.show_collection_title,
+                title_size: section.settings.title_size,
+                show_product_title: section.settings.show_product_title,
+                show_price: section.settings.show_price,
+                show_summary: section.settings.show_summary,
+                image_height: section.settings.image_height,
+                section: section
+              %}
+            </div>
+            {% assign current_count = current_count | plus: 1 %}
+            {% if current_count < remaining_limit %}
+              <!--@list/split-->
+            {% endif %}
+          {% endunless %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
   {% endcapture %}
 
   {% liquid
@@ -212,6 +370,27 @@
     {
       "type": "header",
       "content": "t:content.product_display"
+    },
+    {
+      "type": "checkbox",
+      "id": "shuffle_collections",
+      "label": "t:settings.shuffle_collections",
+      "info": "t:info.shuffle_collections",
+      "default": false
+    },
+    {
+      "type": "collection",
+      "id": "pinned_collection",
+      "label": "t:settings.pinned_collection",
+      "info": "t:info.pinned_collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "pinned_first_product",
+      "label": "t:settings.pinned_first_product",
+      "info": "t:info.pinned_first_product",
+      "default": false,
+      "visible_if": "{{ section.settings.pinned_collection != blank }}"
     },
     {
       "type": "checkbox",

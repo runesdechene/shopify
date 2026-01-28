@@ -219,6 +219,9 @@
   "info": {
     "applies_on_image_only": "Applies to images only",
     "show_summary": "Display the summary from the linked Illustrations metaobject",
+    "shuffle_collections": "Randomize the order of collections on each page load",
+    "pinned_collection": "This collection will always appear first, even when shuffle is enabled",
+    "pinned_first_product": "Disable random product selection for the pinned collection only",
     "aspect_ratio_adjusted": "Adjusted in some layouts",
     "carousel_hover_behavior_not_supported": "\"Carousel\" hover is not supported when \"Carousel\" type is selected at the section level",
     "carousel_layout_on_mobile": "Carousel is always used on mobile",
@@ -1115,6 +1118,9 @@
     "title_size": "Title size",
     "show_summary": "Show summary",
     "image_height": "Image height",
+    "shuffle_collections": "Shuffle collections order",
+    "pinned_collection": "Pinned collection",
+    "pinned_first_product": "Show first product for pinned collection",
     "random_product": "Random product",
     // Font size or element dimensions setting
     "size": "Size",
