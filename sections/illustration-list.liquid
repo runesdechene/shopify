@@ -44,6 +44,7 @@
           collection: collection,
           random_product: section.settings.random_product,
           show_collection_title: section.settings.show_collection_title,
+          title_size: section.settings.title_size,
           show_product_title: section.settings.show_product_title,
           show_price: section.settings.show_price,
           show_summary: section.settings.show_summary,
@@ -224,6 +225,31 @@
       "id": "show_collection_title",
       "label": "t:settings.show_collection_title",
       "default": true
+    },
+    {
+      "type": "select",
+      "id": "title_size",
+      "label": "t:settings.title_size",
+      "options": [
+        {
+          "value": "sm",
+          "label": "t:options.small"
+        },
+        {
+          "value": "md",
+          "label": "t:options.medium"
+        },
+        {
+          "value": "lg",
+          "label": "t:options.large"
+        },
+        {
+          "value": "xl",
+          "label": "t:options.extra_large"
+        }
+      ],
+      "default": "md",
+      "visible_if": "{{ section.settings.show_collection_title }}"
     },
     {
       "type": "checkbox",

@@ -110,11 +110,34 @@
     </div>
     
     <div class="illustration-card__content">
-      {% if show_collection_title and collection != blank %}
-        <h3 class="illustration-card__collection-title">{{ collection.title }}</h3>
-      {% elsif show_collection_title and onboarding %}
-        <h3 class="illustration-card__collection-title">{{ 'placeholders.collection_title' | t }}</h3>
-      {% endif %}
+      <div class="illustration-card__header">
+        {% if show_collection_title and collection != blank %}
+          <h3 class="illustration-card__collection-title illustration-card__collection-title--{{ title_size | default: 'md' }}">{{ collection.title }}</h3>
+        {% elsif show_collection_title and onboarding %}
+          <h3 class="illustration-card__collection-title illustration-card__collection-title--{{ title_size | default: 'md' }}">{{ 'placeholders.collection_title' | t }}</h3>
+        {% endif %}
+        
+        {% comment %} Pilules avec infos du métaobjet Produits (via champ Base) {% endcomment %}
+        {% if selected_product != blank %}
+          {% assign product_meta = selected_product.metafields.custom.base.value %}
+          {% if product_meta != blank %}
+            <div class="illustration-card__pills">
+              {% if product_meta.coupe != blank %}
+                <span class="illustration-card__pill">Coupe {{ product_meta.coupe }}</span>
+              {% endif %}
+              {% if product_meta.tissu != blank %}
+                {% assign tissu_value = product_meta.tissu | split: '' | first %}
+                {% if tissu_value == '[' %}
+                  {% assign tissu_value = product_meta.tissu | remove: '["' | remove: '"]' | remove: '"' %}
+                {% else %}
+                  {% assign tissu_value = product_meta.tissu %}
+                {% endif %}
+                <span class="illustration-card__pill">{{ tissu_value }}</span>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endif %}
+      </div>
       
       {% if show_summary and summary != blank %}
         <p class="illustration-card__summary">{{ summary }}</p>
@@ -161,8 +184,7 @@
     position: relative;
     height: var(--image-height, 30vh);
     overflow: hidden;
-    border-radius: var(--border-radius-base);
-    background: var(--color-background-secondary);
+    background: rgb(var(--color-foreground-rgb) / 0.05);
   }
   
   .illustration-card__image img {
@@ -182,10 +204,33 @@
     text-align: left;
   }
   
+  .illustration-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
   .illustration-card__collection-title {
-    font-size: var(--font-size-base);
     font-weight: var(--font-weight-bold);
     margin: 0 0 4px 0;
+    flex: 1;
+  }
+  
+  .illustration-card__collection-title--sm {
+    font-size: var(--font-size--h4);
+  }
+  
+  .illustration-card__collection-title--md {
+    font-size: var(--font-size--h3);
+  }
+  
+  .illustration-card__collection-title--lg {
+    font-size: var(--font-size--h2);
+  }
+  
+  .illustration-card__collection-title--xl {
+    font-size: var(--font-size--h1);
   }
   
   .illustration-card__product-title {
@@ -198,11 +243,28 @@
     font-size: var(--font-size-sm);
     color: var(--color-foreground-secondary);
     margin: 0 0 4px 0;
-    font-style: italic;
   }
   
   .illustration-card__price {
-    font-size: var(--font-size-sm);
+    font-size: 0.9rem;
     margin: 0;
+    opacity: 0.6;
+  }
+  
+  .illustration-card__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  
+  .illustration-card__pill {
+    display: inline-block;
+    font-size: 0.75rem;
+    color: rgb(var(--color-foreground-rgb) / 0.6);
+    background: rgb(var(--color-foreground-rgb) / 0.08);
+    padding: 2px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
   }
 {% endstylesheet %}

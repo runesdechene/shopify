@@ -24,7 +24,10 @@
 
   assign show_arrows = false
   if settings.icons_style != 'none'
-    assign show_arrows = true
+    assign columns = settings.columns | default: 3
+    if slide_count > columns
+      assign show_arrows = true
+    endif
   endif
 %}
 
