@@ -29,7 +29,8 @@
     "product_list": "Featured collection",
     "other_sections": "Other",
     "storytelling": "Storytelling",
-    "text": "Text"
+    "text": "Text",
+    "fragments": "Fragments"
   },
   "content": {
     "visible_if_collection_has_more_products": "Visible if collection has more products than shown",
@@ -47,6 +48,7 @@
     "bottom_row_appearance": "Bottom row appearance",
     "buttons": "Buttons",
     "cards_layout": "Cards layout",
+    "product_display": "Product display",
     "carousel": "Carousel",
     "carousel_navigation": "Carousel navigation",
     "carousel_pagination": "Carousel pagination",
@@ -113,6 +115,11 @@
     "resource_reference_collection_card": "Displays collection from parent section",
     "resource_reference_collection_card_image": "Displays image from parent collection",
     "resource_reference_collection_title": "Displays title from parent collection",
+    "resource_reference_fragment_card": "Displays fragment from parent section",
+    "resource_reference_fragment_card_image": "Displays image from parent fragment",
+    "resource_reference_fragment_title": "Displays title from parent fragment",
+    "resource_reference_illustration_card": "Displays illustration card from parent section",
+    "resource_reference_illustration_card_image": "Displays product image from collection",
     "resource_reference_product": "Auto connects to parent product",
     "resource_reference_product_card": "Displays product from parent section",
     "resource_reference_product_inventory": "Displays inventory from parent product",
@@ -231,7 +238,8 @@
     "video_autoplay": "Videos will be muted by default",
     "video_external": "Use a YouTube or Vimeo URL",
     "pills_usage": "Used for applied filters, discount codes, and search suggestions",
-    "media_type_info": "Features are populated from your menu links"
+    "media_type_info": "Features are populated from your menu links",
+    "random_product": "Displays a different product on each page load"
   },
   "names": {
     "column": "Column",
@@ -432,7 +440,18 @@
     "video_section": "Video",
     "view_all_button": "View all",
     "pills": "Pills",
-    "comparison_slider": "Comparison slider"
+    "comparison_slider": "Comparison slider",
+    "fragment_list": "Fragment list",
+    "fragment_card": "Fragment card",
+    "fragment_card_image": "Fragment image",
+    "fragment_title": "Fragment title",
+    "fragment_summary": "Fragment summary",
+    "fragment_product": "Linked product",
+    "fragments_carousel": "Fragments: Carousel",
+    "illustration_list": "Illustration list",
+    "illustrations_carousel": "Illustrations: Carousel",
+    "illustration_card": "Illustration card",
+    "illustration_card_image": "Illustration image"
   },
   "options": {
     "above_carousel": "Above carousel",
@@ -874,6 +893,7 @@
     "flag": "Flag",
     "font": "Font",
     "font_family": "Font family",
+    "fragment_list": "Illustrations",
     "font_price": "Price font",
     "font_weight": "Font weight",
     "full_width_first_image": "Full width first image",
@@ -1088,6 +1108,10 @@
     "show_second_image_on_hover": "Show second image on hover",
     "show_swatch_label": "Text labels for swatches",
     "show_tax_info": "Tax information",
+    "show_product_title": "Show product title",
+    "show_price": "Show price",
+    "show_collection_title": "Show collection title",
+    "random_product": "Random product",
     // Font size or element dimensions setting
     "size": "Size",
     "skus": "SKUs",

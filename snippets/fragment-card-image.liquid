@@ -1,0 +1,43 @@
+{%- doc -%}
+  Fragment Card Image Snippet
+  
+  Renders the image for a fragment card, using the product image
+  from a product linked to this fragment metaobject.
+  
+  @param {object} fragment - The fragment metaobject
+  @param {object} block - The block object
+  @param {object} section - The section object
+{%- enddoc -%}
+
+{% liquid
+  assign block_settings = block.settings
+  
+  assign image = nil
+  assign alt = ''
+  assign selected_product = nil
+  
+  if fragment != blank
+    assign linked_products = fragment.produits.value
+    
+    if linked_products != blank and linked_products.size > 0
+      if block_settings.random_product
+        assign random_index = 'now' | date: '%S' | modulo: linked_products.size
+        assign selected_product = linked_products[random_index]
+      else
+        assign selected_product = linked_products.first
+      endif
+      assign image = selected_product.featured_image
+      assign alt = selected_product.title
+    endif
+  endif
+%}
+
+{% if image != blank %}
+  <div class="fragment-card__image">
+    {{ image | image_url: width: 600 | image_tag: alt: alt, loading: 'lazy', class: 'fragment-card__img' }}
+  </div>
+{% else %}
+  <div class="fragment-card__image fragment-card__image--placeholder">
+    {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+  </div>
+{% endif %}

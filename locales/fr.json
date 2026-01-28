@@ -301,7 +301,9 @@
     "blog_post_title": "Titre",
     "blog_post_author": "Auteur",
     "blog_post_date": "Date",
-    "blog_post_description": "Un extrait du contenu de votre article de blog"
+    "blog_post_description": "Un extrait du contenu de votre article de blog",
+    "fragment_title": "Titre du Fragment",
+    "fragment_summary": "Résumé du Fragment"
   },
   "products": {
     "product": {

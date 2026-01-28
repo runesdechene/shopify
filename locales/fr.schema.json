@@ -197,7 +197,18 @@
     "product_hotspots": "Zones réactives de produit",
     "hotspot_product": "Zone réactive",
     "product_sku": "SKU",
-    "layered_slideshow": "Diaporama superposé"
+    "layered_slideshow": "Diaporama superposé",
+    "fragment_list": "Liste de Fragments",
+    "fragment_card": "Carte de Fragment",
+    "fragment_card_image": "Image du Fragment",
+    "fragment_title": "Titre du Fragment",
+    "fragment_summary": "Résumé du Fragment",
+    "fragment_product": "Produit lié",
+    "fragments_carousel": "Fragments : Carrousel",
+    "illustration_list": "Liste d'Illustrations",
+    "illustrations_carousel": "Illustrations : Carrousel",
+    "illustration_card": "Carte d'Illustration",
+    "illustration_card_image": "Image de l'Illustration"
   },
   "settings": {
     "autoplay": "Lecture automatique",
@@ -234,6 +245,7 @@
     "content_alignment": "Alignement du contenu",
     "custom_minimum_height": "Hauteur minimale personnalisée",
     "font_family": "Famille de polices",
+    "fragment_list": "Illustrations",
     "gap": "Espacement",
     "geometric_translate_y": "Translation géométrique Y",
     "image": "Image",
@@ -425,6 +437,10 @@
     "show_as_accordion": "Afficher en accordéon sur mobile",
     "show_sale_price_first": "Afficher le prix soldé en premier",
     "show_tax_info": "Informations sur les taxes",
+    "show_product_title": "Afficher le titre du produit",
+    "show_price": "Afficher le prix",
+    "show_collection_title": "Afficher le titre de la collection",
+    "random_product": "Produit aléatoire",
     "show": "Afficher",
     "small": "Petite",
     "speed": "Vitesse",
@@ -925,6 +941,7 @@
     "typography_tertiary": "Typographie tertiaire",
     "mobile_size": "Taille sur mobile",
     "cards_layout": "Mise en page des cartes",
+    "product_display": "Affichage du produit",
     "mobile_width": "Largeur sur mobile",
     "section_layout": "Mise en page de la section",
     "width": "Largeur",
@@ -948,8 +965,13 @@
     "icon": "Icône",
     "manage_store_name": "[Gérer le nom de la boutique](/admin/settings/general?edit=storeName)",
     "resource_reference_collection_card": "Affiche la collection de la section parente",
-    "resource_reference_collection_card_image": "Affiche l’image de la collection parente",
+    "resource_reference_collection_card_image": "Affiche l'image de la collection parente",
     "resource_reference_collection_title": "Affiche le titre de la collection parente",
+    "resource_reference_fragment_card": "Affiche le fragment de la section parente",
+    "resource_reference_fragment_card_image": "Affiche l'image du fragment parent",
+    "resource_reference_fragment_title": "Affiche le titre du fragment parent",
+    "resource_reference_illustration_card": "Affiche la carte d'illustration de la section parente",
+    "resource_reference_illustration_card_image": "Affiche l'image d'un produit de la collection",
     "resource_reference_product": "Se connecte automatiquement au produit parent",
     "resource_reference_product_card": "Affiche le produit de la section parente",
     "resource_reference_product_inventory": "Affiche le stock du produit parent",
@@ -1094,7 +1116,8 @@
     "hover_effects": "S’applique aux cartes de produit et de collection",
     "hide_logo_on_home_page_help": "Le logo restera visible lorsque l’en-tête fixe est actif",
     "media_type_info": "Les fonctionnalités sont remplies à partir des liens de votre menu",
-    "logo_height": "Affecte uniquement le logo de l’en-tête"
+    "logo_height": "Affecte uniquement le logo de l’en-tête",
+    "random_product": "Affiche un produit différent à chaque chargement de page"
   },
   "categories": {
     "basic": "De base",
@@ -1114,6 +1137,7 @@
     "products": "Produits",
     "other_sections": "Autre",
     "storytelling": "Narration",
-    "text": "Texte"
+    "text": "Texte",
+    "fragments": "Fragments"
   }
 }

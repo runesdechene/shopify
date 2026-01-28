@@ -336,7 +336,9 @@
     "blog_post_title": "Title",
     "blog_post_author": "Author",
     "blog_post_date": "Date",
-    "blog_post_description": "An excerpt of your blog post's content"
+    "blog_post_description": "An excerpt of your blog post's content",
+    "fragment_title": "Fragment title",
+    "fragment_summary": "Fragment summary"
   },
   "products": {
     "product": {

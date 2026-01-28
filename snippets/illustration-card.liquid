@@ -1,0 +1,135 @@
+{%- doc -%}
+  Illustration Card Snippet
+  
+  Displays a card with ONE product from a collection.
+  The product can be random or the first one.
+  
+  @param {object} collection - The collection to get a product from
+  @param {boolean} random_product - Whether to pick a random product
+  @param {boolean} show_collection_title - Show the collection title
+  @param {boolean} show_product_title - Show the product title
+  @param {boolean} show_price - Show the product price
+  @param {object} section - The section object
+{%- enddoc -%}
+
+{% liquid
+  assign selected_product = nil
+  assign onboarding = false
+  
+  if collection != blank and collection.products.size > 0
+    if random_product
+      assign random_index = 'now' | date: '%S' | modulo: collection.products.size
+      assign selected_product = collection.products[random_index]
+    else
+      assign selected_product = collection.products.first
+    endif
+  else
+    assign onboarding = true
+  endif
+%}
+
+<div class="illustration-card">
+  <a 
+    class="illustration-card__link"
+    {% if selected_product != blank %}
+      href="{{ selected_product.url }}"
+    {% else %}
+      href="#"
+    {% endif %}
+  >
+    <div class="illustration-card__image">
+      {% if selected_product != blank and selected_product.featured_image != blank %}
+        {{ selected_product.featured_image | image_url: width: 600 | image_tag: 
+          alt: selected_product.title, 
+          loading: 'lazy', 
+          class: 'illustration-card__img'
+        }}
+      {% else %}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {% endif %}
+    </div>
+    
+    <div class="illustration-card__content">
+      {% if show_collection_title and collection != blank %}
+        <h3 class="illustration-card__collection-title">{{ collection.title }}</h3>
+      {% elsif show_collection_title and onboarding %}
+        <h3 class="illustration-card__collection-title">{{ 'placeholders.collection_title' | t }}</h3>
+      {% endif %}
+      
+      {% if show_product_title and selected_product != blank %}
+        <p class="illustration-card__product-title">{{ selected_product.title }}</p>
+      {% elsif show_product_title and onboarding %}
+        <p class="illustration-card__product-title">{{ 'placeholders.product_title' | t }}</p>
+      {% endif %}
+      
+      {% if show_price %}
+        <p class="illustration-card__price">
+          {% if selected_product != blank %}
+            {{ selected_product.price | money }}
+          {% else %}
+            {{ 2999 | money }}
+          {% endif %}
+        </p>
+      {% endif %}
+    </div>
+  </a>
+</div>
+
+{% stylesheet %}
+  .illustration-card {
+    position: relative;
+    flex: 1 1 var(--card-width-small);
+  }
+  
+  .illustration-card__link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .illustration-card__link:hover .illustration-card__img {
+    transform: scale(1.02);
+  }
+  
+  .illustration-card__image {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: var(--border-radius-base);
+    background: var(--color-background-secondary);
+  }
+  
+  .illustration-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .illustration-card__image svg {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .illustration-card__content {
+    padding-top: var(--padding-sm);
+    text-align: left;
+  }
+  
+  .illustration-card__collection-title {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+    margin: 0 0 4px 0;
+  }
+  
+  .illustration-card__product-title {
+    font-size: var(--font-size-sm);
+    color: var(--color-foreground-secondary);
+    margin: 0 0 4px 0;
+  }
+  
+  .illustration-card__price {
+    font-size: var(--font-size-sm);
+    margin: 0;
+  }
+{% endstylesheet %}
