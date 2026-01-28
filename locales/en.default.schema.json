@@ -218,6 +218,7 @@
   },
   "info": {
     "applies_on_image_only": "Applies to images only",
+    "show_summary": "Display the summary from the linked Illustrations metaobject",
     "aspect_ratio_adjusted": "Adjusted in some layouts",
     "carousel_hover_behavior_not_supported": "\"Carousel\" hover is not supported when \"Carousel\" type is selected at the section level",
     "carousel_layout_on_mobile": "Carousel is always used on mobile",
@@ -1111,6 +1112,8 @@
     "show_product_title": "Show product title",
     "show_price": "Show price",
     "show_collection_title": "Show collection title",
+    "show_summary": "Show summary",
+    "image_height": "Image height",
     "random_product": "Random product",
     // Font size or element dimensions setting
     "size": "Size",

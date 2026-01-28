@@ -440,6 +440,8 @@
     "show_product_title": "Afficher le titre du produit",
     "show_price": "Afficher le prix",
     "show_collection_title": "Afficher le titre de la collection",
+    "show_summary": "Afficher le résumé",
+    "image_height": "Hauteur de l'image",
     "random_product": "Produit aléatoire",
     "show": "Afficher",
     "small": "Petite",
@@ -1117,7 +1119,8 @@
     "hide_logo_on_home_page_help": "Le logo restera visible lorsque l’en-tête fixe est actif",
     "media_type_info": "Les fonctionnalités sont remplies à partir des liens de votre menu",
     "logo_height": "Affecte uniquement le logo de l’en-tête",
-    "random_product": "Affiche un produit différent à chaque chargement de page"
+    "random_product": "Affiche un produit différent à chaque chargement de page",
+    "show_summary": "Affiche le résumé du métaobjet Illustrations lié"
   },
   "categories": {
     "basic": "De base",

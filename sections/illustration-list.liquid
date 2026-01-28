@@ -46,6 +46,8 @@
           show_collection_title: section.settings.show_collection_title,
           show_product_title: section.settings.show_product_title,
           show_price: section.settings.show_price,
+          show_summary: section.settings.show_summary,
+          image_height: section.settings.image_height,
           section: section
         %}
       </div>
@@ -234,6 +236,23 @@
       "id": "show_price",
       "label": "t:settings.show_price",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_summary",
+      "label": "t:settings.show_summary",
+      "info": "t:info.show_summary",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "t:settings.image_height",
+      "min": 10,
+      "max": 60,
+      "step": 1,
+      "unit": "vh",
+      "default": 40
     },
     {
       "type": "header",
