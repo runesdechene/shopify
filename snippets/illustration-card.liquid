@@ -64,6 +64,7 @@
     else
       # No eligible products - fallback to collection image
       assign selected_image = collection.image
+      assign use_collection_fallback = true
     endif
   else
     assign onboarding = true
@@ -91,10 +92,10 @@
 <div class="illustration-card" style="--image-height: {{ image_height | default: 30 }}vh;">
   <a 
     class="illustration-card__link"
-    {% if selected_product != blank %}
-      href="{{ selected_product.url }}"
+    {% if use_collection_fallback or selected_product == blank %}
+      href="{{ collection.url }}"
     {% else %}
-      href="#"
+      href="{{ selected_product.url }}"
     {% endif %}
   >
     <div class="illustration-card__image">
@@ -151,7 +152,9 @@
       
       {% if show_price %}
         <p class="illustration-card__price">
-          {% if selected_product != blank %}
+          {% if use_collection_fallback %}
+            Voir toute la collection
+          {% elsif selected_product != blank %}
             {{ selected_product.price | money }}
           {% else %}
             {{ 2999 | money }}
