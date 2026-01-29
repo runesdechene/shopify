@@ -5,12 +5,21 @@
 
 /* Media caption (ALT text display) */
 .product-media__caption {
+  z-index: 40;
   margin: 0;
-  padding: var(--padding-sm) 0;
+  padding: 5px 0 0 0; 
   font-size: var(--font-paragraph-small--size);
   color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
-  text-align: center;
+  text-align: left;
   width: 100%;
+}
+
+/* Retire le fond de l'image */
+
+.media-fit-contain :is(img, .deferred-media__poster-image)
+{
+  background-color: rgb(211, 205, 193)!important;
+  border-radius: 10px;
 }
 
 /* Force slideshow slides to display in column layout when caption is present */
@@ -36,6 +45,49 @@ slideshow-slide:has(.product-media__caption) .product-media-container {
   flex-shrink: 0;
 }
 
+/* Force carousel slides to fit content height */
+.media-gallery--carousel slideshow-slide {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  aspect-ratio: unset !important;
+  align-self: flex-start !important;
+}
+
+.media-gallery--carousel .product-media-container {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  aspect-ratio: unset !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.media-gallery--carousel slideshow-slides {
+  align-items: flex-start !important;
+}
+
+/* Product media background wrapper - fits image height with gray background */
+.product-media-bg-wrapper {
+  display: inline-block;
+  background-color: #f5f5f5;
+  width: 100%;
+  height: auto !important;
+}
+
+.product-media-bg-wrapper .product-media {
+  display: block;
+  width: 100%;
+  height: auto !important;
+  aspect-ratio: unset !important;
+}
+
+.product-media-bg-wrapper .product-media__image {
+  display: block;
+  width: 100%;
+  height: auto !important;
+}
+
 
 
 
@@ -53,6 +105,7 @@ padding: 0;
 .slideshow-controls__thumbnails-container
 {
   margin-top: 50px;
+  height: auto;
 }
 
 .slideshow-controls__thumbnails .slideshow-control {

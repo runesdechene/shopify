@@ -363,13 +363,15 @@
                 assign media_sizes = sizes
               endif
           -%}
-          {% if block_settings.aspect_ratio != 'adapt' and block_settings.constrain_to_viewport %}
-            <div class="product-media-constraint-wrapper">
+          <div class="product-media-bg-wrapper">
+            {% if block_settings.aspect_ratio != 'adapt' and block_settings.constrain_to_viewport %}
+              <div class="product-media-constraint-wrapper">
+                {%- render 'product-media', media: media, sizes: media_sizes, is_main_product_media: forloop.first -%}
+              </div>
+            {% else %}
               {%- render 'product-media', media: media, sizes: media_sizes, is_main_product_media: forloop.first -%}
-            </div>
-          {% else %}
-            {%- render 'product-media', media: media, sizes: media_sizes, is_main_product_media: forloop.first -%}
-          {% endif %}
+            {% endif %}
+          </div>
           {%- if block_settings.show_media_alt and media.alt != blank and media.alt != selected_product.title -%}
             <p class="product-media__caption">{{ media.alt }}</p>
           {%- endif -%}
@@ -429,7 +431,7 @@
       {% endcapture %}
     {% endif %}
 
-    {% if render_slideshow_arrows %}
+    {% if render_slideshow_arrows and block_settings.hide_arrows_desktop != true %}
       {% capture slideshow_arrows %}
         {% render 'slideshow-arrows', class: 'mobile:hidden', icon_style: block_settings.icons_style %}
       {% endcapture %}

@@ -923,6 +923,7 @@
     "hide_unselected_variant_media": "Hide unselected variant media",
     "filter_by_variant_color": "Show only variant-related thumbnails",
     "show_media_alt": "Show image caption",
+    "hide_arrows_desktop": "Hide arrows on desktop",
     "horizontal_gap": "Horizontal gap",
     "hotspot_color": "Hotspot color",
     "horizontal_offset": "Shadow horizontal offset",

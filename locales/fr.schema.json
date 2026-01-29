@@ -214,6 +214,7 @@
   "settings": {
     "filter_by_variant_color": "Afficher uniquement les vignettes en rapport avec la variante",
     "show_media_alt": "Afficher la légende de l'image",
+    "hide_arrows_desktop": "Masquer les flèches sur desktop",
     "autoplay": "Lecture automatique",
     "background": "Arrière-plan",
     "border_radius": "Rayon de la bordure",

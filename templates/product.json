@@ -36,6 +36,7 @@
             "hide_variants": false,
             "filter_by_variant_color": true,
             "show_media_alt": true,
+            "hide_arrows_desktop": true,
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
