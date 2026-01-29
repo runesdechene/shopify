@@ -1,0 +1,20 @@
+
+
+{% doc %}
+  Product Media Gallery Content
+
+  Renders product media gallery for the closest product.
+
+  @param {string} media_presentation - Either 'grid' or 'carousel'
+  @param {object} block_settings - Block settings object
+  @param {string} block_id - Block ID for unique element IDs
+  @param {string} block_shopify_attributes - Block shopify attributes
+
+  @example
+  {% render 'product-media-gallery-content',
+    media_presentation: 'carousel',
+    block_settings: block.settings,
+    block_id: block.id,
+    block_shopify_attributes: block.shopify_attributes,
+  %}
+{% enddoc %}

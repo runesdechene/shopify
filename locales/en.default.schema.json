@@ -243,9 +243,11 @@
     "video_external": "Use a YouTube or Vimeo URL",
     "pills_usage": "Used for applied filters, discount codes, and search suggestions",
     "media_type_info": "Features are populated from your menu links",
-    "random_product": "Displays a different product on each page load"
+    "random_product": "Displays a different product on each page load",
+    "banner_content_width": "Content width (background always stays full width)"
   },
   "names": {
+    "banner_image": "Image banner",
     "column": "Column",
     "product_title": "Product title",
     "custom_liquid": "Custom Liquid",
@@ -842,6 +844,8 @@
     "content": "Content",
     "content_alignment": "Content alignment",
     "content_direction": "Content direction",
+    "horizontal_alignment": "Horizontal alignment",
+    "vertical_alignment": "Vertical alignment",
     "content_position": "Content position",
     "content_width": "Content width",
     "corner_radius": "Corner radius",

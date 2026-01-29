@@ -81,7 +81,7 @@
                 "align_baseline": false,
                 "horizontal_alignment_flex_direction_column": "flex-start",
                 "vertical_alignment_flex_direction_column": "center",
-                "gap": 12,
+                "gap": 36,
                 "width": "fill",
                 "custom_width": 100,
                 "width_mobile": "fill",
@@ -155,7 +155,7 @@
                       "name": "Garantie 1",
                       "settings": {
                         "content_direction": "row",
-                        "vertical_on_mobile": true,
+                        "vertical_on_mobile": false,
                         "horizontal_alignment": "flex-start",
                         "vertical_alignment": "center",
                         "align_baseline": false,
@@ -239,7 +239,7 @@
                       "name": "Garantie 2",
                       "settings": {
                         "content_direction": "row",
-                        "vertical_on_mobile": true,
+                        "vertical_on_mobile": false,
                         "horizontal_alignment": "flex-start",
                         "vertical_alignment": "center",
                         "align_baseline": false,
@@ -290,7 +290,7 @@
                           "type": "text",
                           "name": "t:names.heading",
                           "settings": {
-                            "text": "<h2>Satisfait ou remboursé</h2>",
+                            "text": "<h2>Echanges sous 14 jours</h2>",
                             "width": "fit-content",
                             "max_width": "normal",
                             "alignment": "left",
@@ -323,7 +323,7 @@
                       "name": "Garantie 3",
                       "settings": {
                         "content_direction": "row",
-                        "vertical_on_mobile": true,
+                        "vertical_on_mobile": false,
                         "horizontal_alignment": "flex-start",
                         "vertical_alignment": "center",
                         "align_baseline": false,
@@ -374,7 +374,7 @@
                           "type": "text",
                           "name": "t:names.heading",
                           "settings": {
-                            "text": "<h2>Satisfait ou remboursé</h2>",
+                            "text": "<h2>Paiement sécurisé</h2>",
                             "width": "fit-content",
                             "max_width": "normal",
                             "alignment": "left",
@@ -423,7 +423,7 @@
                     "gap": 12,
                     "width": "fit-content",
                     "custom_width": 100,
-                    "width_mobile": "fill",
+                    "width_mobile": "fit-content",
                     "custom_width_mobile": 100,
                     "height": "fit",
                     "custom_height": 100,
@@ -800,7 +800,7 @@
         "group_DDWqwk"
       ],
       "custom_css": [
-        "li {text-align: right;}"
+        "@media (min-width: 798px) {li {text-align: right; }}"
       ],
       "name": "t:names.footer",
       "settings": {

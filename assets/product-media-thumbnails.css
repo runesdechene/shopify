@@ -1,0 +1,51 @@
+/* ==========================================================================
+   Product Media Thumbnails - Custom Styles
+   Styles for vertical thumbnails (left/right position) in product gallery
+   ========================================================================== */
+
+
+
+
+.product-media-container.media-fit-contain  {
+margin-top: 50px;
+padding: 0;
+}
+
+.product-media-container.media-fit-contain img {
+  object-position: center top;
+  object-fit: auto;
+  height: 100%;  
+}
+
+.slideshow-controls__thumbnails-container
+{
+  margin-top: 50px;
+}
+
+.slideshow-controls__thumbnails .slideshow-control {
+  overflow: hidden;
+}
+
+.slideshow-controls__thumbnails {
+    & .slideshow-control {
+        &:is([aria-selected='true']) {
+            outline: 2px solid rgb(155, 149, 149);
+            border: 3px solid transparent;
+            border-radius: 5px;
+        }
+    }
+}
+
+/* Vertical thumbnails (left/right position) - use original aspect ratio */
+@media screen and (min-width: 750px) {
+  slideshow-controls[thumbnails]:is([pagination-position='right'], [pagination-position='left']) .slideshow-controls__thumbnails .slideshow-control {
+    width: var(--thumbnail-width);
+    aspect-ratio: var(--aspect-ratio);
+  }
+
+  slideshow-controls[thumbnails]:is([pagination-position='right'], [pagination-position='left']) .slideshow-controls__thumbnails .slideshow-control img {
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--thumbnail-radius, var(--media-radius));
+  }
+}

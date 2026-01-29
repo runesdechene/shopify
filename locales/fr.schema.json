@@ -9,6 +9,7 @@
  */
 {
   "names": {
+    "banner_image": "Bannière image",
     "404": "404",
     "borders": "Bordures",
     "collapsible_row": "Rangée réductible",
@@ -219,6 +220,8 @@
     "bottom_padding": "Espacement inférieur",
     "color": "Couleur",
     "content_direction": "Direction du contenu",
+    "horizontal_alignment": "Alignement horizontal",
+    "vertical_alignment": "Alignement vertical",
     "content_position": "Position du contenu",
     "cover_image_size": "Taille de l'image de couverture",
     "cover_image": "Image de couverture",
