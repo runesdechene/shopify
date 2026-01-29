@@ -9,6 +9,51 @@
  */
 {
   "sections": {
+    "similar_products_LCyQ6g": {
+      "type": "similar-products",
+      "name": "Produits similaires",
+      "settings": {
+        "products_limit": 6,
+        "keyword_1": "solide",
+        "icon_1": "shopify://shop_images/icon_sweat.png",
+        "label_1": "Sweatshirt oversized",
+        "keyword_2": "zippé",
+        "icon_2": "shopify://shop_images/icon_zip.png",
+        "label_2": "Jacket zippée",
+        "keyword_3": "confort",
+        "icon_3": "shopify://shop_images/icon_tshirt.png",
+        "label_3": "T-shirt unisexe",
+        "keyword_4": "L'Ancestral",
+        "icon_4": "shopify://shop_images/icon_tshirt_oversize.png",
+        "label_4": "T-shirt oversized",
+        "keyword_5": "Débardeur homme",
+        "icon_5": "shopify://shop_images/icon_debardeur.png",
+        "label_5": "",
+        "keyword_6": "",
+        "label_6": "",
+        "keyword_7": "",
+        "label_7": "",
+        "keyword_8": "",
+        "label_8": "",
+        "keyword_9": "",
+        "label_9": "",
+        "keyword_10": "",
+        "label_10": "",
+        "section_width": "page-width",
+        "color_scheme": "",
+        "background_color": "rgba(0,0,0,0)",
+        "padding_top": 20,
+        "padding_right": 0,
+        "padding_bottom": 20,
+        "padding_left": 0,
+        "border_radius": 0,
+        "border_width": 0,
+        "border_color": "rgba(0,0,0,0)",
+        "items_alignment": "flex-start",
+        "padding-block-start": 40,
+        "padding-block-end": 40
+      }
+    },
     "section_wkxLqe": {
       "type": "section",
       "blocks": {
@@ -16,7 +61,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h3>{{ closest.product.metafields.custom.illustration_f.value.resume.value }}</h3>",
+            "text": "<h3>{{ closest.product.metafields.custom.illustration_produit.value.resume.value }}</h3>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -31,7 +76,7 @@
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
-            "padding-block-start": 20,
+            "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
             "padding-inline-end": 0
@@ -43,7 +88,8 @@
         "text_UinCe8"
       ],
       "custom_css": [
-        "h3 {opacity: 0.5;}"
+        "h3 {opacity: 0.5;}",
+        "@media screen and (max-width: 798px) {h3 {font-size: 1.4rem; }}"
       ],
       "name": "t:names.custom_section",
       "settings": {
@@ -70,7 +116,7 @@
         "overlay_color": "#00000026",
         "overlay_style": "solid",
         "gradient_direction": "to top",
-        "padding-block-start": 50,
+        "padding-block-start": 0,
         "padding-block-end": 0
       }
     },
@@ -338,6 +384,14 @@
                   },
                   "blocks": {}
                 },
+                "custom_liquid_Fh9YNn": {
+                  "type": "custom-liquid",
+                  "name": "t:names.custom_liquid",
+                  "settings": {
+                    "custom_liquid": "<div style=\"position: absolute; font-size: 12px;\">⚠️ Couleurs en éditions limitées - Tirages à très petites séries</div>"
+                  },
+                  "blocks": {}
+                },
                 "buy_buttons_64taHw": {
                   "type": "buy-buttons",
                   "settings": {
@@ -373,11 +427,108 @@
                   },
                   "block_order": []
                 },
+                "group_wNUjBe": {
+                  "type": "group",
+                  "name": "t:names.group",
+                  "settings": {
+                    "content_direction": "column",
+                    "vertical_on_mobile": true,
+                    "horizontal_alignment": "flex-start",
+                    "vertical_alignment": "center",
+                    "align_baseline": false,
+                    "horizontal_alignment_flex_direction_column": "center",
+                    "vertical_alignment_flex_direction_column": "center",
+                    "gap": 12,
+                    "width": "fill",
+                    "custom_width": 100,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "custom_height": 100,
+                    "inherit_color_scheme": true,
+                    "color_scheme": "",
+                    "background_media": "none",
+                    "video_position": "cover",
+                    "background_image_position": "cover",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_radius": 0,
+                    "toggle_overlay": false,
+                    "overlay_color": "#00000026",
+                    "overlay_style": "solid",
+                    "gradient_direction": "to top",
+                    "link": "",
+                    "open_in_new_tab": false,
+                    "placeholder": "",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {
+                    "text_Yh9KYq": {
+                      "type": "text",
+                      "name": "t:names.text",
+                      "settings": {
+                        "text": "<p>⭐ 4.6/5 sur + de 5700 clients, et au travers + de 34 festivals en France </p>",
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "custom",
+                        "font": "var(--font-body--family)",
+                        "font_size": "0.875rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "color": "var(--color-foreground)",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "text_Yh9KYq"
+                  ]
+                },
                 "text_wnQCmf": {
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "{{ closest.product.description }}",
+                    "text": "<p>{{ closest.product.metafields.custom.illustration_produit.value.description | metafield_tag }}</p>",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-primary--family)",
+                    "font_size": "",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "text_Kj7gTA": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<p>{{ closest.product.metafields.custom.base.value.description | metafield_tag }}</p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -970,8 +1121,11 @@
                 "group_nMm3w6",
                 "product_features_MTyx7p",
                 "variant_picker_VT89rh",
+                "custom_liquid_Fh9YNn",
                 "buy_buttons_64taHw",
+                "group_wNUjBe",
                 "text_wnQCmf",
+                "text_Kj7gTA",
                 "group_JK8NUb",
                 "product_recommendations_Rpc8dN"
               ]
@@ -1847,6 +2001,7 @@
     }
   },
   "order": [
+    "similar_products_LCyQ6g",
     "section_wkxLqe",
     "product-information",
     "media_with_content_3R3mTy",

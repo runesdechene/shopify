@@ -1,0 +1,725 @@
+{%- liquid
+  assign section_settings = section.settings
+-%}
+
+{% style %}
+  .similar-products__content-wrapper {
+    background-color: {{ section_settings.background_color }};
+    padding-top: {{ section_settings.padding_top }}px;
+    padding-right: {{ section_settings.padding_right }}px;
+    padding-bottom: {{ section_settings.padding_bottom }}px;
+    padding-left: {{ section_settings.padding_left }}px;
+    border-radius: {{ section_settings.border_radius }}px;
+    border: {{ section_settings.border_width }}px solid {{ section_settings.border_color }};
+  }
+
+  .rdc-aussi-disponible__grid {
+    justify-content: {{ section_settings.items_alignment }};
+  }
+{% endstyle %}
+
+<div class="similar-products color-{{ section_settings.color_scheme }}">
+  <div class="similar-products__container spacing-style section section--full-width">
+    <div class="similar-products__content-wrapper section-content-wrapper {{ section_settings.section_width }}">
+      {%- assign illustration_metafield = product.metafields.custom.illustration_produit -%}
+
+      {%- if illustration_metafield != blank -%}
+        {%- assign illustration = illustration_metafield.value -%}
+        {%- assign illustration_handle = illustration.system.handle -%}
+        {%- assign dynamic_collection = collections[illustration_handle] -%}
+
+        {%- if dynamic_collection != blank and dynamic_collection.products.size > 0 -%}
+          <div class="rdc-aussi-disponible" {{ section.shopify_attributes }}>
+            <div class="rdc-aussi-disponible__grid">
+              {%- comment -%} Afficher d'abord le produit actuel {%- endcomment -%}
+              <div class="rdc-aussi-disponible__item rdc-aussi-disponible__item--current">
+                <a href="{{ product.url }}" class="rdc-aussi-disponible__link">
+                  {%- assign product_type_lower = product.type | downcase -%}
+                  {%- assign matched_icon = blank -%}
+                  {%- assign display_label = product.type -%}
+
+                  {%- comment -%} Chercher l'icône et le label pour le produit actuel {%- endcomment -%}
+                  {%- if section_settings.keyword_1 != blank -%}
+                    {%- assign keyword_lower = section_settings.keyword_1 | downcase -%}
+                    {%- if product_type_lower contains keyword_lower -%}
+                      {%- assign matched_icon = section_settings.icon_1 -%}
+                      {%- if section_settings.label_1 != blank -%}
+                        {%- assign display_label = section_settings.label_1 -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- if matched_icon == blank and section_settings.keyword_2 != blank -%}
+                    {%- assign keyword_lower = section_settings.keyword_2 | downcase -%}
+                    {%- if product_type_lower contains keyword_lower -%}
+                      {%- assign matched_icon = section_settings.icon_2 -%}
+                      {%- if section_settings.label_2 != blank -%}
+                        {%- assign display_label = section_settings.label_2 -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- if matched_icon == blank and section_settings.keyword_3 != blank -%}
+                    {%- assign keyword_lower = section_settings.keyword_3 | downcase -%}
+                    {%- if product_type_lower contains keyword_lower -%}
+                      {%- assign matched_icon = section_settings.icon_3 -%}
+                      {%- if section_settings.label_3 != blank -%}
+                        {%- assign display_label = section_settings.label_3 -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- if matched_icon == blank and section_settings.keyword_4 != blank -%}
+                    {%- assign keyword_lower = section_settings.keyword_4 | downcase -%}
+                    {%- if product_type_lower contains keyword_lower -%}
+                      {%- assign matched_icon = section_settings.icon_4 -%}
+                      {%- if section_settings.label_4 != blank -%}
+                        {%- assign display_label = section_settings.label_4 -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- if matched_icon == blank and section_settings.keyword_5 != blank -%}
+                    {%- assign keyword_lower = section_settings.keyword_5 | downcase -%}
+                    {%- if product_type_lower contains keyword_lower -%}
+                      {%- assign matched_icon = section_settings.icon_5 -%}
+                      {%- if section_settings.label_5 != blank -%}
+                        {%- assign display_label = section_settings.label_5 -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- if matched_icon == blank and section_settings.keyword_6 != blank -%}
+                    {%- assign keyword_lower = section_settings.keyword_6 | downcase -%}
+                    {%- if product_type_lower contains keyword_lower -%}
+                      {%- assign matched_icon = section_settings.icon_6 -%}
+                      {%- if section_settings.label_6 != blank -%}
+                        {%- assign display_label = section_settings.label_6 -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- if matched_icon == blank and section_settings.keyword_7 != blank -%}
+                    {%- assign keyword_lower = section_settings.keyword_7 | downcase -%}
+                    {%- if product_type_lower contains keyword_lower -%}
+                      {%- assign matched_icon = section_settings.icon_7 -%}
+                      {%- if section_settings.label_7 != blank -%}
+                        {%- assign display_label = section_settings.label_7 -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- if matched_icon == blank and section_settings.keyword_8 != blank -%}
+                    {%- assign keyword_lower = section_settings.keyword_8 | downcase -%}
+                    {%- if product_type_lower contains keyword_lower -%}
+                      {%- assign matched_icon = section_settings.icon_8 -%}
+                      {%- if section_settings.label_8 != blank -%}
+                        {%- assign display_label = section_settings.label_8 -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- if matched_icon == blank and section_settings.keyword_9 != blank -%}
+                    {%- assign keyword_lower = section_settings.keyword_9 | downcase -%}
+                    {%- if product_type_lower contains keyword_lower -%}
+                      {%- assign matched_icon = section_settings.icon_9 -%}
+                      {%- if section_settings.label_9 != blank -%}
+                        {%- assign display_label = section_settings.label_9 -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- if matched_icon == blank and section_settings.keyword_10 != blank -%}
+                    {%- assign keyword_lower = section_settings.keyword_10 | downcase -%}
+                    {%- if product_type_lower contains keyword_lower -%}
+                      {%- assign matched_icon = section_settings.icon_10 -%}
+                      {%- if section_settings.label_10 != blank -%}
+                        {%- assign display_label = section_settings.label_10 -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+
+                  {%- if matched_icon != blank -%}
+                    <div class="rdc-product-type-icon">
+                      {{
+                        matched_icon
+                        | image_url: width: 120
+                        | image_tag: loading: 'lazy', alt: display_label, width: 60, height: 60
+                      }}
+                    </div>
+                  {%- endif -%}
+                  <span class="rdc-aussi-disponible__label">{{ display_label }}</span>
+                </a>
+              </div>
+
+              {%- comment -%} Puis afficher les autres produits {%- endcomment -%}
+              {%- for other_product in dynamic_collection.products -%}
+                {%- if other_product.id != product.id -%}
+                  {%- assign product_type_lower = other_product.type | downcase -%}
+                  {%- assign matched_icon = blank -%}
+
+                  {%- comment -%} Déterminer le label à afficher {%- endcomment -%}
+                  {%- assign display_label = other_product.type -%}
+
+                  {%- comment -%} Chercher l'icône et le label de remplacement par mot-clé (contains) {%- endcomment -%}
+                  {%- if section_settings.keyword_1 != blank -%}
+                    {%- assign keyword_lower = section_settings.keyword_1 | downcase -%}
+                    {%- if product_type_lower contains keyword_lower -%}
+                      {%- assign matched_icon = section_settings.icon_1 -%}
+                      {%- if section_settings.label_1 != blank -%}
+                        {%- assign display_label = section_settings.label_1 -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- if matched_icon == blank and section_settings.keyword_2 != blank -%}
+                    {%- assign keyword_lower = section_settings.keyword_2 | downcase -%}
+                    {%- if product_type_lower contains keyword_lower -%}
+                      {%- assign matched_icon = section_settings.icon_2 -%}
+                      {%- if section_settings.label_2 != blank -%}
+                        {%- assign display_label = section_settings.label_2 -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- if matched_icon == blank and section_settings.keyword_3 != blank -%}
+                    {%- assign keyword_lower = section_settings.keyword_3 | downcase -%}
+                    {%- if product_type_lower contains keyword_lower -%}
+                      {%- assign matched_icon = section_settings.icon_3 -%}
+                      {%- if section_settings.label_3 != blank -%}
+                        {%- assign display_label = section_settings.label_3 -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- if matched_icon == blank and section_settings.keyword_4 != blank -%}
+                    {%- assign keyword_lower = section_settings.keyword_4 | downcase -%}
+                    {%- if product_type_lower contains keyword_lower -%}
+                      {%- assign matched_icon = section_settings.icon_4 -%}
+                      {%- if section_settings.label_4 != blank -%}
+                        {%- assign display_label = section_settings.label_4 -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- if matched_icon == blank and section_settings.keyword_5 != blank -%}
+                    {%- assign keyword_lower = section_settings.keyword_5 | downcase -%}
+                    {%- if product_type_lower contains keyword_lower -%}
+                      {%- assign matched_icon = section_settings.icon_5 -%}
+                      {%- if section_settings.label_5 != blank -%}
+                        {%- assign display_label = section_settings.label_5 -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- if matched_icon == blank and section_settings.keyword_6 != blank -%}
+                    {%- assign keyword_lower = section_settings.keyword_6 | downcase -%}
+                    {%- if product_type_lower contains keyword_lower -%}
+                      {%- assign matched_icon = section_settings.icon_6 -%}
+                      {%- if section_settings.label_6 != blank -%}
+                        {%- assign display_label = section_settings.label_6 -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- if matched_icon == blank and section_settings.keyword_7 != blank -%}
+                    {%- assign keyword_lower = section_settings.keyword_7 | downcase -%}
+                    {%- if product_type_lower contains keyword_lower -%}
+                      {%- assign matched_icon = section_settings.icon_7 -%}
+                      {%- if section_settings.label_7 != blank -%}
+                        {%- assign display_label = section_settings.label_7 -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- if matched_icon == blank and section_settings.keyword_8 != blank -%}
+                    {%- assign keyword_lower = section_settings.keyword_8 | downcase -%}
+                    {%- if product_type_lower contains keyword_lower -%}
+                      {%- assign matched_icon = section_settings.icon_8 -%}
+                      {%- if section_settings.label_8 != blank -%}
+                        {%- assign display_label = section_settings.label_8 -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- if matched_icon == blank and section_settings.keyword_9 != blank -%}
+                    {%- assign keyword_lower = section_settings.keyword_9 | downcase -%}
+                    {%- if product_type_lower contains keyword_lower -%}
+                      {%- assign matched_icon = section_settings.icon_9 -%}
+                      {%- if section_settings.label_9 != blank -%}
+                        {%- assign display_label = section_settings.label_9 -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- if matched_icon == blank and section_settings.keyword_10 != blank -%}
+                    {%- assign keyword_lower = section_settings.keyword_10 | downcase -%}
+                    {%- if product_type_lower contains keyword_lower -%}
+                      {%- assign matched_icon = section_settings.icon_10 -%}
+                      {%- if section_settings.label_10 != blank -%}
+                        {%- assign display_label = section_settings.label_10 -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+
+                  <div class="rdc-aussi-disponible__item">
+                    <a href="{{ other_product.url }}" class="rdc-aussi-disponible__link">
+                      {%- if matched_icon != blank -%}
+                        <div class="rdc-product-type-icon">
+                          {{
+                            matched_icon
+                            | image_url: width: 120
+                            | image_tag: loading: 'lazy', alt: display_label, width: 60, height: 60
+                          }}
+                        </div>
+                      {%- endif -%}
+                      <span class="rdc-aussi-disponible__label">{{ display_label }}</span>
+                    </a>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .similar-products {
+    width: 100%;
+  }
+
+  .similar-products__container {
+    position: relative;
+  }
+
+  .similar-products__content-wrapper.page-width {
+    grid-column: 2 / 3;
+  }
+
+  .rdc-aussi-disponible {
+    text-align: left;
+  }
+
+  .rdc-aussi-disponible__grid {
+    display: flex;
+    gap: 1rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  @media screen and (max-width: 749px) {
+    .rdc-aussi-disponible__grid {
+      overflow-x: scroll;
+      overflow-y: hidden;
+      margin-left: -1rem;
+      margin-right: -1rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      padding-bottom: 0.5rem;
+    }
+  }
+
+  .rdc-aussi-disponible__grid::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .rdc-aussi-disponible__grid::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+
+  .rdc-aussi-disponible__grid::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+  }
+
+  .rdc-aussi-disponible__grid::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  .rdc-aussi-disponible__item {
+    flex: 0 0 auto;
+    min-width: 120px;
+  }
+
+  .rdc-aussi-disponible__item--current .rdc-aussi-disponible__link {
+    border: 2px solid #a8a293ff;
+    background: #f3f3f0ff;
+  }
+
+  .rdc-aussi-disponible__link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    color: #534f4f;
+    transition: all 0.3s ease;
+    background: #eeede6;
+    border-radius: 6px;
+    min-width: 120px;
+    border-radius: 14px;
+    padding: 0.5rem;
+  }
+
+  .rdc-aussi-disponible__link:hover {
+    background: #e0ddd4;
+    transform: translateY(-2px);
+  }
+
+  .rdc-product-type-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .rdc-product-type-icon img {
+    height: 40px;
+    width: 40px;
+    object-fit: contain;
+  }
+
+  .rdc-aussi-disponible__link:hover .rdc-product-type-icon svg {
+    stroke: #000;
+  }
+
+  .rdc-aussi-disponible__label {
+    font-size: 0.8rem;
+    font-weight: 400;
+    font-family: var(--font-accent--family);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .rdc-aussi-disponible__empty {
+    color: #96928a;
+    font-style: italic;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  @media screen and (max-width: 749px) {
+    .rdc-aussi-disponible__grid {
+      gap: 0.5rem;
+    }
+
+    .rdc-aussi-disponible__link {
+      min-width: 100px;
+      padding: 0.7rem;
+    }
+
+    .rdc-aussi-disponible__item {
+      min-width: 100px;
+    }
+  }
+{% endstylesheet %}
+{% schema %}
+{
+  "name": "Produits similaires",
+  "tag": "section",
+  "class": "similar-products-wrapper section-wrapper",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Affiche automatiquement les produits qui partagent la même illustration (métaobjet)"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "label": "Nombre de produits à afficher",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "Mapping des icônes par type de produit"
+    },
+    {
+      "type": "text",
+      "id": "keyword_1",
+      "label": "Mot-clé 1",
+      "info": "Ex: solide, sweat, hoodie"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_1",
+      "label": "Icône 1"
+    },
+    {
+      "type": "text",
+      "id": "label_1",
+      "label": "Label de remplacement 1",
+      "info": "Ex: T-shirt unisexe (laissez vide pour garder le type original)"
+    },
+    {
+      "type": "text",
+      "id": "keyword_2",
+      "label": "Mot-clé 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_2",
+      "label": "Icône 2"
+    },
+    {
+      "type": "text",
+      "id": "label_2",
+      "label": "Label de remplacement 2"
+    },
+    {
+      "type": "text",
+      "id": "keyword_3",
+      "label": "Mot-clé 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_3",
+      "label": "Icône 3"
+    },
+    {
+      "type": "text",
+      "id": "label_3",
+      "label": "Label de remplacement 3"
+    },
+    {
+      "type": "text",
+      "id": "keyword_4",
+      "label": "Mot-clé 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_4",
+      "label": "Icône 4"
+    },
+    {
+      "type": "text",
+      "id": "label_4",
+      "label": "Label de remplacement 4"
+    },
+    {
+      "type": "text",
+      "id": "keyword_5",
+      "label": "Mot-clé 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_5",
+      "label": "Icône 5"
+    },
+    {
+      "type": "text",
+      "id": "label_5",
+      "label": "Label de remplacement 5"
+    },
+    {
+      "type": "text",
+      "id": "keyword_6",
+      "label": "Mot-clé 6"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_6",
+      "label": "Icône 6"
+    },
+    {
+      "type": "text",
+      "id": "label_6",
+      "label": "Label de remplacement 6"
+    },
+    {
+      "type": "text",
+      "id": "keyword_7",
+      "label": "Mot-clé 7"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_7",
+      "label": "Icône 7"
+    },
+    {
+      "type": "text",
+      "id": "label_7",
+      "label": "Label de remplacement 7"
+    },
+    {
+      "type": "text",
+      "id": "keyword_8",
+      "label": "Mot-clé 8"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_8",
+      "label": "Icône 8"
+    },
+    {
+      "type": "text",
+      "id": "label_8",
+      "label": "Label de remplacement 8"
+    },
+    {
+      "type": "text",
+      "id": "keyword_9",
+      "label": "Mot-clé 9"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_9",
+      "label": "Icône 9"
+    },
+    {
+      "type": "text",
+      "id": "label_9",
+      "label": "Label de remplacement 9"
+    },
+    {
+      "type": "text",
+      "id": "keyword_10",
+      "label": "Mot-clé 10"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_10",
+      "label": "Icône 10"
+    },
+    {
+      "type": "text",
+      "id": "label_10",
+      "label": "Label de remplacement 10"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Largeur de la section",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page"
+        },
+        {
+          "value": "full-width",
+          "label": "Pleine largeur"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Schéma de couleurs",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Style du conteneur"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Couleur de fond",
+      "default": "transparent"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Espacement haut",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "label": "Espacement droit",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Espacement bas",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "label": "Espacement gauche",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Arrondi des coins",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Épaisseur de la bordure",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Couleur de la bordure",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "items_alignment",
+      "label": "Alignement des produits",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Gauche"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        },
+        {
+          "value": "flex-end",
+          "label": "Droite"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Espacement de la section"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Haut",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bas",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Produits similaires"
+    }
+  ]
+}
+{% endschema %}

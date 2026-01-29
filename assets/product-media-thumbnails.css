@@ -18,7 +18,7 @@
 
 .media-fit-contain :is(img, .deferred-media__poster-image)
 {
-  background-color: rgb(211, 205, 193)!important;
+  background-color: #e7dcca !important;
  /* border-radius: 10px; */
 }
 
