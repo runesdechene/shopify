@@ -14,9 +14,9 @@
       "name": "Produits similaires",
       "settings": {
         "products_limit": 6,
-        "keyword_1": "solide",
+        "keyword_1": "le solide",
         "icon_1": "shopify://shop_images/icon_sweat.png",
-        "label_1": "Sweatshirt oversized",
+        "label_1": "Sweatshirt lourd",
         "keyword_2": "zippé",
         "icon_2": "shopify://shop_images/icon_zip.png",
         "label_2": "Jacket zippée",

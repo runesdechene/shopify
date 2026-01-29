@@ -88,9 +88,6 @@ slideshow-slide:has(.product-media__caption) .product-media-container {
   height: auto !important;
 }
 
-
-
-
 .product-media-container.media-fit-contain  {
 padding: 0;
 }
@@ -111,11 +108,12 @@ padding: 0;
 }
 
 .slideshow-controls__thumbnails {
+}
+
+.slideshow-controls__thumbnails {
     & .slideshow-control {
         &:is([aria-selected='true']) {
-            outline: 2px solid rgb(155, 149, 149);
-            border: 3px solid transparent;
-            border-radius: 5px;
+
         }
     }
 }

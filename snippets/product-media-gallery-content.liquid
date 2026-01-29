@@ -150,6 +150,27 @@
       assign sorted_media = selected_product.media
     endif
   endif
+
+  # Tri pour afficher en premier l'image avec alt personnalisé (différent du titre produit)
+  assign desktop_first_with_alt = null
+  for media in sorted_media
+    if media.alt != blank and media.alt != selected_product.title
+      assign desktop_first_with_alt = media
+      break
+    endif
+  endfor
+
+  if desktop_first_with_alt
+    assign temp_sorted_media = '' | split: ','
+    assign temp_sorted_media = temp_sorted_media | concat: selected_product.media | where: 'id', desktop_first_with_alt.id
+    for media in sorted_media
+      if media.id != desktop_first_with_alt.id
+        assign found_media = selected_product.media | where: 'id', media.id
+        assign temp_sorted_media = temp_sorted_media | concat: found_media
+      endif
+    endfor
+    assign sorted_media = temp_sorted_media
+  endif
   assign has_image_drop = sorted_media | has: 'media_type', 'image'
 
   # Determine if we're in single column mode (carousel or grid with one column)
@@ -375,8 +396,20 @@
               {%- render 'product-media', media: media, sizes: media_sizes, is_main_product_media: forloop.first -%}
             {% endif %}
           </div>
-          {%- if block_settings.show_media_alt and media.alt != blank and media.alt != selected_product.title -%}
-            <p class="product-media__caption">{{ media.alt }}</p>
+          {%- if block_settings.show_media_alt -%}
+            {%- if media.alt != blank and media.alt != selected_product.title -%}
+              <p class="product-media__caption">{{ media.alt }}</p>
+            {%- else -%}
+              {%- assign product_meta = selected_product.metafields.custom.base.value -%}
+              {%- if product_meta != blank -%}
+                {%- liquid
+                  assign tissu_clean = product_meta.tissu | replace: '[', '' | replace: ']', '' | replace: '"', ''
+                -%}
+                <p class="product-media__caption">
+                  Modèle <b>{{ product_meta.nom }} {{ product_meta.coupe }} {{ tissu_clean }}</b>
+                </p>
+              {%- endif -%}
+            {%- endif -%}
           {%- endif -%}
         {% endcapture %}
         {% capture class %}
