@@ -244,7 +244,9 @@
     "pills_usage": "Used for applied filters, discount codes, and search suggestions",
     "media_type_info": "Features are populated from your menu links",
     "random_product": "Displays a different product on each page load",
-    "banner_content_width": "Content width (background always stays full width)"
+    "banner_content_width": "Content width (background always stays full width)",
+    "filter_by_variant_color": "Only displays images whose filename contains the selected variant color name",
+    "show_media_alt": "Displays the image alt text below the active image if different from product title"
   },
   "names": {
     "banner_image": "Image banner",
@@ -919,6 +921,8 @@
     // Checkbox to hide padding control settings
     "hide_padding": "Hide padding",
     "hide_unselected_variant_media": "Hide unselected variant media",
+    "filter_by_variant_color": "Show only variant-related thumbnails",
+    "show_media_alt": "Show image caption",
     "horizontal_gap": "Horizontal gap",
     "hotspot_color": "Hotspot color",
     "horizontal_offset": "Shadow horizontal offset",

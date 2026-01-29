@@ -100,6 +100,21 @@
   endif
 
   assign sorted_media = '' | split: ','
+  
+  # Filter by variant color if enabled
+  assign variant_color_name = ''
+  if block_settings.filter_by_variant_color
+    assign selected_variant = selected_product.selected_or_first_available_variant
+    for option in selected_product.options_with_values
+      assign option_name_lower = option.name | downcase
+      if option_name_lower == 'color' or option_name_lower == 'colour' or option_name_lower == 'couleur'
+        assign option_index = forloop.index0
+        assign variant_color_name = selected_variant.options[option_index] | downcase | strip
+        break
+      endif
+    endfor
+  endif
+
   if selected_variant_media
     assign sorted_media = sorted_media | concat: selected_product.media | where: 'id', selected_variant_media.id
 
@@ -108,13 +123,32 @@
         continue
       endif
 
+      # Filter by variant color name in filename
+      if block_settings.filter_by_variant_color and variant_color_name != ''
+        assign media_filename = media.src | split: '/' | last | downcase
+        unless media_filename contains variant_color_name
+          continue
+        endunless
+      endif
+
       if media.id != selected_variant_media.id
         assign found_media = selected_product.media | where: 'id', media.id
         assign sorted_media = sorted_media | concat: found_media
       endif
     endfor
   else
-    assign sorted_media = selected_product.media
+    if block_settings.filter_by_variant_color and variant_color_name != ''
+      # Filter all media by variant color
+      for media in selected_product.media
+        assign media_filename = media.src | split: '/' | last | downcase
+        if media_filename contains variant_color_name
+          assign found_media = selected_product.media | where: 'id', media.id
+          assign sorted_media = sorted_media | concat: found_media
+        endif
+      endfor
+    else
+      assign sorted_media = selected_product.media
+    endif
   endif
   assign has_image_drop = sorted_media | has: 'media_type', 'image'
 
@@ -336,6 +370,9 @@
           {% else %}
             {%- render 'product-media', media: media, sizes: media_sizes, is_main_product_media: forloop.first -%}
           {% endif %}
+          {%- if block_settings.show_media_alt and media.alt != blank and media.alt != selected_product.title -%}
+            <p class="product-media__caption">{{ media.alt }}</p>
+          {%- endif -%}
         {% endcapture %}
         {% capture class %}
           {{ product_media_container_class }} product-media-container--{{ media.media_type }}{% if block_settings.zoom %} product-media-container--zoomable{% endif %}{% if forloop.index0 == lowest_aspect_ratio_index and block_settings.aspect_ratio == 'adapt' %} product-media-container--tallest{% endif %}

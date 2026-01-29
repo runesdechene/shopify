@@ -212,6 +212,8 @@
     "illustration_card_image": "Image de l'Illustration"
   },
   "settings": {
+    "filter_by_variant_color": "Afficher uniquement les vignettes en rapport avec la variante",
+    "show_media_alt": "Afficher la légende de l'image",
     "autoplay": "Lecture automatique",
     "background": "Arrière-plan",
     "border_radius": "Rayon de la bordure",
@@ -1132,7 +1134,9 @@
     "media_type_info": "Les fonctionnalités sont remplies à partir des liens de votre menu",
     "logo_height": "Affecte uniquement le logo de l’en-tête",
     "random_product": "Affiche un produit différent à chaque chargement de page",
-    "show_summary": "Affiche le résumé du métaobjet Illustrations lié"
+    "show_summary": "Affiche le résumé du métaobjet Illustrations lié",
+    "filter_by_variant_color": "Affiche uniquement les images dont le nom de fichier contient le nom de la couleur de la variante sélectionnée",
+    "show_media_alt": "Affiche le texte alternatif de l'image sous l'image active si différent du titre du produit"
   },
   "categories": {
     "basic": "De base",
