@@ -348,6 +348,9 @@
       {% if block_settings.extend_media %}
         media-gallery--extend
       {% endif %}
+      {% if block_settings.enable_mobile_gallery %}
+        media-gallery--mobile-alt-enabled
+      {% endif %}
     "
     style="{% render 'spacing-style', settings: block_settings %} --thumbnail-width: {{ block_settings.thumbnail_width }}px; --media-radius: {{ block_settings.media_radius }}px;{% if block_settings.icons_style contains 'large' %} --slideshow-icon-padding: 0px;{% endif %}--image-gap: {{ block_settings.image_gap }}px;{% unless block_settings.aspect_ratio == 'adapt' %} --gallery-aspect-ratio: {{ block_settings.aspect_ratio }};{% endunless %}"
     data-presentation="{{ media_presentation }}"
@@ -631,6 +634,136 @@
         window.ProductModel.loadShopifyXR();
       </script>
     {%- endif -%}
+
+    {%- comment -%} Galerie mobile alternative {%- endcomment -%}
+    {%- if block_settings.enable_mobile_gallery and sorted_media.size > 0 -%}
+      <div class="mobile-gallery-alt" data-block-id="{{ block_id }}">
+        <div class="mobile-gallery-alt__main">
+          {%- assign first_media = sorted_media | first -%}
+          <button
+            type="button"
+            class="mobile-gallery-alt__main-button"
+            aria-label="{{ 'actions.zoom' | t }}"
+            {% if block_settings.zoom %}
+              on:click="#zoom-dialog-{{ block_id }}/open/0"
+            {% endif %}
+          >
+            {{
+              first_media.preview_image
+              | image_url: width: 800
+              | image_tag:
+                loading: 'eager',
+                sizes: '70vw',
+                widths: '400, 600, 800',
+                alt: first_media.alt | default: selected_product.title,
+                class: 'mobile-gallery-alt__main-image'
+            }}
+            <span class="mobile-gallery-alt__zoom-icon">
+              {{ 'icon-zoom.svg' | inline_asset_content }}
+            </span>
+          </button>
+        </div>
+        <div class="mobile-gallery-alt__thumbs">
+          {%- for media in sorted_media -%}
+            <button
+              type="button"
+              class="mobile-gallery-alt__thumb{% if forloop.first %} mobile-gallery-alt__thumb--active{% endif %}"
+              data-index="{{ forloop.index0 }}"
+              aria-label="{{ 'accessibility.scroll_to' | t: title: media.alt | default: media.media_type }}"
+            >
+              {{
+                media.preview_image
+                | image_url: width: 200
+                | image_tag:
+                  loading: 'lazy',
+                  sizes: '80px',
+                  widths: '80, 160, 200',
+                  alt: media.alt | default: selected_product.title
+              }}
+            </button>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <script>
+        console.log('MOBILE GALLERY SCRIPT LOADED - block_id: {{ block_id }}');
+        (function() {
+          function initMobileGallery() {
+            console.log('initMobileGallery called');
+            var gallery = document.querySelector('.mobile-gallery-alt[data-block-id="{{ block_id }}"]');
+            console.log('gallery found:', gallery);
+            if (!gallery) return;
+
+            var mainContainer = gallery.querySelector('.mobile-gallery-alt__main');
+            var mainButton = gallery.querySelector('.mobile-gallery-alt__main-button');
+            var mainImage = mainContainer ? mainContainer.querySelector('img') : null;
+            var thumbs = gallery.querySelectorAll('.mobile-gallery-alt__thumb');
+
+            console.log('mainContainer:', mainContainer);
+            console.log('mainButton:', mainButton);
+            console.log('mainImage:', mainImage);
+            console.log('thumbs count:', thumbs.length);
+
+            if (!mainImage) {
+              console.error('mainImage not found!');
+              return;
+            }
+
+            console.log('Adding click handlers to thumbs...');
+
+            for (var i = 0; i < thumbs.length; i++) {
+              (function(index) {
+                thumbs[index].onclick = function(e) {
+                  console.log('THUMB CLICKED:', index);
+                  e.preventDefault();
+                  e.stopPropagation();
+
+                  // Update active state
+                  for (var j = 0; j < thumbs.length; j++) {
+                    thumbs[j].classList.remove('mobile-gallery-alt__thumb--active');
+                  }
+                  this.classList.add('mobile-gallery-alt__thumb--active');
+
+                  // Update main image
+                  var thumbImg = this.querySelector('img');
+                  console.log('thumbImg:', thumbImg);
+                  if (thumbImg) {
+                    var thumbSrc = thumbImg.getAttribute('src') || '';
+                    // Get base URL without width parameter
+                    var baseUrl = thumbSrc.replace(/[?&]width=\d+/, '').replace(/&v=/, '?v=');
+                    if (baseUrl.indexOf('?') === -1) {
+                      baseUrl = thumbSrc.split('?')[0];
+                    }
+                    var newSrc = baseUrl + (baseUrl.indexOf('?') > -1 ? '&' : '?') + 'width=800';
+                    console.log('baseUrl:', baseUrl);
+                    console.log('new src:', newSrc);
+                    
+                    // Update both src and srcset
+                    mainImage.src = newSrc;
+                    mainImage.srcset = newSrc.replace('width=800', 'width=400') + ' 400w, ' +
+                                       newSrc.replace('width=800', 'width=600') + ' 600w, ' +
+                                       newSrc + ' 800w';
+                    console.log('Image updated!');
+                  }
+
+                  // Update zoom index
+                  if (mainButton && mainButton.hasAttribute('on:click')) {
+                    var attr = mainButton.getAttribute('on:click');
+                    mainButton.setAttribute('on:click', attr.replace(/\/open\/\d+/, '/open/' + index));
+                  }
+                };
+              })(i);
+            }
+          }
+
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initMobileGallery);
+          } else {
+            initMobileGallery();
+          }
+        })();
+      </script>
+    {%- endif -%}
   </media-gallery>
 {% endif %}
 
@@ -772,5 +905,121 @@
   .dialog-zoomed-gallery .product-media-container--model .product-media__image {
     /* Make the height match the height of the model-viewer */
     height: 100vh;
+  }
+
+  /* ========================================
+     GALERIE MOBILE ALTERNATIVE
+     ======================================== */
+
+  /* Cacher par défaut sur desktop */
+  .mobile-gallery-alt {
+    display: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    /* Cacher l'ancienne galerie quand la galerie mobile alternative est activée */
+    .media-gallery--mobile-alt-enabled > slideshow-component,
+    .media-gallery--mobile-alt-enabled > .media-gallery__grid,
+    .media-gallery--mobile-alt-enabled > .slideshow-controls,
+    .media-gallery--mobile-alt-enabled > [class*="slideshow-controls"] {
+      display: none !important;
+    }
+
+    /* S'assurer que le conteneur media-gallery ne cache pas la galerie mobile */
+    .media-gallery--mobile-alt-enabled {
+      display: block !important;
+    }
+
+    .mobile-gallery-alt {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .mobile-gallery-alt__main {
+      flex: 0 0 72%;
+      position: relative;
+    }
+
+    .mobile-gallery-alt__main-button {
+      display: block;
+      width: 100%;
+      padding: 0;
+      border: none;
+      background: none;
+      cursor: zoom-in;
+      position: relative;
+      border-radius: var(--media-radius, 4px);
+      overflow: hidden;
+    }
+
+    .mobile-gallery-alt__main-image {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+      border-radius: var(--media-radius, 4px);
+    }
+
+    .mobile-gallery-alt__zoom-icon {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      width: 28px;
+      height: 28px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .mobile-gallery-alt__zoom-icon svg {
+      width: 16px;
+      height: 16px;
+      stroke: #333;
+    }
+
+    .mobile-gallery-alt__thumbs {
+      flex: 0 0 28%;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: calc((72vw) + 8px);
+      overflow-y: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .mobile-gallery-alt__thumbs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .mobile-gallery-alt__thumb {
+      flex: 0 0 calc((72vw - 12px) / 3);
+      padding: 0;
+      border: 2px solid transparent;
+      background: none;
+      cursor: pointer;
+      border-radius: var(--media-radius, 4px);
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+
+    .mobile-gallery-alt__thumb img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+    }
+
+    .mobile-gallery-alt__thumb--active {
+      border-color: var(--color-foreground, #333);
+    }
+
+    .mobile-gallery-alt__thumb:hover {
+      border-color: var(--color-foreground, #333);
+    }
   }
 {% endstylesheet %}

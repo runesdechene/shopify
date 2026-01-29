@@ -143,6 +143,17 @@
     },
     {
       "type": "header",
+      "content": "Galerie mobile alternative"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_mobile_gallery",
+      "label": "Activer la galerie mobile alternative",
+      "info": "Affiche l'image principale à gauche et les thumbnails à droite sur mobile",
+      "default": false
+    },
+    {
+      "type": "header",
       "content": "t:content.thumbnails",
       "visible_if": "{{ block.settings.slideshow_controls_style == 'thumbnails' or block.settings.slideshow_mobile_controls_style == 'thumbnails' }}"
     },
