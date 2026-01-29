@@ -100,7 +100,7 @@
   endif
 
   assign sorted_media = '' | split: ','
-  
+
   # Filter by variant color if enabled
   assign variant_color_name = ''
   if block_settings.filter_by_variant_color
@@ -637,9 +637,32 @@
 
     {%- comment -%} Galerie mobile alternative {%- endcomment -%}
     {%- if block_settings.enable_mobile_gallery and sorted_media.size > 0 -%}
+      {%- comment -%}
+        Tri des médias pour mobile :
+        1) Première image avec alt personnalisé (différent du titre)
+        2) Les autres images dans leur ordre original
+      {%- endcomment -%}
+      {%- assign mobile_first_with_alt = null -%}
+      {%- assign mobile_first_with_alt_index = -1 -%}
+
+      {%- for media in sorted_media -%}
+        {%- if mobile_first_with_alt == null and media.alt != blank and media.alt != selected_product.title -%}
+          {%- assign mobile_first_with_alt = media -%}
+          {%- assign mobile_first_with_alt_index = forloop.index0 -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- assign mobile_sorted_media = sorted_media -%}
+
       <div class="mobile-gallery-alt" data-block-id="{{ block_id }}">
         <div class="mobile-gallery-alt__main">
-          {%- assign first_media = sorted_media | first -%}
+          {%- comment -%} Utiliser l'image avec alt si trouvée, sinon la première {%- endcomment -%}
+          {%- if mobile_first_with_alt -%}
+            {%- assign first_media = mobile_first_with_alt -%}
+          {%- else -%}
+            {%- assign first_media = sorted_media | first -%}
+          {%- endif -%}
           <button
             type="button"
             class="mobile-gallery-alt__main-button"
@@ -651,12 +674,8 @@
             {{
               first_media.preview_image
               | image_url: width: 800
-              | image_tag:
-                loading: 'eager',
-                sizes: '70vw',
-                widths: '400, 600, 800',
-                alt: first_media.alt | default: selected_product.title,
-                class: 'mobile-gallery-alt__main-image'
+              | image_tag: loading: 'eager', sizes: '70vw', widths: '400, 600, 800', alt: first_media.alt
+              | default: selected_product.title, class: 'mobile-gallery-alt__main-image'
             }}
             <span class="mobile-gallery-alt__zoom-icon">
               {{ 'icon-zoom.svg' | inline_asset_content }}
@@ -664,57 +683,83 @@
           </button>
         </div>
         <div class="mobile-gallery-alt__thumbs">
-          {%- for media in sorted_media -%}
+          {%- comment -%} Afficher d'abord le thumbnail de l'image active (avec alt) {%- endcomment -%}
+          {%- if mobile_first_with_alt -%}
             <button
               type="button"
-              class="mobile-gallery-alt__thumb{% if forloop.first %} mobile-gallery-alt__thumb--active{% endif %}"
-              data-index="{{ forloop.index0 }}"
-              aria-label="{{ 'accessibility.scroll_to' | t: title: media.alt | default: media.media_type }}"
+              class="mobile-gallery-alt__thumb mobile-gallery-alt__thumb--active"
+              data-index="{{ mobile_first_with_alt_index }}"
+              aria-label="{{ 'accessibility.scroll_to' | t: title: mobile_first_with_alt.alt | default: mobile_first_with_alt.media_type }}"
             >
               {{
-                media.preview_image
+                mobile_first_with_alt.preview_image
                 | image_url: width: 200
-                | image_tag:
-                  loading: 'lazy',
-                  sizes: '80px',
-                  widths: '80, 160, 200',
-                  alt: media.alt | default: selected_product.title
+                | image_tag: loading: 'lazy', sizes: '80px', widths: '80, 160, 200', alt: mobile_first_with_alt.alt
+                | default: selected_product.title
               }}
             </button>
+          {%- endif -%}
+          {%- for media in mobile_sorted_media -%}
+            {%- if mobile_first_with_alt == null or media.id != mobile_first_with_alt.id -%}
+              <button
+                type="button"
+                class="mobile-gallery-alt__thumb{% if mobile_first_with_alt == nil and forloop.first %} mobile-gallery-alt__thumb--active{% endif %}"
+                data-index="{{ forloop.index0 }}"
+                aria-label="{{ 'accessibility.scroll_to' | t: title: media.alt | default: media.media_type }}"
+              >
+                {{
+                  media.preview_image
+                  | image_url: width: 200
+                  | image_tag: loading: 'lazy', sizes: '80px', widths: '80, 160, 200', alt: media.alt
+                  | default: selected_product.title
+                }}
+              </button>
+            {%- endif -%}
           {%- endfor -%}
         </div>
       </div>
 
       <script>
-        console.log('MOBILE GALLERY SCRIPT LOADED - block_id: {{ block_id }}');
-        (function() {
+        (function () {
           function initMobileGallery() {
-            console.log('initMobileGallery called');
             var gallery = document.querySelector('.mobile-gallery-alt[data-block-id="{{ block_id }}"]');
-            console.log('gallery found:', gallery);
             if (!gallery) return;
 
             var mainContainer = gallery.querySelector('.mobile-gallery-alt__main');
             var mainButton = gallery.querySelector('.mobile-gallery-alt__main-button');
             var mainImage = mainContainer ? mainContainer.querySelector('img') : null;
+            var thumbsContainer = gallery.querySelector('.mobile-gallery-alt__thumbs');
             var thumbs = gallery.querySelectorAll('.mobile-gallery-alt__thumb');
 
-            console.log('mainContainer:', mainContainer);
-            console.log('mainButton:', mainButton);
-            console.log('mainImage:', mainImage);
-            console.log('thumbs count:', thumbs.length);
+            if (!mainImage || !thumbsContainer) return;
 
-            if (!mainImage) {
-              console.error('mainImage not found!');
-              return;
+            // Appliquer les styles de base - PAS de aspect-ratio pour garder le ratio naturel
+            mainImage.style.width = '100%';
+            mainImage.style.height = 'auto';
+            mainImage.style.display = 'block';
+
+            // Fonction pour ajuster la hauteur du wrapper thumbnails
+            function updateThumbsHeight() {
+              var mainHeight = mainImage.offsetHeight;
+              if (mainHeight > 0) {
+                thumbsContainer.style.maxHeight = mainHeight + 'px';
+              }
             }
 
-            console.log('Adding click handlers to thumbs...');
+            // Ajuster la hauteur au chargement et après le chargement de l'image
+            if (mainImage.complete) {
+              updateThumbsHeight();
+            }
+            mainImage.addEventListener('load', updateThumbsHeight);
+            window.addEventListener('resize', updateThumbsHeight);
+
+            // Fallback: réessayer après un court délai
+            setTimeout(updateThumbsHeight, 100);
+            setTimeout(updateThumbsHeight, 500);
 
             for (var i = 0; i < thumbs.length; i++) {
-              (function(index) {
-                thumbs[index].onclick = function(e) {
-                  console.log('THUMB CLICKED:', index);
+              (function (index) {
+                thumbs[index].onclick = function (e) {
                   e.preventDefault();
                   e.stopPropagation();
 
@@ -726,24 +771,23 @@
 
                   // Update main image
                   var thumbImg = this.querySelector('img');
-                  console.log('thumbImg:', thumbImg);
                   if (thumbImg) {
                     var thumbSrc = thumbImg.getAttribute('src') || '';
-                    // Get base URL without width parameter
                     var baseUrl = thumbSrc.replace(/[?&]width=\d+/, '').replace(/&v=/, '?v=');
                     if (baseUrl.indexOf('?') === -1) {
                       baseUrl = thumbSrc.split('?')[0];
                     }
                     var newSrc = baseUrl + (baseUrl.indexOf('?') > -1 ? '&' : '?') + 'width=800';
-                    console.log('baseUrl:', baseUrl);
-                    console.log('new src:', newSrc);
-                    
-                    // Update both src and srcset
+
                     mainImage.src = newSrc;
-                    mainImage.srcset = newSrc.replace('width=800', 'width=400') + ' 400w, ' +
-                                       newSrc.replace('width=800', 'width=600') + ' 600w, ' +
-                                       newSrc + ' 800w';
-                    console.log('Image updated!');
+                    mainImage.srcset =
+                      newSrc.replace('width=800', 'width=400') +
+                      ' 400w, ' +
+                      newSrc.replace('width=800', 'width=600') +
+                      ' 600w, ' +
+                      newSrc +
+                      ' 800w';
+                    updateThumbsHeight();
                   }
 
                   // Update zoom index
@@ -754,6 +798,8 @@
                 };
               })(i);
             }
+
+            console.log('[V3] Mobile gallery initialized successfully');
           }
 
           if (document.readyState === 'loading') {
@@ -921,7 +967,7 @@
     .media-gallery--mobile-alt-enabled > slideshow-component,
     .media-gallery--mobile-alt-enabled > .media-gallery__grid,
     .media-gallery--mobile-alt-enabled > .slideshow-controls,
-    .media-gallery--mobile-alt-enabled > [class*="slideshow-controls"] {
+    .media-gallery--mobile-alt-enabled > [class*='slideshow-controls'] {
       display: none !important;
     }
 
@@ -934,10 +980,11 @@
       display: flex;
       gap: 8px;
       width: 100%;
+      margin-bottom: 20px;
     }
 
     .mobile-gallery-alt__main {
-      flex: 0 0 72%;
+      flex: 0 0 78%;
       position: relative;
     }
 
@@ -946,19 +993,21 @@
       width: 100%;
       padding: 0;
       border: none;
-      background: none;
+      background: #d4c9b6ff;
       cursor: zoom-in;
       position: relative;
-      border-radius: var(--media-radius, 4px);
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
       overflow: hidden;
     }
 
-    .mobile-gallery-alt__main-image {
+    .mobile-gallery-alt__main-image,
+    .mobile-gallery-alt__main-button img {
       width: 100%;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
+      height: auto;
       display: block;
       border-radius: var(--media-radius, 4px);
+      transition: opacity 0.3s ease-in-out;
     }
 
     .mobile-gallery-alt__zoom-icon {
@@ -982,14 +1031,14 @@
     }
 
     .mobile-gallery-alt__thumbs {
-      flex: 0 0 28%;
+      flex: 1;
       display: flex;
       flex-direction: column;
       gap: 6px;
-      max-height: calc((72vw) + 8px);
       overflow-y: auto;
       scrollbar-width: none;
       -ms-overflow-style: none;
+      align-self: flex-start;
     }
 
     .mobile-gallery-alt__thumbs::-webkit-scrollbar {
@@ -997,29 +1046,26 @@
     }
 
     .mobile-gallery-alt__thumb {
-      flex: 0 0 calc((72vw - 12px) / 3);
+      flex: 0 0 auto;
       padding: 0;
-      border: 2px solid transparent;
-      background: none;
+      background: #d4c9b6ff;
+      border: none;
+      border-top-left-radius: 10px !important;
+      border-bottom-left-radius: 10px !important;
       cursor: pointer;
-      border-radius: var(--media-radius, 4px);
       overflow: hidden;
       transition: border-color 0.2s ease;
+      opacity: 0.7;
     }
 
     .mobile-gallery-alt__thumb img {
       width: 100%;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
+      height: auto;
       display: block;
     }
 
     .mobile-gallery-alt__thumb--active {
-      border-color: var(--color-foreground, #333);
-    }
-
-    .mobile-gallery-alt__thumb:hover {
-      border-color: var(--color-foreground, #333);
+      opacity: 1;
     }
   }
 {% endstylesheet %}
