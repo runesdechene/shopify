@@ -9,6 +9,15 @@
 
 {% style %}
   /* Cibler UNIQUEMENT les buttons qui ne sont PAS des swatches */
+
+  .variant-picker {
+    margin-bottom: 0;
+  }
+
+  .variant-option--buttons:not(.variant-option--swatches) {
+    gap: 5px;
+  }
+
   .variant-option--buttons:not(.variant-option--swatches) .variant-option__button-label {
     padding: 10px;
     border-radius: 50px;
@@ -274,7 +283,7 @@
   .variant-option--buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--gap-sm);
+    gap: 10px;
     margin: 0;
     padding: 0;
     border: none;

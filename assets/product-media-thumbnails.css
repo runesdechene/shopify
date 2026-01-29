@@ -96,7 +96,7 @@ padding: 0;
 }
 
 .product-media-container.media-fit-contain img {
-  object-position: center top;
+  object-position: center center;
   object-fit: auto;
   height: 100%;  
 }

@@ -1820,6 +1820,7 @@ zoom-dialog dialog {
   scrollbar-width: none;
   animation: thumbnailsSlideInBottom calc(var(--animation-speed) * 0.75) var(--animation-easing) forwards;
   animation-delay: calc(var(--animation-speed) * 1.5);
+  max-height: 20vh !important; 
 }
 
 .dialog--closed .dialog-thumbnails-list {

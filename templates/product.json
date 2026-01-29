@@ -143,7 +143,7 @@
             "media_fit": "contain",
             "media_radius": 0,
             "extend_media": false,
-            "zoom": false,
+            "zoom": true,
             "video_loop": false,
             "hide_variants": false,
             "filter_by_variant_color": true,
@@ -644,7 +644,7 @@
                         "text_QfbPLQ": {
                           "type": "text",
                           "settings": {
-                            "text": "<p>Made with care</p>",
+                            "text": "<p>Entreprise française</p>",
                             "width": "100%",
                             "max_width": "none",
                             "alignment": "center",
@@ -727,7 +727,7 @@
                         "icon_tJpnRn": {
                           "type": "icon",
                           "settings": {
-                            "icon": "serving_dish",
+                            "icon": "box",
                             "width": 32,
                             "link": "",
                             "open_in_new_tab": false
@@ -737,7 +737,7 @@
                         "text_b3t8my": {
                           "type": "text",
                           "settings": {
-                            "text": "<p>Heirloom quality</p>",
+                            "text": "<p>Livraison sans plastique</p>",
                             "width": "100%",
                             "max_width": "none",
                             "alignment": "center",
@@ -830,7 +830,7 @@
                         "text_qn3jAU": {
                           "type": "text",
                           "settings": {
-                            "text": "<p>Premium materials</p>",
+                            "text": "<p>Matière </p><p>haute-de-gamme</p>",
                             "width": "100%",
                             "max_width": "none",
                             "alignment": "center",
@@ -913,7 +913,7 @@
                         "icon_m9YPRU": {
                           "type": "icon",
                           "settings": {
-                            "icon": "shirt",
+                            "icon": "plant",
                             "width": 32,
                             "link": "",
                             "open_in_new_tab": false
@@ -923,7 +923,7 @@
                         "text_RGzFRc": {
                           "type": "text",
                           "settings": {
-                            "text": "<p>Classic styling</p>",
+                            "text": "<p>Certifié Fair Wear & Peta</p>",
                             "width": "100%",
                             "max_width": "none",
                             "alignment": "center",
@@ -1137,7 +1137,9 @@
           ]
         }
       },
-      "custom_css": [],
+      "custom_css": [
+        ".price {font-weight: bold;}"
+      ],
       "settings": {
         "content_width": "content-center-aligned",
         "desktop_media_position": "left",

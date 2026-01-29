@@ -668,7 +668,7 @@
             class="mobile-gallery-alt__main-button"
             aria-label="{{ 'actions.zoom' | t }}"
             {% if block_settings.zoom %}
-              on:click="#zoom-dialog-{{ block_id }}/open/0"
+              on:click="#zoom-dialog-{{ block_id }}/open/{{ mobile_first_with_alt_index | default: 0 }}"
             {% endif %}
           >
             {{
@@ -701,10 +701,18 @@
           {%- endif -%}
           {%- for media in mobile_sorted_media -%}
             {%- if mobile_first_with_alt == null or media.id != mobile_first_with_alt.id -%}
+              {%- comment -%} Trouver l'index de ce media dans sorted_media original {%- endcomment -%}
+              {%- assign original_index = 0 -%}
+              {%- for original_media in sorted_media -%}
+                {%- if original_media.id == media.id -%}
+                  {%- assign original_index = forloop.index0 -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
               <button
                 type="button"
                 class="mobile-gallery-alt__thumb{% if mobile_first_with_alt == nil and forloop.first %} mobile-gallery-alt__thumb--active{% endif %}"
-                data-index="{{ forloop.index0 }}"
+                data-index="{{ original_index }}"
                 aria-label="{{ 'accessibility.scroll_to' | t: title: media.alt | default: media.media_type }}"
               >
                 {{
@@ -730,6 +738,35 @@
             var mainImage = mainContainer ? mainContainer.querySelector('img') : null;
             var thumbsContainer = gallery.querySelector('.mobile-gallery-alt__thumbs');
             var thumbs = gallery.querySelectorAll('.mobile-gallery-alt__thumb');
+
+            // Gérer le clic sur le bouton principal pour ouvrir le zoom - AVANT le return
+            if (mainButton) {
+              console.log('[ZOOM] Main button found:', mainButton);
+              console.log('[ZOOM] Button computed style:', window.getComputedStyle(mainButton).pointerEvents);
+
+              mainButton.addEventListener('click', function (e) {
+                console.log('[ZOOM] BUTTON CLICKED!', e);
+                var onClickAttr = mainButton.getAttribute('on:click');
+                console.log('[ZOOM] on:click attr:', onClickAttr);
+                if (onClickAttr) {
+                  // Extraire l'ID et l'index de l'attribut on:click
+                  var match = onClickAttr.match(/#([^/]+)\/open\/(\d+)/);
+                  if (match) {
+                    var dialogId = match[1];
+                    var index = parseInt(match[2], 10);
+                    console.log('[ZOOM] Dialog ID:', dialogId, 'Index:', index);
+                    var zoomDialog = document.getElementById(dialogId);
+                    console.log('[ZOOM] Dialog element:', zoomDialog);
+                    if (zoomDialog && typeof zoomDialog.open === 'function') {
+                      console.log('[ZOOM] Calling zoomDialog.open()');
+                      zoomDialog.open(index, e);
+                    } else {
+                      console.log('[ZOOM] No open function or dialog not found');
+                    }
+                  }
+                }
+              });
+            }
 
             if (!mainImage || !thumbsContainer) return;
 
@@ -758,8 +795,8 @@
             setTimeout(updateThumbsHeight, 500);
 
             for (var i = 0; i < thumbs.length; i++) {
-              (function (index) {
-                thumbs[index].onclick = function (e) {
+              (function (thumbElement) {
+                thumbElement.onclick = function (e) {
                   e.preventDefault();
                   e.stopPropagation();
 
@@ -768,6 +805,9 @@
                     thumbs[j].classList.remove('mobile-gallery-alt__thumb--active');
                   }
                   this.classList.add('mobile-gallery-alt__thumb--active');
+
+                  // Get the original index from data-index attribute
+                  var originalIndex = parseInt(this.getAttribute('data-index') || '0', 10);
 
                   // Update main image
                   var thumbImg = this.querySelector('img');
@@ -790,13 +830,13 @@
                     updateThumbsHeight();
                   }
 
-                  // Update zoom index
+                  // Update zoom index with the original index
                   if (mainButton && mainButton.hasAttribute('on:click')) {
                     var attr = mainButton.getAttribute('on:click');
-                    mainButton.setAttribute('on:click', attr.replace(/\/open\/\d+/, '/open/' + index));
+                    mainButton.setAttribute('on:click', attr.replace(/\/open\/\d+/, '/open/' + originalIndex));
                   }
                 };
-              })(i);
+              })(thumbs[i]);
             }
 
             console.log('[V3] Mobile gallery initialized successfully');
@@ -980,12 +1020,13 @@
       display: flex;
       gap: 8px;
       width: 100%;
-      margin-bottom: 20px;
+      padding-bottom: 20px;
     }
 
     .mobile-gallery-alt__main {
       flex: 0 0 78%;
       position: relative;
+      z-index: 1;
     }
 
     .mobile-gallery-alt__main-button {
@@ -994,11 +1035,13 @@
       padding: 0;
       border: none;
       background: #d4c9b6ff;
-      cursor: zoom-in;
+      cursor: zoom-in !important;
       position: relative;
       border-top-right-radius: 10px;
       border-bottom-right-radius: 10px;
       overflow: hidden;
+      pointer-events: auto !important;
+      z-index: 2;
     }
 
     .mobile-gallery-alt__main-image,
@@ -1007,7 +1050,7 @@
       height: auto;
       display: block;
       border-radius: var(--media-radius, 4px);
-      transition: opacity 0.3s ease-in-out;
+      pointer-events: none;
     }
 
     .mobile-gallery-alt__zoom-icon {
