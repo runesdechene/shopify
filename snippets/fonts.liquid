@@ -1,4 +1,12 @@
 {% # theme-check-disable %}
+{%- comment -%} Custom Google Font for Accent {%- endcomment -%}
+{%- if settings.custom_google_font_accent != blank -%}
+  {%- assign google_font = settings.custom_google_font_accent | replace: ' ', '+' -%}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family={{ google_font }}&display=swap" rel="stylesheet">
+{%- endif -%}
+
 {%- unless settings.type_body_font.system? -%}
   <link
     rel="preload"

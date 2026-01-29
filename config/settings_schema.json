@@ -377,6 +377,20 @@
       },
       {
         "type": "header",
+        "content": "Google Font personnalisée"
+      },
+      {
+        "type": "paragraph",
+        "content": "Ajoutez une Google Font personnalisée pour la police Accent. Laissez vide pour utiliser la police sélectionnée ci-dessus."
+      },
+      {
+        "type": "text",
+        "id": "custom_google_font_accent",
+        "label": "Google Font (Accent)",
+        "info": "Entrez le nom exact de la Google Font (ex: 'Montserrat', 'Playfair Display')"
+      },
+      {
+        "type": "header",
         "content": "t:content.text_presets"
       },
       {
