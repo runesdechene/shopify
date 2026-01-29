@@ -19,7 +19,7 @@
 .media-fit-contain :is(img, .deferred-media__poster-image)
 {
   background-color: rgb(211, 205, 193)!important;
-  border-radius: 10px;
+ /* border-radius: 10px; */
 }
 
 /* Force slideshow slides to display in column layout when caption is present */
@@ -92,7 +92,6 @@ slideshow-slide:has(.product-media__caption) .product-media-container {
 
 
 .product-media-container.media-fit-contain  {
-margin-top: 50px;
 padding: 0;
 }
 
@@ -104,7 +103,6 @@ padding: 0;
 
 .slideshow-controls__thumbnails-container
 {
-  margin-top: 50px;
   height: auto;
 }
 
