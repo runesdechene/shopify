@@ -82,6 +82,18 @@
       {%- endform -%}
     </div>
   {%- endif -%}
+
+  {%- if selected_variant != blank and block_settings.show_three_installments -%}
+    <div class="three-installments">
+      {%- assign installment_price = selected_variant.price | divided_by: 3.0 | money -%}
+      <p class="three-installments__text">
+        ou 3 paiements de {{ installment_price }} TTC
+        {%- if block_settings.installments_image != blank -%}
+          <img src="{{ block_settings.installments_image | image_url: width: 100 }}" alt="" class="three-installments__image" loading="lazy">
+        {%- endif -%}
+      </p>
+    </div>
+  {%- endif -%}
 </product-price>
 
 {% # theme-check-disable %}
@@ -99,6 +111,24 @@
 
   .installments:not(:has(shopify-payment-terms)) {
     display: none;
+  }
+
+
+  .three-installments__text {
+    font-size: min(0.85em, var(--font-paragraph--size));
+    font-weight: var(--font-paragraph--weight);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+
+  .three-installments__image {
+    height: 1.2em;
+    width: auto;
+    display: inline-block;
+    vertical-align: middle;
   }
 
   /* Volume pricing note should match unit-price styling (small, grey text) */
@@ -145,6 +175,18 @@
       "id": "show_tax_info",
       "label": "t:settings.show_tax_info",
       "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_three_installments",
+      "label": "t:settings.show_three_installments",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "installments_image",
+      "label": "t:settings.installments_image",
+      "info": "t:info.installments_image"
     },
     {
       "type": "header",
