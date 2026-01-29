@@ -149,7 +149,7 @@
                 "vertical_alignment_flex_direction_column": "center",
                 "gap": 24,
                 "width": "custom",
-                "custom_width": 75,
+                "custom_width": 80,
                 "width_mobile": "fill",
                 "custom_width_mobile": 100,
                 "height": "fit",
@@ -299,14 +299,40 @@
                     "price_iBYhxh"
                   ]
                 },
+                "product_features_MTyx7p": {
+                  "type": "product-features",
+                  "name": "Caractéristiques produit",
+                  "settings": {
+                    "heading": "",
+                    "keyword_1": "bio",
+                    "icon_1": "shopify://shop_images/rdc_icon-arbre.png",
+                    "keyword_2": "main",
+                    "icon_2": "shopify://shop_images/rdc_icon-no-ia.png",
+                    "keyword_3": "imprimé",
+                    "icon_3": "shopify://shop_images/rdc_icon-eau.png",
+                    "keyword_4": "respect",
+                    "icon_4": "shopify://shop_images/rdc_icon-rune.png",
+                    "keyword_5": "plastique",
+                    "icon_5": "shopify://shop_images/rdc_icon-colis.png",
+                    "keyword_6": "g/m²",
+                    "icon_6": "shopify://shop_images/rdc_icon-tissu_8832c990-7a86-41fc-8b0b-25b5fb4cb06f.png",
+                    "keyword_7": "",
+                    "keyword_8": "",
+                    "keyword_9": "",
+                    "keyword_10": "",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0
+                  },
+                  "blocks": {}
+                },
                 "variant_picker_VT89rh": {
                   "type": "variant-picker",
                   "settings": {
                     "variant_style": "buttons",
                     "show_swatches": true,
                     "alignment": "left",
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
+                    "padding-block-start": 10,
+                    "padding-block-end": 10,
                     "padding-inline-start": 0,
                     "padding-inline-end": 0
                   },
@@ -315,7 +341,7 @@
                 "buy_buttons_64taHw": {
                   "type": "buy-buttons",
                   "settings": {
-                    "stacking": false,
+                    "stacking": true,
                     "show_pickup_availability": false,
                     "gift_card_form": true,
                     "padding-block-start": 0,
@@ -334,7 +360,7 @@
                       "type": "add-to-cart",
                       "static": true,
                       "settings": {
-                        "style_class": "button-secondary"
+                        "style_class": "button"
                       },
                       "blocks": {}
                     },
@@ -942,6 +968,7 @@
               },
               "block_order": [
                 "group_nMm3w6",
+                "product_features_MTyx7p",
                 "variant_picker_VT89rh",
                 "buy_buttons_64taHw",
                 "text_wnQCmf",

@@ -7,6 +7,25 @@
 
 {% assign block_settings = block.settings %}
 
+{% style %}
+  /* Cibler UNIQUEMENT les buttons qui ne sont PAS des swatches */
+  .variant-option--buttons:not(.variant-option--swatches) .variant-option__button-label {
+    padding: 10px;
+    border-radius: 50px;
+    font-size: 13px;
+  }
+
+  label {
+    margin-bottom: 5px;
+    margin-top: 5px;
+  }
+
+  legend {
+    font-weight: bold;
+    font-size: 15px;
+  }
+{% endstyle %}
+
 {% unless product_resource.has_only_default_variant %}
   {% liquid
     assign button_background_brightness = section.settings.color_scheme.settings.foreground | color_brightness
