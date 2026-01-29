@@ -442,6 +442,8 @@
     "show_collection_title": "Afficher le titre de la collection",
     "title_size": "Taille du titre",
     "show_summary": "Afficher le résumé",
+    "show_first_name": "Afficher le champ prénom",
+    "show_labels": "Afficher les libellés",
     "image_height": "Hauteur de l'image",
     "shuffle_collections": "Ordre aléatoire des collections",
     "pinned_collection": "Collection épinglée",

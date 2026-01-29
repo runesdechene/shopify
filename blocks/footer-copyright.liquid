@@ -12,10 +12,12 @@
 >
   <span class="footer-utilities__text">
     &copy; {{ 'now' | date: '%Y' }}
-    {{ shop.name | link_to: routes.root_url -}}
-    {%- if block_settings.show_powered_by -%}
-      , {{ powered_by_link }}
-    {%- endif -%}
+    {{ shop.name | link_to: routes.root_url }}
+    est une marque déposée
+    {% if block_settings.show_powered_by %}
+      propulsée avec 💖 par l'ingéniérie Lahoussaye
+      {% comment %}{{ powered_by_link }}{% endcomment %}
+    {% endif %}
   </span>
 </div>
 

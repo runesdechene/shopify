@@ -1,6 +1,10 @@
-
-
 {% assign block_settings = block.settings %}
+{% liquid
+  assign form_class = 'email-signup__form spacing-style'
+  if block_settings.show_first_name
+    assign form_class = form_class | append: ' email-signup__form--with-firstname'
+  endif
+%}
 <div
   class="email-signup-block size-style spacing-style"
   style="{% render 'size-style', settings: block_settings %}{% render 'spacing-style', settings: block_settings %}"
@@ -11,56 +15,116 @@
       {{ block_settings.heading | escape }}
     </div>
   {% endif %}
-  {%- form 'customer', class: 'email-signup__form spacing-style' %}
-    <div
-      class="email-signup__input-group {% if block_settings.integrated_button and block_settings.border_style != 'underline' %}email-signup__input-group--integrated{% endif %} {% if block_settings.border_style == 'underline' %}email-signup__input-group--underline{% endif %} {% if block_settings.border_style == 'none' %}email-signup__input-group--no-border{% endif %} {% if block_settings.display_type == 'arrow' %}email-signup__input-group--arrow{% endif %} {% if block_settings.inherit_color_scheme == false %}color-{{ block_settings.color_scheme }}{% endif %}"
-      style="--border-width: {{ block_settings.border_width }}px; --border-radius: {{ block_settings.border_radius }}px;"
-    >
-      <label
-        for="EmailInput-{{ block.id }}"
-        class="visually-hidden"
-      >
-        {{ 'blocks.email_signup.label' | t }}
-      </label>
-      <input
-        id="EmailInput-{{ block.id }}"
-        class="email-signup__input email-signup__input--{{ block_settings.border_style }} {{ block_settings.input_type_preset }} {{ block_settings.border_variation }}"
-        type="email"
-        name="contact[email]"
-        autocorrect="off"
-        autocapitalize="off"
-        autocomplete="email"
-        placeholder="{{ 'blocks.email_signup.placeholder' | t }}"
-        required
-        {% if form.errors %}
-          autofocus
-          aria-invalid="true"
-          aria-describedby="Email-signup__message-error-{{ block.id }}"
-        {% elsif form.posted_successfully? %}
-          aria-describedby="Email-signup__message-success-{{ block.id }}"
-        {% endif %}
-      >
-      <button
-        class="email-signup__button {% if block_settings.integrated_button or block_settings.border_style == 'underline' %}email-signup__button--integrated{% endif %} email-signup__button--{{ block_settings.display_type }} {{ block_settings.button_type_preset }} {{ block_settings.style_class }} {{ block_settings.style_class }}--{{ block.id }} {% if block_settings.inherit_color_scheme == false %}color-{{ block_settings.color_scheme }}{% endif %}"
-        {% if block_settings.display_type != 'text' %}
-          aria-label="{{ 'actions.sign_up' | t }}"
-        {% endif %}
-      >
-        {% if block_settings.display_type == 'text' %}
-          {{ block_settings.label }}
-        {% else %}
-          <svg
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-            focusable="false"
-            aria-hidden="true"
-            class="email-signup__button-icon"
+  {%- form 'customer', class: form_class %}
+    {% if block_settings.show_first_name %}
+      <div class="email-signup__fields-row">
+        <div
+          class="email-signup__input-group email-signup__input-group--firstname {% if block_settings.border_style == 'underline' %}email-signup__input-group--underline{% endif %} {% if block_settings.border_style == 'none' %}email-signup__input-group--no-border{% endif %} {% if block_settings.inherit_color_scheme == false %}color-{{ block_settings.color_scheme }}{% endif %}"
+          style="--border-width: {{ block_settings.border_width }}px; --border-radius: {{ block_settings.border_radius }}px;"
+        >
+          <label
+            for="FirstNameInput-{{ block.id }}"
+            class="visually-hidden"
           >
-            {% render 'icon', icon: 'arrow' %}
-          </svg>
-        {% endif %}
+            {{ 'blocks.email_signup.first_name_label' | t }}
+          </label>
+          <input
+            id="FirstNameInput-{{ block.id }}"
+            class="email-signup__input email-signup__input--{{ block_settings.border_style }} {{ block_settings.input_type_preset }} {{ block_settings.border_variation }}"
+            type="text"
+            name="contact[first_name]"
+            autocorrect="off"
+            autocapitalize="words"
+            autocomplete="given-name"
+            placeholder="{{ 'blocks.email_signup.first_name_placeholder' | t }}"
+          >
+        </div>
+        <div
+          class="email-signup__input-group email-signup__input-group--email {% if block_settings.border_style == 'underline' %}email-signup__input-group--underline{% endif %} {% if block_settings.border_style == 'none' %}email-signup__input-group--no-border{% endif %} {% if block_settings.inherit_color_scheme == false %}color-{{ block_settings.color_scheme }}{% endif %}"
+          style="--border-width: {{ block_settings.border_width }}px; --border-radius: {{ block_settings.border_radius }}px;"
+        >
+          <label
+            for="EmailInput-{{ block.id }}"
+            class="visually-hidden"
+          >
+            {{ 'blocks.email_signup.label' | t }}
+          </label>
+          <input
+            id="EmailInput-{{ block.id }}"
+            class="email-signup__input email-signup__input--{{ block_settings.border_style }} {{ block_settings.input_type_preset }} {{ block_settings.border_variation }}"
+            type="email"
+            name="contact[email]"
+            autocorrect="off"
+            autocapitalize="off"
+            autocomplete="email"
+            placeholder="{{ 'blocks.email_signup.placeholder' | t }}"
+            required
+            {% if form.errors %}
+              autofocus
+              aria-invalid="true"
+              aria-describedby="Email-signup__message-error-{{ block.id }}"
+            {% elsif form.posted_successfully? %}
+              aria-describedby="Email-signup__message-success-{{ block.id }}"
+            {% endif %}
+          >
+        </div>
+      </div>
+      <button
+        class="email-signup__button email-signup__button--fullwidth email-signup__button--{{ block_settings.display_type }} {{ block_settings.button_type_preset }} {{ block_settings.style_class }} {{ block_settings.style_class }}--{{ block.id }} {% if block_settings.inherit_color_scheme == false %}color-{{ block_settings.color_scheme }}{% endif %}"
+      >
+        {{ block_settings.label }}
       </button>
-    </div>
+    {% else %}
+      <div
+        class="email-signup__input-group {% if block_settings.integrated_button and block_settings.border_style != 'underline' %}email-signup__input-group--integrated{% endif %} {% if block_settings.border_style == 'underline' %}email-signup__input-group--underline{% endif %} {% if block_settings.border_style == 'none' %}email-signup__input-group--no-border{% endif %} {% if block_settings.display_type == 'arrow' %}email-signup__input-group--arrow{% endif %} {% if block_settings.inherit_color_scheme == false %}color-{{ block_settings.color_scheme }}{% endif %}"
+        style="--border-width: {{ block_settings.border_width }}px; --border-radius: {{ block_settings.border_radius }}px;"
+      >
+        <label
+          for="EmailInput-{{ block.id }}"
+          class="visually-hidden"
+        >
+          {{ 'blocks.email_signup.label' | t }}
+        </label>
+        <input
+          id="EmailInput-{{ block.id }}"
+          class="email-signup__input email-signup__input--{{ block_settings.border_style }} {{ block_settings.input_type_preset }} {{ block_settings.border_variation }}"
+          type="email"
+          name="contact[email]"
+          autocorrect="off"
+          autocapitalize="off"
+          autocomplete="email"
+          placeholder="{{ 'blocks.email_signup.placeholder' | t }}"
+          required
+          {% if form.errors %}
+            autofocus
+            aria-invalid="true"
+            aria-describedby="Email-signup__message-error-{{ block.id }}"
+          {% elsif form.posted_successfully? %}
+            aria-describedby="Email-signup__message-success-{{ block.id }}"
+          {% endif %}
+        >
+        <button
+          class="email-signup__button {% if block_settings.integrated_button or block_settings.border_style == 'underline' %}email-signup__button--integrated{% endif %} email-signup__button--{{ block_settings.display_type }} {{ block_settings.button_type_preset }} {{ block_settings.style_class }} {{ block_settings.style_class }}--{{ block.id }} {% if block_settings.inherit_color_scheme == false %}color-{{ block_settings.color_scheme }}{% endif %}"
+          {% if block_settings.display_type != 'text' %}
+            aria-label="{{ 'actions.sign_up' | t }}"
+          {% endif %}
+        >
+          {% if block_settings.display_type == 'text' %}
+            {{ block_settings.label }}
+          {% else %}
+            <svg
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+              focusable="false"
+              aria-hidden="true"
+              class="email-signup__button-icon"
+            >
+              {% render 'icon', icon: 'arrow' %}
+            </svg>
+          {% endif %}
+        </button>
+      </div>
+    {% endif %}
 
     {%- if form.errors -%}
       <div
@@ -120,6 +184,47 @@
   .email-signup__form {
     display: flex;
     flex-direction: column;
+  }
+
+  .email-signup__form.email-signup__form--with-firstname {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: var(--gap-sm);
+  }
+
+  .email-signup__form--with-firstname .email-signup__fields-row {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: var(--gap-sm);
+    width: 100%;
+  }
+
+  @media screen and (max-width: 749px) {
+    .email-signup__form--with-firstname .email-signup__fields-row {
+      flex-direction: column !important;
+    }
+  }
+
+  .email-signup__form--with-firstname .email-signup__fields-row .email-signup__input-group {
+    flex: 1;
+  }
+
+  .email-signup__form--with-firstname .email-signup__fields-row .email-signup__input-group--firstname {
+    flex: 0 0 33%;
+  }
+
+  .email-signup__form--with-firstname .email-signup__fields-row .email-signup__input-group--email {
+    flex: 0 0 66%;
+  }
+
+  .email-signup__form--with-firstname .email-signup__fields-row .email-signup__input-group .email-signup__input {
+    width: 100%;
+  }
+
+  .email-signup__form--with-firstname > .email-signup__button.email-signup__button--fullwidth {
+    display: block !important;
+    width: 100% !important;
+    padding: var(--padding-lg) var(--padding-3xl);
   }
 
   .email-signup__input-group {
@@ -465,6 +570,12 @@
     {
       "type": "header",
       "content": "t:content.input"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_first_name",
+      "label": "t:settings.show_first_name",
+      "default": false
     },
     {
       "type": "select",

@@ -120,6 +120,8 @@
     "email_signup": {
       "label": "Email",
       "placeholder": "Email address",
+      "first_name_label": "First name",
+      "first_name_placeholder": "First name",
       "success": "Thanks for subscribing!"
     },
     "filter": "Filter",

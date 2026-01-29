@@ -1117,6 +1117,8 @@
     "show_collection_title": "Show collection title",
     "title_size": "Title size",
     "show_summary": "Show summary",
+    "show_first_name": "Show first name field",
+    "show_labels": "Show labels",
     "image_height": "Image height",
     "shuffle_collections": "Shuffle collections order",
     "pinned_collection": "Pinned collection",
