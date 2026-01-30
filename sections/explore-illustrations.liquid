@@ -99,7 +99,7 @@
       </h1>
 
       <p class="fragments-meta">
-        {{ reliques.size }} illustrations disponibles, {{ artists_count }} artiste{% if artists_count > 1 %}s{% endif %}
+        {{ reliques.size }} {{ section.settings.items_label | default: 'illustrations disponibles' }}{% if artists_count > 0 %}, {{ artists_count }} artiste{% if artists_count > 1 %}s{% endif %}{% endif %}
       </p>
     </div>
 
@@ -109,10 +109,18 @@
       <button class="fragments-filter active" data-filter="all">{{ section.settings.filter_all_label }}</button>
 
       {%- comment -%} Collecter tous les tags uniques depuis les metaobjects {%- endcomment -%}
+      {%- assign tags_field = section.settings.tags_field_handle | default: 'tags' -%}
       {%- assign all_tags = '' -%}
       {% for relique in reliques %}
-        {% if relique.tags != blank %}
-          {% for tag in relique.tags.value %}
+        {%- assign relique_tags = relique[tags_field] -%}
+        {% if relique_tags != blank %}
+          {%- comment -%} Gérer à la fois les champs de type liste et les listes de valeurs {%- endcomment -%}
+          {%- if relique_tags.value -%}
+            {%- assign tags_to_process = relique_tags.value -%}
+          {%- else -%}
+            {%- assign tags_to_process = relique_tags -%}
+          {%- endif -%}
+          {% for tag in tags_to_process %}
             {%- assign clean_tag = tag | strip -%}
             {%- unless all_tags contains clean_tag -%}
               {%- if all_tags == '' -%}
@@ -191,9 +199,17 @@
       {% if reliques.size > 0 %}
         {% for relique in reliques %}
           {%- comment -%} Convertir la liste de tags en chaîne {%- endcomment -%}
+          {%- assign tags_field = section.settings.tags_field_handle | default: 'tags' -%}
+          {%- assign relique_tags = relique[tags_field] -%}
           {%- assign tags_string = '' -%}
-          {% if relique.tags != blank %}
-            {% for tag in relique.tags.value %}
+          {% if relique_tags != blank %}
+            {%- comment -%} Gérer à la fois les champs de type liste et les listes de valeurs {%- endcomment -%}
+            {%- if relique_tags.value -%}
+              {%- assign tags_to_process = relique_tags.value -%}
+            {%- else -%}
+              {%- assign tags_to_process = relique_tags -%}
+            {%- endif -%}
+            {% for tag in tags_to_process %}
               {%- if forloop.first -%}
                 {%- assign tags_string = tag -%}
               {%- else -%}
@@ -250,9 +266,11 @@
             <div class="fragment-card-wrapper">
               {%- comment -%} Image en haut {%- endcomment -%}
               <div class="fragment-card-image-col">
-                {% if relique.image_pour_fond_clair != blank or relique.image_pour_fond_sombre != blank %}
+                {%- assign image_field = section.settings.image_field_handle | default: 'image_pour_fond_clair' -%}
+                {%- assign relique_image = relique[image_field] -%}
+                {% if relique_image != blank %}
                   <img
-                    src="{{ relique.image_pour_fond_clair | image_url: width: 600 }}"
+                    src="{{ relique_image | image_url: width: 600 }}"
                     alt="{{ relique.nom }}"
                     class="fragment-image"
                     data-light-image="{{ relique.image_pour_fond_clair | image_url: width: 600 }}"
@@ -267,18 +285,35 @@
               <div class="fragment-card-content-col">
                 <h2 class="fragment-card-title">{{ relique.nom | default: "Titre de l'illustration" }}</h2>
 
-                {% if relique.artiste.value != blank %}
+                {%- assign artist_field = section.settings.artist_field_handle | default: 'artiste' -%}
+                {%- assign relique_artist = relique[artist_field] -%}
+                {%- assign book_field = section.settings.book_field_handle | default: 'livre' -%}
+                {%- assign relique_book = relique[book_field] -%}
+                {%- assign extra_field = section.settings.extra_field_handle | default: 'edition' -%}
+                {%- assign relique_extra = relique[extra_field] -%}
+                {% if relique_artist != blank or relique_book != blank or relique_extra != blank %}
                   <p class="fragment-card-artist">
-                    Artiste : {{ relique.artiste.value.nom.value }}
+                    {% if relique_artist != blank %}
+                      {% if section.settings.artist_prefix != blank %}{{ section.settings.artist_prefix }} {% endif %}{% if relique_artist.value.nom.value != blank %}{{ relique_artist.value.nom.value }}{% elsif relique_artist.value != blank %}{{ relique_artist.value }}{% else %}{{ relique_artist }}{% endif %}
+                    {% endif %}
+                    {% if relique_artist != blank and relique_book != blank %} - {% endif %}
+                    {% if relique_book != blank %}
+                      {% if section.settings.book_prefix != blank %}{{ section.settings.book_prefix }} {% endif %}{% if relique_book.value != blank %}{{ relique_book.value }}{% else %}{{ relique_book }}{% endif %}
+                    {% endif %}
+                    {% if relique_extra != blank %}
+                      {% if relique_artist != blank or relique_book != blank %} {% endif %}{% if section.settings.extra_field_prefix != blank %}{{ section.settings.extra_field_prefix }} {% endif %}{% if relique_extra.value != blank %}{{ relique_extra.value }}{% else %}{{ relique_extra }}{% endif %}
+                    {% endif %}
                     {% if relique.date != blank %}
                       <!-- ({{ relique.date | date: '%Y' }}) -->
                     {% endif %}
                   </p>
                 {% endif %}
 
-                {% if relique.resume != blank %}
+                {%- assign summary_field = section.settings.summary_field_handle | default: 'resume' -%}
+                {%- assign relique_summary = relique[summary_field] -%}
+                {% if relique_summary != blank %}
                   <p class="fragment-card-summary">
-                    « {{ relique.resume }} »
+                    « {{ relique_summary }} »
                   </p>
                 {% endif %}
 
@@ -379,6 +414,66 @@
       "default": "reliques"
     },
     {
+      "type": "text",
+      "id": "image_field_handle",
+      "label": "Handle du champ image",
+      "info": "Nom du champ image du métaobjet (ex: image_pour_fond_clair, image_principale)",
+      "default": "image_pour_fond_clair"
+    },
+    {
+      "type": "text",
+      "id": "artist_field_handle",
+      "label": "Handle du champ artiste !!",
+      "info": "Nom du champ artiste du métaobjet (ex: artiste, createur)",
+      "default": "artiste"
+    },
+    {
+      "type": "text",
+      "id": "book_field_handle",
+      "label": "Handle du champ livre",
+      "info": "Nom du champ livre du métaobjet (ex: livre, ouvrage)",
+      "default": "livre"
+    },
+    {
+      "type": "text",
+      "id": "artist_prefix",
+      "label": "Préfixe artiste (texte libre)",
+      "info": "Texte affiché avant l'artiste (ex: Artiste :, Par). Laisser vide pour ne rien afficher."
+    },
+    {
+      "type": "text",
+      "id": "book_prefix",
+      "label": "Préfixe livre (texte libre)",
+      "info": "Texte affiché avant le livre (ex: Livre :, Dans). Laisser vide pour ne rien afficher."
+    },
+    {
+      "type": "text",
+      "id": "extra_field_handle",
+      "label": "Handle du champ supplémentaire",
+      "info": "Nom du champ supplémentaire du métaobjet (ex: edition, annee)",
+      "default": "edition"
+    },
+    {
+      "type": "text",
+      "id": "extra_field_prefix",
+      "label": "Préfixe champ supplémentaire (texte libre)",
+      "info": "Texte affiché avant le champ supplémentaire (ex: Édition :, Année :). Laisser vide pour ne rien afficher."
+    },
+    {
+      "type": "text",
+      "id": "summary_field_handle",
+      "label": "Handle du champ résumé",
+      "info": "Nom du champ résumé du métaobjet (ex: resume, description)",
+      "default": "resume"
+    },
+    {
+      "type": "text",
+      "id": "tags_field_handle",
+      "label": "Handle du champ tags",
+      "info": "Nom du champ tags du métaobjet (ex: tags, categories)",
+      "default": "tags"
+    },
+    {
       "type": "header",
       "content": "Mise en page"
     },
@@ -399,12 +494,6 @@
       "default": "full-width"
     },
     {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Schéma de couleurs",
-      "default": "scheme-1"
-    },
-    {
       "type": "image_picker",
       "id": "background_image",
       "label": "Image de fond"
@@ -418,6 +507,13 @@
       "id": "title",
       "label": "Titre principal",
       "default": "EXPLORER"
+    },
+    {
+      "type": "text",
+      "id": "items_label",
+      "label": "Libellé des éléments",
+      "info": "Texte affiché après le nombre d'éléments (ex: illustrations disponibles, machines disponibles)",
+      "default": "illustrations disponibles"
     },
     {
       "type": "range",
@@ -597,7 +693,7 @@
   ],
   "presets": [
     {
-      "name": "Explorer : Illustrations"
+      "name": "Explorer : Illustrations v2"
     }
   ]
 }
