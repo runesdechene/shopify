@@ -236,6 +236,7 @@
           {%- comment -%} Récupérer la collection reliée au métaobjet {%- endcomment -%}
           {%- assign product_count = 0 -%}
           {%- assign collection_url = '' -%}
+          {%- assign linked_collection = null -%}
           {%- if relique.collection != blank -%}
             {%- if relique.collection.value -%}
               {%- assign linked_collection = relique.collection.value -%}
@@ -245,6 +246,27 @@
               {%- assign collection_url = relique.collection.url -%}
               {%- assign product_count = relique.collection.products.size -%}
             {%- endif -%}
+          {%- endif -%}
+          
+          {%- comment -%} Collecter toutes les couleurs uniques des produits de la collection {%- endcomment -%}
+          {%- assign all_colors = '' -%}
+          {%- if linked_collection -%}
+            {% for product in linked_collection.products limit: 20 %}
+              {% for option in product.options_with_values %}
+                {% if option.name == 'Couleur' or option.name == 'Color' or option.name == 'couleur' or option.name == 'color' %}
+                  {% for value in option.values %}
+                    {%- assign color_name = value | strip -%}
+                    {%- unless all_colors contains color_name -%}
+                      {%- if all_colors == '' -%}
+                        {%- assign all_colors = color_name -%}
+                      {%- else -%}
+                        {%- assign all_colors = all_colors | append: '|' | append: color_name -%}
+                      {%- endif -%}
+                    {%- endunless -%}
+                  {% endfor %}
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
           {%- endif -%}
 
           <div
@@ -315,6 +337,23 @@
                   <p class="fragment-card-summary">
                     « {{ relique_summary }} »
                   </p>
+                {% endif %}
+
+                {%- comment -%} Pastilles de couleur {%- endcomment -%}
+                {% if section.settings.show_color_swatches %}
+                  {% if all_colors != '' %}
+                    {%- assign colors_array = all_colors | split: '|' -%}
+                    <div class="fragment-color-swatches">
+                      <small style="display: block; text-align: center; margin-bottom: 5px; color: #999;">Couleurs: {{ all_colors }}</small>
+                      {% for color in colors_array %}
+                        <span class="color-swatch" data-color="{{ color | handleize }}" title="{{ color }}" style="background-color: {{ color | handleize }};">
+                          <span class="color-swatch-inner"></span>
+                        </span>
+                      {% endfor %}
+                    </div>
+                  {% else %}
+                    <small style="display: block; text-align: center; color: #999;">Aucune couleur détectée</small>
+                  {% endif %}
                 {% endif %}
 
                 {%- comment -%} Badge NOUVEAU (sera géré par JS) {%- endcomment -%}
@@ -556,6 +595,13 @@
     {
       "type": "header",
       "content": "Cartes"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_color_swatches",
+      "label": "Afficher les pastilles de couleur",
+      "info": "Affiche les couleurs disponibles des produits de la collection",
+      "default": false
     },
     {
       "type": "range",
