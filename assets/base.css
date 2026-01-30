@@ -1807,6 +1807,18 @@ zoom-dialog dialog {
   z-index: var(--layer-raised);
 }
 
+.media-gallery--carousel ul.list-unstyled {
+  padding-inline: 30vw;
+  background: rgb(19, 16, 15);
+}
+
+@media (min-width: 798px) {
+  .media-gallery--carousel .list-unstyled .product-media
+  {
+    margin-bottom: 20px;
+  }
+}
+
 .dialog-thumbnails-list {
   position: relative;
   display: inline-flex;
@@ -1820,7 +1832,12 @@ zoom-dialog dialog {
   scrollbar-width: none;
   animation: thumbnailsSlideInBottom calc(var(--animation-speed) * 0.75) var(--animation-easing) forwards;
   animation-delay: calc(var(--animation-speed) * 1.5);
-  max-height: 20vh !important; 
+}
+
+@media screen and (max-width: 798px) {
+  .dialog-thumbnails-list {
+    max-height: 20vh !important;     
+  } 
 }
 
 .dialog--closed .dialog-thumbnails-list {
