@@ -2,12 +2,67 @@
 {{ 'explore-illustrations-dark.css' | asset_url | stylesheet_tag }}
 
 {% style %}
-  .rdc-fragments-section {
-    background-image: url('{{ "rdc_fond_default.webp" | asset_url }}');
+  #section-{{ section.id }}.rdc-fragments-section {
+    {% if section.settings.background_image != blank %}
+      background-image: url('{{ section.settings.background_image | image_url: width: 1920 }}');
+    {% else %}
+      background-image: url('{{ "explore_fond_default.webp" | asset_url }}');
+    {% endif %}
+    background-size: cover;
+  }
+
+  #section-{{ section.id }} .fragments-title {
+    font-size: {{ section.settings.title_size }}px;
+    color: {{ section.settings.title_color }};
+  }
+
+  #section-{{ section.id }} .fragments-subtitle {
+    font-size: {{ section.settings.subtitle_size }}px;
+    color: {{ section.settings.subtitle_color }};
+  }
+
+  #section-{{ section.id }} .fragment-card-title {
+    font-size: {{ section.settings.card_title_size }}px;
+    color: {{ section.settings.card_title_color }};
+  }
+
+  #section-{{ section.id }} .fragment-card-artist {
+    color: {{ section.settings.card_artist_color }};
+  }
+
+  #section-{{ section.id }} .fragment-card-summary {
+    color: {{ section.settings.card_summary_color }};
+  }
+
+  #section-{{ section.id }} .fragment-btn {
+    background: {{ section.settings.button_bg_color }};
+    color: {{ section.settings.button_text_color }};
+    border-radius: {{ section.settings.button_border_radius }}px;
+  }
+
+  #section-{{ section.id }} .fragments-back-btn {
+    background: {{ section.settings.nav_button_bg }};
+    color: {{ section.settings.nav_button_color }};
+  }
+
+  @media screen and (max-width: 749px) {
+    #section-{{ section.id }} .fragments-title {
+      font-size: {{ section.settings.title_size | divided_by: 2 }}px;
+    }
+    #section-{{ section.id }} .fragments-subtitle {
+      font-size: {{ section.settings.subtitle_size | divided_by: 2 }}px;
+    }
+    #section-{{ section.id }} .fragment-card-title {
+      font-size: {{ section.settings.card_title_size | divided_by: 1.5 | round }}px;
+    }
   }
 {% endstyle %}
 
-<div class="rdc-fragments-section section section--{{ section.settings.section_width }}" data-section-id="{{ section.id }}">
+{%- comment -%} Récupérer tous les métaobjets du type spécifié {%- endcomment -%}
+{%- assign metaobject_handle = section.settings.metaobject_type | default: 'reliques' -%}
+{%- assign reliques = shop.metaobjects[metaobject_handle].values -%}
+
+<div id="section-{{ section.id }}" class="rdc-fragments-section section section--{{ section.settings.section_width }}" data-section-id="{{ section.id }}">
   <div class="rdc-fragments-background-actif"></div>
   <div class="fragments-hero">
     {%- comment -%} Bouton de retour {%- endcomment -%}
@@ -18,9 +73,6 @@
         </svg>
       </a>
     {% endif %}
-
-    {%- comment -%} Récupérer les metaobjects Reliques {%- endcomment -%}
-    {%- assign reliques = shop.metaobjects.reliques.values -%}
 
     {%- comment -%} Compter les artistes uniques {%- endcomment -%}
     {%- assign all_artists = '' -%}
@@ -52,8 +104,9 @@
     </div>
 
     {%- comment -%} Filtres de catégories personnalisés (en haut à droite) {%- endcomment -%}
+    {% if section.settings.show_filters %}
     <div class="fragments-filters">
-      <button class="fragments-filter active" data-filter="all">✨ Toutes les reliques</button>
+      <button class="fragments-filter active" data-filter="all">{{ section.settings.filter_all_label }}</button>
 
       {%- comment -%} Collecter tous les tags uniques depuis les metaobjects {%- endcomment -%}
       {%- assign all_tags = '' -%}
@@ -80,6 +133,7 @@
         </button>
       {% endfor %}
     </div>
+    {% endif %}
 
     {%- comment -%} Bouton toggle thème sombre {%- endcomment -%}
     <div class="theme-toggle-container">
@@ -163,12 +217,18 @@
             {%- endif -%}
           {%- endif -%}
 
-          {%- comment -%} Compter les produits associés à cette illustration {%- endcomment -%}
+          {%- comment -%} Récupérer la collection reliée au métaobjet {%- endcomment -%}
           {%- assign product_count = 0 -%}
-          {%- assign collection_handle = relique.nom | handleize -%}
-          {%- assign illustration_collection = collections[collection_handle] -%}
-          {%- if illustration_collection -%}
-            {%- assign product_count = illustration_collection.products.size -%}
+          {%- assign collection_url = '' -%}
+          {%- if relique.collection != blank -%}
+            {%- if relique.collection.value -%}
+              {%- assign linked_collection = relique.collection.value -%}
+              {%- assign product_count = linked_collection.products.size -%}
+              {%- assign collection_url = linked_collection.url -%}
+            {%- elsif relique.collection.url -%}
+              {%- assign collection_url = relique.collection.url -%}
+              {%- assign product_count = relique.collection.products.size -%}
+            {%- endif -%}
           {%- endif -%}
 
           <div
@@ -183,6 +243,7 @@
             data-article-published-at="{{ article_published_at }}"
             data-fragment-date="{{ relique.date }}"
             data-product-count="{{ product_count }}"
+            data-collection-url="{{ collection_url }}"
             data-debug-recit="{{ relique.recit }}"
             data-background-image="{% if relique.image_fond_de_fragment != blank %}{{ relique.image_fond_de_fragment | image_url: width: 1920 }}{% endif %}"
           >
@@ -210,20 +271,20 @@
                   <p class="fragment-card-artist">
                     Artiste : {{ relique.artiste.value.nom.value }}
                     {% if relique.date != blank %}
-                      ({{ relique.date | date: '%Y' }})
+                      <!-- ({{ relique.date | date: '%Y' }}) -->
                     {% endif %}
                   </p>
                 {% endif %}
 
                 {% if relique.resume != blank %}
                   <p class="fragment-card-summary">
-                    {{ relique.resume }}
+                    « {{ relique.resume }} »
                   </p>
                 {% endif %}
 
                 {%- comment -%} Badge NOUVEAU (sera géré par JS) {%- endcomment -%}
                 <div class="fragment-new-badge" style="display: none;">
-                  <img src="{{ 'rdc_new_badge.png' | asset_url }}">
+                  <img src="{{ 'explore-new_badge.png' | asset_url }}">
                 </div>
               </div>
             </div>
@@ -307,6 +368,21 @@
   "class": "section-explore-illustrations",
   "settings": [
     {
+      "type": "header",
+      "content": "Source des données"
+    },
+    {
+      "type": "text",
+      "id": "metaobject_type",
+      "label": "Type de métaobjet",
+      "info": "Handle du métaobjet à afficher (ex: reliques, artistes, collections_speciales)",
+      "default": "reliques"
+    },
+    {
+      "type": "header",
+      "content": "Mise en page"
+    },
+    {
       "type": "select",
       "id": "section_width",
       "label": "Largeur de la section",
@@ -323,16 +399,131 @@
       "default": "full-width"
     },
     {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Schéma de couleurs",
+      "default": "scheme-1"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Image de fond"
+    },
+    {
+      "type": "header",
+      "content": "Titre et sous-titre"
+    },
+    {
       "type": "text",
       "id": "title",
       "label": "Titre principal",
       "default": "EXPLORER"
     },
     {
+      "type": "range",
+      "id": "title_size",
+      "min": 24,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Taille du titre (desktop)",
+      "default": 96
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Couleur du titre",
+      "default": "#635e4c"
+    },
+    {
       "type": "text",
       "id": "subtitle",
       "label": "Sous-titre",
       "default": "NOS CRÉATIONS"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "min": 16,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Taille du sous-titre (desktop)",
+      "default": 48
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Couleur du sous-titre",
+      "default": "#a39b8c"
+    },
+    {
+      "type": "header",
+      "content": "Cartes"
+    },
+    {
+      "type": "range",
+      "id": "card_title_size",
+      "min": 16,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Taille du titre des cartes",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "card_title_color",
+      "label": "Couleur du titre des cartes",
+      "default": "#494141"
+    },
+    {
+      "type": "color",
+      "id": "card_artist_color",
+      "label": "Couleur de l'artiste",
+      "default": "#796e6d"
+    },
+    {
+      "type": "color",
+      "id": "card_summary_color",
+      "label": "Couleur du résumé",
+      "default": "#665f56"
+    },
+    {
+      "type": "header",
+      "content": "Bouton d'action"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texte du bouton",
+      "default": "Découvrir les produits"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Couleur de fond du bouton",
+      "default": "#6d1e1e"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Couleur du texte du bouton",
+      "default": "#e9e4e4"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Arrondi du bouton",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
     },
     {
       "type": "checkbox",
@@ -345,6 +536,38 @@
       "id": "back_url",
       "label": "URL du bouton retour",
       "default": "/"
+    },
+    {
+      "type": "color",
+      "id": "nav_button_bg",
+      "label": "Couleur de fond des boutons navigation",
+      "default": "#e6dcc7"
+    },
+    {
+      "type": "color",
+      "id": "nav_button_color",
+      "label": "Couleur des icônes navigation",
+      "default": "#5e5444"
+    },
+    {
+      "type": "header",
+      "content": "Filtres"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Afficher les filtres",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "filter_all_label",
+      "label": "Libellé du filtre 'Tous'",
+      "default": "✨ Toutes les reliques"
+    },
+    {
+      "type": "header",
+      "content": "Images de décoration"
     },
     {
       "type": "image_picker",

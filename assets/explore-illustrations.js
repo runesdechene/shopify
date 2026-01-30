@@ -872,7 +872,7 @@ class FragmentsCarousel {
   }
 
   /**
-   * Rediriger vers la collection avec le filtre de la relique activé
+   * Rediriger vers la collection reliée au métaobjet
    */
   redirectToCollectionWithFilter() {
     console.log("🔍 Début de redirectToCollectionWithFilter");
@@ -889,24 +889,18 @@ class FragmentsCarousel {
     console.log("✅ Carte courante trouvée:", currentCard);
     console.log("📋 Datasets de la carte:", currentCard.dataset);
 
-    // Récupérer le GID de filtre depuis le métaobjet
-    const filterGid = currentCard.dataset.filterGid;
+    // Récupérer l'URL de la collection depuis le métaobjet
+    const collectionUrl = currentCard.dataset.collectionUrl;
 
-    if (!filterGid) {
-      console.error("⚠️ Pas de filter GID trouvé pour cette relique");
+    if (!collectionUrl) {
+      console.error("⚠️ Pas de collection reliée à cette relique");
       console.log(
-        "💡 Astuce: Ajoute le GID de filtre dans le métaobjet Reliques",
+        "💡 Astuce: Ajoute une collection dans le champ 'collection' du métaobjet",
       );
       return;
     }
 
-    console.log("🛍️ Redirection vers collection avec filtre GID:", filterGid);
-
-    // Le GID est déjà encodé depuis l'URL de la collection, ne pas le ré-encoder
-    // Construire l'URL avec le GID de filtre
-    const collectionUrl = `/collections/tous-les-produits?filter.p.m.custom.illustration=${filterGid}`;
-
-    console.log("🔗 URL construite:", collectionUrl);
+    console.log("🛍️ Redirection vers collection:", collectionUrl);
 
     // Rediriger
     window.location.href = collectionUrl;
@@ -977,19 +971,19 @@ class FragmentsCarousel {
     // Récupérer le nombre de produits associés
     const productCount = parseInt(currentCard.dataset.productCount) || 0;
 
-    // Récupérer le filter GID pour savoir si le bouton doit être actif
-    const filterGid = currentCard.dataset.filterGid || "";
+    // Récupérer l'URL de la collection pour savoir si le bouton doit être actif
+    const collectionUrl = currentCard.dataset.collectionUrl || "";
 
     // Mettre à jour le bouton
-    if (filterGid) {
-      // Bouton actif si filterGid existe
+    if (collectionUrl) {
+      // Bouton actif si une collection est reliée
       if (productCount > 0) {
-        // Afficher le nombre de produits
+        // Afficher "Voir X produits"
         const productText = productCount === 1 ? "produit" : "produits";
-        this.fixedBtnShop.textContent = `Découvrir ${productCount} ${productText}`;
+        this.fixedBtnShop.textContent = `Voir ${productCount} ${productText}`;
       } else {
-        // Aucune collection trouvée : texte générique
-        this.fixedBtnShop.textContent = "Voir les produits";
+        // Collection vide : texte générique
+        this.fixedBtnShop.textContent = "Voir la collection";
       }
       this.fixedBtnShop.style.opacity = "1";
       this.fixedBtnShop.style.pointerEvents = "auto";
@@ -997,8 +991,8 @@ class FragmentsCarousel {
       this.fixedBtnShop.style.backgroundColor = ""; // Réinitialiser la couleur
       this.fixedBtnShop.style.color = ""; // Réinitialiser la couleur du texte
     } else {
-      // Pas de filterGid : bouton désactivé
-      this.fixedBtnShop.textContent = "Aucun produit";
+      // Pas de collection : bouton désactivé
+      this.fixedBtnShop.textContent = "Aucune collection";
       this.fixedBtnShop.style.opacity = "0.5";
       this.fixedBtnShop.style.pointerEvents = "none";
       this.fixedBtnShop.style.cursor = "not-allowed";

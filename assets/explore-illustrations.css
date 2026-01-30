@@ -10,6 +10,7 @@ footer, .footer-immersif, .footer-utilities
 .header {
     position: fixed;
     width: 100%;
+    border-bottom: 1px solid #dfdad2;
 }
 
 
@@ -68,14 +69,14 @@ footer, .footer-immersif, .footer-utilities
 
 .fragments-hero {
   margin: 0 auto;
-  padding: 40px 40px 20px 40px;
+  padding: 15px 40px 20px 40px;
   position: relative;
   width: 100%;
 }
 
 .fragments-back-btn {
   position: absolute;
-  top: 42px;
+  top: 20px;
   left: 40px;
   width: 50px;
   height: 60px;
@@ -117,10 +118,10 @@ footer, .footer-immersif, .footer-utilities
 .fragments-title {
   font-size: 6rem;
   font-weight: 500;
-  color: #635e4c;
   margin: 0;
+  color: #635e4c;
+  margin-top: -5px;
   text-transform: uppercase;
-  font-family: var(--font-heading-family);
   line-height: 1.2;
   background: rgba(248, 243, 231, 0.7);
   box-shadow: 0 0 150px 80px rgba(248, 243, 231, 0.7);
@@ -137,16 +138,17 @@ footer, .footer-immersif, .footer-utilities
 
 .fragments-meta {
   display: block;
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   color: #c0afa1;
   margin: 0;
   font-weight: 500;
-  font-family: var(--font-accent-family);
+  font-family: var(--font-accent--family);
   letter-spacing: 0.05rem;
+  margin-top: -10px;
 }
 
 /* ========================================
-   BARRE DE RECHERCHE
+   BARRE DE RECHERCHE - désactivée pour le moment
    ======================================== */
 
 .fragments-search {
@@ -196,49 +198,54 @@ footer, .footer-immersif, .footer-utilities
 
 @media screen and (max-width: 749px) {
   .fragments-filters {
-    padding-bottom: 5px;
+    padding-bottom: 2px;
   }
 }
 
 .fragments-filter {
   padding: 10px 20px;
-  border: 2px solid transparent;
   border-radius: 10px;
   cursor: pointer;
+  border: none;
   transition: all 0.3s ease;
-  font-family: var(--font-heading-family);
-  font-weight: 400;
+  font-family: var(--font-accent--family);
+  font-weight: 600;
   white-space: nowrap;
   flex-shrink: 0;
+  opacity: 0.6;
+  outline: 1px solid transparent;
+  border: 1px solid transparent;
 }
 
 /* Couleurs pastel équilibrées pour chaque filtre */
 .fragments-filter:nth-child(1) {
   background: #f8eed8;
   color: #5a4d4d;
+  outline: 1px solid currentColor;
 }
 
 .fragments-filter:nth-child(2) {
   background: #f8eed8;
   color: #5a1e5a;
-  border: 1px solid #5a1e5a;
+  outline: 1px solid currentColor;
 }
 
 .fragments-filter:nth-child(3) {
   background: #f8eed8;
   color: #1e4e5a;
-  border: 1px solid #1e4e5a;
+  outline: 1px solid currentColor;
 }
 
 .fragments-filter:nth-child(4) {
   background: #f8eed8;
   color: #1e5a2b;
-  border: 1px solid #1e5a2b;
+  outline: 1px solid currentColor;
 }
 
 .fragments-filter:nth-child(5) {
   background: #e8f5e8;
   color: #3a6b3a;
+  outline: 1px solid currentColor;
 }
 
 .fragments-filter:nth-child(6) {
@@ -278,9 +285,9 @@ footer, .footer-immersif, .footer-utilities
 }
 
 .fragments-filter.active {
-  border-color: currentColor;
   transform: scale(1.05);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  opacity: 1;
+  border: 1px solid currentColor;
 }
 
 /* ========================================
@@ -508,7 +515,7 @@ footer, .footer-immersif, .footer-utilities
 /* Badge NOUVEAU */
 .fragment-new-badge {
   display: inline-block;
-  margin-top: 15px;
+  margin-top: 0;
   color: #1a1d21;
   padding: 8px 20px;
   font-size: 1.3rem;
@@ -522,14 +529,12 @@ footer, .footer-immersif, .footer-utilities
   height: 50px;
 }
 
-@keyframes badgePulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
+@media screen and (max-width: 749px) {
+.fragment-new-badge {
+    position: absolute;
+    top: -22px;
+    left: -40px;
+    }
 }
 
 /* Colonne image */
@@ -562,41 +567,41 @@ footer, .footer-immersif, .footer-utilities
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
   width: 100%;
   max-width: 600px;
   text-align: center;
   pointer-events: auto;
+    transition: all 0.3s;
 }
 
 .fragment-card-title {
-  font-size: 4rem;
+  font-size: 3.5rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #494141;
+  color: #292323;
   margin: 0;
   line-height: 1.1;
-  font-family: var(--font-heading-family);
+  font-family: var(--font-heading--family);
   text-align: center;
 }
 
 .fragment-card-artist {
-  font-size: 1.6rem;
-  color: #796e6d;
+  font-size: 1.4rem;
+  color: #6d645e;
   margin: 0;
-  font-family: var(--font-heading-family);
+  font-family: var(--font-heading--family);
   text-align: center;
 }
 
 .fragment-card-summary {
-  font-size: 1.8rem;
+  font-size: 1.1rem;
   line-height: 1.6;
   color: #665f56;
   margin: 0;
   text-align: center;
   max-width: 500px;
-  font-family: var(--font-accent-family);
 }
 
 .fragment-card-section-title {
@@ -610,70 +615,6 @@ footer, .footer-immersif, .footer-utilities
   text-align: left;
 }
 
-.fragment-card-description {
-  font-size: 1.6rem;
-  line-height: 1.6;
-  color: #b8b8b8;
-  font-weight: 300;
-}
-
-.fragment-card-description p {
-  margin: 0 0 10px 0;
-  max-width: 500px;
-  text-align: justify;
-}
-
-.fragment-card-artist-word {
-  font-size: 1.4rem;
-  line-height: 1.6;
-  color: #b8b8b8;
-  font-style: italic;
-  max-width: 500px;
-  padding: 20px 20px 10px 20px;
-  border-radius: 20px;
-  background: rgba(155, 155, 155, 0.1);
-}
-
-.fragment-card-artist-word p {
-  margin: 0 0 10px 0;
-}
-
-/* Titre sous la carte - SUPPRIMÉ (utilise maintenant .fragment-card-title défini plus haut) */
-
-/* Zone d'extrait fixe */
-.fragments-excerpt-container {
-  max-width: 700px;
-  padding: 0 20px;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.fragments-excerpt {
-  font-size: 1.6rem;
-  line-height: 1.6;
-  color: #5d6d7e;
-  text-align: center;
-  margin: 0;
-  transition: opacity 0.3s ease;
-  width: 100%;
-}
-
-.fragments-excerpt.fade-out {
-  opacity: 0;
-}
-
-.fragments-cta {
-  font-size: 1.4rem;
-  color: #9ca3af;
-  text-align: center;
-  margin: 0;
-  font-style: italic;
-  letter-spacing: 0.02em;
-}
 
 /* ========================================
    CONTRÔLES DE NAVIGATION
@@ -692,9 +633,10 @@ footer, .footer-immersif, .footer-utilities
   cursor: pointer;
   transition: all 0.3s ease;
   z-index: 10; 
+  border: none;
   
-  background: #e6dcc7;
-  color: #5e5444c2;
+  background-color: var(--color-primary-button-background);
+  color: var(--color-primary-button-text);
 }
 
 .carousel-nav:hover {
@@ -726,8 +668,8 @@ footer, .footer-immersif, .footer-utilities
   z-index: 100;
   padding: 10px 20px;
   border-radius: 50px;
-  font-family: var(--font-accent-family);
-  font-size: 1.6rem;
+  font-family: var(--font-accent--family);
+  font-size: 1rem;
   color: #6e7279;
   font-weight: 600;
   letter-spacing: 0.05em;
@@ -765,9 +707,9 @@ footer, .footer-immersif, .footer-utilities
 .fragment-btn {
   display: inline-block;
   padding: 18px 40px;
-  font-size: 1.7rem;
+  font-size: 1rem;
   font-weight: 800;
-  font-family: var(--font-accent-family);
+  font-family: var(--font-accent--family);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   text-decoration: none;
@@ -985,7 +927,7 @@ footer, .footer-immersif, .footer-utilities
 
   .fragments-filter
   {
-    font-size: 1.2rem;
+    font-size: 0.7rem;
   }
   
   .fragments-filters::-webkit-scrollbar {
@@ -1018,24 +960,9 @@ footer, .footer-immersif, .footer-utilities
     position: relative;
   }
 
-  .fragment-new-badge {
-    position: absolute;
-    top: -30px;
-    right: 28%;
-    transform: translateX(-50%);
-    margin-top: 0;
-    padding: 4px 10px;
-    font-size: 0.9rem;
-    letter-spacing: 0.05em;
-  }
-
-  .fragment-new-badge img {
-    height: 35px;
-  }
-
   .fragment-card-summary
   {
-    font-size: 1.4rem;
+    font-size: 1rem;
     margin-top: 5px;
   }
 
@@ -1091,8 +1018,9 @@ footer, .footer-immersif, .footer-utilities
 
   .fragment-btn {
     flex: 1;
-    padding: 14px 20px;
-    font-size: 1.2rem;
+    padding: 16px 40px;
+    width: 80vw;
+    font-size: 0.9rem;
     letter-spacing: 0.05em;
     text-align: center;
   }
