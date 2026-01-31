@@ -1,4 +1,4 @@
-import { ThemeEvents, VariantUpdateEvent } from '@theme/events';
+import { ThemeEvents, VariantUpdateEvent } from "@theme/events";
 
 /**
  * A custom element that displays a product price.
@@ -9,15 +9,21 @@ import { ThemeEvents, VariantUpdateEvent } from '@theme/events';
  */
 class ProductPrice extends HTMLElement {
   connectedCallback() {
-    const closestSection = this.closest('.shopify-section, dialog');
+    const closestSection = this.closest(".shopify-section, dialog");
     if (!closestSection) return;
-    closestSection.addEventListener(ThemeEvents.variantUpdate, this.updatePrice);
+    closestSection.addEventListener(
+      ThemeEvents.variantUpdate,
+      this.updatePrice,
+    );
   }
 
   disconnectedCallback() {
-    const closestSection = this.closest('.shopify-section, dialog');
+    const closestSection = this.closest(".shopify-section, dialog");
     if (!closestSection) return;
-    closestSection.removeEventListener(ThemeEvents.variantUpdate, this.updatePrice);
+    closestSection.removeEventListener(
+      ThemeEvents.variantUpdate,
+      this.updatePrice,
+    );
   }
 
   /**
@@ -27,12 +33,17 @@ class ProductPrice extends HTMLElement {
   updatePrice = (event) => {
     if (event.detail.data.newProduct) {
       this.dataset.productId = event.detail.data.newProduct.id;
-    } else if (event.target instanceof HTMLElement && event.target.dataset.productId !== this.dataset.productId) {
+    } else if (
+      event.target instanceof HTMLElement &&
+      event.target.dataset.productId !== this.dataset.productId
+    ) {
       return;
     }
 
     // Find the new product-price element in the updated HTML
-    const newProductPrice = event.detail.data.html.querySelector(`product-price[data-block-id="${this.dataset.blockId}"]`);
+    const newProductPrice = event.detail.data.html.querySelector(
+      `product-price[data-block-id="${this.dataset.blockId}"]`,
+    );
     if (!newProductPrice) return;
 
     // Update price container
@@ -41,19 +52,53 @@ class ProductPrice extends HTMLElement {
     if (newPrice && currentPrice) currentPrice.replaceWith(newPrice);
 
     // Update volume pricing note
-    const currentNote = this.querySelector('.volume-pricing-note');
-    const newNote = newProductPrice.querySelector('.volume-pricing-note');
+    const currentNote = this.querySelector(".volume-pricing-note");
+    const newNote = newProductPrice.querySelector(".volume-pricing-note");
 
     if (!newNote) {
       currentNote?.remove();
     } else if (!currentNote) {
-      this.querySelector('[ref="priceContainer"]')?.insertAdjacentElement('afterend', /** @type {Element} */ (newNote.cloneNode(true)));
+      this.querySelector('[ref="priceContainer"]')?.insertAdjacentElement(
+        "afterend",
+        /** @type {Element} */ (newNote.cloneNode(true)),
+      );
     } else {
       currentNote.replaceWith(newNote);
+    }
+
+    // Update three installments price
+    this.updateThreeInstallments(event);
+  };
+
+  /**
+   * Updates the three installments price display.
+   * @param {VariantUpdateEvent} event - The variant update event.
+   */
+  updateThreeInstallments = (event) => {
+    const currentThreeInstallmentsEl = this.querySelector(
+      ".three-installments",
+    );
+    if (!currentThreeInstallmentsEl) return;
+
+    // Find the new three-installments element in the updated HTML
+    const newProductPrice = event.detail.data.html.querySelector(
+      `product-price[data-block-id="${this.dataset.blockId}"]`,
+    );
+    if (!newProductPrice) return;
+
+    const newThreeInstallmentsEl = newProductPrice.querySelector(
+      ".three-installments",
+    );
+
+    // If the new HTML has three-installments, replace the current one
+    if (newThreeInstallmentsEl) {
+      currentThreeInstallmentsEl.replaceWith(
+        newThreeInstallmentsEl.cloneNode(true),
+      );
     }
   };
 }
 
-if (!customElements.get('product-price')) {
-  customElements.define('product-price', ProductPrice);
+if (!customElements.get("product-price")) {
+  customElements.define("product-price", ProductPrice);
 }

@@ -597,7 +597,7 @@
                         "vertical_alignment_flex_direction_column": "center",
                         "gap": 12,
                         "width": "custom",
-                        "custom_width": 45,
+                        "custom_width": 72,
                         "width_mobile": "fill",
                         "custom_width_mobile": 100,
                         "height": "fit",
@@ -721,14 +721,14 @@
                   "type": "group",
                   "name": "Droite",
                   "settings": {
-                    "content_direction": "column",
+                    "content_direction": "row",
                     "vertical_on_mobile": true,
                     "horizontal_alignment": "flex-start",
                     "vertical_alignment": "center",
                     "align_baseline": false,
                     "horizontal_alignment_flex_direction_column": "flex-end",
                     "vertical_alignment_flex_direction_column": "flex-start",
-                    "gap": 12,
+                    "gap": 50,
                     "width": "fit-content",
                     "custom_width": 100,
                     "width_mobile": "fill",
@@ -757,30 +757,137 @@
                     "padding-inline-end": 0
                   },
                   "blocks": {
-                    "menu_mzmeGM": {
-                      "type": "menu",
-                      "name": "t:names.menu",
+                    "group_x6wFdG": {
+                      "type": "group",
+                      "name": "t:names.group",
                       "settings": {
-                        "menu": "main-menu",
-                        "heading": "Aller plus lon",
-                        "menu_spacing": 12,
-                        "show_as_accordion": false,
-                        "accordion_icon": "caret",
-                        "accordion_dividers": false,
+                        "content_direction": "column",
+                        "vertical_on_mobile": true,
+                        "horizontal_alignment": "flex-start",
+                        "vertical_alignment": "center",
+                        "align_baseline": false,
+                        "horizontal_alignment_flex_direction_column": "flex-start",
+                        "vertical_alignment_flex_direction_column": "center",
+                        "gap": 12,
+                        "width": "fill",
+                        "custom_width": 100,
+                        "width_mobile": "fill",
+                        "custom_width_mobile": 100,
+                        "height": "fit",
+                        "custom_height": 100,
                         "inherit_color_scheme": true,
                         "color_scheme": "",
-                        "heading_preset": "h3",
-                        "link_preset": "paragraph",
+                        "background_media": "none",
+                        "video_position": "cover",
+                        "background_image_position": "cover",
+                        "border": "none",
+                        "border_width": 1,
+                        "border_opacity": 100,
+                        "border_radius": 0,
+                        "toggle_overlay": false,
+                        "overlay_color": "#00000026",
+                        "overlay_style": "solid",
+                        "gradient_direction": "to top",
+                        "link": "",
+                        "open_in_new_tab": false,
+                        "placeholder": "",
                         "padding-block-start": 0,
                         "padding-block-end": 0,
                         "padding-inline-start": 0,
                         "padding-inline-end": 0
                       },
-                      "blocks": {}
+                      "blocks": {
+                        "countdown_CCGK8A": {
+                          "type": "countdown",
+                          "name": "Compte à rebours",
+                          "settings": {
+                            "icon": "shopify://shop_images/Carton_1df4d771-9ae3-4e3c-a8a8-b9378bfa83bc.png",
+                            "heading": "Prochaine session d'impression",
+                            "message": "<p>Commandez maintenant pour profiter de notre session de fabrication à venir. En découvrir plus sur <a href=\"/pages/notre-mission\" title=\"Notre mission\">notre fonctionnement</a>.</p>",
+                            "label_days": "Jours",
+                            "label_hours": "Heures",
+                            "label_minutes": "Minutes",
+                            "label_seconds": "Secondes",
+                            "alignment": "flex-end",
+                            "gap": 16
+                          },
+                          "blocks": {}
+                        }
+                      },
+                      "block_order": [
+                        "countdown_CCGK8A"
+                      ]
+                    },
+                    "group_EnaEAK": {
+                      "type": "group",
+                      "name": "t:names.group",
+                      "settings": {
+                        "content_direction": "column",
+                        "vertical_on_mobile": true,
+                        "horizontal_alignment": "flex-start",
+                        "vertical_alignment": "center",
+                        "align_baseline": false,
+                        "horizontal_alignment_flex_direction_column": "flex-start",
+                        "vertical_alignment_flex_direction_column": "center",
+                        "gap": 12,
+                        "width": "fit-content",
+                        "custom_width": 100,
+                        "width_mobile": "fill",
+                        "custom_width_mobile": 100,
+                        "height": "fit",
+                        "custom_height": 100,
+                        "inherit_color_scheme": true,
+                        "color_scheme": "",
+                        "background_media": "none",
+                        "video_position": "cover",
+                        "background_image_position": "cover",
+                        "border": "none",
+                        "border_width": 1,
+                        "border_opacity": 100,
+                        "border_radius": 0,
+                        "toggle_overlay": false,
+                        "overlay_color": "#00000026",
+                        "overlay_style": "solid",
+                        "gradient_direction": "to top",
+                        "link": "",
+                        "open_in_new_tab": false,
+                        "placeholder": "",
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {
+                        "menu_PbNEQa": {
+                          "type": "menu",
+                          "name": "t:names.menu",
+                          "settings": {
+                            "menu": "main-menu",
+                            "heading": "Aller plus lon",
+                            "menu_spacing": 12,
+                            "show_as_accordion": false,
+                            "accordion_icon": "caret",
+                            "accordion_dividers": false,
+                            "inherit_color_scheme": true,
+                            "color_scheme": "",
+                            "heading_preset": "h3",
+                            "link_preset": "paragraph",
+                            "padding-block-start": 0,
+                            "padding-block-end": 0,
+                            "padding-inline-start": 0,
+                            "padding-inline-end": 0
+                          },
+                          "blocks": {}
+                        }
+                      },
+                      "block_order": [
+                        "menu_PbNEQa"
+                      ]
                     }
                   },
                   "block_order": [
-                    "menu_mzmeGM"
+                    "group_x6wFdG",
+                    "group_EnaEAK"
                   ]
                 }
               },

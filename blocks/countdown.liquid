@@ -47,7 +47,7 @@
 
   {% if block_settings.message != blank %}
     <div class="countdown-block__message">
-      <p class="countdown-message">{{ block_settings.message }}</p>
+      {{ block_settings.message }}
     </div>
   {% endif %}
 </div>
@@ -138,10 +138,10 @@
 
   .countdown-block__message {
     text-align: right;
-    max-width: 300px;
+    max-width: 280px;
   }
 
-  .countdown-message {
+  .countdown-block__message p {
     font-size: 0.875rem;
     margin: 0;
     opacity: 0.8;
@@ -320,10 +320,10 @@
       "default": "Prochaine impression dans :"
     },
     {
-      "type": "text",
+      "type": "richtext",
       "id": "message",
       "label": "Message",
-      "default": "Commandez maintenant pour la prochaine impression !",
+      "default": "<p>Commandez maintenant pour profiter de notre session de fabrication à venir.</p>",
       "info": "Message affiché sous le compte à rebours"
     },
     {

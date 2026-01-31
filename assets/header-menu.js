@@ -1,9 +1,9 @@
-import { Component } from '@theme/component';
-import { debounce, onDocumentLoaded } from '@theme/utilities';
-import { MegaMenuHoverEvent } from '@theme/events';
+import { Component } from "@theme/component";
+import { debounce, onDocumentLoaded } from "@theme/utilities";
+import { MegaMenuHoverEvent } from "@theme/events";
 
-const ACTIVATE_DELAY = 0;
-const DEACTIVATE_DELAY = 350;
+const ACTIVATE_DELAY = 150;
+const DEACTIVATE_DELAY = 250;
 
 /**
  * A custom element that manages a header menu.
@@ -18,16 +18,20 @@ const DEACTIVATE_DELAY = 350;
  * @extends {Component<Refs>}
  */
 class HeaderMenu extends Component {
-  requiredRefs = ['overflowMenu'];
+  requiredRefs = ["overflowMenu"];
 
   #abortController = new AbortController();
 
   connectedCallback() {
     super.connectedCallback();
 
-    this.overflowMenu?.addEventListener('pointerleave', () => this.#debouncedDeactivate(), {
-      signal: this.#abortController.signal,
-    });
+    this.overflowMenu?.addEventListener(
+      "pointerleave",
+      () => this.#debouncedDeactivate(),
+      {
+        signal: this.#abortController.signal,
+      },
+    );
 
     onDocumentLoaded(this.#preloadImages);
   }
@@ -57,7 +61,9 @@ class HeaderMenu extends Component {
    * Get the overflow menu
    */
   get overflowMenu() {
-    return /** @type {HTMLElement | null} */ (this.refs.overflowMenu?.shadowRoot?.querySelector('[part="overflow"]'));
+    return /** @type {HTMLElement | null} */ (
+      this.refs.overflowMenu?.shadowRoot?.querySelector('[part="overflow"]')
+    );
   }
 
   /**
@@ -65,7 +71,7 @@ class HeaderMenu extends Component {
    * @returns {boolean}
    */
   get overflowHovered() {
-    return this.refs.overflowMenu?.matches(':hover') ?? false;
+    return this.refs.overflowMenu?.matches(":hover") ?? false;
   }
 
   /**
@@ -88,7 +94,7 @@ class HeaderMenu extends Component {
 
     this.dispatchEvent(new MegaMenuHoverEvent());
 
-    this.removeAttribute('data-animating');
+    this.removeAttribute("data-animating");
 
     if (!(event.target instanceof Element)) return;
 
@@ -96,19 +102,19 @@ class HeaderMenu extends Component {
 
     if (!item || item == this.#state.activeItem) return;
 
-    const isDefaultSlot = event.target.slot === '';
+    const isDefaultSlot = event.target.slot === "";
 
     this.dataset.overflowExpanded = (!isDefaultSlot).toString();
 
     const previouslyActiveItem = this.#state.activeItem;
 
     if (previouslyActiveItem) {
-      previouslyActiveItem.ariaExpanded = 'false';
+      previouslyActiveItem.ariaExpanded = "false";
     }
 
     this.#state.activeItem = item;
-    this.ariaExpanded = 'true';
-    item.ariaExpanded = 'true';
+    this.ariaExpanded = "true";
+    item.ariaExpanded = "true";
 
     let submenu = findSubmenu(item);
 
@@ -118,13 +124,13 @@ class HeaderMenu extends Component {
 
     // Mark submenu as active for content-visibility optimization
     if (submenu) {
-      submenu.dataset.active = '';
+      submenu.dataset.active = "";
     }
 
     const submenuHeight = submenu ? submenu.offsetHeight : 0;
 
-    this.style.setProperty('--submenu-height', `${submenuHeight}px`);
-    this.style.setProperty('--submenu-opacity', '1');
+    this.style.setProperty("--submenu-height", `${submenuHeight}px`);
+    this.style.setProperty("--submenu-opacity", "1");
   };
 
   #debouncedActivateHandler = debounce(this.#activateHandler, ACTIVATE_DELAY);
@@ -155,24 +161,27 @@ class HeaderMenu extends Component {
     if (!item || item != this.#state.activeItem) return;
     if (this.overflowHovered) return;
 
-    this.style.setProperty('--submenu-height', '0px');
-    this.style.setProperty('--submenu-opacity', '0');
-    this.dataset.overflowExpanded = 'false';
+    this.style.setProperty("--submenu-height", "0px");
+    this.style.setProperty("--submenu-opacity", "0");
+    this.dataset.overflowExpanded = "false";
 
     const submenu = findSubmenu(item);
 
     this.#state.activeItem = null;
-    this.ariaExpanded = 'false';
-    item.ariaExpanded = 'false';
-    item.setAttribute('data-animating', '');
+    this.ariaExpanded = "false";
+    item.ariaExpanded = "false";
+    item.setAttribute("data-animating", "");
 
-    setTimeout(() => {
-      item.removeAttribute('data-animating');
-      // Remove active state from submenu after animation completes
-      if (submenu) {
-        delete submenu.dataset.active;
-      }
-    }, Math.max(0, this.animationDelay - 150)); // Start header transition 150ms before submenu finishes
+    setTimeout(
+      () => {
+        item.removeAttribute("data-animating");
+        // Remove active state from submenu after animation completes
+        if (submenu) {
+          delete submenu.dataset.active;
+        }
+      },
+      Math.max(0, this.animationDelay - 150),
+    ); // Start header transition 150ms before submenu finishes
   };
 
   /**
@@ -186,12 +195,12 @@ class HeaderMenu extends Component {
    */
   #preloadImages = () => {
     const images = this.querySelectorAll('img[loading="lazy"]');
-    images?.forEach((image) => image.removeAttribute('loading'));
+    images?.forEach((image) => image.removeAttribute("loading"));
   };
 }
 
-if (!customElements.get('header-menu')) {
-  customElements.define('header-menu', HeaderMenu);
+if (!customElements.get("header-menu")) {
+  customElements.define("header-menu", HeaderMenu);
 }
 
 /**
@@ -204,7 +213,9 @@ function findMenuItem(element) {
 
   if (element?.matches('[slot="more"')) {
     // Select the first overflowing menu item when hovering over the "More" item
-    return findMenuItem(element.parentElement?.querySelector('[slot="overflow"]'));
+    return findMenuItem(
+      element.parentElement?.querySelector('[slot="overflow"]'),
+    );
   }
 
   return element?.querySelector('[ref="menuitem"]');

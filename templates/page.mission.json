@@ -230,7 +230,7 @@
                   "type": "custom-liquid",
                   "name": "t:names.custom_liquid",
                   "settings": {
-                    "custom_liquid": "<p class=\"text\">Depuis 2019, les Runes de Chêne fleurissent dans toutes les contrées, comme un cri d’amour pour l’Histoire, le patrimoine et la Nature. Portées, gravées, collées par ceux qui refusent la froideur du monde moderne, et lui préfèrent l’inspiration du passé.</p>\n<p class=\"text\">Ce n’est pas juste un t-shirt.<Br/>C’est un signe de <span style=\"text-decoration: underline; font-weight: bold; color: #833434;\">reconnaissance.</span></p>"
+                    "custom_liquid": "<p class=\"text\">Depuis 2019, les Runes de Chêne fleurissent dans toutes les contrées, comme un cri d’amour pour <b>l’Histoire, le patrimoine et la Nature.</b> Portées, gravées, collées par ceux qui refusent la froideur du monde moderne.</p>\n<p class=\"text\">Ce n’est pas juste un t-shirt.<Br/>C’est un signe de <span style=\"text-decoration: underline; font-weight: bold; color: #833434;\">renaissance.</span></p>"
                   },
                   "blocks": {}
                 },

@@ -834,7 +834,7 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p>Chaque article vous est délivré avec un QRcode qui raconte la signfication ou el récit de nos illustrations, inspirées par des figures ou des concepts de notre Histoire.</p><p><strong>Apprenez. Incarnez. Transmettez. </strong></p>",
+            "text": "<p>Chaque article vous est délivré avec un QRcode qui raconte la signification ou le récit de nos illustrations, inspirées par des figures ou des concepts de notre Histoire.</p><p><strong>Apprenez. Incarnez. Transmettez !</strong></p>",
             "width": "100%",
             "max_width": "none",
             "alignment": "center",
