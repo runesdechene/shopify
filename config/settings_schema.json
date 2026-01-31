@@ -2251,6 +2251,52 @@
     ]
   },
   {
+    "name": "Compte à rebours",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Configuration des impressions"
+      },
+      {
+        "type": "paragraph",
+        "content": "Configurez les dates d'impression pour le compte à rebours. Par défaut, les impressions ont lieu les 1er et 3ème lundis de chaque mois."
+      },
+      {
+        "type": "select",
+        "id": "countdown_mode",
+        "label": "Mode de récurrence",
+        "options": [
+          {
+            "value": "mondays",
+            "label": "1er et 3ème lundis du mois"
+          },
+          {
+            "value": "custom_days",
+            "label": "Tous les X jours"
+          }
+        ],
+        "default": "mondays",
+        "info": "Choisissez comment calculer la prochaine date d'impression"
+      },
+      {
+        "type": "number",
+        "id": "countdown_recurrence_days",
+        "label": "Récurrence (jours)",
+        "default": 14,
+        "visible_if": "{{ settings.countdown_mode == 'custom_days' }}",
+        "info": "Nombre de jours entre chaque impression (ex: 14 pour toutes les 2 semaines)"
+      },
+      {
+        "type": "text",
+        "id": "countdown_start_date",
+        "label": "Date de départ",
+        "default": "2026-02-03",
+        "visible_if": "{{ settings.countdown_mode == 'custom_days' }}",
+        "info": "Format: YYYY-MM-DD. Date de la première impression pour calculer les suivantes."
+      }
+    ]
+  },
+  {
     "name": "t:names.variant_pickers",
     "settings": [
       {
