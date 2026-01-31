@@ -4,6 +4,86 @@
   @param {string} [accelerated_checkout_buttons_layout] - { 'vertical' } Forced layout of the additional checkout buttons, instead of relying on platform's layout.
 {%- enddoc -%}
 
+{%- comment -%} Promotion dégressive - Affichée en haut du panier {%- endcomment -%}
+{%- if settings.cart_progressive_discount_enabled and cart.item_count >= 2 -%}
+  {%- liquid
+    assign item_count = cart.item_count
+    assign discount_percent = 0
+    assign tier_name = ''
+    assign tier_message = ''
+
+    if item_count >= 5
+      assign discount_percent = settings.cart_discount_5_items | default: 50
+      assign tier_name = settings.cart_discount_5_name | default: 'Saga épique'
+      assign tier_message = settings.cart_discount_5_message | default: "Votre légende s'écrit avec chaque pièce..."
+    elsif item_count == 4
+      assign discount_percent = settings.cart_discount_4_items | default: 40
+      assign tier_name = settings.cart_discount_4_name | default: 'Collection légendaire'
+      assign tier_message = settings.cart_discount_4_message | default: 'Une collection digne des plus grands récits...'
+    elsif item_count == 3
+      assign discount_percent = settings.cart_discount_3_items | default: 25
+      assign tier_name = settings.cart_discount_3_name | default: 'Trilogie enchantée'
+      assign tier_message = settings.cart_discount_3_message | default: 'Trois fragments réunis, la magie opère...'
+    elsif item_count == 2
+      assign discount_percent = settings.cart_discount_2_items | default: 15
+      assign tier_name = settings.cart_discount_2_name | default: 'Duo complice'
+      assign tier_message = settings.cart_discount_2_message | default: 'Deux pièces, une histoire qui commence à se dessiner...'
+    endif
+
+    assign cheapest_price = 999999999
+    assign cheapest_item_title = ''
+    for item in cart.items
+      if item.original_price < cheapest_price
+        assign cheapest_price = item.original_price
+        assign cheapest_item_title = item.product.title
+      endif
+    endfor
+
+    assign discount_amount = cheapest_price | times: discount_percent | divided_by: 100
+  -%}
+  <div class="cart-progressive-discount">
+    <div class="cart-progressive-discount__header">
+      <span class="cart-progressive-discount__tier-name">{{ tier_name }}</span>
+      <span class="cart-progressive-discount__badge">-{{ discount_percent }}%</span>
+    </div>
+    <p class="cart-progressive-discount__narrative">{{ tier_message }}</p>
+    <p class="cart-progressive-discount__details">
+      <strong>{{ discount_amount | money }}</strong> d'économie sur "{{ cheapest_item_title | truncate: 25 }}"
+    </p>
+    {%- if item_count == 2 and settings.cart_discount_3_items > settings.cart_discount_2_items -%}
+      <p class="cart-progressive-discount__hint">
+        +1 article → <strong>{{ settings.cart_discount_3_name | default: 'Trilogie enchantée' }}</strong> (-
+        {{- settings.cart_discount_3_items -}}
+        %)
+      </p>
+    {%- elsif item_count == 3 and settings.cart_discount_4_items > settings.cart_discount_3_items -%}
+      <p class="cart-progressive-discount__hint">
+        +1 article → <strong>{{ settings.cart_discount_4_name | default: 'Collection légendaire' }}</strong> (-
+        {{- settings.cart_discount_4_items -}}
+        %)
+      </p>
+    {%- elsif item_count == 4 and settings.cart_discount_5_items > settings.cart_discount_4_items -%}
+      <p class="cart-progressive-discount__hint">
+        +1 article → <strong>{{ settings.cart_discount_5_name | default: 'Saga épique' }}</strong> (-
+        {{- settings.cart_discount_5_items -}}
+        %)
+      </p>
+    {%- endif -%}
+  </div>
+{%- elsif settings.cart_progressive_discount_enabled and cart.item_count == 1 -%}
+  <div class="cart-progressive-discount cart-progressive-discount--teaser">
+    <p class="cart-progressive-discount__teaser">
+      <strong>{{ settings.cart_discount_2_name | default: 'Duo complice' }}</strong> : Ajoutez un article pour profiter
+      de
+      <b
+        >-
+        {{- settings.cart_discount_2_items | default: 15 }}%</b
+      >
+      sur l'un d'eux.
+    </p>
+  </div>
+{%- endif -%}
+
 <div class="cart__summary-totals">
   {% # We need to keep this node in place to allow morphing to work properly # %}
   <div class="cart__original-total-container cart-primary-typography">
@@ -255,6 +335,34 @@
       {% render 'tax-info', has_discounts_enabled: settings.show_add_discount_code %}
     </div>
   </div>
+
+  {%- comment -%} Frais de port offerts - Affichée en bas du panier {%- endcomment -%}
+  {%- if settings.cart_free_shipping_enabled -%}
+    {%- liquid
+      assign free_shipping_threshold = settings.cart_free_shipping_threshold | default: 50
+      assign threshold_in_cents = free_shipping_threshold | times: 100
+      assign cart_total = cart.total_price
+      assign remaining = threshold_in_cents | minus: cart_total
+      assign progress_percent = cart_total | times: 100 | divided_by: threshold_in_cents
+      if progress_percent > 100
+        assign progress_percent = 100
+      endif
+    -%}
+    {%- if remaining > 0 -%}
+      <div class="cart-free-shipping">
+        <div class="cart-free-shipping__progress">
+          <div class="cart-free-shipping__bar" style="width: {{ progress_percent }}%;"></div>
+        </div>
+        <p class="cart-free-shipping__text">
+          Plus que <strong>{{ remaining | money }}</strong> avant la livraison offerte !
+        </p>
+      </div>
+    {%- else -%}
+      <div class="cart-free-shipping cart-free-shipping--achieved">
+        <p class="cart-free-shipping__text">🎉 <strong>Livraison offerte !</strong></p>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
 </div>
 
 <div class="cart__ctas">
@@ -284,6 +392,116 @@
 </div>
 
 {% stylesheet %}
+  /* Promotion dégressive */
+  .cart-progressive-discount {
+    background: linear-gradient(135deg, #f8f5f0 0%, #ece7d9 100%);
+    border-radius: 12px;
+    padding: var(--padding-md) var(--padding-lg);
+    border: 1px solid rgba(131, 52, 52, 0.15);
+    width: 100%;
+  }
+
+  .cart-progressive-discount__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gap-sm);
+    margin-block-end: var(--margin-2xs);
+  }
+
+  .cart-progressive-discount__tier-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #833434;
+    font-family: var(--font-heading--family);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .cart-progressive-discount__badge {
+    background: #833434;
+    color: #fff;
+    font-size: var(--cart-font-size--2xs);
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  .cart-progressive-discount__narrative {
+    font-size: var(--cart-font-size--xs);
+    color: var(--color-foreground);
+    margin: 0 0 var(--margin-2xs);
+    font-style: italic;
+    opacity: 0.85;
+  }
+
+  .cart-progressive-discount__details {
+    font-size: var(--cart-font-size--2xs);
+    color: var(--color-foreground);
+    margin: 0;
+    opacity: 0.7;
+  }
+
+  .cart-progressive-discount__hint {
+    font-size: var(--cart-font-size--2xs);
+    color: #833434;
+    margin: var(--margin-2xs) 0 0;
+    padding-top: var(--padding-2xs);
+    border-top: 1px dashed rgba(131, 52, 52, 0.2);
+  }
+
+  .cart-progressive-discount--teaser {
+    background: rgba(131, 52, 52, 0.05);
+    border: 1px dashed rgba(131, 52, 52, 0.2);
+  }
+
+  .cart-progressive-discount__teaser {
+    font-size: 0.9rem;
+    color: var(--color-foreground);
+    margin: 0;
+    text-align: center;
+  }
+
+  /* Frais de port offerts */
+  .cart-free-shipping {
+    background: #f8f5f0;
+    border-radius: 20px;
+    padding: var(--padding-sm) var(--padding-md);
+    margin-block-start: var(--margin-md);
+    text-align: center;
+  }
+
+  .cart-free-shipping__progress {
+    width: 100%;
+    height: 6px;
+    background: rgba(131, 52, 52, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-block-end: var(--margin-2xs);
+  }
+
+  .cart-free-shipping__bar {
+    height: 100%;
+    background: linear-gradient(90deg, #833434 0%, #a54545 100%);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+  }
+
+  .cart-free-shipping__text {
+    font-size: var(--cart-font-size--xs);
+    color: var(--color-foreground);
+    margin: 0;
+  }
+
+  .cart-free-shipping--achieved {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    border: 1px solid rgba(40, 167, 69, 0.2);
+  }
+
+  .cart-free-shipping--achieved .cart-free-shipping__text {
+    color: #155724;
+  }
+
   .cart-actions {
     display: flex;
     flex-direction: column;

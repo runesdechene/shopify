@@ -2251,6 +2251,128 @@
     ]
   },
   {
+    "name": "Remises de panier",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Frais de port offerts"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_free_shipping_enabled",
+        "label": "Activer la progression frais de port offerts",
+        "default": false,
+        "info": "Affiche une barre de progression vers les frais de port offerts"
+      },
+      {
+        "type": "number",
+        "id": "cart_free_shipping_threshold",
+        "label": "Seuil frais de port offerts (€)",
+        "default": 50,
+        "info": "Montant minimum pour bénéficier des frais de port offerts. Laissez vide pour récupérer automatiquement depuis les zones de livraison."
+      },
+      {
+        "type": "header",
+        "content": "Promotion dégressive"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_progressive_discount_enabled",
+        "label": "Activer la promotion dégressive",
+        "default": false,
+        "info": "Remise progressive sur l'article le moins cher selon le nombre d'articles"
+      },
+      {
+        "type": "header",
+        "content": "Palier 2 articles"
+      },
+      {
+        "type": "number",
+        "id": "cart_discount_2_items",
+        "label": "Remise (%)",
+        "default": 15
+      },
+      {
+        "type": "text",
+        "id": "cart_discount_2_name",
+        "label": "Nom du palier",
+        "default": "Duo complice"
+      },
+      {
+        "type": "textarea",
+        "id": "cart_discount_2_message",
+        "label": "Message narratif",
+        "default": "Deux pièces, une histoire qui commence à se dessiner..."
+      },
+      {
+        "type": "header",
+        "content": "Palier 3 articles"
+      },
+      {
+        "type": "number",
+        "id": "cart_discount_3_items",
+        "label": "Remise (%)",
+        "default": 25
+      },
+      {
+        "type": "text",
+        "id": "cart_discount_3_name",
+        "label": "Nom du palier",
+        "default": "Trilogie enchantée"
+      },
+      {
+        "type": "textarea",
+        "id": "cart_discount_3_message",
+        "label": "Message narratif",
+        "default": "Trois fragments réunis, la magie opère..."
+      },
+      {
+        "type": "header",
+        "content": "Palier 4 articles"
+      },
+      {
+        "type": "number",
+        "id": "cart_discount_4_items",
+        "label": "Remise (%)",
+        "default": 40
+      },
+      {
+        "type": "text",
+        "id": "cart_discount_4_name",
+        "label": "Nom du palier",
+        "default": "Collection légendaire"
+      },
+      {
+        "type": "textarea",
+        "id": "cart_discount_4_message",
+        "label": "Message narratif",
+        "default": "Une collection digne des plus grands récits..."
+      },
+      {
+        "type": "header",
+        "content": "Palier 5+ articles"
+      },
+      {
+        "type": "number",
+        "id": "cart_discount_5_items",
+        "label": "Remise (%)",
+        "default": 50
+      },
+      {
+        "type": "text",
+        "id": "cart_discount_5_name",
+        "label": "Nom du palier",
+        "default": "Saga épique"
+      },
+      {
+        "type": "textarea",
+        "id": "cart_discount_5_message",
+        "label": "Message narratif",
+        "default": "Votre légende sécrit avec chaque pièce..."
+      }
+    ]
+  }, 
+  {
     "name": "Compte à rebours",
     "settings": [
       {

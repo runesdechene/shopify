@@ -132,7 +132,7 @@
     "quantity": "Quantité",
     "product_total": "Nombre total de produits",
     "cart_estimated_total": "Total estimé",
-    "seller_note": "Instructions spéciales",
+    "seller_note": "Note pour l'équipe 👋",
     "cart_subtotal": "Sous-total",
     "discounts": "Réductions",
     "duties_and_taxes_included_shipping_at_checkout_with_policy_html": "Frais de douane et taxes inclus. Réductions et <a href=\"{{ link }}\">frais d’expédition</a> calculés à l’étape du paiement.",
