@@ -254,49 +254,36 @@
           {%- if linked_collection -%}
             {% for product in linked_collection.products %}
               {%- comment -%} Trouver l'option "Couleurs" spécifiquement {%- endcomment -%}
-              {%- assign color_option_index = -1 -%}
               {% for option in product.options_with_values %}
                 {% if option.name == 'Couleurs' or option.name == 'Couleur' or option.name == 'Color' or option.name == 'couleurs' or option.name == 'couleur' %}
-                  {%- assign color_option_index = forloop.index0 -%}
+                  {%- comment -%} Parcourir les valeurs de l'option couleur avec leurs swatches Shopify {%- endcomment -%}
+                  {% for option_value in option.values %}
+                    {%- assign color_name = option_value.name | strip -%}
+                    {%- if color_name != blank -%}
+                      {%- comment -%} Récupérer la couleur RGB depuis le swatch Shopify {%- endcomment -%}
+                      {%- if option_value.swatch.color -%}
+                        {%- assign color_rgb = option_value.swatch.color.rgb -%}
+                        {%- assign color_hex = 'rgb(' | append: color_rgb | append: ')' -%}
+                      {%- else -%}
+                        {%- assign color_hex = color_name | handleize -%}
+                      {%- endif -%}
+                      {%- assign color_data = color_name | append: ':' | append: color_hex -%}
+                      {%- unless all_color_swatches contains color_data -%}
+                        {%- unless all_colors contains color_name -%}
+                          {%- if all_colors == '' -%}
+                            {%- assign all_colors = color_name -%}
+                            {%- assign all_color_swatches = color_data -%}
+                          {%- else -%}
+                            {%- assign all_colors = all_colors | append: '|' | append: color_name -%}
+                            {%- assign all_color_swatches = all_color_swatches | append: '|' | append: color_data -%}
+                          {%- endif -%}
+                        {%- endunless -%}
+                      {%- endunless -%}
+                    {%- endif -%}
+                  {% endfor %}
                   {%- break -%}
                 {% endif %}
               {% endfor %}
-              
-              {%- comment -%} Si l'option couleur existe, parcourir toutes les variantes {%- endcomment -%}
-              {% if color_option_index >= 0 %}
-                {% for variant in product.variants %}
-                  {%- comment -%} Récupérer la couleur selon l'index de l'option {%- endcomment -%}
-                  {%- if color_option_index == 0 -%}
-                    {%- assign color_name = variant.option1 | strip -%}
-                  {%- elsif color_option_index == 1 -%}
-                    {%- assign color_name = variant.option2 | strip -%}
-                  {%- elsif color_option_index == 2 -%}
-                    {%- assign color_name = variant.option3 | strip -%}
-                  {%- endif -%}
-                  
-                  {%- if color_name != blank -%}
-                    {%- comment -%} Essayer de récupérer la couleur hex depuis les métadonnées {%- endcomment -%}
-                    {%- assign variant_color_meta = variant.metafields.custom.color -%}
-                    {%- if variant_color_meta != blank -%}
-                      {%- assign color_hex = variant_color_meta.value -%}
-                    {%- else -%}
-                      {%- assign color_hex = color_name | handleize -%}
-                    {%- endif -%}
-                    {%- assign color_data = color_name | append: ':' | append: color_hex -%}
-                    {%- unless all_color_swatches contains color_data -%}
-                      {%- unless all_colors contains color_name -%}
-                        {%- if all_colors == '' -%}
-                          {%- assign all_colors = color_name -%}
-                          {%- assign all_color_swatches = color_data -%}
-                        {%- else -%}
-                          {%- assign all_colors = all_colors | append: '|' | append: color_name -%}
-                          {%- assign all_color_swatches = all_color_swatches | append: '|' | append: color_data -%}
-                        {%- endif -%}
-                      {%- endunless -%}
-                    {%- endunless -%}
-                  {%- endif -%}
-                {% endfor %}
-              {% endif %}
             {% endfor %}
           {%- endif -%}
 
@@ -375,8 +362,7 @@
                   {% if all_color_swatches != '' %}
                     {%- assign colors_array = all_color_swatches | split: '|' -%}
                     <div class="fragment-color-swatches">
-                      <small style="display: block; text-align: center; margin-bottom: 5px; color: #999;">Couleurs: {{ all_colors }}</small>
-                      {% for color_data in colors_array %}
+                        {% for color_data in colors_array %}
                         {%- assign color_parts = color_data | split: ':' -%}
                         {%- assign color_name = color_parts[0] -%}
                         {%- assign color_hex = color_parts[1] | default: '#cccccc' -%}

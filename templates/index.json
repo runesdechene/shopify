@@ -58,6 +58,10 @@
         "text_kfVmdT",
         "jumbo_text_Ae7GXm"
       ],
+      "custom_css": [
+        "@media screen and (max-width: 798px) {h1 {font-size: 14vw; }}",
+        "@media (min-width: 798px) {h1 {margin-top: 50px; }}"
+      ],
       "name": "Heading",
       "settings": {
         "content_direction": "column",
@@ -83,7 +87,7 @@
         "overlay_color": "#00000026",
         "overlay_style": "solid",
         "gradient_direction": "to top",
-        "padding-block-start": 48,
+        "padding-block-start": 20,
         "padding-block-end": 0
       }
     },
@@ -105,7 +109,7 @@
         "mobile_card_size": "60cqw",
         "columns_gap": 40,
         "rows_gap": 8,
-        "shuffle_collections": false,
+        "shuffle_collections": true,
         "pinned_collection": "",
         "pinned_first_product": false,
         "random_product": true,
@@ -745,7 +749,7 @@
       "name": "t:names.icons_with_text",
       "settings": {
         "content_direction": "row",
-        "vertical_on_mobile": true,
+        "vertical_on_mobile": false,
         "horizontal_alignment": "flex-start",
         "vertical_alignment": "center",
         "align_baseline": false,
@@ -856,8 +860,8 @@
           "type": "button",
           "name": "t:names.button",
           "settings": {
-            "label": "Acheter maintenant",
-            "link": "shopify://collections/all",
+            "label": "Découvrir notre mission",
+            "link": "shopify://pages/notre-mission",
             "open_in_new_tab": false,
             "style_class": "button",
             "width": "fit-content",

@@ -11,6 +11,36 @@
   "type": "header",
   "name": "Header",
   "sections": {
+    "header_announcements_d3fXUX": {
+      "type": "header-announcements",
+      "blocks": {
+        "announcement_UqPGCE": {
+          "type": "_announcement",
+          "settings": {
+            "text": "Runes de Chêne sera présent le 7 et 8 Mars au<a href=\"/collections/festival-yggdrasil\" title=\"Festival Yggdrasil\"> FESTIVAL YGGDRASIL</a> de LYON",
+            "link": "",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "weight": "",
+            "letter_spacing": "normal",
+            "case": "none"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "announcement_UqPGCE"
+      ],
+      "name": "t:names.announcement_bar",
+      "settings": {
+        "speed": 5,
+        "section_width": "page-width",
+        "color_scheme": "scheme-6205781f-b080-48bf-8e6c-e97fbadaede5",
+        "divider_width": 0,
+        "padding-block-start": 15,
+        "padding-block-end": 15
+      }
+    },
     "header_section": {
       "type": "header",
       "blocks": {
@@ -32,7 +62,7 @@
           "settings": {
             "menu": "main-menu",
             "color_scheme": "scheme-1",
-            "type_font_primary_size": "0.875rem",
+            "type_font_primary_size": "1rem",
             "menu_font_style": "inverse",
             "type_font_primary_link": "body",
             "type_case_primary_link": "none",
@@ -49,9 +79,15 @@
           "blocks": {}
         }
       },
+      "custom_css": [
+        ".overflow-menu {margin-left: 20px;}",
+        ".menu-list {--menu-horizontal-gap: 0 !important;}",
+        ".menu-list__link span {padding: 10px 20px;}",
+        ".menu-list__link--active span {font-weight: bold; background: rgba(0, 0, 0, 0.05); border-radius: 10px;}"
+      ],
       "settings": {
         "logo_position": "left",
-        "menu_position": "center",
+        "menu_position": "left",
         "menu_row": "top",
         "show_search": true,
         "search_position": "right",
@@ -60,7 +96,7 @@
         "country_selector_style": true,
         "show_language": true,
         "localization_font": "heading",
-        "localization_font_size": "0.875rem",
+        "localization_font_size": "1rem",
         "localization_position": "right",
         "localization_row": "top",
         "section_width": "full-width",
@@ -82,6 +118,7 @@
     }
   },
   "order": [
+    "header_announcements_d3fXUX",
     "header_section"
   ]
 }

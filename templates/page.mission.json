@@ -230,7 +230,7 @@
                   "type": "custom-liquid",
                   "name": "t:names.custom_liquid",
                   "settings": {
-                    "custom_liquid": "<p class=\"text\">Depuis 2019, les Runes de Chêne fleurissent dans toutes les contrées, comme un cri d’amour pour l’Histoire, le patrimoine et la Nature. Portées, gravées, collées par ceux qui refusent la froideur du monde moderne, et lui préfèrent l’inspiration du passé.</p>\n<p class=\"text\">Ce n’est pas juste un t-shirt.<Br/>C’est un signe de <span style=\"text-decoration: underline; font-weight: bold; color: #3D555B;\">reconnaissance.</span></p>"
+                    "custom_liquid": "<p class=\"text\">Depuis 2019, les Runes de Chêne fleurissent dans toutes les contrées, comme un cri d’amour pour l’Histoire, le patrimoine et la Nature. Portées, gravées, collées par ceux qui refusent la froideur du monde moderne, et lui préfèrent l’inspiration du passé.</p>\n<p class=\"text\">Ce n’est pas juste un t-shirt.<Br/>C’est un signe de <span style=\"text-decoration: underline; font-weight: bold; color: #833434;\">reconnaissance.</span></p>"
                   },
                   "blocks": {}
                 },
@@ -279,7 +279,7 @@
                       "name": "t:names.button",
                       "settings": {
                         "label": "Explorer par illustrations",
-                        "link": "shopify://collections/all",
+                        "link": "shopify://collections/toutes-nos-illustrations-portez-un-fragment-dhistoire",
                         "open_in_new_tab": false,
                         "style_class": "button-secondary",
                         "width": "custom",
@@ -293,8 +293,8 @@
                       "type": "button",
                       "name": "t:names.button",
                       "settings": {
-                        "label": "Explorer par coupe",
-                        "link": "shopify://collections/all",
+                        "label": "Explorer par coupe (bientôt)",
+                        "link": "",
                         "open_in_new_tab": false,
                         "style_class": "button",
                         "width": "custom",
@@ -465,7 +465,7 @@
                       "type": "text",
                       "name": "t:names.text",
                       "settings": {
-                        "text": "<p>Tous nos fragments sont réalisés sans IA. On illustre ce qu’on trouvent inspirant ou génial de notre patrimoine, voyageant entre les époques. Le motif est validé lorsqu’on est sûr qu’il respecte les sources et qu’il n’entretient pas de clichés.<br/><br/></p>",
+                        "text": "<p>Tous nos fragments sont réalisés sans IA. On illustre ce qu’on trouve inspirant ou génial de notre patrimoine, voyageant entre les époques. Le motif est validé lorsqu’on est sûr qu’il respecte les sources et qu’il n’entretient pas de clichés.<br/><br/></p>",
                         "width": "fit-content",
                         "max_width": "normal",
                         "alignment": "left",
@@ -563,6 +563,194 @@
         "group_83dzW8": {
           "type": "group",
           "name": "BAS",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 39,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_bLLTKW": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h3>Fondée par l'artiste Uriel, la marque est désormais présente sur + de 20 festivals au cours de l'année</h3>",
+                "width": "fit-content",
+                "max_width": "none",
+                "alignment": "left",
+                "type_preset": "h4",
+                "font": "var(--font-body--family)",
+                "font_size": "1.125rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "group_ytjC8P": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "image_DBdgHc": {
+                  "type": "image",
+                  "name": "t:names.image",
+                  "settings": {
+                    "image": "shopify://shop_images/Stand_Octobre_2024_3.jpg",
+                    "link": "",
+                    "image_ratio": "landscape",
+                    "width": "custom",
+                    "custom_width": 33,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "image_jKzxMX": {
+                  "type": "image",
+                  "name": "t:names.image",
+                  "settings": {
+                    "image": "shopify://shop_images/Stand_Noel_des_sorciers_2025_99a71b24-73b6-4f4b-9331-5fa1ec81ffe3.jpg",
+                    "link": "",
+                    "image_ratio": "landscape",
+                    "width": "custom",
+                    "custom_width": 33,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "image_jdLbXQ": {
+                  "type": "image",
+                  "name": "t:names.image",
+                  "settings": {
+                    "image": "shopify://shop_images/Stand_TGS_2025.webp",
+                    "link": "",
+                    "image_ratio": "landscape",
+                    "width": "custom",
+                    "custom_width": 33,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "image_DBdgHc",
+                "image_jKzxMX",
+                "image_jdLbXQ"
+              ]
+            }
+          },
+          "block_order": [
+            "text_bLLTKW",
+            "group_ytjC8P"
+          ]
+        },
+        "group_iCyGeF": {
+          "type": "group",
+          "name": "BAS",
           "disabled": true,
           "settings": {
             "content_direction": "column",
@@ -601,7 +789,7 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "text_CrwqgN": {
+            "text_3KeF4Y": {
               "type": "text",
               "name": "t:names.heading",
               "settings": {
@@ -627,7 +815,7 @@
               },
               "blocks": {}
             },
-            "custom_liquid_zYA33j": {
+            "custom_liquid_3w8PyG": {
               "type": "custom-liquid",
               "name": "t:names.custom_liquid",
               "settings": {
@@ -637,14 +825,15 @@
             }
           },
           "block_order": [
-            "text_CrwqgN",
-            "custom_liquid_zYA33j"
+            "text_3KeF4Y",
+            "custom_liquid_3w8PyG"
           ]
         }
       },
       "block_order": [
         "group_ABc3hA",
-        "group_83dzW8"
+        "group_83dzW8",
+        "group_iCyGeF"
       ],
       "custom_css": [
         "h1 {color: #4a4848;}",
@@ -653,7 +842,7 @@
         "h3 {color: #928a8a;}",
         ".text {letter-spacing: 0.05rem; max-width: 600px; font-size: 1.1rem;}",
         ".group-block .sun {position: absolute; width: 180px; transform: rotate(-90deg); left: -155px; top: 30px;}",
-        "@media screen and (max-width: 798px) {.group-block .sun {position: relative; width: 140px; left: auto; transform: none; top: 0;}}",
+        "@media screen and (max-width: 798px) {.group-block .sun {position: relative; width: 140px; left: auto; transform: none; top: 0; }}",
         ".banner-image__container img {object-fit: cover; object-position: bottom;}"
       ],
       "name": "Contre l'oubli",
@@ -664,8 +853,8 @@
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "section_width": "page-width",
-        "section_height": "custom",
-        "section_height_custom": 78,
+        "section_height": "large",
+        "section_height_custom": 100,
         "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "center",
@@ -675,7 +864,7 @@
         "gap": 12,
         "color_scheme": "",
         "padding-block-start": 0,
-        "padding-block-end": 100
+        "padding-block-end": 0
       }
     },
     "section_Px3yFb": {
@@ -1291,7 +1480,6 @@
           "type": "image",
           "name": "t:names.image",
           "settings": {
-            "image": "shopify://shop_images/inbound1981287077092003560.jpg",
             "link": "",
             "image_ratio": "portrait",
             "width": "fill",

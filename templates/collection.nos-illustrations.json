@@ -12,48 +12,22 @@
     "section": {
       "type": "section",
       "blocks": {
-        "text_EjgrBP": {
-          "type": "text",
-          "name": "t:names.heading",
-          "settings": {
-            "text": "<h2>Soyez prévoyant</h2>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
         "text_tqQTNE": {
           "type": "text",
           "name": "Title",
           "settings": {
-            "text": "<h1>Explorez {{ closest.collection.title }}</h1>",
+            "text": "<h1>{{ closest.collection.title }}</h1>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
-            "type_preset": "h1",
+            "type_preset": "h2",
             "font": "var(--font-primary--family)",
             "font_size": "",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
-            "color": "var(--color-foreground-heading)",
+            "color": "",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -63,95 +37,15 @@
             "padding-inline-end": 0
           },
           "blocks": {}
-        },
-        "group_7Xy78f": {
-          "type": "group",
-          "name": "t:names.group",
-          "settings": {
-            "content_direction": "row",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "link": "",
-            "open_in_new_tab": false,
-            "placeholder": "",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "button_tRKDbi": {
-              "type": "button",
-              "name": "t:names.button",
-              "settings": {
-                "label": "Explorer par fragments",
-                "link": "shopify://collections/toutes-nos-illustrations-portez-un-fragment-dhistoire",
-                "open_in_new_tab": false,
-                "style_class": "button-secondary",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
-            },
-            "button_U66t4w": {
-              "type": "button",
-              "name": "t:names.button",
-              "settings": {
-                "label": "Explorer par fragments (bientôt)",
-                "link": "",
-                "open_in_new_tab": false,
-                "style_class": "button",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "button_tRKDbi",
-            "button_U66t4w"
-          ]
         }
       },
       "block_order": [
-        "text_EjgrBP",
-        "text_tqQTNE",
-        "group_7Xy78f"
+        "text_tqQTNE"
       ],
-      "custom_css": [
-        ".button,.button-secondary {padding-inline: 40px;}"
-      ],
+      "disabled": true,
       "name": "Collection heading",
       "settings": {
-        "content_direction": "column",
+        "content_direction": "row",
         "vertical_on_mobile": true,
         "horizontal_alignment": "flex-start",
         "vertical_alignment": "center",
@@ -186,7 +80,7 @@
           "static": true,
           "settings": {
             "enable_filtering": true,
-            "filter_style": "vertical",
+            "filter_style": "horizontal",
             "filter_width": "centered",
             "text_label_case": "default",
             "show_swatch_label": false,
@@ -244,7 +138,7 @@
                 "horizontal_alignment": "flex-start",
                 "vertical_alignment": "center",
                 "align_baseline": false,
-                "horizontal_alignment_flex_direction_column": "center",
+                "horizontal_alignment_flex_direction_column": "flex-start",
                 "vertical_alignment_flex_direction_column": "center",
                 "gap": 4,
                 "width": "fill",
@@ -308,7 +202,7 @@
                     "show_three_installments": false,
                     "type_preset": "",
                     "width": "100%",
-                    "alignment": "center",
+                    "alignment": "left",
                     "font": "var(--font-body--family)",
                     "font_size": "1rem",
                     "line_height": "normal",
@@ -325,7 +219,7 @@
                 "swatches": {
                   "type": "swatches",
                   "settings": {
-                    "product_swatches_alignment": "center",
+                    "product_swatches_alignment": "flex-start",
                     "product_swatches_alignment_mobile": "flex-start",
                     "hide_padding": false,
                     "product_swatches_padding_top": 4,
@@ -349,9 +243,10 @@
           ]
         }
       },
+      "disabled": true,
       "settings": {
-        "layout_type": "grid",
-        "product_card_size": "large",
+        "layout_type": "organic",
+        "product_card_size": "medium",
         "mobile_product_card_size": "small",
         "enable_infinite_scroll": true,
         "products_per_page": 24,
@@ -365,10 +260,51 @@
         "padding-block-start": 40,
         "padding-block-end": 40
       }
+    },
+    "explore_illustrations_Q4zMpf": {
+      "type": "explore-illustrations",
+      "name": "Explorer : Illustrations v2",
+      "settings": {
+        "metaobject_type": "illustrations",
+        "image_field_handle": "image_pour_fond_clair",
+        "artist_field_handle": "artiste",
+        "book_field_handle": "livre",
+        "artist_prefix": "",
+        "book_prefix": "",
+        "extra_field_handle": "edition",
+        "extra_field_prefix": "",
+        "summary_field_handle": "resume",
+        "tags_field_handle": "tags",
+        "section_width": "full-width",
+        "title": "EXPLORER",
+        "items_label": "illustrations disponibles",
+        "title_size": 64,
+        "title_color": "#635e4c",
+        "subtitle": "NOS FRAGMENTS",
+        "subtitle_size": 42,
+        "subtitle_color": "#a39b8c",
+        "show_color_swatches": false,
+        "card_title_size": 40,
+        "card_title_color": "#494141",
+        "card_artist_color": "#796e6d",
+        "card_summary_color": "#665f56",
+        "button_text": "Découvrir les produits",
+        "button_bg_color": "#6d1e1e",
+        "button_text_color": "#e9e4e4",
+        "button_border_radius": 50,
+        "show_back_button": true,
+        "back_url": "/",
+        "nav_button_bg": "#e6dcc7",
+        "nav_button_color": "#5e5444",
+        "show_filters": true,
+        "filter_all_label": "✨ Toutes les illustrations",
+        "bottom_images_opacity": 100
+      }
     }
   },
   "order": [
     "section",
-    "main"
+    "main",
+    "explore_illustrations_Q4zMpf"
   ]
 }
