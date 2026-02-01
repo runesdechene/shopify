@@ -5,6 +5,74 @@
   @param {string} children - The children of the section
 {%- enddoc -%}
 
+{%- liquid
+  assign should_display = true
+  
+  if section.settings.enable_display_condition
+    assign condition_met = false
+    
+    if section.settings.condition_type == 'metafield'
+      assign metafield_parts = section.settings.condition_metafield | split: '.'
+      if metafield_parts.size == 2
+        assign namespace = metafield_parts[0]
+        assign key = metafield_parts[1]
+        
+        if product
+          assign metafield_value = product.metafields[namespace][key]
+        elsif collection
+          assign metafield_value = collection.metafields[namespace][key]
+        elsif page
+          assign metafield_value = page.metafields[namespace][key]
+        elsif article
+          assign metafield_value = article.metafields[namespace][key]
+        endif
+        
+        if metafield_value != blank
+          assign condition_met = true
+        endif
+      endif
+      
+    elsif section.settings.condition_type == 'metafield_equals'
+      assign metafield_parts = section.settings.condition_metafield | split: '.'
+      if metafield_parts.size == 2
+        assign namespace = metafield_parts[0]
+        assign key = metafield_parts[1]
+        
+        if product
+          assign metafield_value = product.metafields[namespace][key]
+        elsif collection
+          assign metafield_value = collection.metafields[namespace][key]
+        elsif page
+          assign metafield_value = page.metafields[namespace][key]
+        elsif article
+          assign metafield_value = article.metafields[namespace][key]
+        endif
+        
+        if metafield_value == section.settings.condition_value
+          assign condition_met = true
+        endif
+      endif
+      
+    elsif section.settings.condition_type == 'custom_liquid'
+      assign liquid_result = section.settings.condition_liquid
+      if liquid_result == 'true' or liquid_result == true
+        assign condition_met = true
+      endif
+    endif
+    
+    if section.settings.condition_invert
+      if condition_met
+        assign should_display = false
+      else
+        assign should_display = true
+      endif
+    else
+      assign should_display = condition_met
+    endif
+  endif
+-%}
+
+{%- if should_display or request.design_mode -%}
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <div
   class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}"
@@ -64,6 +132,7 @@
     </div>
   </div>
 </div>
+{%- endif -%}
 
 {% stylesheet %}
   .section-wrapper {

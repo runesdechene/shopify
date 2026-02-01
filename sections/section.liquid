@@ -418,6 +418,67 @@
       "step": 1,
       "unit": "px",
       "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Conditions d'affichage"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_display_condition",
+      "label": "Activer les conditions d'affichage",
+      "default": false,
+      "info": "Afficher cette section uniquement si une condition est remplie"
+    },
+    {
+      "type": "select",
+      "id": "condition_type",
+      "label": "Type de condition",
+      "options": [
+        {
+          "value": "metafield",
+          "label": "Métadonnée remplie"
+        },
+        {
+          "value": "metafield_equals",
+          "label": "Métadonnée égale à"
+        },
+        {
+          "value": "custom_liquid",
+          "label": "Liquid personnalisé"
+        }
+      ],
+      "default": "metafield",
+      "visible_if": "{{ section.settings.enable_display_condition }}"
+    },
+    {
+      "type": "text",
+      "id": "condition_metafield",
+      "label": "Métadonnée",
+      "info": "Format: namespace.key (ex: custom.subtitle)",
+      "visible_if": "{{ section.settings.enable_display_condition and section.settings.condition_type != 'custom_liquid' }}"
+    },
+    {
+      "type": "text",
+      "id": "condition_value",
+      "label": "Valeur attendue",
+      "info": "Pour 'Métadonnée égale à'",
+      "visible_if": "{{ section.settings.enable_display_condition and section.settings.condition_type == 'metafield_equals' }}"
+    },
+    {
+      "type": "liquid",
+      "id": "condition_liquid",
+      "label": "Condition Liquid",
+      "info": "Doit retourner true ou false (ex: {{ product.available }})",
+      "visible_if": "{{ section.settings.enable_display_condition and section.settings.condition_type == 'custom_liquid' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "condition_invert",
+      "label": "Inverser la condition",
+      "default": false,
+      "info": "Afficher si la condition est FAUSSE",
+      "visible_if": "{{ section.settings.enable_display_condition }}"
     }
   ],
   "presets": [
