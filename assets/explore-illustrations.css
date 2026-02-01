@@ -407,11 +407,11 @@ footer, .footer-immersif, .footer-utilities
   position: relative;
   flex: 0 0 20vw;
   width: 20vw;
+  cursor: pointer;
   max-width: 20vw;
   min-width: 20vw;
   height: calc(90vh - var(--header-height, 300px));
   scroll-snap-align: center;
-  cursor: pointer;
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 1;
   transform: scale(0.85);
@@ -420,6 +420,26 @@ footer, .footer-immersif, .footer-utilities
   justify-content: center;
   padding: 0;
   box-sizing: border-box;
+}
+
+.fragment-card-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  text-decoration: none;
+  pointer-events: none;
+}
+
+.fragment-card.is-center .fragment-card-link {
+  pointer-events: auto;
+}
+
+.fragment-card-link ~ .fragment-card-wrapper {
+  pointer-events: none;
+}
+
+.fragment-card-link ~ .fragment-card-wrapper * {
+  pointer-events: auto;
 }
 
 .fragment-card.is-center  {

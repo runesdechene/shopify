@@ -6,10 +6,9 @@
 {%- enddoc -%}
 
 {%- liquid
-  assign should_display = true
-  
   if section.settings.enable_display_condition
     assign condition_met = false
+    assign should_display = false
     
     if section.settings.condition_type == 'metafield'
       assign metafield_parts = section.settings.condition_metafield | split: '.'
@@ -69,6 +68,8 @@
     else
       assign should_display = condition_met
     endif
+  else
+    assign should_display = true
   endif
 -%}
 

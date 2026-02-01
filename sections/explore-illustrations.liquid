@@ -303,6 +303,9 @@
             data-debug-recit="{{ relique.recit }}"
             data-background-image="{% if relique.image_fond_de_fragment != blank %}{{ relique.image_fond_de_fragment | image_url: width: 1920 }}{% endif %}"
           >
+            {%- if collection_url != blank -%}
+              <a href="{{ collection_url }}" class="fragment-card-link" aria-label="Voir {{ relique.nom }}"></a>
+            {%- endif -%}
             <div class="fragment-card-wrapper">
               {%- comment -%} Image en haut {%- endcomment -%}
               <div class="fragment-card-image-col">
