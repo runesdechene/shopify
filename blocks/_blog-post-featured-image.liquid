@@ -10,7 +10,7 @@
 %}
 
 <div
-  class="blog-post-featured-image blog-post-featured-image--{{ block.id }} blog-post-featured-image--height-{{ block_settings.height }} spacing-style size-style"
+  class="blog-post-featured-image blog-post-featured-image--{{ block.id }} blog-post-featured-image--height-{{ block_settings.height }} spacing-style size-style {{ block_settings.custom_css_class }}"
   style="
     --ratio: {% case block_settings.image_ratio %}
       {% when 'landscape' %}16 / 9
@@ -292,6 +292,16 @@
       "step": 1,
       "unit": "px",
       "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:content.advanced"
+    },
+    {
+      "type": "text",
+      "id": "custom_css_class",
+      "label": "Classe CSS personnalisée",
+      "info": "Ajouter une ou plusieurs classes CSS séparées par des espaces"
     }
   ]
 }

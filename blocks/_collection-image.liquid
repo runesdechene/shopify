@@ -28,7 +28,7 @@
 
 {% if block_settings.collection.featured_image %}
   <div
-    class="collection-image spacing-style collection-image-{{ block.id }}"
+    class="collection-image spacing-style collection-image-{{ block.id }} {{ block_settings.custom_css_class }}"
     style="--ratio: {{ ratio }}; --image-width: {{ image_width }}%; {% render 'spacing-style', settings: block_settings %}"
   >
     {% liquid
@@ -156,6 +156,16 @@
       "step": 1,
       "unit": "px",
       "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:content.advanced"
+    },
+    {
+      "type": "text",
+      "id": "custom_css_class",
+      "label": "Classe CSS personnalisée",
+      "info": "Ajouter une ou plusieurs classes CSS séparées par des espaces"
     }
   ],
   "presets": [
