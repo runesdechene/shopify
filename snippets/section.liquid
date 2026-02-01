@@ -15,7 +15,12 @@
       if metafield_parts.size == 2
         assign namespace = metafield_parts[0]
         assign key = metafield_parts[1]
-        
+      elsif metafield_parts.size == 1
+        assign namespace = 'custom'
+        assign key = metafield_parts[0]
+      endif
+      
+      if namespace != blank and key != blank
         if product
           assign metafield_value = product.metafields[namespace][key]
         elsif collection
@@ -26,7 +31,8 @@
           assign metafield_value = article.metafields[namespace][key]
         endif
         
-        if metafield_value != blank
+        assign metafield_string = metafield_value | append: ''
+        if metafield_string != ''
           assign condition_met = true
         endif
       endif
@@ -36,7 +42,12 @@
       if metafield_parts.size == 2
         assign namespace = metafield_parts[0]
         assign key = metafield_parts[1]
-        
+      elsif metafield_parts.size == 1
+        assign namespace = 'custom'
+        assign key = metafield_parts[0]
+      endif
+      
+      if namespace != blank and key != blank
         if product
           assign metafield_value = product.metafields[namespace][key]
         elsif collection
@@ -47,7 +58,8 @@
           assign metafield_value = article.metafields[namespace][key]
         endif
         
-        if metafield_value == section.settings.condition_value
+        assign metafield_string = metafield_value | append: ''
+        if metafield_string == section.settings.condition_value
           assign condition_met = true
         endif
       endif

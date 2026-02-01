@@ -22,18 +22,21 @@
         assign namespace = metafield_parts[0]
         assign key = metafield_parts[1]
         
-        if product
-          assign metafield_value = product.metafields[namespace][key]
-        elsif collection
-          assign metafield_value = collection.metafields[namespace][key]
-        elsif page
-          assign metafield_value = page.metafields[namespace][key]
-        elsif article
-          assign metafield_value = article.metafields[namespace][key]
-        endif
-        
-        if metafield_value != blank
-          assign condition_met = true
+        if namespace != blank and key != blank
+          if product
+            assign metafield_value = product.metafields[namespace][key]
+          elsif collection
+            assign metafield_value = collection.metafields[namespace][key]
+          elsif page
+            assign metafield_value = page.metafields[namespace][key]
+          elsif article
+            assign metafield_value = article.metafields[namespace][key]
+          endif
+          
+          assign metafield_string = metafield_value | append: ''
+          if metafield_string != ''
+            assign condition_met = true
+          endif
         endif
       endif
       
@@ -43,18 +46,21 @@
         assign namespace = metafield_parts[0]
         assign key = metafield_parts[1]
         
-        if product
-          assign metafield_value = product.metafields[namespace][key]
-        elsif collection
-          assign metafield_value = collection.metafields[namespace][key]
-        elsif page
-          assign metafield_value = page.metafields[namespace][key]
-        elsif article
-          assign metafield_value = article.metafields[namespace][key]
-        endif
-        
-        if metafield_value == settings.condition_value
-          assign condition_met = true
+        if namespace != blank and key != blank
+          if product
+            assign metafield_value = product.metafields[namespace][key]
+          elsif collection
+            assign metafield_value = collection.metafields[namespace][key]
+          elsif page
+            assign metafield_value = page.metafields[namespace][key]
+          elsif article
+            assign metafield_value = article.metafields[namespace][key]
+          endif
+          
+          assign metafield_string = metafield_value | append: ''
+          if metafield_string == settings.condition_value
+            assign condition_met = true
+          endif
         endif
       endif
       
