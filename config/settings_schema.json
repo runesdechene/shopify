@@ -2266,10 +2266,24 @@
       },
       {
         "type": "number",
-        "id": "cart_free_shipping_threshold",
-        "label": "Seuil frais de port offerts (€)",
+        "id": "cart_free_shipping_threshold_france",
+        "label": "Seuil France (€)",
         "default": 50,
-        "info": "Montant minimum pour bénéficier des frais de port offerts. Laissez vide pour récupérer automatiquement depuis les zones de livraison."
+        "info": "Montant minimum pour la livraison offerte en France"
+      },
+      {
+        "type": "number",
+        "id": "cart_free_shipping_threshold_europe",
+        "label": "Seuil Europe (€)",
+        "default": 75,
+        "info": "Montant minimum pour la livraison offerte en Europe (hors France)"
+      },
+      {
+        "type": "number",
+        "id": "cart_free_shipping_threshold_world",
+        "label": "Seuil Reste du monde (€)",
+        "default": 100,
+        "info": "Montant minimum pour la livraison offerte hors Europe"
       },
       {
         "type": "header",

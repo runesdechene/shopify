@@ -7,7 +7,7 @@ footer, .footer-immersif, .footer-utilities
     display: none;
 }
 
-.header {
+.header, .announcement-bar {
     position: fixed;
     width: 100%;
     border-bottom: 1px solid #dfdad2;

@@ -339,7 +339,17 @@
   {%- comment -%} Frais de port offerts - Affichée en bas du panier {%- endcomment -%}
   {%- if settings.cart_free_shipping_enabled -%}
     {%- liquid
-      assign free_shipping_threshold = settings.cart_free_shipping_threshold | default: 50
+      assign country_code = localization.country.iso_code
+      assign european_countries = 'AT,BE,BG,HR,CY,CZ,DK,EE,FI,DE,GR,HU,IE,IT,LV,LT,LU,MT,NL,PL,PT,RO,SK,SI,ES,SE' | split: ','
+
+      if country_code == 'FR'
+        assign free_shipping_threshold = settings.cart_free_shipping_threshold_france | default: 50
+      elsif european_countries contains country_code
+        assign free_shipping_threshold = settings.cart_free_shipping_threshold_europe | default: 75
+      else
+        assign free_shipping_threshold = settings.cart_free_shipping_threshold_world | default: 100
+      endif
+
       assign threshold_in_cents = free_shipping_threshold | times: 100
       assign cart_total = cart.total_price
       assign remaining = threshold_in_cents | minus: cart_total
