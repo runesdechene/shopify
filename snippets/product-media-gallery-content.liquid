@@ -103,6 +103,9 @@
 
   # Filter by variant color if enabled
   assign variant_color_name = ''
+  assign variant_color_handle = ''
+  assign variant_color_handle_compact = ''
+  assign variant_color_handle_underscore = ''
   if block_settings.filter_by_variant_color
     assign selected_variant = selected_product.selected_or_first_available_variant
     for option in selected_product.options_with_values
@@ -110,6 +113,16 @@
       if option_name_lower == 'color' or option_name_lower == 'colour' or option_name_lower == 'couleur'
         assign option_index = forloop.index0
         assign variant_color_name = selected_variant.options[option_index] | downcase | strip
+
+        # Generate handle with dashes (standard handleize)
+        assign variant_color_handle = variant_color_name | handleize
+
+        # Generate compact handle without dashes (like Shopify anchors)
+        assign variant_color_handle_compact = variant_color_handle | replace: '-', ''
+
+        # Generate handle with underscores instead of dashes
+        assign variant_color_handle_underscore = variant_color_handle | replace: '-', '_'
+
         break
       endif
     endfor
@@ -123,10 +136,30 @@
         continue
       endif
 
-      # Filter by variant color name in filename
+      # Filter by variant color name or handle in filename
       if block_settings.filter_by_variant_color and variant_color_name != ''
         assign media_filename = media.src | split: '/' | last | downcase
-        unless media_filename contains variant_color_name
+        assign matches_color = false
+        assign matches_label = false
+        assign matches_handle = false
+        if media_filename contains variant_color_name
+          assign matches_label = true
+          assign matches_color = true
+        endif
+        if media_filename contains variant_color_handle
+          assign matches_handle = true
+          assign matches_color = true
+        endif
+        if media_filename contains variant_color_handle_compact
+          assign matches_handle = true
+          assign matches_color = true
+        endif
+        if media_filename contains variant_color_handle_underscore
+          assign matches_handle = true
+          assign matches_color = true
+        endif
+
+        unless matches_color
           continue
         endunless
       endif
@@ -141,7 +174,27 @@
       # Filter all media by variant color
       for media in selected_product.media
         assign media_filename = media.src | split: '/' | last | downcase
+        assign matches_color = false
+        assign matches_label = false
+        assign matches_handle = false
         if media_filename contains variant_color_name
+          assign matches_label = true
+          assign matches_color = true
+        endif
+        if media_filename contains variant_color_handle
+          assign matches_handle = true
+          assign matches_color = true
+        endif
+        if media_filename contains variant_color_handle_compact
+          assign matches_handle = true
+          assign matches_color = true
+        endif
+        if media_filename contains variant_color_handle_underscore
+          assign matches_handle = true
+          assign matches_color = true
+        endif
+
+        if matches_color
           assign found_media = selected_product.media | where: 'id', media.id
           assign sorted_media = sorted_media | concat: found_media
         endif
@@ -228,6 +281,7 @@
     endfor
   endif
 -%}
+
 {%- if has_image_drop -%}
   <script
     src="{{ 'drag-zoom-wrapper.js' | asset_url }}"
@@ -406,7 +460,7 @@
                   assign tissu_clean = product_meta.tissu | replace: '[', '' | replace: ']', '' | replace: '"', ''
                 -%}
                 <p class="product-media__caption">
-                  Modèle <b>{{ product_meta.nom }} {{ product_meta.coupe }} {{ tissu_clean }}</b>
+                  Modèle <b>{{ product_meta.nom }}</b>, Coupe {{ product_meta.coupe }}, <b>{{ tissu_clean }}</b>
                 </p>
               {%- endif -%}
             {%- endif -%}

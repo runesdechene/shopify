@@ -34,106 +34,19 @@
               {%- comment -%} Afficher d'abord le produit actuel {%- endcomment -%}
               <div class="rdc-aussi-disponible__item rdc-aussi-disponible__item--current">
                 <a href="{{ product.url }}" class="rdc-aussi-disponible__link">
-                  {%- assign product_type_lower = product.type | downcase -%}
-                  {%- assign matched_icon = blank -%}
+                  {%- assign product_meta = product.metafields.custom.base.value -%}
+                  {%- assign product_icon = blank -%}
                   {%- assign display_label = product.type -%}
 
-                  {%- comment -%} Chercher l'icône et le label pour le produit actuel {%- endcomment -%}
-                  {%- if section_settings.keyword_1 != blank -%}
-                    {%- assign keyword_lower = section_settings.keyword_1 | downcase -%}
-                    {%- if product_type_lower contains keyword_lower -%}
-                      {%- assign matched_icon = section_settings.icon_1 -%}
-                      {%- if section_settings.label_1 != blank -%}
-                        {%- assign display_label = section_settings.label_1 -%}
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                  {%- if matched_icon == blank and section_settings.keyword_2 != blank -%}
-                    {%- assign keyword_lower = section_settings.keyword_2 | downcase -%}
-                    {%- if product_type_lower contains keyword_lower -%}
-                      {%- assign matched_icon = section_settings.icon_2 -%}
-                      {%- if section_settings.label_2 != blank -%}
-                        {%- assign display_label = section_settings.label_2 -%}
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                  {%- if matched_icon == blank and section_settings.keyword_3 != blank -%}
-                    {%- assign keyword_lower = section_settings.keyword_3 | downcase -%}
-                    {%- if product_type_lower contains keyword_lower -%}
-                      {%- assign matched_icon = section_settings.icon_3 -%}
-                      {%- if section_settings.label_3 != blank -%}
-                        {%- assign display_label = section_settings.label_3 -%}
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                  {%- if matched_icon == blank and section_settings.keyword_4 != blank -%}
-                    {%- assign keyword_lower = section_settings.keyword_4 | downcase -%}
-                    {%- if product_type_lower contains keyword_lower -%}
-                      {%- assign matched_icon = section_settings.icon_4 -%}
-                      {%- if section_settings.label_4 != blank -%}
-                        {%- assign display_label = section_settings.label_4 -%}
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                  {%- if matched_icon == blank and section_settings.keyword_5 != blank -%}
-                    {%- assign keyword_lower = section_settings.keyword_5 | downcase -%}
-                    {%- if product_type_lower contains keyword_lower -%}
-                      {%- assign matched_icon = section_settings.icon_5 -%}
-                      {%- if section_settings.label_5 != blank -%}
-                        {%- assign display_label = section_settings.label_5 -%}
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                  {%- if matched_icon == blank and section_settings.keyword_6 != blank -%}
-                    {%- assign keyword_lower = section_settings.keyword_6 | downcase -%}
-                    {%- if product_type_lower contains keyword_lower -%}
-                      {%- assign matched_icon = section_settings.icon_6 -%}
-                      {%- if section_settings.label_6 != blank -%}
-                        {%- assign display_label = section_settings.label_6 -%}
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                  {%- if matched_icon == blank and section_settings.keyword_7 != blank -%}
-                    {%- assign keyword_lower = section_settings.keyword_7 | downcase -%}
-                    {%- if product_type_lower contains keyword_lower -%}
-                      {%- assign matched_icon = section_settings.icon_7 -%}
-                      {%- if section_settings.label_7 != blank -%}
-                        {%- assign display_label = section_settings.label_7 -%}
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                  {%- if matched_icon == blank and section_settings.keyword_8 != blank -%}
-                    {%- assign keyword_lower = section_settings.keyword_8 | downcase -%}
-                    {%- if product_type_lower contains keyword_lower -%}
-                      {%- assign matched_icon = section_settings.icon_8 -%}
-                      {%- if section_settings.label_8 != blank -%}
-                        {%- assign display_label = section_settings.label_8 -%}
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                  {%- if matched_icon == blank and section_settings.keyword_9 != blank -%}
-                    {%- assign keyword_lower = section_settings.keyword_9 | downcase -%}
-                    {%- if product_type_lower contains keyword_lower -%}
-                      {%- assign matched_icon = section_settings.icon_9 -%}
-                      {%- if section_settings.label_9 != blank -%}
-                        {%- assign display_label = section_settings.label_9 -%}
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                  {%- if matched_icon == blank and section_settings.keyword_10 != blank -%}
-                    {%- assign keyword_lower = section_settings.keyword_10 | downcase -%}
-                    {%- if product_type_lower contains keyword_lower -%}
-                      {%- assign matched_icon = section_settings.icon_10 -%}
-                      {%- if section_settings.label_10 != blank -%}
-                        {%- assign display_label = section_settings.label_10 -%}
-                      {%- endif -%}
-                    {%- endif -%}
+                  {%- comment -%} Récupérer l'icône depuis le métaobjet {%- endcomment -%}
+                  {%- if product_meta != blank and product_meta.icone != blank -%}
+                    {%- assign product_icon = product_meta.icone -%}
                   {%- endif -%}
 
-                  {%- if matched_icon != blank -%}
+                  {%- if product_icon != blank -%}
                     <div class="rdc-product-type-icon">
                       {{
-                        matched_icon
+                        product_icon
                         | image_url: width: 120
                         | image_tag: loading: 'lazy', alt: display_label, width: 60, height: 60
                       }}
@@ -146,110 +59,21 @@
               {%- comment -%} Puis afficher les autres produits {%- endcomment -%}
               {%- for other_product in dynamic_collection.products -%}
                 {%- if other_product.id != product.id -%}
-                  {%- assign product_type_lower = other_product.type | downcase -%}
-                  {%- assign matched_icon = blank -%}
-
-                  {%- comment -%} Déterminer le label à afficher {%- endcomment -%}
+                  {%- assign other_product_meta = other_product.metafields.custom.base.value -%}
+                  {%- assign other_product_icon = blank -%}
                   {%- assign display_label = other_product.type -%}
 
-                  {%- comment -%} Chercher l'icône et le label de remplacement par mot-clé (contains) {%- endcomment -%}
-                  {%- if section_settings.keyword_1 != blank -%}
-                    {%- assign keyword_lower = section_settings.keyword_1 | downcase -%}
-                    {%- if product_type_lower contains keyword_lower -%}
-                      {%- assign matched_icon = section_settings.icon_1 -%}
-                      {%- if section_settings.label_1 != blank -%}
-                        {%- assign display_label = section_settings.label_1 -%}
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                  {%- if matched_icon == blank and section_settings.keyword_2 != blank -%}
-                    {%- assign keyword_lower = section_settings.keyword_2 | downcase -%}
-                    {%- if product_type_lower contains keyword_lower -%}
-                      {%- assign matched_icon = section_settings.icon_2 -%}
-                      {%- if section_settings.label_2 != blank -%}
-                        {%- assign display_label = section_settings.label_2 -%}
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                  {%- if matched_icon == blank and section_settings.keyword_3 != blank -%}
-                    {%- assign keyword_lower = section_settings.keyword_3 | downcase -%}
-                    {%- if product_type_lower contains keyword_lower -%}
-                      {%- assign matched_icon = section_settings.icon_3 -%}
-                      {%- if section_settings.label_3 != blank -%}
-                        {%- assign display_label = section_settings.label_3 -%}
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                  {%- if matched_icon == blank and section_settings.keyword_4 != blank -%}
-                    {%- assign keyword_lower = section_settings.keyword_4 | downcase -%}
-                    {%- if product_type_lower contains keyword_lower -%}
-                      {%- assign matched_icon = section_settings.icon_4 -%}
-                      {%- if section_settings.label_4 != blank -%}
-                        {%- assign display_label = section_settings.label_4 -%}
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                  {%- if matched_icon == blank and section_settings.keyword_5 != blank -%}
-                    {%- assign keyword_lower = section_settings.keyword_5 | downcase -%}
-                    {%- if product_type_lower contains keyword_lower -%}
-                      {%- assign matched_icon = section_settings.icon_5 -%}
-                      {%- if section_settings.label_5 != blank -%}
-                        {%- assign display_label = section_settings.label_5 -%}
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                  {%- if matched_icon == blank and section_settings.keyword_6 != blank -%}
-                    {%- assign keyword_lower = section_settings.keyword_6 | downcase -%}
-                    {%- if product_type_lower contains keyword_lower -%}
-                      {%- assign matched_icon = section_settings.icon_6 -%}
-                      {%- if section_settings.label_6 != blank -%}
-                        {%- assign display_label = section_settings.label_6 -%}
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                  {%- if matched_icon == blank and section_settings.keyword_7 != blank -%}
-                    {%- assign keyword_lower = section_settings.keyword_7 | downcase -%}
-                    {%- if product_type_lower contains keyword_lower -%}
-                      {%- assign matched_icon = section_settings.icon_7 -%}
-                      {%- if section_settings.label_7 != blank -%}
-                        {%- assign display_label = section_settings.label_7 -%}
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                  {%- if matched_icon == blank and section_settings.keyword_8 != blank -%}
-                    {%- assign keyword_lower = section_settings.keyword_8 | downcase -%}
-                    {%- if product_type_lower contains keyword_lower -%}
-                      {%- assign matched_icon = section_settings.icon_8 -%}
-                      {%- if section_settings.label_8 != blank -%}
-                        {%- assign display_label = section_settings.label_8 -%}
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                  {%- if matched_icon == blank and section_settings.keyword_9 != blank -%}
-                    {%- assign keyword_lower = section_settings.keyword_9 | downcase -%}
-                    {%- if product_type_lower contains keyword_lower -%}
-                      {%- assign matched_icon = section_settings.icon_9 -%}
-                      {%- if section_settings.label_9 != blank -%}
-                        {%- assign display_label = section_settings.label_9 -%}
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                  {%- if matched_icon == blank and section_settings.keyword_10 != blank -%}
-                    {%- assign keyword_lower = section_settings.keyword_10 | downcase -%}
-                    {%- if product_type_lower contains keyword_lower -%}
-                      {%- assign matched_icon = section_settings.icon_10 -%}
-                      {%- if section_settings.label_10 != blank -%}
-                        {%- assign display_label = section_settings.label_10 -%}
-                      {%- endif -%}
-                    {%- endif -%}
+                  {%- comment -%} Récupérer l'icône depuis le métaobjet {%- endcomment -%}
+                  {%- if other_product_meta != blank and other_product_meta.icone != blank -%}
+                    {%- assign other_product_icon = other_product_meta.icone -%}
                   {%- endif -%}
 
                   <div class="rdc-aussi-disponible__item">
                     <a href="{{ other_product.url }}" class="rdc-aussi-disponible__link">
-                      {%- if matched_icon != blank -%}
+                      {%- if other_product_icon != blank -%}
                         <div class="rdc-product-type-icon">
                           {{
-                            matched_icon
+                            other_product_icon
                             | image_url: width: 120
                             | image_tag: loading: 'lazy', alt: display_label, width: 60, height: 60
                           }}
