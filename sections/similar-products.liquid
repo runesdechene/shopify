@@ -38,9 +38,14 @@
                   {%- assign product_icon = blank -%}
                   {%- assign display_label = product.type -%}
 
-                  {%- comment -%} Récupérer l'icône depuis le métaobjet {%- endcomment -%}
-                  {%- if product_meta != blank and product_meta.icone != blank -%}
-                    {%- assign product_icon = product_meta.icone -%}
+                  {%- comment -%} Récupérer l'icône et le label depuis le métaobjet {%- endcomment -%}
+                  {%- if product_meta != blank -%}
+                    {%- if product_meta.icone != blank -%}
+                      {%- assign product_icon = product_meta.icone -%}
+                    {%- endif -%}
+                    {%- if product_meta.label != blank -%}
+                      {%- assign display_label = product_meta.label -%}
+                    {%- endif -%}
                   {%- endif -%}
 
                   {%- if product_icon != blank -%}
@@ -63,9 +68,14 @@
                   {%- assign other_product_icon = blank -%}
                   {%- assign display_label = other_product.type -%}
 
-                  {%- comment -%} Récupérer l'icône depuis le métaobjet {%- endcomment -%}
-                  {%- if other_product_meta != blank and other_product_meta.icone != blank -%}
-                    {%- assign other_product_icon = other_product_meta.icone -%}
+                  {%- comment -%} Récupérer l'icône et le label depuis le métaobjet {%- endcomment -%}
+                  {%- if other_product_meta != blank -%}
+                    {%- if other_product_meta.icone != blank -%}
+                      {%- assign other_product_icon = other_product_meta.icone -%}
+                    {%- endif -%}
+                    {%- if other_product_meta.label != blank -%}
+                      {%- assign display_label = other_product_meta.label -%}
+                    {%- endif -%}
                   {%- endif -%}
 
                   <div class="rdc-aussi-disponible__item">
@@ -240,162 +250,6 @@
       "max": 12,
       "step": 1,
       "default": 6
-    },
-    {
-      "type": "header",
-      "content": "Mapping des icônes par type de produit"
-    },
-    {
-      "type": "text",
-      "id": "keyword_1",
-      "label": "Mot-clé 1",
-      "info": "Ex: solide, sweat, hoodie"
-    },
-    {
-      "type": "image_picker",
-      "id": "icon_1",
-      "label": "Icône 1"
-    },
-    {
-      "type": "text",
-      "id": "label_1",
-      "label": "Label de remplacement 1",
-      "info": "Ex: T-shirt unisexe (laissez vide pour garder le type original)"
-    },
-    {
-      "type": "text",
-      "id": "keyword_2",
-      "label": "Mot-clé 2"
-    },
-    {
-      "type": "image_picker",
-      "id": "icon_2",
-      "label": "Icône 2"
-    },
-    {
-      "type": "text",
-      "id": "label_2",
-      "label": "Label de remplacement 2"
-    },
-    {
-      "type": "text",
-      "id": "keyword_3",
-      "label": "Mot-clé 3"
-    },
-    {
-      "type": "image_picker",
-      "id": "icon_3",
-      "label": "Icône 3"
-    },
-    {
-      "type": "text",
-      "id": "label_3",
-      "label": "Label de remplacement 3"
-    },
-    {
-      "type": "text",
-      "id": "keyword_4",
-      "label": "Mot-clé 4"
-    },
-    {
-      "type": "image_picker",
-      "id": "icon_4",
-      "label": "Icône 4"
-    },
-    {
-      "type": "text",
-      "id": "label_4",
-      "label": "Label de remplacement 4"
-    },
-    {
-      "type": "text",
-      "id": "keyword_5",
-      "label": "Mot-clé 5"
-    },
-    {
-      "type": "image_picker",
-      "id": "icon_5",
-      "label": "Icône 5"
-    },
-    {
-      "type": "text",
-      "id": "label_5",
-      "label": "Label de remplacement 5"
-    },
-    {
-      "type": "text",
-      "id": "keyword_6",
-      "label": "Mot-clé 6"
-    },
-    {
-      "type": "image_picker",
-      "id": "icon_6",
-      "label": "Icône 6"
-    },
-    {
-      "type": "text",
-      "id": "label_6",
-      "label": "Label de remplacement 6"
-    },
-    {
-      "type": "text",
-      "id": "keyword_7",
-      "label": "Mot-clé 7"
-    },
-    {
-      "type": "image_picker",
-      "id": "icon_7",
-      "label": "Icône 7"
-    },
-    {
-      "type": "text",
-      "id": "label_7",
-      "label": "Label de remplacement 7"
-    },
-    {
-      "type": "text",
-      "id": "keyword_8",
-      "label": "Mot-clé 8"
-    },
-    {
-      "type": "image_picker",
-      "id": "icon_8",
-      "label": "Icône 8"
-    },
-    {
-      "type": "text",
-      "id": "label_8",
-      "label": "Label de remplacement 8"
-    },
-    {
-      "type": "text",
-      "id": "keyword_9",
-      "label": "Mot-clé 9"
-    },
-    {
-      "type": "image_picker",
-      "id": "icon_9",
-      "label": "Icône 9"
-    },
-    {
-      "type": "text",
-      "id": "label_9",
-      "label": "Label de remplacement 9"
-    },
-    {
-      "type": "text",
-      "id": "keyword_10",
-      "label": "Mot-clé 10"
-    },
-    {
-      "type": "image_picker",
-      "id": "icon_10",
-      "label": "Icône 10"
-    },
-    {
-      "type": "text",
-      "id": "label_10",
-      "label": "Label de remplacement 10"
     },
     {
       "type": "select",
