@@ -75,18 +75,19 @@
 
 <script>
   // Accordéon mobile
-  if (window.matchMedia('(max-width: 749px)').matches) {
-    document.addEventListener('DOMContentLoaded', function () {
-      const headers = document.querySelectorAll('.lecture-fragment__header');
+  document.addEventListener('DOMContentLoaded', function () {
+    const headers = document.querySelectorAll('.lecture-fragment__header');
 
-      headers.forEach((header) => {
-        header.addEventListener('click', function () {
+    headers.forEach((header) => {
+      header.addEventListener('click', function () {
+        // Vérifier si on est sur mobile
+        if (window.matchMedia('(max-width: 749px)').matches) {
           const content = this.closest('.lecture-fragment__content');
           content.classList.toggle('is-open');
-        });
+        }
       });
     });
-  }
+  });
 </script>
 
 {% stylesheet %}
@@ -162,7 +163,8 @@
     transition: transform 0.3s ease;
     position: absolute;
     right: 0;
-    top: 0;
+    background: rgba(197, 193, 173, 0.4);
+    border-radius: 40px;
   }
 
   .lecture-fragment__chevron svg {
@@ -227,7 +229,7 @@
     border-radius: 20px;
     max-width: 570px;
     line-height: 1.6rem;
-    z-index: 9;
+    z-index: 6;
   }
 
   .lecture-fragment__description p {
@@ -273,6 +275,8 @@
   @media screen and (max-width: 749px) {
     .lecture-fragment__content-wrapper {
       padding: 20px;
+      background-position: bottom;
+      background-size: contain;
     }
 
     .lecture-fragment__content {
@@ -281,7 +285,7 @@
         'header'
         'image'
         'left';
-      gap: 1.5rem;
+      gap: 0.5rem;
     }
 
     .lecture-fragment__header {
@@ -304,18 +308,26 @@
       height: 60px;
     }
 
-    .lecture-fragment__title {
-      font-size: 1.75rem;
+    .lecture-fragment__subtitle {
+      font-size: 1.2rem;
     }
 
-    /* Masquer le contenu par défaut sur mobile */
-    .lecture-fragment__text-content,
+    .lecture-fragment__title {
+      position: relative;
+      font-size: 2.25rem;
+      z-index: 8;
+    }
+
+    /* Masquer le contenu par défaut sur mobile (sauf le header) */
+    .lecture-fragment__description,
+    .lecture-fragment__artist,
     .lecture-fragment__main-image {
       display: none;
     }
 
     /* Afficher le contenu quand ouvert */
-    .lecture-fragment__content.is-open .lecture-fragment__text-content,
+    .lecture-fragment__content.is-open .lecture-fragment__description,
+    .lecture-fragment__content.is-open .lecture-fragment__artist,
     .lecture-fragment__content.is-open .lecture-fragment__main-image {
       display: block;
     }
@@ -328,7 +340,7 @@
 
     .lecture-fragment__description {
       text-align: left;
-      font-size: 0.9rem;
+      font-size: 1.1rem;
     }
   }
 {% endstylesheet %}
