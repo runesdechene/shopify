@@ -1,4 +1,18 @@
 {%- liquid
+  # Évaluer la condition d'affichage personnalisée
+  assign should_show = section.settings.show_section
+-%}
+
+<!-- DEBUG: show_section = "{{ section.settings.show_section }}" -->
+<!-- DEBUG: should_show = "{{ should_show }}" -->
+<!-- DEBUG: should_show type = "{{ should_show | type_of }}" -->
+
+{%- liquid
+  # Ne rien afficher si la condition retourne false (comparaison de string)
+  if should_show == 'false' or should_show == false or should_show == blank
+    break
+  endif
+
   # Récupérer l'image de fond avec priorité : métaobjet > image par défaut
   assign background_image_url = blank
 
@@ -225,7 +239,7 @@
     margin-bottom: 1rem;
     color: #312b2bff;
     background: rgba(247, 243, 233, 0.7);
-    box-shadow: 0 0 30px 20px rgba(247, 243, 233, 0.7);
+    box-shadow: 0 0 20px 20px rgba(247, 243, 233, 0.7);
     border-radius: 20px;
     max-width: 570px;
     line-height: 1.6rem;
@@ -246,7 +260,7 @@
     letter-spacing: 0.02rem;
     font-family: var(--font-heading--family);
     font-weight: 300;
-    z-index: 10;
+    z-index: 4;
     display: inline-block;
     background: rgba(247, 243, 233, 0.7);
     box-shadow: 0 0 30px 20px rgba(247, 243, 233, 0.7);
@@ -354,6 +368,13 @@
     {
       "type": "paragraph",
       "content": "Version de test avec contenu fictif. Affiche l'histoire d'une illustration."
+    },
+    {
+      "type": "liquid",
+      "id": "show_section",
+      "label": "Condition d'affichage (Liquid)",
+      "info": "Entrez du code Liquid qui retourne true ou false. La section s'affichera seulement si le résultat est true.",
+      "default": "true"
     },
     {
       "type": "header",
