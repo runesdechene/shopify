@@ -16,7 +16,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h2>Soyez prévoyant</h2>",
+            "text": "<h2>Soyez curieux</h2>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -64,6 +64,32 @@
           },
           "blocks": {}
         },
+        "text_fpHcfK": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>{{ closest.collection.metafields.custom.illustrations.value.description | metafield_tag }}</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 10,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
         "group_7Xy78f": {
           "type": "group",
           "name": "t:names.group",
@@ -101,7 +127,13 @@
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-end": 0,
+            "enable_display_condition": false,
+            "condition_type": "metafield",
+            "condition_metafield": "",
+            "condition_value": "",
+            "condition_liquid": "",
+            "condition_invert": false
           },
           "blocks": {
             "button_tRKDbi": {
@@ -144,6 +176,7 @@
       "block_order": [
         "text_EjgrBP",
         "text_tqQTNE",
+        "text_fpHcfK",
         "group_7Xy78f"
       ],
       "custom_css": [
@@ -175,7 +208,13 @@
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "padding-block-start": 40,
-        "padding-block-end": 40
+        "padding-block-end": 40,
+        "enable_display_condition": false,
+        "condition_type": "metafield",
+        "condition_metafield": "",
+        "condition_value": "",
+        "condition_liquid": "",
+        "condition_invert": false
       }
     },
     "main": {

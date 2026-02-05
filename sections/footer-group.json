@@ -67,7 +67,13 @@
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-end": 0,
+            "enable_display_condition": false,
+            "condition_type": "metafield",
+            "condition_metafield": "",
+            "condition_value": "",
+            "condition_liquid": "",
+            "condition_invert": false
           },
           "blocks": {
             "group_TM6dnK": {
@@ -107,7 +113,13 @@
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "padding-inline-end": 0,
+                "enable_display_condition": false,
+                "condition_type": "metafield",
+                "condition_metafield": "",
+                "condition_value": "",
+                "condition_liquid": "",
+                "condition_invert": false
               },
               "blocks": {
                 "group_m6kH97": {
@@ -147,7 +159,13 @@
                     "padding-block-start": 0,
                     "padding-block-end": 0,
                     "padding-inline-start": 0,
-                    "padding-inline-end": 0
+                    "padding-inline-end": 0,
+                    "enable_display_condition": false,
+                    "condition_type": "metafield",
+                    "condition_metafield": "",
+                    "condition_value": "",
+                    "condition_liquid": "",
+                    "condition_invert": false
                   },
                   "blocks": {
                     "group_9Cfdpk": {
@@ -187,7 +205,13 @@
                         "padding-block-start": 0,
                         "padding-block-end": 0,
                         "padding-inline-start": 0,
-                        "padding-inline-end": 0
+                        "padding-inline-end": 0,
+                        "enable_display_condition": false,
+                        "condition_type": "metafield",
+                        "condition_metafield": "",
+                        "condition_value": "",
+                        "condition_liquid": "",
+                        "condition_invert": false
                       },
                       "blocks": {
                         "icon_jMVfRR": {
@@ -271,7 +295,13 @@
                         "padding-block-start": 0,
                         "padding-block-end": 0,
                         "padding-inline-start": 0,
-                        "padding-inline-end": 0
+                        "padding-inline-end": 0,
+                        "enable_display_condition": false,
+                        "condition_type": "metafield",
+                        "condition_metafield": "",
+                        "condition_value": "",
+                        "condition_liquid": "",
+                        "condition_invert": false
                       },
                       "blocks": {
                         "icon_p8bt7a": {
@@ -355,7 +385,13 @@
                         "padding-block-start": 0,
                         "padding-block-end": 0,
                         "padding-inline-start": 0,
-                        "padding-inline-end": 0
+                        "padding-inline-end": 0,
+                        "enable_display_condition": false,
+                        "condition_type": "metafield",
+                        "condition_metafield": "",
+                        "condition_value": "",
+                        "condition_liquid": "",
+                        "condition_invert": false
                       },
                       "blocks": {
                         "icon_GabrBG": {
@@ -446,7 +482,13 @@
                     "padding-block-start": 0,
                     "padding-block-end": 0,
                     "padding-inline-start": 0,
-                    "padding-inline-end": 0
+                    "padding-inline-end": 0,
+                    "enable_display_condition": false,
+                    "condition_type": "metafield",
+                    "condition_metafield": "",
+                    "condition_value": "",
+                    "condition_liquid": "",
+                    "condition_invert": false
                   },
                   "blocks": {
                     "social_links_tXBcPY": {
@@ -518,7 +560,13 @@
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "padding-inline-end": 0,
+                "enable_display_condition": false,
+                "condition_type": "metafield",
+                "condition_metafield": "",
+                "condition_value": "",
+                "condition_liquid": "",
+                "condition_invert": false
               },
               "blocks": {
                 "group_C4DJQB": {
@@ -558,7 +606,13 @@
                     "padding-block-start": 10,
                     "padding-block-end": 0,
                     "padding-inline-start": 0,
-                    "padding-inline-end": 0
+                    "padding-inline-end": 0,
+                    "enable_display_condition": false,
+                    "condition_type": "metafield",
+                    "condition_metafield": "",
+                    "condition_value": "",
+                    "condition_liquid": "",
+                    "condition_invert": false
                   },
                   "blocks": {
                     "image_jh4m8K": {
@@ -577,6 +631,7 @@
                         "border_width": 1,
                         "border_opacity": 100,
                         "border_radius": 0,
+                        "custom_css_class": "",
                         "padding-block-start": 0,
                         "padding-block-end": 0,
                         "padding-inline-start": 0,
@@ -622,7 +677,13 @@
                         "padding-block-start": 40,
                         "padding-block-end": 40,
                         "padding-inline-start": 20,
-                        "padding-inline-end": 20
+                        "padding-inline-end": 20,
+                        "enable_display_condition": false,
+                        "condition_type": "metafield",
+                        "condition_metafield": "",
+                        "condition_value": "",
+                        "condition_liquid": "",
+                        "condition_invert": false
                       },
                       "blocks": {
                         "text_gYLwbg": {
@@ -754,7 +815,13 @@
                     "padding-block-start": 0,
                     "padding-block-end": 0,
                     "padding-inline-start": 0,
-                    "padding-inline-end": 0
+                    "padding-inline-end": 0,
+                    "enable_display_condition": false,
+                    "condition_type": "metafield",
+                    "condition_metafield": "",
+                    "condition_value": "",
+                    "condition_liquid": "",
+                    "condition_invert": false
                   },
                   "blocks": {
                     "group_x6wFdG": {
@@ -794,7 +861,13 @@
                         "padding-block-start": 0,
                         "padding-block-end": 0,
                         "padding-inline-start": 0,
-                        "padding-inline-end": 0
+                        "padding-inline-end": 0,
+                        "enable_display_condition": false,
+                        "condition_type": "metafield",
+                        "condition_metafield": "",
+                        "condition_value": "",
+                        "condition_liquid": "",
+                        "condition_invert": false
                       },
                       "blocks": {
                         "countdown_CCGK8A": {
@@ -855,7 +928,13 @@
                         "padding-block-start": 0,
                         "padding-block-end": 0,
                         "padding-inline-start": 0,
-                        "padding-inline-end": 0
+                        "padding-inline-end": 0,
+                        "enable_display_condition": false,
+                        "condition_type": "metafield",
+                        "condition_metafield": "",
+                        "condition_value": "",
+                        "condition_liquid": "",
+                        "condition_invert": false
                       },
                       "blocks": {
                         "menu_PbNEQa": {
@@ -863,7 +942,7 @@
                           "name": "t:names.menu",
                           "settings": {
                             "menu": "main-menu",
-                            "heading": "Aller plus lon",
+                            "heading": "Aller plus loin",
                             "menu_spacing": 12,
                             "show_as_accordion": false,
                             "accordion_icon": "caret",
@@ -907,7 +986,9 @@
         "group_DDWqwk"
       ],
       "custom_css": [
-        "@media (min-width: 798px) {li {text-align: right; }}"
+        "@media (min-width: 798px) {li {text-align: right; }}",
+        "summary.menu__heading.h3 {text-align: right; display: block;}",
+        "@media screen and (max-width:798px){summary.menu__heading.h3 {text-align: left; }}"
       ],
       "name": "t:names.footer",
       "settings": {
