@@ -74,7 +74,8 @@
             "color_scheme_navigation_bar": "",
             "drawer_accordion": false,
             "drawer_accordion_expand_first": false,
-            "drawer_dividers": false
+            "drawer_dividers": false,
+            "menu_icons_mapping": "Collection celtique|triskell.png\nCollection scandinave|vegvisir.png\nCollection totems animaliers|totems.png\nCollection Festival Yggdrasil|dragon.png"
           },
           "blocks": {}
         }

@@ -141,7 +141,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "Explorer par fragments",
-                "link": "shopify://collections/toutes-nos-illustrations-portez-un-fragment-dhistoire",
+                "link": "shopify://collections/explorer-nos-illustrations-fragments-dhistoire",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "fit-content",
@@ -155,9 +155,9 @@
               "type": "button",
               "name": "t:names.button",
               "settings": {
-                "label": "Explorer par fragments (bientôt)",
-                "link": "",
-                "open_in_new_tab": false,
+                "label": "Explorer par coupe",
+                "link": "shopify://collections/explorer-nos-illustrations-fragments-dhistoire-copie",
+                "open_in_new_tab": true,
                 "style_class": "button",
                 "width": "fit-content",
                 "custom_width": 100,

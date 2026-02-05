@@ -26,6 +26,20 @@
   assign max_menu_columns = grid_columns_count | default: 6
   assign max_menu_columns_tablet = grid_columns_count_tablet | default: 4
 
+  # Parse icon mapping
+  assign icon_map = ''
+  if menu_icons_mapping != blank
+    assign icon_lines = menu_icons_mapping | newline_to_br | split: '<br />'
+    for line in icon_lines
+      if line contains '|'
+        assign parts = line | split: '|'
+        assign link_name = parts[0] | strip
+        assign icon_name = parts[1] | strip
+        assign icon_map = icon_map | append: link_name | append: '::' | append: icon_name | append: '||'
+      endif
+    endfor
+  endif
+
   ##
   # We only eager load heavy elements of the page when rendering this template
   # through the Section Rendering API.
@@ -132,9 +146,34 @@
 
           {% render 'link-featured-image', link: link, class: 'mega-menu__link-image', sizes: collection_image_sizes %}
         {% endif %}
+        
+        {%- liquid
+          # Check if this link has an icon mapping
+          assign current_icon = ''
+          if icon_map != blank
+            assign icon_entries = icon_map | split: '||'
+            for entry in icon_entries
+              if entry contains '::'
+                assign entry_parts = entry | split: '::'
+                assign entry_name = entry_parts[0] | strip
+                assign entry_icon = entry_parts[1] | strip
+                if entry_name == link.title
+                  assign current_icon = entry_icon
+                  break
+                endif
+              endif
+            endfor
+          endif
+        -%}
+        
         <span
           class="mega-menu__link-title wrap-text"
         >
+          {%- if current_icon != blank -%}
+            <span class="mega-menu__link-icon">
+              <img src="{{ current_icon | asset_url }}" alt="{{ link.title }}" loading="lazy">
+            </span>
+          {%- endif -%}
           {{- link.title -}}
         </span>
       </a>
@@ -146,6 +185,25 @@
           {% endif %}
         >
           {% for childLink in link.links %}
+            {%- liquid
+              # Check if this childLink has an icon mapping
+              assign child_icon = ''
+              if icon_map != blank
+                assign icon_entries = icon_map | split: '||'
+                for entry in icon_entries
+                  if entry contains '::'
+                    assign entry_parts = entry | split: '::'
+                    assign entry_name = entry_parts[0] | strip
+                    assign entry_icon = entry_parts[1] | strip
+                    if entry_name == childLink.title
+                      assign child_icon = entry_icon
+                      break
+                    endif
+                  endif
+                endfor
+              endif
+            -%}
+            
             {% assign break_after_modulo = forloop.index | modulo: links_before_wrap %}
             <li
               {% if break_after_modulo == 0 and should_break_columns %}
@@ -156,7 +214,14 @@
                 href="{{ childLink.url }}"
                 class="mega-menu__link"
               >
-                <span class="mega-menu__link-title wrap-text">{{- childLink.title -}}</span>
+                <span class="mega-menu__link-title wrap-text">
+                  {%- if child_icon != blank -%}
+                    <span class="mega-menu__link-icon">
+                      <img src="{{ child_icon | asset_url }}" alt="{{ childLink.title }}" loading="lazy">
+                    </span>
+                  {%- endif -%}
+                  {{- childLink.title -}}
+                </span>
               </a>
             </li>
           {% endfor %}

@@ -97,7 +97,13 @@
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-end": 0,
+            "enable_display_condition": false,
+            "condition_type": "metafield",
+            "condition_metafield": "",
+            "condition_value": "",
+            "condition_liquid": "",
+            "condition_invert": false
           },
           "blocks": {
             "group_T4zBnb": {
@@ -137,7 +143,13 @@
                 "padding-block-start": 10,
                 "padding-block-end": 10,
                 "padding-inline-start": 10,
-                "padding-inline-end": 10
+                "padding-inline-end": 10,
+                "enable_display_condition": false,
+                "condition_type": "metafield",
+                "condition_metafield": "",
+                "condition_value": "",
+                "condition_liquid": "",
+                "condition_invert": false
               },
               "blocks": {
                 "custom_liquid_aRBHgr": {
@@ -271,7 +283,13 @@
                     "padding-block-start": 25,
                     "padding-block-end": 0,
                     "padding-inline-start": 0,
-                    "padding-inline-end": 0
+                    "padding-inline-end": 0,
+                    "enable_display_condition": false,
+                    "condition_type": "metafield",
+                    "condition_metafield": "",
+                    "condition_value": "",
+                    "condition_liquid": "",
+                    "condition_invert": false
                   },
                   "blocks": {
                     "button_aiVGFR": {
@@ -293,8 +311,8 @@
                       "type": "button",
                       "name": "t:names.button",
                       "settings": {
-                        "label": "Explorer par coupe (bientôt)",
-                        "link": "",
+                        "label": "Explorer par coupe",
+                        "link": "shopify://collections/explorer-nos-illustrations-fragments-dhistoire-copie",
                         "open_in_new_tab": false,
                         "style_class": "button",
                         "width": "custom",
@@ -357,7 +375,13 @@
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "padding-inline-end": 0,
+                "enable_display_condition": false,
+                "condition_type": "metafield",
+                "condition_metafield": "",
+                "condition_value": "",
+                "condition_liquid": "",
+                "condition_invert": false
               },
               "blocks": {
                 "group_wXmXwH": {
@@ -398,14 +422,20 @@
                     "padding-block-start": 70,
                     "padding-block-end": 50,
                     "padding-inline-start": 30,
-                    "padding-inline-end": 30
+                    "padding-inline-end": 30,
+                    "enable_display_condition": false,
+                    "condition_type": "metafield",
+                    "condition_metafield": "",
+                    "condition_value": "",
+                    "condition_liquid": "",
+                    "condition_invert": false
                   },
                   "blocks": {
                     "text_pMhwDP": {
                       "type": "text",
                       "name": "t:names.heading",
                       "settings": {
-                        "text": "<h2>La méthode</h2>",
+                        "text": "<h2>Notre méthode</h2>",
                         "width": "fit-content",
                         "max_width": "normal",
                         "alignment": "left",
@@ -431,7 +461,7 @@
                       "type": "custom-liquid",
                       "name": "t:names.custom_liquid",
                       "settings": {
-                        "custom_liquid": "<h3 style=\"color: #3D555B; font-size: 28px; margin-top: 0px; opacity: 0.8;\">Runes de Chêne</h3>"
+                        "custom_liquid": "<h3 style=\"color: #3D555B; font-size: 28px; margin-top: 0px; opacity: 0.8;\">Chez Runes de Chêne</h3>"
                       },
                       "blocks": {}
                     },
@@ -597,7 +627,13 @@
             "padding-block-start": 39,
             "padding-block-end": 0,
             "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-end": 0,
+            "enable_display_condition": false,
+            "condition_type": "metafield",
+            "condition_metafield": "",
+            "condition_value": "",
+            "condition_liquid": "",
+            "condition_invert": false
           },
           "blocks": {
             "text_bLLTKW": {
@@ -663,7 +699,13 @@
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "padding-inline-end": 0,
+                "enable_display_condition": false,
+                "condition_type": "metafield",
+                "condition_metafield": "",
+                "condition_value": "",
+                "condition_liquid": "",
+                "condition_invert": false
               },
               "blocks": {
                 "image_DBdgHc": {
@@ -682,6 +724,7 @@
                     "border_width": 1,
                     "border_opacity": 100,
                     "border_radius": 0,
+                    "custom_css_class": "",
                     "padding-block-start": 0,
                     "padding-block-end": 0,
                     "padding-inline-start": 0,
@@ -705,6 +748,7 @@
                     "border_width": 1,
                     "border_opacity": 100,
                     "border_radius": 0,
+                    "custom_css_class": "",
                     "padding-block-start": 0,
                     "padding-block-end": 0,
                     "padding-inline-start": 0,
@@ -728,6 +772,7 @@
                     "border_width": 1,
                     "border_opacity": 100,
                     "border_radius": 0,
+                    "custom_css_class": "",
                     "padding-block-start": 0,
                     "padding-block-end": 0,
                     "padding-inline-start": 0,
@@ -786,7 +831,13 @@
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-end": 0,
+            "enable_display_condition": false,
+            "condition_type": "metafield",
+            "condition_metafield": "",
+            "condition_value": "",
+            "condition_liquid": "",
+            "condition_invert": false
           },
           "blocks": {
             "text_3KeF4Y": {
@@ -886,6 +937,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -909,6 +961,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -932,6 +985,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -955,6 +1009,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -996,7 +1051,13 @@
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "padding-block-start": 0,
-        "padding-block-end": 100
+        "padding-block-end": 100,
+        "enable_display_condition": false,
+        "condition_type": "metafield",
+        "condition_metafield": "",
+        "condition_value": "",
+        "condition_liquid": "",
+        "condition_invert": false
       }
     },
     "section_4btdyE": {
@@ -1018,6 +1079,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1041,6 +1103,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1064,6 +1127,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1087,6 +1151,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1131,7 +1196,13 @@
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "padding-block-start": 0,
-        "padding-block-end": 100
+        "padding-block-end": 100,
+        "enable_display_condition": false,
+        "condition_type": "metafield",
+        "condition_metafield": "",
+        "condition_value": "",
+        "condition_liquid": "",
+        "condition_invert": false
       }
     },
     "section_Hwnphj": {
@@ -1153,6 +1224,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1176,6 +1248,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1199,6 +1272,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1222,6 +1296,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1266,7 +1341,13 @@
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "padding-block-start": 0,
-        "padding-block-end": 100
+        "padding-block-end": 100,
+        "enable_display_condition": false,
+        "condition_type": "metafield",
+        "condition_metafield": "",
+        "condition_value": "",
+        "condition_liquid": "",
+        "condition_invert": false
       }
     },
     "section_BALrUc": {
@@ -1288,6 +1369,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1311,6 +1393,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1334,6 +1417,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1357,6 +1441,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1401,7 +1486,13 @@
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "padding-block-start": 0,
-        "padding-block-end": 100
+        "padding-block-end": 100,
+        "enable_display_condition": false,
+        "condition_type": "metafield",
+        "condition_metafield": "",
+        "condition_value": "",
+        "condition_liquid": "",
+        "condition_invert": false
       }
     },
     "section_b34Yb7": {
@@ -1423,6 +1514,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1446,6 +1538,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1469,6 +1562,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1491,6 +1585,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1535,7 +1630,13 @@
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "padding-block-start": 0,
-        "padding-block-end": 100
+        "padding-block-end": 100,
+        "enable_display_condition": false,
+        "condition_type": "metafield",
+        "condition_metafield": "",
+        "condition_value": "",
+        "condition_liquid": "",
+        "condition_invert": false
       }
     },
     "section_EK9afi": {
@@ -1557,6 +1658,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1580,6 +1682,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1603,6 +1706,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1626,6 +1730,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1670,7 +1775,13 @@
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "padding-block-start": 0,
-        "padding-block-end": 100
+        "padding-block-end": 100,
+        "enable_display_condition": false,
+        "condition_type": "metafield",
+        "condition_metafield": "",
+        "condition_value": "",
+        "condition_liquid": "",
+        "condition_invert": false
       }
     },
     "section_XBpxVJ": {
@@ -1692,6 +1803,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1715,6 +1827,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1738,6 +1851,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1761,6 +1875,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1805,7 +1920,13 @@
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "padding-block-start": 0,
-        "padding-block-end": 100
+        "padding-block-end": 100,
+        "enable_display_condition": false,
+        "condition_type": "metafield",
+        "condition_metafield": "",
+        "condition_value": "",
+        "condition_liquid": "",
+        "condition_invert": false
       }
     },
     "section_zCPyMY": {
@@ -1827,6 +1948,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1850,6 +1972,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1873,6 +1996,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1896,6 +2020,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -1940,7 +2065,13 @@
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "padding-block-start": 0,
-        "padding-block-end": 100
+        "padding-block-end": 100,
+        "enable_display_condition": false,
+        "condition_type": "metafield",
+        "condition_metafield": "",
+        "condition_value": "",
+        "condition_liquid": "",
+        "condition_invert": false
       }
     },
     "section_WM6iTE": {
@@ -1983,7 +2114,13 @@
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-end": 0,
+            "enable_display_condition": false,
+            "condition_type": "metafield",
+            "condition_metafield": "",
+            "condition_value": "",
+            "condition_liquid": "",
+            "condition_invert": false
           },
           "blocks": {
             "text_Cwb69m": {
@@ -2060,7 +2197,13 @@
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "padding-block-start": 0,
-        "padding-block-end": 0
+        "padding-block-end": 0,
+        "enable_display_condition": false,
+        "condition_type": "metafield",
+        "condition_metafield": "",
+        "condition_value": "",
+        "condition_liquid": "",
+        "condition_invert": false
       }
     }
   },

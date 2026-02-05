@@ -125,7 +125,8 @@
                       grid_columns_count_collection_images: 8,
                       menu_content_type: menu_content_type,
                       content_aspect_ratio: ratio,
-                      image_border_radius: image_border_radius
+                      image_border_radius: image_border_radius,
+                      menu_icons_mapping: block_settings.menu_icons_mapping
                     %}
                   </div>
                 </div>
@@ -696,6 +697,35 @@
     /* preserves the inherited grid layout when this submenu wrapper is used */
     display: contents;
   }
+
+  /* Icon styles for mega menu links */
+  .mega-menu__link-icon {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  .mega-menu__link-icon img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    transition: transform var(--animation-speed) var(--animation-easing);
+  }
+
+  .mega-menu__link--parent .mega-menu__link-icon img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .mega-menu__link:hover .mega-menu__link-icon img {
+    transform: scale(1.1);
+  }
+
+  .mega-menu__link-title {
+    display: inline-flex;
+    align-items: center;
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -923,6 +953,17 @@
       "id": "drawer_dividers",
       "label": "t:settings.dividers",
       "default": false
+    },
+    {
+      "type": "header",
+      "content": "Icônes du menu"
+    },
+    {
+      "type": "textarea",
+      "id": "menu_icons_mapping",
+      "label": "Mapping Icônes",
+      "info": "Format: Nom du lien|nom-image.extension (un par ligne). Utilisez des images PNG/JPG/WEBP.",
+      "placeholder": "Collection celtique|triskell.png\nCollection scandinave|vegvisir.png\nCollection animalière|dragon.png"
     }
   ]
 }
