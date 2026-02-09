@@ -163,9 +163,10 @@
 
   {%- comment -%} Bouton retour {%- endcomment -%}
   <button class="rdc-borne__back-button" data-action="back" aria-label="Retour">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="15 18 9 12 15 6"></polyline>
     </svg>
+    <span class="rdc-borne__back-label">Précédent</span>
   </button>
 
   {%- comment -%} Bouton panier flottant — ouvre le cart drawer natif Shopify {%- endcomment -%}
@@ -461,96 +462,11 @@
                       {%- endif -%}
                       <span class="rdc-borne__price-current{% if product.compare_at_price > product.price %} rdc-borne__price-sale{% endif %}">{{ product.price | money }}</span>
                     </div>
-                    <div class="rdc-borne__detail-selected">
-                      <span class="rdc-borne__selected-color-label"></span>
-                      <span class="rdc-borne__selected-size-label"></span>
-                    </div>
+                    <div class="rdc-borne__detail-selected"></div>
                   </div>
                 </div>
 
-                {%- if product.variants.size > 1 -%}
-                  {%- for option in product.options_with_values -%}
-                    {%- assign option_index = forloop.index0 -%}
-                    {%- if option.name == 'Couleur' or option.name == 'Couleurs' -%}
-                      <div class="rdc-borne__option-group">
-                        <h3 class="rdc-borne__option-label">Couleur</h3>
-                        <div class="rdc-borne__swatches rdc-borne__swatches--color">
-                          {%- for value in option.values -%}
-                            {%- assign matching_variant = nil -%}
-                            {%- for variant in product.variants -%}
-                              {%- if variant.options[option_index] == value.name -%}
-                                {%- assign matching_variant = variant -%}
-                                {%- break -%}
-                              {%- endif -%}
-                            {%- endfor -%}
-
-                            {%- assign variant_image = nil -%}
-                            {%- for variant in product.variants -%}
-                              {%- if variant.options[option_index] == value.name and variant.image -%}
-                                {%- assign variant_image = variant.image -%}
-                                {%- break -%}
-                              {%- endif -%}
-                            {%- endfor -%}
-                            {%- unless variant_image -%}
-                              {%- assign variant_image = product.featured_image -%}
-                            {%- endunless -%}
-
-                            <button class="rdc-borne__swatch rdc-borne__swatch--color{% unless matching_variant.available %} sold-out{% endunless %}"
-                              {% unless matching_variant.available %}disabled{% endunless %}
-                              data-color="{{ value.name | handleize }}"
-                              data-color-name="{{ value.name }}"
-                              data-variant-id="{{ matching_variant.id }}"
-                              data-image-url="{{ variant_image | image_url: width: 600 }}"
-                            >
-                              {%- if value.swatch.image -%}
-                                <img src="{{ value.swatch.image | image_url: width: 60 }}" alt="{{ value.name }}" loading="lazy">
-                              {%- elsif value.swatch.color -%}
-                                <span class="rdc-borne__swatch-color" style="background: rgb({{ value.swatch.color.rgb }});"></span>
-                              {%- else -%}
-                                <span class="rdc-borne__swatch-fallback" data-color="{{ value.name | handleize }}"></span>
-                              {%- endif -%}
-                            </button>
-                          {%- endfor -%}
-                        </div>
-                      </div>
-                    {%- elsif option.name == 'Taille' -%}
-                      <div class="rdc-borne__option-group">
-                        <h3 class="rdc-borne__option-label">Taille</h3>
-                        <div class="rdc-borne__swatches rdc-borne__swatches--size">
-                          {%- assign color_option_index = 0 -%}
-                          {%- assign size_option_index = 1 -%}
-                          {%- for product_option in product.options -%}
-                            {%- if product_option == 'Couleur' or product_option == 'Couleurs' -%}
-                              {%- assign color_option_index = forloop.index0 -%}
-                            {%- endif -%}
-                            {%- if product_option == 'Taille' -%}
-                              {%- assign size_option_index = forloop.index0 -%}
-                            {%- endif -%}
-                          {%- endfor -%}
-
-                          {%- for value in option.values -%}
-                            {%- assign available_colors_for_size = '' -%}
-                            {%- assign variant_ids_for_size = '' -%}
-                            {%- for variant in product.variants -%}
-                              {%- if variant.options[size_option_index] == value.name and variant.available -%}
-                                {%- assign color_value = variant.options[color_option_index] | handleize -%}
-                                {%- assign available_colors_for_size = available_colors_for_size | append: ',' | append: color_value -%}
-                                {%- assign variant_ids_for_size = variant_ids_for_size | append: ',' | append: variant.id | append: ':' | append: color_value -%}
-                              {%- endif -%}
-                            {%- endfor -%}
-                            <button class="rdc-borne__swatch rdc-borne__swatch--size"
-                              data-size="{{ value.name | escape }}"
-                              data-available-colors="{{ available_colors_for_size }}"
-                              data-variant-ids="{{ variant_ids_for_size }}"
-                            >
-                              {{ value.name }}
-                            </button>
-                          {%- endfor -%}
-                        </div>
-                      </div>
-                    {%- endif -%}
-                  {%- endfor -%}
-                {%- endif -%}
+                {% render 'borne-product-options', product: product %}
 
                 <button class="rdc-borne__add-to-cart" data-variant-id="{{ product.first_available_variant.id }}">
                   Ajouter au panier
@@ -586,96 +502,11 @@
                       {%- endif -%}
                       <span class="rdc-borne__price-current{% if product.compare_at_price > product.price %} rdc-borne__price-sale{% endif %}">{{ product.price | money }}</span>
                     </div>
-                    <div class="rdc-borne__detail-selected">
-                      <span class="rdc-borne__selected-color-label"></span>
-                      <span class="rdc-borne__selected-size-label"></span>
-                    </div>
+                    <div class="rdc-borne__detail-selected"></div>
                   </div>
                 </div>
 
-                {%- if product.variants.size > 1 -%}
-                  {%- for option in product.options_with_values -%}
-                    {%- assign option_index = forloop.index0 -%}
-                    {%- if option.name == 'Couleur' or option.name == 'Couleurs' -%}
-                      <div class="rdc-borne__option-group">
-                        <h3 class="rdc-borne__option-label">Couleur</h3>
-                        <div class="rdc-borne__swatches rdc-borne__swatches--color">
-                          {%- for value in option.values -%}
-                            {%- assign matching_variant = nil -%}
-                            {%- for variant in product.variants -%}
-                              {%- if variant.options[option_index] == value.name -%}
-                                {%- assign matching_variant = variant -%}
-                                {%- break -%}
-                              {%- endif -%}
-                            {%- endfor -%}
-
-                            {%- assign variant_image = nil -%}
-                            {%- for variant in product.variants -%}
-                              {%- if variant.options[option_index] == value.name and variant.image -%}
-                                {%- assign variant_image = variant.image -%}
-                                {%- break -%}
-                              {%- endif -%}
-                            {%- endfor -%}
-                            {%- unless variant_image -%}
-                              {%- assign variant_image = product.featured_image -%}
-                            {%- endunless -%}
-
-                            <button class="rdc-borne__swatch rdc-borne__swatch--color{% unless matching_variant.available %} sold-out{% endunless %}"
-                              {% unless matching_variant.available %}disabled{% endunless %}
-                              data-color="{{ value.name | handleize }}"
-                              data-color-name="{{ value.name }}"
-                              data-variant-id="{{ matching_variant.id }}"
-                              data-image-url="{{ variant_image | image_url: width: 600 }}"
-                            >
-                              {%- if value.swatch.image -%}
-                                <img src="{{ value.swatch.image | image_url: width: 60 }}" alt="{{ value.name }}" loading="lazy">
-                              {%- elsif value.swatch.color -%}
-                                <span class="rdc-borne__swatch-color" style="background: rgb({{ value.swatch.color.rgb }});"></span>
-                              {%- else -%}
-                                <span class="rdc-borne__swatch-fallback" data-color="{{ value.name | handleize }}"></span>
-                              {%- endif -%}
-                            </button>
-                          {%- endfor -%}
-                        </div>
-                      </div>
-                    {%- elsif option.name == 'Taille' -%}
-                      <div class="rdc-borne__option-group">
-                        <h3 class="rdc-borne__option-label">Taille</h3>
-                        <div class="rdc-borne__swatches rdc-borne__swatches--size">
-                          {%- assign color_option_index = 0 -%}
-                          {%- assign size_option_index = 1 -%}
-                          {%- for product_option in product.options -%}
-                            {%- if product_option == 'Couleur' or product_option == 'Couleurs' -%}
-                              {%- assign color_option_index = forloop.index0 -%}
-                            {%- endif -%}
-                            {%- if product_option == 'Taille' -%}
-                              {%- assign size_option_index = forloop.index0 -%}
-                            {%- endif -%}
-                          {%- endfor -%}
-
-                          {%- for value in option.values -%}
-                            {%- assign available_colors_for_size = '' -%}
-                            {%- assign variant_ids_for_size = '' -%}
-                            {%- for variant in product.variants -%}
-                              {%- if variant.options[size_option_index] == value.name and variant.available -%}
-                                {%- assign color_value = variant.options[color_option_index] | handleize -%}
-                                {%- assign available_colors_for_size = available_colors_for_size | append: ',' | append: color_value -%}
-                                {%- assign variant_ids_for_size = variant_ids_for_size | append: ',' | append: variant.id | append: ':' | append: color_value -%}
-                              {%- endif -%}
-                            {%- endfor -%}
-                            <button class="rdc-borne__swatch rdc-borne__swatch--size"
-                              data-size="{{ value.name | escape }}"
-                              data-available-colors="{{ available_colors_for_size }}"
-                              data-variant-ids="{{ variant_ids_for_size }}"
-                            >
-                              {{ value.name }}
-                            </button>
-                          {%- endfor -%}
-                        </div>
-                      </div>
-                    {%- endif -%}
-                  {%- endfor -%}
-                {%- endif -%}
+                {% render 'borne-product-options', product: product %}
 
                 <button class="rdc-borne__add-to-cart" data-variant-id="{{ product.first_available_variant.id }}">
                   Ajouter au panier

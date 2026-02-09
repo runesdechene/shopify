@@ -499,109 +499,150 @@ document.addEventListener("DOMContentLoaded", function () {
     resetVariantSelection(detail);
   }
 
+  function getVariantsData(detail) {
+    var jsonEl = detail.querySelector(".rdc-borne__variants-json");
+    if (!jsonEl) return [];
+    try {
+      return JSON.parse(jsonEl.textContent);
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function getSelectedOptions(detail) {
+    var selected = {};
+    detail
+      .querySelectorAll(".rdc-borne__option-group")
+      .forEach(function (group) {
+        var idx = group.dataset.optionIndex;
+        var active = group.querySelector(".rdc-borne__swatch.active");
+        if (active) selected[idx] = active.dataset.value;
+      });
+    return selected;
+  }
+
+  function findMatchingVariant(variants, selected) {
+    var keys = Object.keys(selected);
+    for (var i = 0; i < variants.length; i++) {
+      var v = variants[i];
+      var match = true;
+      for (var k = 0; k < keys.length; k++) {
+        if (v.options[parseInt(keys[k])] !== selected[keys[k]]) {
+          match = false;
+          break;
+        }
+      }
+      if (match) return v;
+    }
+    return null;
+  }
+
+  function updateVariantFromSelection(detail) {
+    var variants = getVariantsData(detail);
+    var selected = getSelectedOptions(detail);
+    var variant = findMatchingVariant(variants, selected);
+
+    // Update add-to-cart button
+    var addBtn = detail.querySelector(".rdc-borne__add-to-cart");
+    if (addBtn && variant) {
+      addBtn.dataset.variantId = variant.id;
+      addBtn.disabled = !variant.available;
+      addBtn.textContent = variant.available
+        ? "Ajouter au panier"
+        : "Indisponible";
+    }
+
+    // Update main image if variant has one
+    var mainImg = detail.querySelector(".rdc-borne__detail-main-img");
+    if (mainImg && variant && variant.image) {
+      mainImg.src = variant.image;
+    }
+
+    // Update availability of other options
+    updateOptionAvailability(detail, variants, selected);
+  }
+
+  function updateOptionAvailability(detail, variants, selected) {
+    detail
+      .querySelectorAll(".rdc-borne__option-group")
+      .forEach(function (group) {
+        var groupIdx = group.dataset.optionIndex;
+        group.querySelectorAll(".rdc-borne__swatch").forEach(function (swatch) {
+          var val = swatch.dataset.value;
+          // Check if any variant with this value + all other selected options is available
+          var isAvailable = variants.some(function (v) {
+            if (v.options[parseInt(groupIdx)] !== val) return false;
+            if (!v.available) return false;
+            var keys = Object.keys(selected);
+            for (var k = 0; k < keys.length; k++) {
+              if (keys[k] === groupIdx) continue;
+              if (
+                selected[keys[k]] &&
+                v.options[parseInt(keys[k])] !== selected[keys[k]]
+              )
+                return false;
+            }
+            return true;
+          });
+          swatch.classList.toggle("sold-out", !isAvailable);
+          swatch.disabled = !isAvailable;
+
+          if (!isAvailable && swatch.classList.contains("active")) {
+            swatch.classList.remove("active");
+            var label = group.querySelector(
+              ".rdc-borne__option-selected-value",
+            );
+            if (label) label.textContent = "";
+          }
+        });
+      });
+  }
+
   function resetVariantSelection(detail) {
     detail.querySelectorAll(".rdc-borne__swatch").forEach(function (s) {
       s.classList.remove("active");
     });
+    detail
+      .querySelectorAll(".rdc-borne__option-selected-value")
+      .forEach(function (l) {
+        l.textContent = "";
+      });
 
-    var colorLabel = detail.querySelector(".rdc-borne__selected-color-label");
-    var sizeLabel = detail.querySelector(".rdc-borne__selected-size-label");
-    if (colorLabel) colorLabel.textContent = "";
-    if (sizeLabel) sizeLabel.textContent = "";
-
-    var firstColor = detail.querySelector(
-      ".rdc-borne__swatch--color:not(.sold-out)",
-    );
-    if (firstColor) {
-      firstColor.click();
-    }
+    // Auto-select first available value for each option, in order
+    detail
+      .querySelectorAll(".rdc-borne__option-group")
+      .forEach(function (group) {
+        var first = group.querySelector(".rdc-borne__swatch:not(.sold-out)");
+        if (first) first.click();
+      });
   }
 
   /* ============================
-   * SWATCHES COULEUR (délégation d'événement)
+   * SWATCHES GÉNÉRIQUES (délégation d'événement)
    * ============================ */
   borneEl.addEventListener("click", function (e) {
-    var colorSwatch = e.target.closest(".rdc-borne__swatch--color");
-    if (!colorSwatch || colorSwatch.disabled) return;
+    var swatch = e.target.closest(".rdc-borne__swatch");
+    if (!swatch || swatch.disabled) return;
 
-    var detail = colorSwatch.closest(".rdc-borne__product-detail");
+    var detail = swatch.closest(".rdc-borne__product-detail");
     if (!detail) return;
 
-    detail.querySelectorAll(".rdc-borne__swatch--color").forEach(function (s) {
+    var group = swatch.closest(".rdc-borne__option-group");
+    if (!group) return;
+
+    // Deselect siblings
+    group.querySelectorAll(".rdc-borne__swatch").forEach(function (s) {
       s.classList.remove("active");
     });
-    colorSwatch.classList.add("active");
+    swatch.classList.add("active");
 
-    var colorLabel = detail.querySelector(".rdc-borne__selected-color-label");
-    if (colorLabel) {
-      colorLabel.textContent = colorSwatch.dataset.colorName || "";
-    }
+    // Update selected value label
+    var label = group.querySelector(".rdc-borne__option-selected-value");
+    if (label) label.textContent = swatch.dataset.value || "";
 
-    var mainImg = detail.querySelector(".rdc-borne__detail-main-img");
-    if (mainImg && colorSwatch.dataset.imageUrl) {
-      mainImg.src = colorSwatch.dataset.imageUrl;
-    }
-
-    var addBtn = detail.querySelector(".rdc-borne__add-to-cart");
-    if (addBtn && colorSwatch.dataset.variantId) {
-      addBtn.dataset.variantId = colorSwatch.dataset.variantId;
-    }
-
-    updateSizeAvailability(detail, colorSwatch.dataset.color);
+    // Resolve variant
+    updateVariantFromSelection(detail);
   });
-
-  /* ============================
-   * SWATCHES TAILLE (délégation d'événement)
-   * ============================ */
-  borneEl.addEventListener("click", function (e) {
-    var sizeSwatch = e.target.closest(".rdc-borne__swatch--size");
-    if (!sizeSwatch) return;
-
-    var detail = sizeSwatch.closest(".rdc-borne__product-detail");
-    if (!detail) return;
-
-    detail.querySelectorAll(".rdc-borne__swatch--size").forEach(function (s) {
-      s.classList.remove("active");
-    });
-    sizeSwatch.classList.add("active");
-
-    var sizeLabel = detail.querySelector(".rdc-borne__selected-size-label");
-    if (sizeLabel) {
-      sizeLabel.textContent = "Taille " + sizeSwatch.dataset.size;
-    }
-
-    var activeColor = detail.querySelector(".rdc-borne__swatch--color.active");
-    if (activeColor) {
-      var selectedColor = activeColor.dataset.color;
-      var variantIds = sizeSwatch.dataset.variantIds || "";
-      var entries = variantIds.split(",").filter(Boolean);
-
-      for (var i = 0; i < entries.length; i++) {
-        var parts = entries[i].split(":");
-        if (parts.length === 2 && parts[1] === selectedColor) {
-          var addBtn = detail.querySelector(".rdc-borne__add-to-cart");
-          if (addBtn) addBtn.dataset.variantId = parts[0];
-          break;
-        }
-      }
-    }
-  });
-
-  function updateSizeAvailability(detail, selectedColor) {
-    var sizeSwatches = detail.querySelectorAll(".rdc-borne__swatch--size");
-    sizeSwatches.forEach(function (swatch) {
-      var availableColors = swatch.dataset.availableColors || "";
-      var isAvailable = availableColors.indexOf("," + selectedColor) !== -1;
-      swatch.classList.toggle("sold-out", !isAvailable);
-      swatch.disabled = !isAvailable;
-
-      if (!isAvailable && swatch.classList.contains("active")) {
-        swatch.classList.remove("active");
-        var sizeLabel = detail.querySelector(".rdc-borne__selected-size-label");
-        if (sizeLabel) sizeLabel.textContent = "";
-      }
-    });
-  }
 
   /* ============================
    * AJOUT AU PANIER (utilise le panier natif Shopify)
