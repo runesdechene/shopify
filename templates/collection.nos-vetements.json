@@ -69,7 +69,13 @@
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "padding-block-start": 40,
-        "padding-block-end": 40
+        "padding-block-end": 40,
+        "enable_display_condition": false,
+        "condition_type": "metafield",
+        "condition_metafield": "",
+        "condition_value": "",
+        "condition_liquid": "",
+        "condition_invert": false
       }
     },
     "main": {
@@ -277,10 +283,10 @@
         "tags_field_handle": "categorie",
         "section_width": "full-width",
         "title": "EXPLORER",
-        "items_label": "coupes disponibles",
+        "items_label": "style de vêtements disponibles",
         "title_size": 64,
         "title_color": "#635e4c",
-        "subtitle": "VOS VÊTEMENTS",
+        "subtitle": "Nos coupes",
         "subtitle_size": 42,
         "subtitle_color": "#a39b8c",
         "show_color_swatches": false,
