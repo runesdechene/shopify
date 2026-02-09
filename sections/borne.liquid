@@ -157,8 +157,8 @@
     </svg>
   </button>
 
-  {%- comment -%} Bouton panier flottant {%- endcomment -%}
-  <button class="rdc-borne__cart-button" data-action="toggle-cart">
+  {%- comment -%} Bouton panier flottant — ouvre le cart drawer natif Shopify {%- endcomment -%}
+  <button class="rdc-borne__cart-button" data-action="open-native-cart">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="9" cy="21" r="1"></circle>
       <circle cx="20" cy="21" r="1"></circle>
@@ -166,25 +166,6 @@
     </svg>
     <span class="rdc-borne__cart-count">0</span>
   </button>
-
-  {%- comment -%} ===== DRAWER PANIER ===== {%- endcomment -%}
-  <div class="rdc-borne__cart-drawer" data-open="false">
-    <div class="rdc-borne__cart-header">
-      <h2>Votre panier</h2>
-      <button class="rdc-borne__cart-close" data-action="toggle-cart">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-      </button>
-    </div>
-    <div class="rdc-borne__cart-items"></div>
-    <div class="rdc-borne__cart-footer">
-      <div class="rdc-borne__cart-total">
-        <span>Total</span>
-        <span class="rdc-borne__cart-total-price">0,00 €</span>
-      </div>
-      <button class="rdc-borne__cart-checkout" data-action="checkout">Passer la commande</button>
-      <button class="rdc-borne__cart-clear" data-action="clear-cart">Vider le panier</button>
-    </div>
-  </div>
 
   {%- comment -%} ===== POPUP CONFIRMATION ===== {%- endcomment -%}
   <div class="rdc-borne__popup" id="cart-confirmation-popup" data-visible="false">
@@ -361,25 +342,18 @@
                     </div>
                     <div class="rdc-borne__shop-product-info">
                       <h3 class="rdc-borne__shop-product-title">{{ product.title }}</h3>
-                      {%- comment -%} Swatches couleur aperçu {%- endcomment -%}
+                      {%- comment -%} Swatches couleur aperçu (système natif Shopify) {%- endcomment -%}
                       {%- for option in product.options_with_values -%}
                         {%- if option.name == 'Couleur' or option.name == 'Couleurs' -%}
                           <div class="rdc-borne__mini-swatches">
                             {%- for val in option.values limit: 5 -%}
-                              {%- assign color_handle = val | handleize -%}
-                              {%- assign sw_url = nil -%}
-                              {%- for color in shop.metaobjects.couleur.values -%}
-                                {%- assign cnh = color.name.value | handleize -%}
-                                {%- if cnh == color_handle and color.image != blank -%}
-                                  {%- assign sw_url = color.image -%}
-                                  {%- break -%}
-                                {%- endif -%}
-                              {%- endfor -%}
-                              <span class="rdc-borne__mini-swatch" title="{{ val }}">
-                                {%- if sw_url -%}
-                                  <img src="{{ sw_url | image_url: width: 40 }}" alt="{{ val }}" loading="lazy">
+                              <span class="rdc-borne__mini-swatch" title="{{ val.name }}">
+                                {%- if val.swatch.image -%}
+                                  <img src="{{ val.swatch.image | image_url: width: 40 }}" alt="{{ val.name }}" loading="lazy">
+                                {%- elsif val.swatch.color -%}
+                                  <span class="rdc-borne__mini-swatch-color" style="background: rgb({{ val.swatch.color.rgb }});"></span>
                                 {%- else -%}
-                                  <span class="rdc-borne__mini-swatch-fallback" data-color="{{ color_handle }}"></span>
+                                  <span class="rdc-borne__mini-swatch-fallback" data-color="{{ val.name | handleize }}"></span>
                                 {%- endif -%}
                               </span>
                             {%- endfor -%}
@@ -429,20 +403,13 @@
                         {%- if option.name == 'Couleur' or option.name == 'Couleurs' -%}
                           <div class="rdc-borne__mini-swatches">
                             {%- for val in option.values limit: 5 -%}
-                              {%- assign color_handle = val | handleize -%}
-                              {%- assign sw_url = nil -%}
-                              {%- for color in shop.metaobjects.couleur.values -%}
-                                {%- assign cnh = color.name.value | handleize -%}
-                                {%- if cnh == color_handle and color.image != blank -%}
-                                  {%- assign sw_url = color.image -%}
-                                  {%- break -%}
-                                {%- endif -%}
-                              {%- endfor -%}
-                              <span class="rdc-borne__mini-swatch" title="{{ val }}">
-                                {%- if sw_url -%}
-                                  <img src="{{ sw_url | image_url: width: 40 }}" alt="{{ val }}" loading="lazy">
+                              <span class="rdc-borne__mini-swatch" title="{{ val.name }}">
+                                {%- if val.swatch.image -%}
+                                  <img src="{{ val.swatch.image | image_url: width: 40 }}" alt="{{ val.name }}" loading="lazy">
+                                {%- elsif val.swatch.color -%}
+                                  <span class="rdc-borne__mini-swatch-color" style="background: rgb({{ val.swatch.color.rgb }});"></span>
                                 {%- else -%}
-                                  <span class="rdc-borne__mini-swatch-fallback" data-color="{{ color_handle }}"></span>
+                                  <span class="rdc-borne__mini-swatch-fallback" data-color="{{ val.name | handleize }}"></span>
                                 {%- endif -%}
                               </span>
                             {%- endfor -%}
@@ -515,25 +482,15 @@
                           {%- for value in option.values -%}
                             {%- assign matching_variant = nil -%}
                             {%- for variant in product.variants -%}
-                              {%- if variant.options[option_index] == value -%}
+                              {%- if variant.options[option_index] == value.name -%}
                                 {%- assign matching_variant = variant -%}
-                                {%- break -%}
-                              {%- endif -%}
-                            {%- endfor -%}
-
-                            {%- assign color_handle = value | handleize -%}
-                            {%- assign swatch_url = nil -%}
-                            {%- for color in shop.metaobjects.couleur.values -%}
-                              {%- assign cnh = color.name.value | handleize -%}
-                              {%- if cnh == color_handle and color.image != blank -%}
-                                {%- assign swatch_url = color.image -%}
                                 {%- break -%}
                               {%- endif -%}
                             {%- endfor -%}
 
                             {%- assign variant_image = nil -%}
                             {%- for variant in product.variants -%}
-                              {%- if variant.options[option_index] == value and variant.image -%}
+                              {%- if variant.options[option_index] == value.name and variant.image -%}
                                 {%- assign variant_image = variant.image -%}
                                 {%- break -%}
                               {%- endif -%}
@@ -544,15 +501,17 @@
 
                             <button class="rdc-borne__swatch rdc-borne__swatch--color{% unless matching_variant.available %} sold-out{% endunless %}"
                               {% unless matching_variant.available %}disabled{% endunless %}
-                              data-color="{{ value | handleize }}"
-                              data-color-name="{{ value }}"
+                              data-color="{{ value.name | handleize }}"
+                              data-color-name="{{ value.name }}"
                               data-variant-id="{{ matching_variant.id }}"
                               data-image-url="{{ variant_image | image_url: width: 600 }}"
                             >
-                              {%- if swatch_url -%}
-                                <img src="{{ swatch_url | image_url: width: 60 }}" alt="{{ value }}" loading="lazy">
+                              {%- if value.swatch.image -%}
+                                <img src="{{ value.swatch.image | image_url: width: 60 }}" alt="{{ value.name }}" loading="lazy">
+                              {%- elsif value.swatch.color -%}
+                                <span class="rdc-borne__swatch-color" style="background: rgb({{ value.swatch.color.rgb }});"></span>
                               {%- else -%}
-                                <span class="rdc-borne__swatch-fallback" data-color="{{ color_handle }}"></span>
+                                <span class="rdc-borne__swatch-fallback" data-color="{{ value.name | handleize }}"></span>
                               {%- endif -%}
                             </button>
                           {%- endfor -%}
@@ -577,18 +536,18 @@
                             {%- assign available_colors_for_size = '' -%}
                             {%- assign variant_ids_for_size = '' -%}
                             {%- for variant in product.variants -%}
-                              {%- if variant.options[size_option_index] == value and variant.available -%}
+                              {%- if variant.options[size_option_index] == value.name and variant.available -%}
                                 {%- assign color_value = variant.options[color_option_index] | handleize -%}
                                 {%- assign available_colors_for_size = available_colors_for_size | append: ',' | append: color_value -%}
                                 {%- assign variant_ids_for_size = variant_ids_for_size | append: ',' | append: variant.id | append: ':' | append: color_value -%}
                               {%- endif -%}
                             {%- endfor -%}
                             <button class="rdc-borne__swatch rdc-borne__swatch--size"
-                              data-size="{{ value | escape }}"
+                              data-size="{{ value.name | escape }}"
                               data-available-colors="{{ available_colors_for_size }}"
                               data-variant-ids="{{ variant_ids_for_size }}"
                             >
-                              {{ value }}
+                              {{ value.name }}
                             </button>
                           {%- endfor -%}
                         </div>
@@ -648,25 +607,15 @@
                           {%- for value in option.values -%}
                             {%- assign matching_variant = nil -%}
                             {%- for variant in product.variants -%}
-                              {%- if variant.options[option_index] == value -%}
+                              {%- if variant.options[option_index] == value.name -%}
                                 {%- assign matching_variant = variant -%}
-                                {%- break -%}
-                              {%- endif -%}
-                            {%- endfor -%}
-
-                            {%- assign color_handle = value | handleize -%}
-                            {%- assign swatch_url = nil -%}
-                            {%- for color in shop.metaobjects.couleur.values -%}
-                              {%- assign cnh = color.name.value | handleize -%}
-                              {%- if cnh == color_handle and color.image != blank -%}
-                                {%- assign swatch_url = color.image -%}
                                 {%- break -%}
                               {%- endif -%}
                             {%- endfor -%}
 
                             {%- assign variant_image = nil -%}
                             {%- for variant in product.variants -%}
-                              {%- if variant.options[option_index] == value and variant.image -%}
+                              {%- if variant.options[option_index] == value.name and variant.image -%}
                                 {%- assign variant_image = variant.image -%}
                                 {%- break -%}
                               {%- endif -%}
@@ -677,15 +626,17 @@
 
                             <button class="rdc-borne__swatch rdc-borne__swatch--color{% unless matching_variant.available %} sold-out{% endunless %}"
                               {% unless matching_variant.available %}disabled{% endunless %}
-                              data-color="{{ value | handleize }}"
-                              data-color-name="{{ value }}"
+                              data-color="{{ value.name | handleize }}"
+                              data-color-name="{{ value.name }}"
                               data-variant-id="{{ matching_variant.id }}"
                               data-image-url="{{ variant_image | image_url: width: 600 }}"
                             >
-                              {%- if swatch_url -%}
-                                <img src="{{ swatch_url | image_url: width: 60 }}" alt="{{ value }}" loading="lazy">
+                              {%- if value.swatch.image -%}
+                                <img src="{{ value.swatch.image | image_url: width: 60 }}" alt="{{ value.name }}" loading="lazy">
+                              {%- elsif value.swatch.color -%}
+                                <span class="rdc-borne__swatch-color" style="background: rgb({{ value.swatch.color.rgb }});"></span>
                               {%- else -%}
-                                <span class="rdc-borne__swatch-fallback" data-color="{{ color_handle }}"></span>
+                                <span class="rdc-borne__swatch-fallback" data-color="{{ value.name | handleize }}"></span>
                               {%- endif -%}
                             </button>
                           {%- endfor -%}
@@ -710,18 +661,18 @@
                             {%- assign available_colors_for_size = '' -%}
                             {%- assign variant_ids_for_size = '' -%}
                             {%- for variant in product.variants -%}
-                              {%- if variant.options[size_option_index] == value and variant.available -%}
+                              {%- if variant.options[size_option_index] == value.name and variant.available -%}
                                 {%- assign color_value = variant.options[color_option_index] | handleize -%}
                                 {%- assign available_colors_for_size = available_colors_for_size | append: ',' | append: color_value -%}
                                 {%- assign variant_ids_for_size = variant_ids_for_size | append: ',' | append: variant.id | append: ':' | append: color_value -%}
                               {%- endif -%}
                             {%- endfor -%}
                             <button class="rdc-borne__swatch rdc-borne__swatch--size"
-                              data-size="{{ value | escape }}"
+                              data-size="{{ value.name | escape }}"
                               data-available-colors="{{ available_colors_for_size }}"
                               data-variant-ids="{{ variant_ids_for_size }}"
                             >
-                              {{ value }}
+                              {{ value.name }}
                             </button>
                           {%- endfor -%}
                         </div>
