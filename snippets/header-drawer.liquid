@@ -35,6 +35,20 @@
   if section.index == blank
     assign eager_loading = true
   endif
+
+  # Parse icon mapping
+  assign icon_map = ''
+  if menu_icons_mapping != blank
+    assign icon_lines = menu_icons_mapping | newline_to_br | split: '<br />'
+    for line in icon_lines
+      if line contains '|'
+        assign parts = line | split: '|'
+        assign link_name = parts[0] | strip
+        assign icon_name = parts[1] | strip
+        assign icon_map = icon_map | append: link_name | append: '::' | append: icon_name | append: '||'
+      endif
+    endfor
+  endif
 %}
 
 <script
@@ -167,7 +181,31 @@
                                   sizes: 'auto, 400px'
                                 %}
                               {% endif %}
-                              <span class="menu-drawer__menu-item-text wrap-text">{{ childlink.title | escape }}</span>
+                              <span class="menu-drawer__menu-item-text wrap-text">
+                                {%- liquid
+                                  assign child_icon = ''
+                                  if icon_map != blank
+                                    assign icon_entries = icon_map | split: '||'
+                                    for entry in icon_entries
+                                      if entry contains '::'
+                                        assign entry_parts = entry | split: '::'
+                                        assign entry_name = entry_parts[0] | strip
+                                        assign entry_icon = entry_parts[1] | strip
+                                        if entry_name == childlink.title
+                                          assign child_icon = entry_icon
+                                          break
+                                        endif
+                                      endif
+                                    endfor
+                                  endif
+                                -%}
+                                {%- if child_icon != blank -%}
+                                  <span class="menu-drawer__link-icon">
+                                    <img src="{{ child_icon | asset_url }}" alt="{{ childlink.title }}" loading="lazy">
+                                  </span>
+                                {%- endif -%}
+                                {{ childlink.title | escape }}
+                              </span>
                             </a>
                           </li>
                         {%- endfor -%}
@@ -220,7 +258,31 @@
                               sizes: 'auto, 400px'
                             %}
                           {% endif %}
-                          <span class="menu-drawer__menu-item-text wrap-text">{{ childlink.title | escape }}</span>
+                          <span class="menu-drawer__menu-item-text wrap-text">
+                            {%- liquid
+                              assign child_icon = ''
+                              if icon_map != blank
+                                assign icon_entries = icon_map | split: '||'
+                                for entry in icon_entries
+                                  if entry contains '::'
+                                    assign entry_parts = entry | split: '::'
+                                    assign entry_name = entry_parts[0] | strip
+                                    assign entry_icon = entry_parts[1] | strip
+                                    if entry_name == childlink.title
+                                      assign child_icon = entry_icon
+                                      break
+                                    endif
+                                  endif
+                                endfor
+                              endif
+                            -%}
+                            {%- if child_icon != blank -%}
+                              <span class="menu-drawer__link-icon">
+                                <img src="{{ child_icon | asset_url }}" alt="{{ childlink.title }}" loading="lazy">
+                              </span>
+                            {%- endif -%}
+                            {{ childlink.title | escape }}
+                          </span>
                         </a>
                       </li>
                     {%- endfor -%}
@@ -349,6 +411,28 @@
                                     %}
                                   {% endif %}
                                   <span class="menu-drawer__menu-item-text wrap-text">
+                                    {%- liquid
+                                      assign child_icon = ''
+                                      if icon_map != blank
+                                        assign icon_entries = icon_map | split: '||'
+                                        for entry in icon_entries
+                                          if entry contains '::'
+                                            assign entry_parts = entry | split: '::'
+                                            assign entry_name = entry_parts[0] | strip
+                                            assign entry_icon = entry_parts[1] | strip
+                                            if entry_name == childlink.title
+                                              assign child_icon = entry_icon
+                                              break
+                                            endif
+                                          endif
+                                        endfor
+                                      endif
+                                    -%}
+                                    {%- if child_icon != blank -%}
+                                      <span class="menu-drawer__link-icon">
+                                        <img src="{{ child_icon | asset_url }}" alt="{{ childlink.title }}" loading="lazy">
+                                      </span>
+                                    {%- endif -%}
                                     {{- childlink.title | escape -}}
                                   </span>
                                 </a>
@@ -760,6 +844,25 @@
     .header--desktop header-menu + .header__drawer header-drawer {
       display: none;
     }
+  }
+
+  /* Icon styles for mobile menu links */
+  .menu-drawer__link-icon {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  .menu-drawer__link-icon img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+
+  .menu-drawer__menu-item-text {
+    display: inline-flex;
+    align-items: center;
   }
 
   .menu-drawer-container .header__icon--summary {

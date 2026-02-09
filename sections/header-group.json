@@ -14,8 +14,23 @@
     "header_announcements_d3fXUX": {
       "type": "header-announcements",
       "blocks": {
+        "announcement_8cMMAY": {
+          "type": "_announcement",
+          "name": "t:names.announcement",
+          "settings": {
+            "text": "Suite au départ d'une personne proche de notre atelier d'impression, l'équipe occasionne des retards depuis quelques jours. Nous vous prions de nous excuser pour la gêne occasionnée. Toutes les commandes seront traitées.",
+            "link": "",
+            "font": "var(--font-subheading--family)",
+            "font_size": "0.75rem",
+            "weight": "",
+            "letter_spacing": "normal",
+            "case": "none"
+          },
+          "blocks": {}
+        },
         "announcement_UqPGCE": {
           "type": "_announcement",
+          "disabled": true,
           "settings": {
             "text": "Runes de Chêne sera présent le 7 et 8 Mars au<a href=\"/collections/festival-yggdrasil\" title=\"Festival Yggdrasil\"> FESTIVAL YGGDRASIL</a> de LYON",
             "link": "",
@@ -29,6 +44,7 @@
         }
       },
       "block_order": [
+        "announcement_8cMMAY",
         "announcement_UqPGCE"
       ],
       "name": "t:names.announcement_bar",
