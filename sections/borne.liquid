@@ -1,588 +1,750 @@
 {% schema %}
 {
-  "name": "Borne RDC",
+  "name": "Borne RDC v2",
   "settings": [
     {
-      "type": "text",
-      "id": "categories",
-      "label": "Catégories (séparées par des virgules)",
-      "default": "T-shirts, Débardeurs, Sweatshirts",
-      "info": "Les images associées doivent être nommées 'nom_categorie.webp'"
+      "type": "header",
+      "content": "Apparence"
     },
     {
-      "type": "collection_list",
-      "id": "collections",
-      "label": "Collections à afficher",
-      "limit": 20
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Image de fond par défaut"
     },
     {
-      "type": "textarea",
-      "id": "collection_links",
-      "label": "Mapping",
-      "info": "Liens des catégories avec les collections. Format : Catégorie:Collection,Collection|etc..."
+      "type": "header",
+      "content": "Textes"
     },
     {
       "type": "text",
-      "id": "tag_unisexe",
-      "label": "Collections Unisexe",
-      "info": "Noms des collections séparés par des virgules"
+      "id": "welcome_title",
+      "label": "Titre d'accueil",
+      "default": "BORNE DE COMMANDE"
     },
     {
       "type": "text",
-      "id": "tag_femme",
-      "label": "Collections Femme",
-      "info": "Noms des collections séparés par des virgules"
+      "id": "welcome_subtitle",
+      "label": "Sous-titre d'accueil",
+      "default": "Comment souhaitez-vous explorer ?"
     },
     {
       "type": "text",
-      "id": "tag_oversize",
-      "label": "Collections Oversize",
-      "info": "Noms des collections séparés par des virgules"
+      "id": "btn_by_article",
+      "label": "Bouton 'Par article'",
+      "default": "Par type d'article"
     },
     {
-      "type": "textarea",
-      "id": "protected_collections",
-      "label": "Collections protégées par mot de passe",
-      "info": "Format : Nom de la collection:mot_de_passe | Autre collection:autre_mot_de_passe",
-      "placeholder": "Bénévoles (Yggdrasil):yggdrasil2024 | Collection VIP:vip123"
-    },
-    {
-      "type": "textarea",
-      "id": "collection_display_names",
-      "label": "Renommage des collections pour l'affichage",
-      "info": "Format : Nom interne:Nom affiché | Autre nom:Autre affichage",
-      "placeholder": "T-shirts Homme:T-shirts | Collection Staff:Équipe"
+      "type": "text",
+      "id": "btn_by_illustration",
+      "label": "Bouton 'Par illustration'",
+      "default": "Par illustration"
     }
   ],
   "presets": [
     {
-      "name": "Borne RDC",
-      "category": "Collection"
+      "name": "Borne RDC v2"
     }
   ]
 }
 {% endschema %}
 
-{% comment %}
-/**
- * Borne interactive Runes de Chêne
- * 
- * Application permettant aux clients de naviguer dans les collections et produits
- * via une interface tactile en magasin.
- */
-{% endcomment %}
+{%- comment -%}
+  Borne de commande v2 — Runes de Chêne
+  Navigation : Accueil → (Par article | Par illustration) → Produits → Détail + Panier
+{%- endcomment -%}
 
-<script>
-  // Configuration des collections protégées depuis le schema
-  window.RDC_PROTECTED_COLLECTIONS = {{ section.settings.protected_collections | json }};
-  // Configuration des noms d'affichage des collections
-  window.RDC_COLLECTION_DISPLAY_NAMES = {{ section.settings.collection_display_names | json }};
+{%- comment -%} ========== DONNÉES LIQUID ========== {%- endcomment -%}
+
+{%- comment -%} Récupérer tous les métaobjets {%- endcomment -%}
+{%- assign all_produits_meta = shop.metaobjects.produits.values -%}
+{%- assign all_illustrations = shop.metaobjects.illustrations.values -%}
+
+{%- comment -%} Collecter les catégories uniques depuis les métaobjets Produits {%- endcomment -%}
+{%- assign all_categories = '' -%}
+{%- for pm in all_produits_meta -%}
+  {%- if pm.categorie != blank -%}
+    {%- assign cat_name = pm.categorie | strip -%}
+    {%- unless all_categories contains cat_name -%}
+      {%- if all_categories == '' -%}
+        {%- assign all_categories = cat_name -%}
+      {%- else -%}
+        {%- assign all_categories = all_categories | append: '||' | append: cat_name -%}
+      {%- endif -%}
+    {%- endunless -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- assign categories_array = all_categories | split: '||' -%}
+
+{%- comment -%} Préparer les données JSON pour le JS {%- endcomment -%}
+<script type="application/json" id="borne-produits-data">
+[
+  {%- for pm in all_produits_meta -%}
+    {%- comment -%} Récupérer la collection liée {%- endcomment -%}
+    {%- assign linked_collection = nil -%}
+    {%- if pm.collection != blank -%}
+      {%- if pm.collection.value -%}
+        {%- assign linked_collection = pm.collection.value -%}
+      {%- else -%}
+        {%- assign linked_collection = pm.collection -%}
+      {%- endif -%}
+    {%- endif -%}
+    {
+      "nom": {{ pm.nom | json }},
+      "handle": {{ pm.system.handle | json }},
+      "image": {% if pm.image != blank %}"{{ pm.image | image_url: width: 400 }}"{% else %}null{% endif %},
+      "icone": {% if pm.icone != blank %}"{{ pm.icone | image_url: width: 120 }}"{% else %}null{% endif %},
+      "label": {{ pm.label | default: pm.nom | json }},
+      "categorie": {{ pm.categorie | json }},
+      "type": {{ pm.type | json }},
+      "coupe": {{ pm.coupe | json }},
+      "tissu": {{ pm.tissu | json }},
+      "force_de_vente": {{ pm.force_de_vente | json }},
+      "description": {{ pm.description | metafield_text | strip_html | truncate: 300 | json }},
+      "collection_handle": {% if linked_collection %}"{{ linked_collection.handle }}"{% else %}null{% endif %},
+      "collection_url": {% if linked_collection %}"{{ linked_collection.url }}"{% else %}null{% endif %}
+    }{% unless forloop.last %},{% endunless %}
+  {%- endfor -%}
+]
 </script>
 
-<div id="rdc-loading-overlay" class="rdc-loading-overlay" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; background-color: #ffffff; z-index: 9999;"></div>
-<div class="rdc-borne">
-  <div class="immersif_gauche">
-    <img src="https://cdn.shopify.com/s/files/1/0728/9690/5483/files/foret_immersive_gauche.webp?v=1740164842" />  
-  </div> 
-  <div class="immersif_droite">
-      <img src="https://cdn.shopify.com/s/files/1/0728/9690/5483/files/foret_immersive_droite.webp?v=1740164852" />  
+<script type="application/json" id="borne-illustrations-data">
+[
+  {%- for illus in all_illustrations -%}
+    {%- assign illus_collection = nil -%}
+    {%- if illus.collection != blank -%}
+      {%- if illus.collection.value -%}
+        {%- assign illus_collection = illus.collection.value -%}
+      {%- else -%}
+        {%- assign illus_collection = illus.collection -%}
+      {%- endif -%}
+    {%- endif -%}
+    {
+      "nom": {{ illus.nom | json }},
+      "handle": {{ illus.system.handle | json }},
+      "resume": {{ illus.resume | json }},
+      "description_borne": {{ illus.description_borne | metafield_text | strip_html | truncate: 300 | json }},
+      "image_clair": {% if illus.image_pour_fond_clair != blank %}"{{ illus.image_pour_fond_clair | image_url: width: 600 }}"{% else %}null{% endif %},
+      "image_sombre": {% if illus.image_pour_fond_sombre != blank %}"{{ illus.image_pour_fond_sombre | image_url: width: 600 }}"{% else %}null{% endif %},
+      "image_fond": {% if illus.image_fond_de_fragment != blank %}"{{ illus.image_fond_de_fragment | image_url: width: 1920 }}"{% else %}null{% endif %},
+      "artiste": {% if illus.artiste.value.nom.value != blank %}{{ illus.artiste.value.nom.value | json }}{% else %}null{% endif %},
+      "collection_handle": {% if illus_collection %}"{{ illus_collection.handle }}"{% else %}null{% endif %},
+      "collection_url": {% if illus_collection %}"{{ illus_collection.url }}"{% else %}null{% endif %}
+    }{% unless forloop.last %},{% endunless %}
+  {%- endfor -%}
+]
+</script>
+
+{%- comment -%} ========== HTML ========== {%- endcomment -%}
+
+<div class="rdc-borne" id="rdc-borne" data-section-id="{{ section.id }}">
+
+  {%- comment -%} Image de fond dynamique {%- endcomment -%}
+  <div class="rdc-borne__bg">
+    <div class="rdc-borne__bg-default rdc-borne__bg-layer active"
+      {% if section.settings.background_image != blank %}
+        style="background-image: url('{{ section.settings.background_image | image_url: width: 1920 }}');"
+      {% else %}
+        style="background-image: url('{{ "explore_fond_default.webp" | asset_url }}');"
+      {% endif %}
+    ></div>
+    <div class="rdc-borne__bg-dynamic rdc-borne__bg-layer"></div>
   </div>
-  <button class="rdc-borne__back-button" data-action="back">
-   <img src="https://cdn.shopify.com/s/files/1/0728/9690/5483/files/RETURN_borne.webp?v=1756894249" />
+
+  {%- comment -%} Bouton retour {%- endcomment -%}
+  <button class="rdc-borne__back-button" data-action="back" aria-label="Retour">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
   </button>
-  
-  <!-- Bouton du panier flottant -->
+
+  {%- comment -%} Bouton panier flottant {%- endcomment -%}
   <button class="rdc-borne__cart-button" data-action="toggle-cart">
-    <span class="rdc-borne__cart-icon">🛒</span>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="9" cy="21" r="1"></circle>
+      <circle cx="20" cy="21" r="1"></circle>
+      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+    </svg>
     <span class="rdc-borne__cart-count">0</span>
   </button>
-  
-  <!-- Drawer du panier -->
+
+  {%- comment -%} ===== DRAWER PANIER ===== {%- endcomment -%}
   <div class="rdc-borne__cart-drawer" data-open="false">
     <div class="rdc-borne__cart-header">
-      <div class="rdc-borne__cart-header-title">
-        <h2>Votre panier</h2>
-        <button class="rdc-borne__cart-clear" data-action="clear-cart">Vider le panier</button>
-      </div>
-      <button class="rdc-borne__cart-close" data-action="toggle-cart">&times;</button>
+      <h2>Votre panier</h2>
+      <button class="rdc-borne__cart-close" data-action="toggle-cart">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
     </div>
-    <div class="rdc-borne__cart-items">
-      <!-- Les produits du panier seront ajoutés ici dynamiquement -->
-    </div>
+    <div class="rdc-borne__cart-items"></div>
     <div class="rdc-borne__cart-footer">
       <div class="rdc-borne__cart-total">
-        <span>Total:</span>
+        <span>Total</span>
         <span class="rdc-borne__cart-total-price">0,00 €</span>
       </div>
-      
-      <div class="rdc-borne__festival-promo">
-        <h3>Vous êtes sur un stand nomade ?</h3>
-        <p>Vous bénéficiez des réductions de festival, à demander auprès d'un vendeur !</p>
-      </div>
-      
       <button class="rdc-borne__cart-checkout" data-action="checkout">Passer la commande</button>
+      <button class="rdc-borne__cart-clear" data-action="clear-cart">Vider le panier</button>
     </div>
   </div>
-  
-  <!-- Popup de confirmation d'ajout au panier -->
+
+  {%- comment -%} ===== POPUP CONFIRMATION ===== {%- endcomment -%}
   <div class="rdc-borne__popup" id="cart-confirmation-popup" data-visible="false">
     <div class="rdc-borne__popup-content">
-      <div class="rdc-borne__popup-icon">✓</div>
-      <h3 class="rdc-borne__popup-title">Produit ajouté au panier</h3>
+      <div class="rdc-borne__popup-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <h3 class="rdc-borne__popup-title">Ajouté au panier</h3>
       <p class="rdc-borne__popup-product-name"></p>
       <div class="rdc-borne__popup-buttons">
-        <button class="rdc-borne__popup-button rdc-borne__popup-button--primary" data-action="continue-shopping">Continuer vos achats</button>
-        <button class="rdc-borne__popup-button" data-action="view-cart">Voir le panier</button>
+        <button class="rdc-borne__popup-btn rdc-borne__popup-btn--primary" data-action="continue-shopping">Continuer mes achats</button>
+        <button class="rdc-borne__popup-btn rdc-borne__popup-btn--secondary" data-action="view-cart">Voir le panier</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal de mot de passe pour collection protégée -->
-  <div class="rdc-borne__password-modal" id="password-modal" data-visible="false">
-    <div class="rdc-borne__password-modal-content">
-      <h3 class="rdc-borne__password-modal-title">🔒 Collection protégée</h3>
-      <p class="rdc-borne__password-modal-text">Veuillez entrer le mot de passe pour accéder à cette collection</p>
-      <input type="password" class="rdc-borne__password-input" id="password-input" placeholder="Mot de passe">
-      <p class="rdc-borne__password-error" id="password-error" style="display: none;">Mot de passe incorrect</p>
-      <div class="rdc-borne__password-modal-buttons">
-        <button class="rdc-borne__popup-button rdc-borne__popup-button--primary" id="password-submit">Valider</button>
-        <button class="rdc-borne__popup-button" id="password-cancel">Annuler</button>
+  {%- comment -%} ===== ÉCRAN 0 : ACCUEIL ===== {%- endcomment -%}
+  <div class="rdc-borne__screen" data-screen="0" data-active="true">
+    <div class="rdc-borne__screen-inner rdc-borne__screen-welcome">
+      <h1 class="rdc-borne__welcome-title">{{ section.settings.welcome_title }}</h1>
+      <p class="rdc-borne__welcome-subtitle">{{ section.settings.welcome_subtitle }}</p>
+      <div class="rdc-borne__welcome-choices">
+        <button class="rdc-borne__choice-btn" data-choice="article">
+          <span class="rdc-borne__choice-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+          </span>
+          <span class="rdc-borne__choice-label">{{ section.settings.btn_by_article }}</span>
+        </button>
+        <button class="rdc-borne__choice-btn" data-choice="illustration">
+          <span class="rdc-borne__choice-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+          </span>
+          <span class="rdc-borne__choice-label">{{ section.settings.btn_by_illustration }}</span>
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- Écran 1: Sélection de catégorie -->
-  <div class="rdc-borne__screen" data-screen="1" data-active="true">
-    <div class="rdc-borne__content">
-      <p class="special_title">BORNE A LA DEMANDE</p>
-      <h1 class="rdc-borne__title">Choisissez votre catégorie</h1>
-      <div class="rdc-borne__categories-container">
-        <button class="rdc-borne__carousel-button rdc-borne__carousel-button--prev" data-carousel="categories" data-direction="prev" aria-label="Catégorie précédente">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-        </button>
-        <div class="rdc-borne__categories-wrapper">
-          <div class="rdc-borne__categories">
-            {% assign categories = section.settings.categories | split: ',' %}
-            {% for category in categories %}
-              {% assign category_clean = category | strip %}
-              <div class="rdc-borne__category" data-category="{{ category_clean }}">
-                <div class="rdc-borne__category-inner">
-                  <img src="{{ category_clean | handleize | append: '.webp' | file_url }}" alt="{{ category_clean }}" class="rdc-borne__category-image">
-                  <h2 class="rdc-borne__category-title">{{ category_clean }}</h2>
-                </div>
-              </div>
-            {% endfor %}
-          </div>
-        </div>
-        <button class="rdc-borne__carousel-button rdc-borne__carousel-button--next" data-carousel="categories" data-direction="next" aria-label="Catégorie suivante">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </button>
+  {%- comment -%} ===== ÉCRAN 1a : CATÉGORIES (par article) ===== {%- endcomment -%}
+  <div class="rdc-borne__screen" data-screen="1a" data-active="false">
+    <div class="rdc-borne__screen-inner">
+      <h1 class="rdc-borne__screen-title">Choisissez une catégorie</h1>
+      <div class="rdc-borne__grid rdc-borne__categories-grid">
+        {%- for cat in categories_array -%}
+          {%- comment -%} Trouver la première icône de cette catégorie {%- endcomment -%}
+          {%- assign cat_icon = nil -%}
+          {%- assign cat_image = nil -%}
+          {%- for pm in all_produits_meta -%}
+            {%- assign pm_cat = pm.categorie | strip -%}
+            {%- if pm_cat == cat -%}
+              {%- if cat_icon == nil and pm.icone != blank -%}
+                {%- assign cat_icon = pm.icone -%}
+              {%- endif -%}
+              {%- if cat_image == nil and pm.image != blank -%}
+                {%- assign cat_image = pm.image -%}
+              {%- endif -%}
+              {%- if cat_icon != nil and cat_image != nil -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+          <button class="rdc-borne__category-card" data-category="{{ cat }}">
+            <div class="rdc-borne__category-card-img">
+              {%- if cat_image != nil -%}
+                <img src="{{ cat_image | image_url: width: 400 }}" alt="{{ cat }}" loading="lazy">
+              {%- else -%}
+                <div class="rdc-borne__placeholder"></div>
+              {%- endif -%}
+            </div>
+            <span class="rdc-borne__category-card-label">{{ cat }}</span>
+          </button>
+        {%- endfor -%}
       </div>
-    </div> 
+    </div>
   </div>
- 
-  <!-- Écran 2: Sélection de collection -->
+
+  {%- comment -%} ===== ÉCRAN 1b : ILLUSTRATIONS (par illustration) ===== {%- endcomment -%}
+  <div class="rdc-borne__screen" data-screen="1b" data-active="false">
+    <div class="rdc-borne__screen-inner">
+      <h1 class="rdc-borne__screen-title">Choisissez une illustration</h1>
+      <div class="rdc-borne__grid rdc-borne__illustrations-grid">
+        {%- for illus in all_illustrations -%}
+          <button class="rdc-borne__illustration-card" 
+            data-illustration-handle="{{ illus.system.handle }}"
+            data-bg-image="{% if illus.image_fond_de_fragment != blank %}{{ illus.image_fond_de_fragment | image_url: width: 1920 }}{% endif %}"
+          >
+            <div class="rdc-borne__illustration-card-img">
+              {%- if illus.image_pour_fond_clair != blank -%}
+                <img src="{{ illus.image_pour_fond_clair | image_url: width: 400 }}" alt="{{ illus.nom }}" loading="lazy">
+              {%- else -%}
+                <div class="rdc-borne__placeholder"></div>
+              {%- endif -%}
+            </div>
+            <div class="rdc-borne__illustration-card-info">
+              <span class="rdc-borne__illustration-card-name">{{ illus.nom }}</span>
+              {%- if illus.resume != blank -%}
+                <span class="rdc-borne__illustration-card-summary">« {{ illus.resume }} »</span>
+              {%- endif -%}
+              {%- if illus.artiste.value.nom.value != blank -%}
+                <span class="rdc-borne__illustration-card-artist">{{ illus.artiste.value.nom.value }}</span>
+              {%- endif -%}
+            </div>
+          </button>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} ===== ÉCRAN 2 : PRODUITS (métaobjets) ===== {%- endcomment -%}
   <div class="rdc-borne__screen" data-screen="2" data-active="false">
-    <input type="hidden" id="selected-category" value="">
-    <div class="rdc-borne__content">
-      {% assign category = '' %}
-
-      {% assign selected_collections = section.settings.collection_links | split: '|' %}
-
-      <h1 class="rdc-borne__title">Et ensuite ?</h1>
-      <div class="rdc-borne__selected-category">{{ category_clean }}</div>
-
-      {% comment %}Utilisation directe des descriptions de collections de Shopify{% endcomment %}
-      
-      {% comment %}Préparation des listes de tags{% endcomment %}
-      {% assign unisexe_collections = section.settings.tag_unisexe | split: ',' %}
-      {% assign femme_collections = section.settings.tag_femme | split: ',' %}
-      {% assign oversize_collections = section.settings.tag_oversize | split: ',' %}
-      
-      <div class="rdc-borne__collections">
-        {% for collection in section.settings.collections %}
-          {% comment %}Utilisation directe de la description de la collection de Shopify{% endcomment %}
-          
-          {% comment %}Vérification des tags pour cette collection{% endcomment %}
-          {% assign has_unisexe_tag = false %}
-          {% assign has_femme_tag = false %}
-          {% assign has_oversize_tag = false %}
-          
-          {% for unisexe_collection in unisexe_collections %}
-            {% assign clean_name = unisexe_collection | strip %}
-            {% if clean_name == collection.title %}
-              {% assign has_unisexe_tag = true %}
-              {% break %}
-            {% endif %}
-          {% endfor %}
-          
-          {% for femme_collection in femme_collections %}
-            {% assign clean_name = femme_collection | strip %}
-            {% if clean_name == collection.title %}
-              {% assign has_femme_tag = true %}
-              {% break %}
-            {% endif %}
-          {% endfor %}
-          
-          {% for oversize_collection in oversize_collections %}
-            {% assign clean_name = oversize_collection | strip %}
-            {% if clean_name == collection.title %}
-              {% assign has_oversize_tag = true %}
-              {% break %}
-            {% endif %}
-          {% endfor %}
-          
-          <div class="rdc-borne__collection" data-handle="{{ collection.handle }}">
-            <img src="{{ collection.featured_image | img_url: '600x' }}" alt="{{ collection.title }}" class="rdc-borne__collection-image">
-            <h3>{{ collection.title }}</h3>
-            {% if collection.description != blank %}
-              <span class="rdc-borne__collection-description">{{ collection.description }}</span>
-            {% endif %}
-            
-            {% comment %}Affichage des tags{% endcomment %}
-            {% if has_unisexe_tag or has_femme_tag or has_oversize_tag %}
-              <div class="rdc-borne__collection-tags">
-                {% if has_unisexe_tag %}
-                  <span class="rdc-borne__collection-tag rdc-borne__collection-tag--unisexe">Unisexe</span>
-                {% endif %}
-                {% if has_femme_tag %}
-                  <span class="rdc-borne__collection-tag rdc-borne__collection-tag--femme">Femme</span>
-                {% endif %}
-                {% if has_oversize_tag %}
-                  <span class="rdc-borne__collection-tag rdc-borne__collection-tag--oversize">Oversize</span>
-                {% endif %}
-              </div>
-            {% endif %}
-          </div>
-        {% endfor %}
+    <div class="rdc-borne__screen-inner">
+      <h1 class="rdc-borne__screen-title rdc-borne__products-title">Choisissez un article</h1>
+      {%- comment -%} Description de l'illustration sélectionnée (visible uniquement en mode illustration) {%- endcomment -%}
+      <p class="rdc-borne__illustration-desc" style="display:none;"></p>
+      <div class="rdc-borne__grid rdc-borne__produits-grid">
+        {%- for pm in all_produits_meta -%}
+          <button class="rdc-borne__produit-card" 
+            data-produit-handle="{{ pm.system.handle }}"
+            data-categorie="{{ pm.categorie | strip }}"
+            data-collection-handle="{% if pm.collection.value %}{{ pm.collection.value.handle }}{% elsif pm.collection %}{{ pm.collection.handle }}{% endif %}"
+          >
+            <div class="rdc-borne__produit-card-img">
+              {%- if pm.icone != blank -%}
+                <img src="{{ pm.icone | image_url: width: 200 }}" alt="{{ pm.label | default: pm.nom }}" loading="lazy">
+              {%- elsif pm.image != blank -%}
+                <img src="{{ pm.image | image_url: width: 300 }}" alt="{{ pm.label | default: pm.nom }}" loading="lazy">
+              {%- else -%}
+                <div class="rdc-borne__placeholder"></div>
+              {%- endif -%}
+            </div>
+            <div class="rdc-borne__produit-card-info">
+              <span class="rdc-borne__produit-card-label">{{ pm.label | default: pm.nom }}</span>
+              {%- if pm.type != blank -%}
+                <span class="rdc-borne__produit-card-type">{{ pm.type }}</span>
+              {%- endif -%}
+              {%- if pm.force_de_vente != blank -%}
+                <span class="rdc-borne__produit-card-pitch">{{ pm.force_de_vente }}</span>
+              {%- endif -%}
+            </div>
+          </button>
+        {%- endfor -%}
       </div>
     </div>
   </div>
 
-  <!-- Écran 3: Liste des produits de la collection -->
+  {%- comment -%} ===== ÉCRAN 3 : DÉTAIL PRODUIT (chargé dynamiquement) ===== {%- endcomment -%}
+  {%- comment -%} 
+    On pré-rend les produits de chaque collection liée aux métaobjets.
+    Pour éviter les doublons, on track les handles déjà rendus.
+  {%- endcomment -%}
   <div class="rdc-borne__screen" data-screen="3" data-active="false">
-    <div class="rdc-borne__content">
-      <h1 class="rdc-borne__collection-title"></h1>
-      {% for collection in section.settings.collections %}
-        <div class="rdc-borne__products inactive" data-collection="{{ collection.handle }}">
-          {% paginate collection.products by 24 %}
-            {% for product in collection.products %}
-              <div class="rdc-borne__product" data-handle="{{ product.handle }}" data-product-json="{{ product | json | escape }}">
-                <img src="{{ product.featured_image | img_url: '600x' }}" alt="{{ product.title }}" class="rdc-borne__product-image">
-                <h3>{{ product.title }}</h3>
-                
-                {% comment %}Affichage des swatches de couleurs{% endcomment %}
-                {% if product.options_with_values.size > 0 %}
-                  {% for option in product.options_with_values %}
-                    {% if option.name == 'Couleur' %}
-                      <div class="rdc-borne__product-swatches">
-                        {% assign option_index = forloop.index0 %}
-                        {% for value in option.values limit: 4 %}
-                          {% for variant in product.variants %}
-                            {% if variant.options[option_index] == value %}
-                              {% assign matching_variant = variant %}
-                              {% break %}
-                            {% endif %}
-                          {% endfor %}
-                          
-                          {% assign color_handle = value | handleize %}
-                          {% assign swatch_url = nil %}
-                          
-                          {% comment %}Récupération du métaobjet de couleur correspondant{% endcomment %}
-                          {% for color in shop.metaobjects.couleur.values %}
-                            {% assign color_name_handle = color.name.value | handleize %}
-                            {% if color_name_handle == color_handle %}
-                              {% if color.image != blank %}
-                                {% assign swatch_url = color.image %}
-                                {% break %}
-                              {% endif %}
-                            {% endif %}
-                          {% endfor %}
-                          
-                          {% comment %}Fallback si le métaobjet n'est pas trouvé{% endcomment %}
-                          {% unless swatch_url %}
-                            {% case color_handle %}
-                              {% when 'noir' %}
-                                {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Black_465238b9-f944-4407-867a-62046490be11.png?v=1751386268" %}
-                              {% when 'prune' %}
-                                {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Prune.png" %}
-                              {% when 'kaki' or 'khaki' %}
-                                {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Kaki.png" %}
-                              {% when 'vert-ancien' %}
-                                {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Vert_ancien.png" %}
-                              {% when 'vert-foret' %}
-                                {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Vert_foret.png" %}
-                              {% when 'terra-cotta' %}
-                                {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Terra_cotta.png" %}
-                              {% when 'latte' %}
-                                {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Latte.png" %}
-                              {% when 'ocre' %}
-                                {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Ocre.png" %}
-                              {% when 'desert' %}
-                                {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Desert.png" %}
-                              {% when 'blanc' %}
-                                {% assign swatch_url = "//runesdechene.com/cdn/shop/files/White.png" %}
-                              {% when 'blanc-ancien' %}
-                                {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Blanc_ancien.png" %}
-                              {% when 'bleu-marine' %}
-                                {% assign swatch_url = "//runesdechene.com/cdn/shop/files/French_navy.png" %}
-                              {% when 'bleu-rose' %}
-                                {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Bleu_rose.png" %}
-                              {% when 'latte-antique' %}
-                                {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Latte_antique.png" %}
-                              {% when 'noir-antique' %}
-                                {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Noir_antique.png" %}
-                              {% when 'argile' %}
-                                {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Argile.png" %}
-                              {% else %}
-                                {% assign swatch_url = "//runesdechene.com/cdn/shop/files/" | append: value | append: ".png" %}
-                            {% endcase %}
-                          {% endunless %}
-                          
-                          <span class="rdc-borne__product-swatch{% unless matching_variant.available %} sold-out{% endunless %}">
-                            <span class="swatch" data-swatch-url="{{ swatch_url }}"></span>
-                          </span>
-                        {% endfor %}
-                        
-                        {% if option.values.size > 4 %}
-                          <span class="rdc-borne__product-swatch-more">+{{ option.values.size | minus: 4 }}</span>
-                        {% endif %}
+    <div class="rdc-borne__screen-inner rdc-borne__detail-screen">
+      {%- comment -%} Titre dynamique {%- endcomment -%}
+      <h1 class="rdc-borne__screen-title rdc-borne__detail-title"></h1>
+
+      {%- comment -%} Grille de produits Shopify de la collection sélectionnée {%- endcomment -%}
+      {%- assign rendered_collections = '' -%}
+      {%- for pm in all_produits_meta -%}
+        {%- assign col = nil -%}
+        {%- if pm.collection.value -%}
+          {%- assign col = pm.collection.value -%}
+        {%- elsif pm.collection -%}
+          {%- assign col = pm.collection -%}
+        {%- endif -%}
+        {%- if col != blank -%}
+          {%- unless rendered_collections contains col.handle -%}
+            {%- assign rendered_collections = rendered_collections | append: col.handle | append: ',' -%}
+            <div class="rdc-borne__shopify-products" data-collection="{{ col.handle }}" style="display:none;">
+              {%- paginate col.products by 50 -%}
+                {%- for product in col.products -%}
+                  <div class="rdc-borne__shop-product" data-product-handle="{{ product.handle }}">
+                    <div class="rdc-borne__shop-product-img">
+                      <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title }}" loading="lazy">
+                    </div>
+                    <div class="rdc-borne__shop-product-info">
+                      <h3 class="rdc-borne__shop-product-title">{{ product.title }}</h3>
+                      {%- comment -%} Swatches couleur aperçu {%- endcomment -%}
+                      {%- for option in product.options_with_values -%}
+                        {%- if option.name == 'Couleur' or option.name == 'Couleurs' -%}
+                          <div class="rdc-borne__mini-swatches">
+                            {%- for val in option.values limit: 5 -%}
+                              {%- assign color_handle = val | handleize -%}
+                              {%- assign sw_url = nil -%}
+                              {%- for color in shop.metaobjects.couleur.values -%}
+                                {%- assign cnh = color.name.value | handleize -%}
+                                {%- if cnh == color_handle and color.image != blank -%}
+                                  {%- assign sw_url = color.image -%}
+                                  {%- break -%}
+                                {%- endif -%}
+                              {%- endfor -%}
+                              <span class="rdc-borne__mini-swatch" title="{{ val }}">
+                                {%- if sw_url -%}
+                                  <img src="{{ sw_url | image_url: width: 40 }}" alt="{{ val }}" loading="lazy">
+                                {%- else -%}
+                                  <span class="rdc-borne__mini-swatch-fallback" data-color="{{ color_handle }}"></span>
+                                {%- endif -%}
+                              </span>
+                            {%- endfor -%}
+                            {%- if option.values.size > 5 -%}
+                              <span class="rdc-borne__mini-swatch-more">+{{ option.values.size | minus: 5 }}</span>
+                            {%- endif -%}
+                          </div>
+                          {%- break -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                      <div class="rdc-borne__shop-product-price">
+                        {%- if product.compare_at_price > product.price -%}
+                          <span class="rdc-borne__price-compare">{{ product.compare_at_price | money }}</span>
+                        {%- endif -%}
+                        <span class="rdc-borne__price-current{% if product.compare_at_price > product.price %} rdc-borne__price-sale{% endif %}">{{ product.price | money }}</span>
                       </div>
-                      {% break %}
-                    {% endif %}
-                  {% endfor %}
-                {% endif %}
-                
-                <div class="rdc-borne__product-price">
-                  {% if product.compare_at_price > product.price %}
-                    <span class="rdc-borne__product-price--compare">{{ product.compare_at_price | money }}</span>
-                  {% endif %}
-                  <span class="rdc-borne__product-price--current{% if product.compare_at_price > product.price %} rdc-borne__product-price--sale{% endif %}">{{ product.price | money }}</span>
-                </div>
-              </div>
-            {% endfor %}
-          {% endpaginate %}
-        </div>
-      {% endfor %}
+                    </div>
+                  </div>
+                {%- endfor -%}
+              {%- endpaginate -%}
+            </div>
+          {%- endunless -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- comment -%} Aussi rendre les collections liées aux illustrations {%- endcomment -%}
+      {%- for illus in all_illustrations -%}
+        {%- assign icol = nil -%}
+        {%- if illus.collection.value -%}
+          {%- assign icol = illus.collection.value -%}
+        {%- elsif illus.collection -%}
+          {%- assign icol = illus.collection -%}
+        {%- endif -%}
+        {%- if icol != blank -%}
+          {%- unless rendered_collections contains icol.handle -%}
+            {%- assign rendered_collections = rendered_collections | append: icol.handle | append: ',' -%}
+            <div class="rdc-borne__shopify-products" data-collection="{{ icol.handle }}" style="display:none;">
+              {%- paginate icol.products by 50 -%}
+                {%- for product in icol.products -%}
+                  <div class="rdc-borne__shop-product" data-product-handle="{{ product.handle }}">
+                    <div class="rdc-borne__shop-product-img">
+                      <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title }}" loading="lazy">
+                    </div>
+                    <div class="rdc-borne__shop-product-info">
+                      <h3 class="rdc-borne__shop-product-title">{{ product.title }}</h3>
+                      {%- for option in product.options_with_values -%}
+                        {%- if option.name == 'Couleur' or option.name == 'Couleurs' -%}
+                          <div class="rdc-borne__mini-swatches">
+                            {%- for val in option.values limit: 5 -%}
+                              {%- assign color_handle = val | handleize -%}
+                              {%- assign sw_url = nil -%}
+                              {%- for color in shop.metaobjects.couleur.values -%}
+                                {%- assign cnh = color.name.value | handleize -%}
+                                {%- if cnh == color_handle and color.image != blank -%}
+                                  {%- assign sw_url = color.image -%}
+                                  {%- break -%}
+                                {%- endif -%}
+                              {%- endfor -%}
+                              <span class="rdc-borne__mini-swatch" title="{{ val }}">
+                                {%- if sw_url -%}
+                                  <img src="{{ sw_url | image_url: width: 40 }}" alt="{{ val }}" loading="lazy">
+                                {%- else -%}
+                                  <span class="rdc-borne__mini-swatch-fallback" data-color="{{ color_handle }}"></span>
+                                {%- endif -%}
+                              </span>
+                            {%- endfor -%}
+                            {%- if option.values.size > 5 -%}
+                              <span class="rdc-borne__mini-swatch-more">+{{ option.values.size | minus: 5 }}</span>
+                            {%- endif -%}
+                          </div>
+                          {%- break -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                      <div class="rdc-borne__shop-product-price">
+                        {%- if product.compare_at_price > product.price -%}
+                          <span class="rdc-borne__price-compare">{{ product.compare_at_price | money }}</span>
+                        {%- endif -%}
+                        <span class="rdc-borne__price-current{% if product.compare_at_price > product.price %} rdc-borne__price-sale{% endif %}">{{ product.price | money }}</span>
+                      </div>
+                    </div>
+                  </div>
+                {%- endfor -%}
+              {%- endpaginate -%}
+            </div>
+          {%- endunless -%}
+        {%- endif -%}
+      {%- endfor -%}
     </div>
   </div>
 
-  <!-- Écran 4: Détail du produit et sélection de variantes -->
+  {%- comment -%} ===== ÉCRAN 4 : DÉTAIL PRODUIT SHOPIFY (variantes) ===== {%- endcomment -%}
   <div class="rdc-borne__screen" data-screen="4" data-active="false">
-    <div class="rdc-borne__content">
-      {% assign rendered_products = "" %}
-      {% for collection in section.settings.collections %}
-        {% for product in collection.products %}
-          {% unless rendered_products contains product.handle %}
-            {% assign rendered_products = rendered_products | append: product.handle | append: "," %}
-          <div class="rdc-borne__product-detail" data-product-handle="{{ product.handle }}" style="display: none;">
-          {% else %}
-            {% continue %}
-          {% endunless %}
-            <div class="rdc-borne__product-images">
-              <img class="rdc-borne__product-main-image" src="{{ product.featured_image | img_url: '800x' }}" alt="{{ product.title }}">
-            </div>
-            <div class="rdc-borne__product-info">
-              <h1 class="rdc-borne__product-title">{{ product.title }}</h1>
-              <div class="rdc-borne__product-price">
-                {% if product.compare_at_price > product.price %}
-                  <span class="rdc-borne__product-price--compare">{{ product.compare_at_price | money }}</span>
-                {% endif %}
-                <span class="rdc-borne__product-price--current{% if product.compare_at_price > product.price %} rdc-borne__product-price--sale{% endif %}">{{ product.price | money }}</span>
-              </div>
-              <div class="rdc-borne__selected-options">
-                <div class="rdc-borne__selected-color"><span class="rdc-borne__color-name">{{ product.variants.first.options[0] }}</span></div>
-                <div class="rdc-borne__selected-size"><span class="rdc-borne__size-name"></span></div>
-              </div>
-              <div class="rdc-borne__product-description">{{ product.description }}</div>
-              
-              {% if product.variants.size > 1 %}
-                {% for option in product.options_with_values %}
-                  {% assign option_index = forloop.index0 %}
-                  {% if option.name == 'Couleur' %}
-                  <div class="rdc-borne__option-wrapper">
-                    <div class="rdc-borne__option-values rdc-borne__option-values--color">
-                      {% for value in option.values %}
-                        {% for variant in product.variants %}
-                          {% if variant.options[option_index] == value %}
-                            {% assign matching_variant = variant %}
-                            {% break %}
-                          {% endif %}
-                        {% endfor %}
-                        {% assign color_option = value | handleize %}
-                        {% assign variant_image = nil %}
-                        {% assign swatch_image = nil %}
-                        
-                        {% comment %}
-                        Système de gestion des couleurs:
-                        1. Récupération de l'image du swatch depuis les métaobjets Shopify
-                        2. Fallback sur les URLs hardcodées si le métaobjet n'existe pas
-                        {% endcomment %}
-                        {% assign color_handle = value | handleize %}
-                        {% assign swatch_url = nil %}
-                        
-                        {% comment %}Récupération du métaobjet de couleur correspondant{% endcomment %}
-                        {% for color in shop.metaobjects.couleur.values %}
-                          {% assign color_name_handle = color.name.value | handleize %}
-                          {% if color_name_handle == color_handle %}
-                            {% if color.image != blank %}
-                              {% assign swatch_url = color.image %}
-                              {% break %}
-                            {% endif %}
-                          {% endif %}
-                        {% endfor %}
-                        
-                        {% comment %}Fallback si le métaobjet n'est pas trouvé{% endcomment %}
-                        {% unless swatch_url %}
-                          {% case color_handle %}
-                            {% when 'noir' %}
-                              {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Black_465238b9-f944-4407-867a-62046490be11.png?v=1751386268" %}
-                            {% when 'prune' %}
-                              {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Prune.png" %}
-                            {% when 'kaki' or 'khaki' %}
-                              {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Kaki.png" %}
-                            {% when 'vert-ancien' %}
-                              {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Vert_ancien.png" %}
-                            {% when 'vert-foret' %}
-                              {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Vert_foret.png" %}
-                            {% when 'terra-cotta' %}
-                              {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Terra-cotta.png" %}
-                            {% when 'latte' %}
-                              {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Latte.png" %}
-                            {% when 'ocre' %}
-                              {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Ocre.png" %}
-                            {% when 'desert' %}
-                              {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Desert.png" %}
-                            {% when 'blanc' %}
-                              {% assign swatch_url = "//runesdechene.com/cdn/shop/files/White.png" %}
-                            {% when 'blanc-ancien' %}
-                              {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Blanc_ancien.png" %}
-                            {% when 'bleu-marine' %}
-                              {% assign swatch_url = "//runesdechene.com/cdn/shop/files/French_navy.png" %}
-                            {% when 'bleu-rose' %}
-                              {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Bleu_rose.png" %}
-                            {% when 'latte-antique' %}
-                              {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Latte_antique.png" %}
-                            {% when 'noir-antique' %}
-                              {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Noir_antique.png" %}
-                            {% when 'argile' %}
-                              {% assign swatch_url = "//runesdechene.com/cdn/shop/files/Argile.png" %}
-                            {% else %}
-                              {% assign swatch_url = "//runesdechene.com/cdn/shop/files/" | append: value | append: ".png" %}
-                          {% endcase %}
-                        {% endunless %}
-                        
-                        {% comment %}Trouver l'image de la variante pour l'affichage du produit{% endcomment %}
-                        {% for variant in product.variants %}
-                          {% if variant.options[option_index] == value %}
-                            {% if variant.image %}
-                              {% assign variant_image = variant.image %}
-                              {% break %}
-                            {% endif %}
-                          {% endif %}
-                        {% endfor %}
-                        
-                        {% unless variant_image %}
-                          {% assign variant_image = product.featured_image %}
-                        {% endunless %}
-                        
-                        <button 
-                          class="rdc-borne__swatch{% unless matching_variant.available %} sold-out{% endunless %}" 
-                          {% unless matching_variant.available %}disabled{% endunless %}
-                          data-color="{{ value | handleize }}"
-                          data-variant-id="{{ matching_variant.id }}"
-                          data-image-url="{{ variant_image | image_url: width: 600 }}">
-                          <span class="rdc-borne__swatch-image-wrapper">
-                            <span class="swatch" data-swatch-url="{{ swatch_url }}"></span>
-                          </span>
-                        </button>
-                      {% endfor %}
+    <div class="rdc-borne__screen-inner rdc-borne__variant-screen">
+      {%- assign rendered_products = '' -%}
+      {%- for pm in all_produits_meta -%}
+        {%- assign col = nil -%}
+        {%- if pm.collection.value -%}
+          {%- assign col = pm.collection.value -%}
+        {%- elsif pm.collection -%}
+          {%- assign col = pm.collection -%}
+        {%- endif -%}
+        {%- if col != blank -%}
+          {%- for product in col.products -%}
+            {%- unless rendered_products contains product.handle -%}
+              {%- assign rendered_products = rendered_products | append: product.handle | append: ',' -%}
+              <div class="rdc-borne__product-detail" data-product-handle="{{ product.handle }}" style="display:none;">
+                <div class="rdc-borne__detail-top">
+                  <div class="rdc-borne__detail-image">
+                    <img class="rdc-borne__detail-main-img" src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.title }}">
+                  </div>
+                  <div class="rdc-borne__detail-info">
+                    <h2 class="rdc-borne__detail-product-title">{{ product.title }}</h2>
+                    <div class="rdc-borne__detail-price">
+                      {%- if product.compare_at_price > product.price -%}
+                        <span class="rdc-borne__price-compare">{{ product.compare_at_price | money }}</span>
+                      {%- endif -%}
+                      <span class="rdc-borne__price-current{% if product.compare_at_price > product.price %} rdc-borne__price-sale{% endif %}">{{ product.price | money }}</span>
+                    </div>
+                    <div class="rdc-borne__detail-selected">
+                      <span class="rdc-borne__selected-color-label"></span>
+                      <span class="rdc-borne__selected-size-label"></span>
                     </div>
                   </div>
-                {% elsif option.name == 'Taille' %}
-                  <div class="rdc-borne__option-wrapper">
-                    <div class="rdc-borne__option-values rdc-borne__option-values--size">
-                      {% assign color_option_index = 0 %}
-                      {% assign size_option_index = 1 %}
-                      {% for product_option in product.options %}
-                        {% if product_option == 'Couleur' %}
-                          {% assign color_option_index = forloop.index0 %}
-                        {% endif %}
-                        {% if product_option == 'Taille' %}
-                          {% assign size_option_index = forloop.index0 %}
-                        {% endif %}
-                      {% endfor %}
-                      
-                      {% for value in option.values %}
-                        {% assign available_colors_for_size = '' %}
-                        {% assign variant_ids_for_size = '' %}
-                        
-                        {% comment %}Collecter toutes les couleurs disponibles pour cette taille{% endcomment %}
-                        {% for variant in product.variants %}
-                          {% if variant.options[size_option_index] == value and variant.available %}
-                            {% assign color_value = variant.options[color_option_index] | handleize %}
-                            {% assign available_colors_for_size = available_colors_for_size | append: ',' | append: color_value %}
-                            {% assign variant_ids_for_size = variant_ids_for_size | append: ',' | append: variant.id | append: ':' | append: color_value %}
-                          {% endif %}
-                        {% endfor %}
-                        
-                        <button class="rdc-borne__swatch--size" 
-                          data-size="{{ value | escape }}" 
-                          data-available-colors="{{ available_colors_for_size }}" 
-                          data-variant-ids="{{ variant_ids_for_size }}">
-                          {{ value }}
-                        </button>
-                      {% endfor %}
+                </div>
+
+                {%- if product.variants.size > 1 -%}
+                  {%- for option in product.options_with_values -%}
+                    {%- assign option_index = forloop.index0 -%}
+                    {%- if option.name == 'Couleur' or option.name == 'Couleurs' -%}
+                      <div class="rdc-borne__option-group">
+                        <h3 class="rdc-borne__option-label">Couleur</h3>
+                        <div class="rdc-borne__swatches rdc-borne__swatches--color">
+                          {%- for value in option.values -%}
+                            {%- assign matching_variant = nil -%}
+                            {%- for variant in product.variants -%}
+                              {%- if variant.options[option_index] == value -%}
+                                {%- assign matching_variant = variant -%}
+                                {%- break -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+
+                            {%- assign color_handle = value | handleize -%}
+                            {%- assign swatch_url = nil -%}
+                            {%- for color in shop.metaobjects.couleur.values -%}
+                              {%- assign cnh = color.name.value | handleize -%}
+                              {%- if cnh == color_handle and color.image != blank -%}
+                                {%- assign swatch_url = color.image -%}
+                                {%- break -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+
+                            {%- assign variant_image = nil -%}
+                            {%- for variant in product.variants -%}
+                              {%- if variant.options[option_index] == value and variant.image -%}
+                                {%- assign variant_image = variant.image -%}
+                                {%- break -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+                            {%- unless variant_image -%}
+                              {%- assign variant_image = product.featured_image -%}
+                            {%- endunless -%}
+
+                            <button class="rdc-borne__swatch rdc-borne__swatch--color{% unless matching_variant.available %} sold-out{% endunless %}"
+                              {% unless matching_variant.available %}disabled{% endunless %}
+                              data-color="{{ value | handleize }}"
+                              data-color-name="{{ value }}"
+                              data-variant-id="{{ matching_variant.id }}"
+                              data-image-url="{{ variant_image | image_url: width: 600 }}"
+                            >
+                              {%- if swatch_url -%}
+                                <img src="{{ swatch_url | image_url: width: 60 }}" alt="{{ value }}" loading="lazy">
+                              {%- else -%}
+                                <span class="rdc-borne__swatch-fallback" data-color="{{ color_handle }}"></span>
+                              {%- endif -%}
+                            </button>
+                          {%- endfor -%}
+                        </div>
+                      </div>
+                    {%- elsif option.name == 'Taille' -%}
+                      <div class="rdc-borne__option-group">
+                        <h3 class="rdc-borne__option-label">Taille</h3>
+                        <div class="rdc-borne__swatches rdc-borne__swatches--size">
+                          {%- assign color_option_index = 0 -%}
+                          {%- assign size_option_index = 1 -%}
+                          {%- for product_option in product.options -%}
+                            {%- if product_option == 'Couleur' or product_option == 'Couleurs' -%}
+                              {%- assign color_option_index = forloop.index0 -%}
+                            {%- endif -%}
+                            {%- if product_option == 'Taille' -%}
+                              {%- assign size_option_index = forloop.index0 -%}
+                            {%- endif -%}
+                          {%- endfor -%}
+
+                          {%- for value in option.values -%}
+                            {%- assign available_colors_for_size = '' -%}
+                            {%- assign variant_ids_for_size = '' -%}
+                            {%- for variant in product.variants -%}
+                              {%- if variant.options[size_option_index] == value and variant.available -%}
+                                {%- assign color_value = variant.options[color_option_index] | handleize -%}
+                                {%- assign available_colors_for_size = available_colors_for_size | append: ',' | append: color_value -%}
+                                {%- assign variant_ids_for_size = variant_ids_for_size | append: ',' | append: variant.id | append: ':' | append: color_value -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+                            <button class="rdc-borne__swatch rdc-borne__swatch--size"
+                              data-size="{{ value | escape }}"
+                              data-available-colors="{{ available_colors_for_size }}"
+                              data-variant-ids="{{ variant_ids_for_size }}"
+                            >
+                              {{ value }}
+                            </button>
+                          {%- endfor -%}
+                        </div>
+                      </div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- endif -%}
+
+                <button class="rdc-borne__add-to-cart" data-variant-id="{{ product.first_available_variant.id }}">
+                  Ajouter au panier
+                </button>
+              </div>
+            {%- endunless -%}
+          {%- endfor -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- comment -%} Aussi rendre les produits des collections d'illustrations {%- endcomment -%}
+      {%- for illus in all_illustrations -%}
+        {%- assign icol = nil -%}
+        {%- if illus.collection.value -%}
+          {%- assign icol = illus.collection.value -%}
+        {%- elsif illus.collection -%}
+          {%- assign icol = illus.collection -%}
+        {%- endif -%}
+        {%- if icol != blank -%}
+          {%- for product in icol.products -%}
+            {%- unless rendered_products contains product.handle -%}
+              {%- assign rendered_products = rendered_products | append: product.handle | append: ',' -%}
+              <div class="rdc-borne__product-detail" data-product-handle="{{ product.handle }}" style="display:none;">
+                <div class="rdc-borne__detail-top">
+                  <div class="rdc-borne__detail-image">
+                    <img class="rdc-borne__detail-main-img" src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.title }}">
+                  </div>
+                  <div class="rdc-borne__detail-info">
+                    <h2 class="rdc-borne__detail-product-title">{{ product.title }}</h2>
+                    <div class="rdc-borne__detail-price">
+                      {%- if product.compare_at_price > product.price -%}
+                        <span class="rdc-borne__price-compare">{{ product.compare_at_price | money }}</span>
+                      {%- endif -%}
+                      <span class="rdc-borne__price-current{% if product.compare_at_price > product.price %} rdc-borne__price-sale{% endif %}">{{ product.price | money }}</span>
+                    </div>
+                    <div class="rdc-borne__detail-selected">
+                      <span class="rdc-borne__selected-color-label"></span>
+                      <span class="rdc-borne__selected-size-label"></span>
                     </div>
                   </div>
-                {% else %}
-                  <div class="rdc-borne__option-select">
-                    <label for="option-{{ option.name | handleize }}">{{ option.name }}</label>
-                    <select id="option-{{ option.name | handleize }}" class="rdc-borne__variant-select" data-option-index="{{ option_index }}">
-                      {% for value in option.values %}
-                        <option value="{{ value }}">{{ value }}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-                {% endif %}
-                {% assign option_index = option_index | plus: 1 %}
-              {% endfor %}
-            {% endif %}
-              <button class="rdc-borne__add-to-cart" data-variant-id="{{ product.first_available_variant.id }}">Ajouter au panier</button>
-            </div>
-          </div>
-        {% endfor %}
-      {% endfor %}
+                </div>
+
+                {%- if product.variants.size > 1 -%}
+                  {%- for option in product.options_with_values -%}
+                    {%- assign option_index = forloop.index0 -%}
+                    {%- if option.name == 'Couleur' or option.name == 'Couleurs' -%}
+                      <div class="rdc-borne__option-group">
+                        <h3 class="rdc-borne__option-label">Couleur</h3>
+                        <div class="rdc-borne__swatches rdc-borne__swatches--color">
+                          {%- for value in option.values -%}
+                            {%- assign matching_variant = nil -%}
+                            {%- for variant in product.variants -%}
+                              {%- if variant.options[option_index] == value -%}
+                                {%- assign matching_variant = variant -%}
+                                {%- break -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+
+                            {%- assign color_handle = value | handleize -%}
+                            {%- assign swatch_url = nil -%}
+                            {%- for color in shop.metaobjects.couleur.values -%}
+                              {%- assign cnh = color.name.value | handleize -%}
+                              {%- if cnh == color_handle and color.image != blank -%}
+                                {%- assign swatch_url = color.image -%}
+                                {%- break -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+
+                            {%- assign variant_image = nil -%}
+                            {%- for variant in product.variants -%}
+                              {%- if variant.options[option_index] == value and variant.image -%}
+                                {%- assign variant_image = variant.image -%}
+                                {%- break -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+                            {%- unless variant_image -%}
+                              {%- assign variant_image = product.featured_image -%}
+                            {%- endunless -%}
+
+                            <button class="rdc-borne__swatch rdc-borne__swatch--color{% unless matching_variant.available %} sold-out{% endunless %}"
+                              {% unless matching_variant.available %}disabled{% endunless %}
+                              data-color="{{ value | handleize }}"
+                              data-color-name="{{ value }}"
+                              data-variant-id="{{ matching_variant.id }}"
+                              data-image-url="{{ variant_image | image_url: width: 600 }}"
+                            >
+                              {%- if swatch_url -%}
+                                <img src="{{ swatch_url | image_url: width: 60 }}" alt="{{ value }}" loading="lazy">
+                              {%- else -%}
+                                <span class="rdc-borne__swatch-fallback" data-color="{{ color_handle }}"></span>
+                              {%- endif -%}
+                            </button>
+                          {%- endfor -%}
+                        </div>
+                      </div>
+                    {%- elsif option.name == 'Taille' -%}
+                      <div class="rdc-borne__option-group">
+                        <h3 class="rdc-borne__option-label">Taille</h3>
+                        <div class="rdc-borne__swatches rdc-borne__swatches--size">
+                          {%- assign color_option_index = 0 -%}
+                          {%- assign size_option_index = 1 -%}
+                          {%- for product_option in product.options -%}
+                            {%- if product_option == 'Couleur' or product_option == 'Couleurs' -%}
+                              {%- assign color_option_index = forloop.index0 -%}
+                            {%- endif -%}
+                            {%- if product_option == 'Taille' -%}
+                              {%- assign size_option_index = forloop.index0 -%}
+                            {%- endif -%}
+                          {%- endfor -%}
+
+                          {%- for value in option.values -%}
+                            {%- assign available_colors_for_size = '' -%}
+                            {%- assign variant_ids_for_size = '' -%}
+                            {%- for variant in product.variants -%}
+                              {%- if variant.options[size_option_index] == value and variant.available -%}
+                                {%- assign color_value = variant.options[color_option_index] | handleize -%}
+                                {%- assign available_colors_for_size = available_colors_for_size | append: ',' | append: color_value -%}
+                                {%- assign variant_ids_for_size = variant_ids_for_size | append: ',' | append: variant.id | append: ':' | append: color_value -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+                            <button class="rdc-borne__swatch rdc-borne__swatch--size"
+                              data-size="{{ value | escape }}"
+                              data-available-colors="{{ available_colors_for_size }}"
+                              data-variant-ids="{{ variant_ids_for_size }}"
+                            >
+                              {{ value }}
+                            </button>
+                          {%- endfor -%}
+                        </div>
+                      </div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- endif -%}
+
+                <button class="rdc-borne__add-to-cart" data-variant-id="{{ product.first_available_variant.id }}">
+                  Ajouter au panier
+                </button>
+              </div>
+            {%- endunless -%}
+          {%- endfor -%}
+        {%- endif -%}
+      {%- endfor -%}
     </div>
   </div>
 </div>
 
-{% comment %}
-Données JSON pour le JavaScript
-- collection_links: mapping entre catégories et collections
-{% endcomment %}
-<script type="application/json" id="rdc-borne-data">
-  {{ section.settings.collection_links }}
-</script> 
-
-{% comment %}
-Chargement des ressources CSS et JS
-{% endcomment %}
 <style>
-  /* Masquer toutes les scrollbars */
-  * {
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important;
-  }
-  *::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
-  }
+  .rdc-borne * { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+  .rdc-borne *::-webkit-scrollbar { display: none !important; }
 </style>
 {{ 'borne.css' | asset_url | stylesheet_tag }}
 {{ 'borne_popup.css' | asset_url | stylesheet_tag }}

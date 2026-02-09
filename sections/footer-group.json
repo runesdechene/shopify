@@ -15,7 +15,7 @@
       "type": "footer-immersif",
       "name": "Pied de page immersif",
       "settings": {
-        "class": "",
+        "class": "footer-immersif",
         "color_scheme": "default",
         "section_width": "full-width",
         "bgcolor": "",
@@ -988,7 +988,7 @@
       "custom_css": [
         "@media (min-width: 798px) {li {text-align: right; }}",
         "summary.menu__heading.h3 {text-align: right; display: block;}",
-        "@media screen and (max-width:798px){summary.menu__heading.h3 {text-align: left; }}"
+        "@media screen and (max-width: 798px) {summary.menu__heading.h3 {text-align: left; }}"
       ],
       "name": "t:names.footer",
       "settings": {
