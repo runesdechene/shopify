@@ -63,8 +63,11 @@
       "settings": {
         "welcome_title": "BORNE DE COMMANDE",
         "welcome_subtitle": "Comment souhaitez-vous explorer ?",
-        "btn_by_article": "Par type d'article",
-        "btn_by_illustration": "Par illustration"
+        "btn_by_article": "Par types d'article",
+        "btn_by_illustration": "Par illustrations",
+        "icon_by_article": "shopify://shop_images/tshirt_d2b83ff2-176a-45df-8da7-4d8583cf3def.png",
+        "icon_by_illustration": "shopify://shop_images/palette.png",
+        "welcome_info": "<p>Vos articles seront imprimés sous 14 à 21 jours, puis expédiés à l'adresse choisie.  Cette méthode permet d'avoir des couleurs et des tailles plus rares voire indisponibles sur le stand.</p>"
       }
     }
   },

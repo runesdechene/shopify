@@ -44,10 +44,6 @@ document.addEventListener("DOMContentLoaded", function () {
   var screens = borneEl.querySelectorAll(".rdc-borne__screen");
   var backButton = borneEl.querySelector('[data-action="back"]');
   var cartCountEl = borneEl.querySelector(".rdc-borne__cart-count");
-  var confirmationPopup = document.getElementById("cart-confirmation-popup");
-  var popupProductName = confirmationPopup
-    ? confirmationPopup.querySelector(".rdc-borne__popup-product-name")
-    : null;
   var bgDefault = borneEl.querySelector(".rdc-borne__bg-default");
   var bgDynamic = borneEl.querySelector(".rdc-borne__bg-dynamic");
 
@@ -65,6 +61,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  function closeNativeCartDrawer() {
+    var drawerComponent = document.querySelector("cart-drawer-component");
+    if (drawerComponent && typeof drawerComponent.closeDialog === "function") {
+      drawerComponent.closeDialog();
+    } else if (drawerComponent && typeof drawerComponent.close === "function") {
+      drawerComponent.close();
+    }
+  }
+
   function updateCartCount() {
     fetch("/cart.js", { headers: { "X-Requested-With": "XMLHttpRequest" } })
       .then(function (r) {
@@ -78,6 +83,135 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       })
       .catch(function () {});
+  }
+
+  /* ============================
+   * CARROUSEL (style explore-illustrations)
+   * ============================ */
+  function initCarousel(container) {
+    if (!container || container._carouselInit) return;
+    container._carouselInit = true;
+
+    var carousel = container.querySelector(".rdc-borne__carousel");
+    if (!carousel) return;
+
+    var wrappers = Array.from(
+      carousel.querySelectorAll(".rdc-borne__card-wrapper"),
+    );
+    if (wrappers.length === 0) return;
+
+    var prevBtn = container.querySelector(".rdc-borne__carousel-prev");
+    var nextBtn = container.querySelector(".rdc-borne__carousel-next");
+    var counterCurrent = container.querySelector(".rdc-borne__counter-current");
+    var counterTotal = container.querySelector(".rdc-borne__counter-total");
+    var currentIdx = 0;
+    var scrollTimeout = null;
+
+    if (counterTotal) counterTotal.textContent = wrappers.length;
+
+    function getVisibleWrappers() {
+      return wrappers.filter(function (w) {
+        return w.style.display !== "none" && !w.classList.contains("hidden");
+      });
+    }
+
+    function updateCenter() {
+      var visible = getVisibleWrappers();
+      if (visible.length === 0) return;
+
+      var scrollLeft = carousel.scrollLeft;
+      var cardWidth = visible[0].offsetWidth || window.innerWidth * 0.7;
+      var closestIdx = 0;
+      var minDist = Infinity;
+
+      visible.forEach(function (w, i) {
+        var dist = Math.abs(
+          w.offsetLeft - scrollLeft - carousel.offsetWidth / 2 + cardWidth / 2,
+        );
+        if (dist < minDist) {
+          minDist = dist;
+          closestIdx = i;
+        }
+      });
+
+      currentIdx = closestIdx;
+
+      wrappers.forEach(function (w) {
+        w.classList.remove("is-center");
+      });
+      if (visible[currentIdx]) {
+        visible[currentIdx].classList.add("is-center");
+      }
+
+      if (counterCurrent) counterCurrent.textContent = currentIdx + 1;
+      if (counterTotal) counterTotal.textContent = visible.length;
+    }
+
+    function scrollToIndex(idx) {
+      var visible = getVisibleWrappers();
+      if (idx < 0 || idx >= visible.length) return;
+      currentIdx = idx;
+
+      // Apply is-center immediately for snappy feel
+      wrappers.forEach(function (w) {
+        w.classList.remove("is-center");
+      });
+      visible[idx].classList.add("is-center");
+      if (counterCurrent) counterCurrent.textContent = idx + 1;
+
+      visible[idx].scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
+    }
+
+    // Scroll detection
+    var scrolling = false;
+    carousel.addEventListener("scroll", function () {
+      if (!scrolling) {
+        scrolling = true;
+        requestAnimationFrame(function () {
+          updateCenter();
+          scrolling = false;
+        });
+      }
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(function () {
+        updateCenter();
+      }, 150);
+    });
+
+    // Nav buttons
+    if (prevBtn) {
+      prevBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var visible = getVisibleWrappers();
+        var newIdx = (currentIdx - 1 + visible.length) % visible.length;
+        scrollToIndex(newIdx);
+      });
+    }
+    if (nextBtn) {
+      nextBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var visible = getVisibleWrappers();
+        var newIdx = (currentIdx + 1) % visible.length;
+        scrollToIndex(newIdx);
+      });
+    }
+
+    // Center first card on init
+    setTimeout(function () {
+      scrollToIndex(0);
+    }, 50);
+  }
+
+  // Init all static carousels
+  function initAllCarousels() {
+    var containers = borneEl.querySelectorAll(".rdc-borne__carousel-container");
+    containers.forEach(function (c) {
+      initCarousel(c);
+    });
   }
 
   /* ============================
@@ -101,6 +235,21 @@ document.addEventListener("DOMContentLoaded", function () {
     // Scroll en haut
     borneEl.scrollTop = 0;
     window.scrollTo(0, 0);
+
+    // Init carousels on the newly active screen
+    setTimeout(function () {
+      var activeScreen = borneEl.querySelector(
+        '.rdc-borne__screen[data-active="true"]',
+      );
+      if (activeScreen) {
+        var containers = activeScreen.querySelectorAll(
+          ".rdc-borne__carousel-container",
+        );
+        containers.forEach(function (c) {
+          initCarousel(c);
+        });
+      }
+    }, 50);
   }
 
   function goBack() {
@@ -170,13 +319,23 @@ document.addEventListener("DOMContentLoaded", function () {
     var descEl = borneEl.querySelector(".rdc-borne__illustration-desc");
     if (descEl) descEl.style.display = "none";
 
-    // Filtrer les cartes de produits métaobjets par catégorie
-    var cards = borneEl.querySelectorAll(".rdc-borne__produit-card");
-    cards.forEach(function (card) {
+    // Filtrer les card-wrappers de produits métaobjets par catégorie
+    var wrappers = borneEl.querySelectorAll(
+      ".rdc-borne__produits-grid .rdc-borne__card-wrapper",
+    );
+    wrappers.forEach(function (wrapper) {
+      var card = wrapper.querySelector(".rdc-borne__produit-card");
+      if (!card) return;
       var cardCat = card.dataset.categorie;
-      card.style.display =
-        cardCat && cardCat.trim() === category.trim() ? "" : "none";
+      var show = cardCat && cardCat.trim() === category.trim();
+      wrapper.style.display = show ? "" : "none";
     });
+
+    // Reset carousel init so it re-initializes with filtered cards
+    var container = borneEl.querySelector(
+      '.rdc-borne__screen[data-screen="2"] .rdc-borne__carousel-container',
+    );
+    if (container) container._carouselInit = false;
   }
 
   /* ============================
@@ -248,11 +407,84 @@ document.addEventListener("DOMContentLoaded", function () {
     var titleEl = borneEl.querySelector(".rdc-borne__detail-title");
     if (titleEl) titleEl.textContent = title || "";
 
+    // Hide all product grids
     var allGrids = borneEl.querySelectorAll(".rdc-borne__shopify-products");
     allGrids.forEach(function (grid) {
-      grid.style.display =
-        grid.dataset.collection === collectionHandle ? "" : "none";
+      grid.style.display = "none";
     });
+
+    // Remove any previously built dynamic carousel
+    var detailScreen = borneEl.querySelector(
+      '.rdc-borne__screen[data-screen="3"] .rdc-borne__detail-screen',
+    );
+    var oldCarousel = detailScreen
+      ? detailScreen.querySelector(".rdc-borne__carousel-container")
+      : null;
+    if (oldCarousel) oldCarousel.remove();
+
+    // Find the matching collection grid
+    var matchGrid = borneEl.querySelector(
+      '.rdc-borne__shopify-products[data-collection="' +
+        collectionHandle +
+        '"]',
+    );
+    if (!matchGrid || !detailScreen) return;
+
+    // Build a carousel container dynamically
+    var container = document.createElement("div");
+    container.className = "rdc-borne__carousel-container";
+
+    var carousel = document.createElement("div");
+    carousel.className = "rdc-borne__carousel";
+
+    var products = matchGrid.querySelectorAll(".rdc-borne__shop-product");
+    var count = 0;
+    products.forEach(function (prod) {
+      var wrapper = document.createElement("div");
+      wrapper.className = "rdc-borne__card-wrapper";
+      wrapper.appendChild(prod.cloneNode(true));
+      carousel.appendChild(wrapper);
+      count++;
+    });
+
+    container.appendChild(carousel);
+
+    // Nav arrows
+    var prevBtn = document.createElement("button");
+    prevBtn.className = "rdc-borne__carousel-nav rdc-borne__carousel-prev";
+    prevBtn.setAttribute("aria-label", "Précédent");
+    prevBtn.innerHTML =
+      '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>';
+    container.appendChild(prevBtn);
+
+    var nextBtn = document.createElement("button");
+    nextBtn.className = "rdc-borne__carousel-nav rdc-borne__carousel-next";
+    nextBtn.setAttribute("aria-label", "Suivant");
+    nextBtn.innerHTML =
+      '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>';
+    container.appendChild(nextBtn);
+
+    // Counter
+    var counter = document.createElement("div");
+    counter.className = "rdc-borne__carousel-counter";
+    counter.innerHTML =
+      '<span class="rdc-borne__counter-current">1</span> / <span class="rdc-borne__counter-total">' +
+      count +
+      "</span>";
+    container.appendChild(counter);
+
+    detailScreen.appendChild(container);
+
+    // Re-bind click events on cloned products
+    container
+      .querySelectorAll(".rdc-borne__shop-product")
+      .forEach(function (product) {
+        product.addEventListener("click", function () {
+          var productHandle = this.dataset.productHandle;
+          showProductDetail(productHandle);
+          navigateToScreen("4");
+        });
+      });
   }
 
   // Clic sur un produit Shopify → écran 4 (détail variantes)
@@ -418,6 +650,16 @@ document.addEventListener("DOMContentLoaded", function () {
         // Mettre à jour le compteur du bouton flottant
         updateCartCount();
 
+        // Marquer le panier avec l'attribut "source: borne" pour identifier les commandes
+        fetch("/cart/update.js", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+          },
+          body: JSON.stringify({ attributes: { source: "borne" } }),
+        }).catch(function () {});
+
         // Déclencher l'événement cart:update pour que le cart drawer natif se mette à jour
         document.dispatchEvent(
           new CustomEvent("cart:update", {
@@ -433,16 +675,10 @@ document.addEventListener("DOMContentLoaded", function () {
           }),
         );
 
-        // Afficher le popup de confirmation
-        var detail = addBtn.closest(".rdc-borne__product-detail");
-        var productTitle = "";
-        if (detail) {
-          var titleEl = detail.querySelector(
-            ".rdc-borne__detail-product-title",
-          );
-          if (titleEl) productTitle = titleEl.textContent;
-        }
-        showConfirmationPopup(productTitle);
+        // Retour à l'écran d'accueil
+        navigateToScreen("0", false);
+        navHistory.length = 0;
+        resetBackground();
       })
       .catch(function (error) {
         console.error("Erreur ajout au panier:", error);
@@ -450,39 +686,6 @@ document.addEventListener("DOMContentLoaded", function () {
         addBtn.textContent = "Ajouter au panier";
       });
   });
-
-  /* ============================
-   * POPUP CONFIRMATION
-   * ============================ */
-  function showConfirmationPopup(productTitle) {
-    if (!confirmationPopup) return;
-    if (popupProductName) popupProductName.textContent = productTitle;
-    confirmationPopup.dataset.visible = "true";
-  }
-
-  function hideConfirmationPopup() {
-    if (!confirmationPopup) return;
-    confirmationPopup.dataset.visible = "false";
-  }
-
-  // Boutons du popup
-  if (confirmationPopup) {
-    confirmationPopup.addEventListener("click", function (e) {
-      var target = e.target.closest("[data-action]");
-      if (!target) return;
-
-      var action = target.dataset.action;
-      if (action === "continue-shopping") {
-        hideConfirmationPopup();
-        navigateToScreen("0", false);
-        navHistory.length = 0;
-        resetBackground();
-      } else if (action === "view-cart") {
-        hideConfirmationPopup();
-        openNativeCartDrawer();
-      }
-    });
-  }
 
   /* ============================
    * ÉVÉNEMENTS GLOBAUX
@@ -502,6 +705,11 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
+  // Resynchroniser le compteur quand le panier est modifié (ex: suppression depuis le drawer)
+  document.addEventListener("cart:update", function () {
+    updateCartCount();
+  });
+
   /* ============================
    * INITIALISATION
    * ============================ */
@@ -513,4 +721,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Masquer le compteur si vide
   if (cartCountEl) cartCountEl.style.display = "none";
+
+  // Faire disparaître le loader overlay après un court délai
+  var loader = document.getElementById("rdc-borne-loader");
+  if (loader) {
+    setTimeout(function () {
+      loader.style.opacity = "0";
+      loader.style.pointerEvents = "none";
+      setTimeout(function () {
+        loader.remove();
+      }, 600);
+    }, 300);
+  }
 });

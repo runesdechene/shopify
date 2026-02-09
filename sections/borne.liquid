@@ -38,6 +38,30 @@
       "id": "btn_by_illustration",
       "label": "Bouton 'Par illustration'",
       "default": "Par illustration"
+    },
+    {
+      "type": "header",
+      "content": "Icônes des boutons d'accueil"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_by_article",
+      "label": "Icône 'Par article'"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_by_illustration",
+      "label": "Icône 'Par illustration'"
+    },
+    {
+      "type": "header",
+      "content": "Bloc d'information accueil"
+    },
+    {
+      "type": "richtext",
+      "id": "welcome_info",
+      "label": "Texte d'information",
+      "default": "<p>Choisissez vos articles, personnalisez-les, puis validez votre commande. Vous pourrez régler directement sur place.</p>"
     }
   ],
   "presets": [
@@ -138,6 +162,9 @@
 
 <div class="rdc-borne" id="rdc-borne" data-section-id="{{ section.id }}">
 
+  {%- comment -%} Loader overlay — style inline pour être visible AVANT le chargement du CSS externe {%- endcomment -%}
+  <div id="rdc-borne-loader" style="position:fixed;inset:0;z-index:99999;background:#fff;transition:opacity 0.5s ease;"></div>
+
   {%- comment -%} Image de fond dynamique {%- endcomment -%}
   <div class="rdc-borne__bg">
     <div class="rdc-borne__bg-default rdc-borne__bg-layer active"
@@ -167,21 +194,6 @@
     <span class="rdc-borne__cart-count">0</span>
   </button>
 
-  {%- comment -%} ===== POPUP CONFIRMATION ===== {%- endcomment -%}
-  <div class="rdc-borne__popup" id="cart-confirmation-popup" data-visible="false">
-    <div class="rdc-borne__popup-content">
-      <div class="rdc-borne__popup-icon">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
-      </div>
-      <h3 class="rdc-borne__popup-title">Ajouté au panier</h3>
-      <p class="rdc-borne__popup-product-name"></p>
-      <div class="rdc-borne__popup-buttons">
-        <button class="rdc-borne__popup-btn rdc-borne__popup-btn--primary" data-action="continue-shopping">Continuer mes achats</button>
-        <button class="rdc-borne__popup-btn rdc-borne__popup-btn--secondary" data-action="view-cart">Voir le panier</button>
-      </div>
-    </div>
-  </div>
-
   {%- comment -%} ===== ÉCRAN 0 : ACCUEIL ===== {%- endcomment -%}
   <div class="rdc-borne__screen" data-screen="0" data-active="true">
     <div class="rdc-borne__screen-inner rdc-borne__screen-welcome">
@@ -190,17 +202,33 @@
       <div class="rdc-borne__welcome-choices">
         <button class="rdc-borne__choice-btn" data-choice="article">
           <span class="rdc-borne__choice-icon">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            {%- if section.settings.icon_by_article != blank -%}
+              <img src="{{ section.settings.icon_by_article | image_url: width: 120 }}" alt="Par article" width="60" height="60">
+            {%- else -%}
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            {%- endif -%}
           </span>
           <span class="rdc-borne__choice-label">{{ section.settings.btn_by_article }}</span>
         </button>
         <button class="rdc-borne__choice-btn" data-choice="illustration">
           <span class="rdc-borne__choice-icon">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+            {%- if section.settings.icon_by_illustration != blank -%}
+              <img src="{{ section.settings.icon_by_illustration | image_url: width: 120 }}" alt="Par illustration" width="60" height="60">
+            {%- else -%}
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+            {%- endif -%}
           </span>
           <span class="rdc-borne__choice-label">{{ section.settings.btn_by_illustration }}</span>
         </button>
       </div>
+      {%- if section.settings.welcome_info != blank -%}
+        <div class="rdc-borne__welcome-info">
+          <div class="rdc-borne__welcome-info-inner">
+            <svg class="rdc-borne__welcome-info-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <div class="rdc-borne__welcome-info-text">{{ section.settings.welcome_info }}</div>
+          </div>
+        </div>
+      {%- endif -%}
     </div>
   </div>
 
@@ -208,36 +236,46 @@
   <div class="rdc-borne__screen" data-screen="1a" data-active="false">
     <div class="rdc-borne__screen-inner">
       <h1 class="rdc-borne__screen-title">Choisissez une catégorie</h1>
-      <div class="rdc-borne__grid rdc-borne__categories-grid">
-        {%- for cat in categories_array -%}
-          {%- comment -%} Trouver la première icône de cette catégorie {%- endcomment -%}
-          {%- assign cat_icon = nil -%}
-          {%- assign cat_image = nil -%}
-          {%- for pm in all_produits_meta -%}
-            {%- assign pm_cat = pm.categorie | strip -%}
-            {%- if pm_cat == cat -%}
-              {%- if cat_icon == nil and pm.icone != blank -%}
-                {%- assign cat_icon = pm.icone -%}
+      <div class="rdc-borne__carousel-container">
+        <div class="rdc-borne__carousel rdc-borne__categories-grid">
+          {%- for cat in categories_array -%}
+            {%- assign cat_icon = nil -%}
+            {%- assign cat_image = nil -%}
+            {%- for pm in all_produits_meta -%}
+              {%- assign pm_cat = pm.categorie | strip -%}
+              {%- if pm_cat == cat -%}
+                {%- if cat_icon == nil and pm.icone != blank -%}
+                  {%- assign cat_icon = pm.icone -%}
+                {%- endif -%}
+                {%- if cat_image == nil and pm.image != blank -%}
+                  {%- assign cat_image = pm.image -%}
+                {%- endif -%}
+                {%- if cat_icon != nil and cat_image != nil -%}
+                  {%- break -%}
+                {%- endif -%}
               {%- endif -%}
-              {%- if cat_image == nil and pm.image != blank -%}
-                {%- assign cat_image = pm.image -%}
-              {%- endif -%}
-              {%- if cat_icon != nil and cat_image != nil -%}
-                {%- break -%}
-              {%- endif -%}
-            {%- endif -%}
-          {%- endfor -%}
-          <button class="rdc-borne__category-card" data-category="{{ cat }}">
-            <div class="rdc-borne__category-card-img">
-              {%- if cat_image != nil -%}
-                <img src="{{ cat_image | image_url: width: 400 }}" alt="{{ cat }}" loading="lazy">
-              {%- else -%}
-                <div class="rdc-borne__placeholder"></div>
-              {%- endif -%}
+            {%- endfor -%}
+            <div class="rdc-borne__card-wrapper">
+              <button class="rdc-borne__category-card" data-category="{{ cat }}">
+                <div class="rdc-borne__category-card-img">
+                  {%- if cat_image != nil -%}
+                    <img src="{{ cat_image | image_url: width: 400 }}" alt="{{ cat }}" loading="lazy">
+                  {%- else -%}
+                    <div class="rdc-borne__placeholder"></div>
+                  {%- endif -%}
+                </div>
+                <span class="rdc-borne__category-card-label">{{ cat }}</span>
+              </button>
             </div>
-            <span class="rdc-borne__category-card-label">{{ cat }}</span>
-          </button>
-        {%- endfor -%}
+          {%- endfor -%}
+        </div>
+        <button class="rdc-borne__carousel-nav rdc-borne__carousel-prev" aria-label="Précédent">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button class="rdc-borne__carousel-nav rdc-borne__carousel-next" aria-label="Suivant">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        <div class="rdc-borne__carousel-counter"><span class="rdc-borne__counter-current">1</span> / <span class="rdc-borne__counter-total">{{ categories_array.size }}</span></div>
       </div>
     </div>
   </div>
@@ -246,30 +284,41 @@
   <div class="rdc-borne__screen" data-screen="1b" data-active="false">
     <div class="rdc-borne__screen-inner">
       <h1 class="rdc-borne__screen-title">Choisissez une illustration</h1>
-      <div class="rdc-borne__grid rdc-borne__illustrations-grid">
-        {%- for illus in all_illustrations -%}
-          <button class="rdc-borne__illustration-card" 
-            data-illustration-handle="{{ illus.system.handle }}"
-            data-bg-image="{% if illus.image_fond_de_fragment != blank %}{{ illus.image_fond_de_fragment | image_url: width: 1920 }}{% endif %}"
-          >
-            <div class="rdc-borne__illustration-card-img">
-              {%- if illus.image_pour_fond_clair != blank -%}
-                <img src="{{ illus.image_pour_fond_clair | image_url: width: 400 }}" alt="{{ illus.nom }}" loading="lazy">
-              {%- else -%}
-                <div class="rdc-borne__placeholder"></div>
-              {%- endif -%}
+      <div class="rdc-borne__carousel-container">
+        <div class="rdc-borne__carousel rdc-borne__illustrations-grid">
+          {%- for illus in all_illustrations -%}
+            <div class="rdc-borne__card-wrapper">
+              <button class="rdc-borne__illustration-card" 
+                data-illustration-handle="{{ illus.system.handle }}"
+                data-bg-image="{% if illus.image_fond_de_fragment != blank %}{{ illus.image_fond_de_fragment | image_url: width: 1920 }}{% endif %}"
+              >
+                <div class="rdc-borne__illustration-card-img">
+                  {%- if illus.image_pour_fond_clair != blank -%}
+                    <img src="{{ illus.image_pour_fond_clair | image_url: width: 400 }}" alt="{{ illus.nom }}" loading="lazy">
+                  {%- else -%}
+                    <div class="rdc-borne__placeholder"></div>
+                  {%- endif -%}
+                </div>
+                <div class="rdc-borne__illustration-card-info">
+                  <span class="rdc-borne__illustration-card-name">{{ illus.nom }}</span>
+                  {%- if illus.resume != blank -%}
+                    <span class="rdc-borne__illustration-card-summary">« {{ illus.resume }} »</span>
+                  {%- endif -%}
+                  {%- if illus.artiste.value.nom.value != blank -%}
+                    <span class="rdc-borne__illustration-card-artist">{{ illus.artiste.value.nom.value }}</span>
+                  {%- endif -%}
+                </div>
+              </button>
             </div>
-            <div class="rdc-borne__illustration-card-info">
-              <span class="rdc-borne__illustration-card-name">{{ illus.nom }}</span>
-              {%- if illus.resume != blank -%}
-                <span class="rdc-borne__illustration-card-summary">« {{ illus.resume }} »</span>
-              {%- endif -%}
-              {%- if illus.artiste.value.nom.value != blank -%}
-                <span class="rdc-borne__illustration-card-artist">{{ illus.artiste.value.nom.value }}</span>
-              {%- endif -%}
-            </div>
-          </button>
-        {%- endfor -%}
+          {%- endfor -%}
+        </div>
+        <button class="rdc-borne__carousel-nav rdc-borne__carousel-prev" aria-label="Précédent">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button class="rdc-borne__carousel-nav rdc-borne__carousel-next" aria-label="Suivant">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        <div class="rdc-borne__carousel-counter"><span class="rdc-borne__counter-current">1</span> / <span class="rdc-borne__counter-total">{{ all_illustrations.size }}</span></div>
       </div>
     </div>
   </div>
@@ -280,33 +329,44 @@
       <h1 class="rdc-borne__screen-title rdc-borne__products-title">Choisissez un article</h1>
       {%- comment -%} Description de l'illustration sélectionnée (visible uniquement en mode illustration) {%- endcomment -%}
       <p class="rdc-borne__illustration-desc" style="display:none;"></p>
-      <div class="rdc-borne__grid rdc-borne__produits-grid">
-        {%- for pm in all_produits_meta -%}
-          <button class="rdc-borne__produit-card" 
-            data-produit-handle="{{ pm.system.handle }}"
-            data-categorie="{{ pm.categorie | strip }}"
-            data-collection-handle="{% if pm.collection.value %}{{ pm.collection.value.handle }}{% elsif pm.collection %}{{ pm.collection.handle }}{% endif %}"
-          >
-            <div class="rdc-borne__produit-card-img">
-              {%- if pm.icone != blank -%}
-                <img src="{{ pm.icone | image_url: width: 200 }}" alt="{{ pm.label | default: pm.nom }}" loading="lazy">
-              {%- elsif pm.image != blank -%}
-                <img src="{{ pm.image | image_url: width: 300 }}" alt="{{ pm.label | default: pm.nom }}" loading="lazy">
-              {%- else -%}
-                <div class="rdc-borne__placeholder"></div>
-              {%- endif -%}
+      <div class="rdc-borne__carousel-container">
+        <div class="rdc-borne__carousel rdc-borne__produits-grid">
+          {%- for pm in all_produits_meta -%}
+            <div class="rdc-borne__card-wrapper">
+              <button class="rdc-borne__produit-card" 
+                data-produit-handle="{{ pm.system.handle }}"
+                data-categorie="{{ pm.categorie | strip }}"
+                data-collection-handle="{% if pm.collection.value %}{{ pm.collection.value.handle }}{% elsif pm.collection %}{{ pm.collection.handle }}{% endif %}"
+              >
+                <div class="rdc-borne__produit-card-img">
+                  {%- if pm.icone != blank -%}
+                    <img src="{{ pm.icone | image_url: width: 200 }}" alt="{{ pm.label | default: pm.nom }}" loading="lazy">
+                  {%- elsif pm.image != blank -%}
+                    <img src="{{ pm.image | image_url: width: 300 }}" alt="{{ pm.label | default: pm.nom }}" loading="lazy">
+                  {%- else -%}
+                    <div class="rdc-borne__placeholder"></div>
+                  {%- endif -%}
+                </div>
+                <div class="rdc-borne__produit-card-info">
+                  <span class="rdc-borne__produit-card-label">{{ pm.label | default: pm.nom }}</span>
+                  {%- if pm.type != blank -%}
+                    <span class="rdc-borne__produit-card-type">{{ pm.type }}</span>
+                  {%- endif -%}
+                  {%- if pm.force_de_vente != blank -%}
+                    <span class="rdc-borne__produit-card-pitch">{{ pm.force_de_vente }}</span>
+                  {%- endif -%}
+                </div>
+              </button>
             </div>
-            <div class="rdc-borne__produit-card-info">
-              <span class="rdc-borne__produit-card-label">{{ pm.label | default: pm.nom }}</span>
-              {%- if pm.type != blank -%}
-                <span class="rdc-borne__produit-card-type">{{ pm.type }}</span>
-              {%- endif -%}
-              {%- if pm.force_de_vente != blank -%}
-                <span class="rdc-borne__produit-card-pitch">{{ pm.force_de_vente }}</span>
-              {%- endif -%}
-            </div>
-          </button>
-        {%- endfor -%}
+          {%- endfor -%}
+        </div>
+        <button class="rdc-borne__carousel-nav rdc-borne__carousel-prev" aria-label="Précédent">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button class="rdc-borne__carousel-nav rdc-borne__carousel-next" aria-label="Suivant">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        <div class="rdc-borne__carousel-counter"><span class="rdc-borne__counter-current">1</span> / <span class="rdc-borne__counter-total">{{ all_produits_meta.size }}</span></div>
       </div>
     </div>
   </div>
