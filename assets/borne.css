@@ -70,7 +70,7 @@ cart-drawer-component {
   position: relative;
   z-index: 2;
   min-height: 100vh;
-  padding: 100px 16px 100px;
+  padding: 100px 16px 50px;
 }
 
 .rdc-borne__screen[data-active="true"] {
@@ -115,13 +115,11 @@ cart-drawer-component {
   top: 16px;
   left: 16px;
   z-index: 100;
-  width: 44px;
-  height: 44px;
+  padding: 12px;
   border-radius: 50%;
   border: none;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(243, 234, 227, 0.9);
   backdrop-filter: blur(8px);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -327,15 +325,15 @@ cart-drawer-component {
 /* Card wrapper — like fragment-card */
 .rdc-borne__card-wrapper {
   flex: 0 0 70vw;
-  width: 75vw;
-  max-width: 75vw;
-  min-width: 75vw;
+  width: 74vw;
+  max-width: 74vw;
+  min-width: 74vw;
   height: 65vh;
   scroll-snap-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 8px;
+  padding: 0;
   box-sizing: border-box;
   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   transform: scale(0.85);
@@ -382,7 +380,6 @@ cart-drawer-component {
 .rdc-borne__carousel-counter {
   text-align: center;
   padding: 8px 0;
-  font-family: var(--font-accent--family, var(--font-heading-family, serif));
   font-size: 1rem;
   color: #6e7279;
   font-weight: 600;
@@ -392,56 +389,12 @@ cart-drawer-component {
 .rdc-borne__counter-current {
   color: #a39568;
   font-weight: 600;
-  font-family: var(--font-heading-family, serif);
+  font-family: var(--font-accent--family, serif);
 }
 
 .rdc-borne__counter-total {
   color: #6e7279;
-  font-family: var(--font-heading-family, serif);
-}
-
-/* === CARTES CATÉGORIE === */
-.rdc-borne__category-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0;
-  border: none;
-  border-radius: 20px;
-  background: transparent;
-  cursor: pointer;
-  overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s;
-  font-family: inherit;
-  width: 100%;
-  height: 100%;
-}
-
-.rdc-borne__category-card:active {
-  transform: scale(0.97);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-}
-
-.rdc-borne__category-card-img {
-  width: 100%;
-  flex: 1;
-  overflow: hidden;
-}
-
-.rdc-borne__category-card-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.rdc-borne__category-card-label {
-  padding: 14px 10px;
-  font-size: 1.2rem;
-  font-weight: 700;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: var(--color-foreground, #3a3a3a);
+  font-family: var(--font-accent--family, serif);
 }
 
 /* === CARTES ILLUSTRATION === */
@@ -520,9 +473,7 @@ cart-drawer-component {
   padding: 0;
   border: none;
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(6px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background: transparent;
   cursor: pointer;
   overflow: hidden;
   transition: transform 0.2s;
@@ -536,18 +487,17 @@ cart-drawer-component {
 }
 
 .rdc-borne__produit-card-img {
-  width: 100%;
+  width: 120%;
   flex: 1;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f5f3ef;
 }
 
 .rdc-borne__produit-card-img img {
-  width: 80%;
-  height: 80%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
@@ -560,20 +510,25 @@ cart-drawer-component {
 }
 
 .rdc-borne__produit-card-label {
-  font-size: 0.9rem;
+  font-size: 1.4rem;
   font-weight: 700;
+  font-family: var(--font-accent--family, serif);
   color: var(--color-foreground, #3a3a3a);
 }
 
 .rdc-borne__produit-card-type {
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   color: #999;
   text-transform: uppercase;
   letter-spacing: 0.03em;
+  font-weight: 600;
+  padding-top: 5px;
+  font-family: var(--font-body--family, serif);
 }
 
 .rdc-borne__produit-card-pitch {
-  font-size: 0.75rem;
+  font-size: 1rem;
+  padding-top: 10px;
   color: #777;
   font-style: italic;
   display: -webkit-box;
@@ -608,16 +563,14 @@ cart-drawer-component {
 
 .rdc-borne__shop-product {
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(6px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  text-align: center;
   cursor: pointer;
   transition: transform 0.2s;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .rdc-borne__shop-product:active {
@@ -633,7 +586,7 @@ cart-drawer-component {
 .rdc-borne__shop-product-img img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .rdc-borne__shop-product-info {
@@ -641,7 +594,7 @@ cart-drawer-component {
 }
 
 .rdc-borne__shop-product-title {
-  font-size: 0.85rem;
+  font-size: 1.3rem;
   font-weight: 600;
   margin: 0 0 6px;
   color: var(--color-foreground, #3a3a3a);
@@ -655,8 +608,9 @@ cart-drawer-component {
 .rdc-borne__mini-swatches {
   display: flex;
   gap: 4px;
-  margin-bottom: 6px;
+  margin-block: 15px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .rdc-borne__mini-swatch {
@@ -699,7 +653,10 @@ cart-drawer-component {
 .rdc-borne__shop-product-price {
   display: flex;
   gap: 6px;
-  align-items: baseline;
+  text-align: center;
+  justify-content: center;
+  font-family: var(--font-accent--family, serif);
+  padding-top: 5px;
 }
 
 .rdc-borne__price-compare {
@@ -710,8 +667,9 @@ cart-drawer-component {
 
 .rdc-borne__price-current {
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--color-foreground, #3a3a3a);
+  text-align: center;
 }
 
 .rdc-borne__price-sale {
@@ -751,8 +709,8 @@ cart-drawer-component {
 }
 
 .rdc-borne__detail-product-title {
-  font-family: var(--font-heading-family, serif);
-  font-size: 1.4rem;
+  font-family: var(--font-heading--family, serif);
+  font-size: 1.8rem;
   margin: 0 0 8px;
 }
 
@@ -762,6 +720,7 @@ cart-drawer-component {
   justify-content: center;
   align-items: baseline;
   margin-bottom: 8px;
+  font-family: var(--font-accent--family, serif);
 }
 
 .rdc-borne__detail-price .rdc-borne__price-current {
@@ -772,8 +731,11 @@ cart-drawer-component {
   display: flex;
   gap: 12px;
   justify-content: center;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: var(--font-accent--family, serif);
 }
 
 /* === OPTIONS (couleur, taille) === */
@@ -873,12 +835,12 @@ cart-drawer-component {
 .rdc-borne__add-to-cart {
   display: block;
   width: 100%;
-  padding: 16px;
+  padding: 22px;
   margin-top: 24px;
   border: none;
-  border-radius: 14px;
-  background: rgb(109, 30, 30);
-  color: #fff;
+  border-radius: 50px;
+  background: rgb(240, 200, 127);
+  color: #251818;
   font-size: 1.05rem;
   font-weight: 700;
   cursor: pointer;
@@ -1027,7 +989,7 @@ cart-drawer-component {
   }
 
   .rdc-borne__carousel {
-    padding: 20px 33vw;
+    padding: 0 33vw;
   }
 
   .rdc-borne__card-wrapper {

@@ -34,7 +34,6 @@ document.addEventListener("DOMContentLoaded", function () {
   var navHistory = [];
   var currentScreen = "0";
   var browseMode = null; // "article" ou "illustration"
-  var selectedCategory = null;
   var selectedIllustration = null;
   var selectedProduitMeta = null;
 
@@ -292,46 +291,31 @@ document.addEventListener("DOMContentLoaded", function () {
     btn.addEventListener("click", function () {
       browseMode = this.dataset.choice;
       if (browseMode === "article") {
-        navigateToScreen("1a");
+        showAllProduits();
+        navigateToScreen("2");
       } else if (browseMode === "illustration") {
         navigateToScreen("1b");
       }
     });
   });
 
-  /* ============================
-   * ÉCRAN 1a : CATÉGORIES
-   * ============================ */
-  var categoryCards = borneEl.querySelectorAll(".rdc-borne__category-card");
-  categoryCards.forEach(function (card) {
-    card.addEventListener("click", function () {
-      selectedCategory = this.dataset.category;
-      showProduitsForCategory(selectedCategory);
-      navigateToScreen("2");
-    });
-  });
-
-  function showProduitsForCategory(category) {
+  function showAllProduits() {
     var titleEl = borneEl.querySelector(".rdc-borne__products-title");
-    if (titleEl) titleEl.textContent = category;
+    if (titleEl) titleEl.textContent = "Choisissez un article";
 
     // Masquer la description illustration
     var descEl = borneEl.querySelector(".rdc-borne__illustration-desc");
     if (descEl) descEl.style.display = "none";
 
-    // Filtrer les card-wrappers de produits métaobjets par catégorie
+    // Afficher tous les card-wrappers
     var wrappers = borneEl.querySelectorAll(
       ".rdc-borne__produits-grid .rdc-borne__card-wrapper",
     );
     wrappers.forEach(function (wrapper) {
-      var card = wrapper.querySelector(".rdc-borne__produit-card");
-      if (!card) return;
-      var cardCat = card.dataset.categorie;
-      var show = cardCat && cardCat.trim() === category.trim();
-      wrapper.style.display = show ? "" : "none";
+      wrapper.style.display = "";
     });
 
-    // Reset carousel init so it re-initializes with filtered cards
+    // Reset carousel init so it re-initializes with all cards
     var container = borneEl.querySelector(
       '.rdc-borne__screen[data-screen="2"] .rdc-borne__carousel-container',
     );

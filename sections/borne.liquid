@@ -83,22 +83,6 @@
 {%- assign all_produits_meta = shop.metaobjects.produits.values -%}
 {%- assign all_illustrations = shop.metaobjects.illustrations.values -%}
 
-{%- comment -%} Collecter les catégories uniques depuis les métaobjets Produits {%- endcomment -%}
-{%- assign all_categories = '' -%}
-{%- for pm in all_produits_meta -%}
-  {%- if pm.categorie != blank -%}
-    {%- assign cat_name = pm.categorie | strip -%}
-    {%- unless all_categories contains cat_name -%}
-      {%- if all_categories == '' -%}
-        {%- assign all_categories = cat_name -%}
-      {%- else -%}
-        {%- assign all_categories = all_categories | append: '||' | append: cat_name -%}
-      {%- endif -%}
-    {%- endunless -%}
-  {%- endif -%}
-{%- endfor -%}
-{%- assign categories_array = all_categories | split: '||' -%}
-
 {%- comment -%} Préparer les données JSON pour le JS {%- endcomment -%}
 <script type="application/json" id="borne-produits-data">
 [
@@ -232,54 +216,6 @@
     </div>
   </div>
 
-  {%- comment -%} ===== ÉCRAN 1a : CATÉGORIES (par article) ===== {%- endcomment -%}
-  <div class="rdc-borne__screen" data-screen="1a" data-active="false">
-    <div class="rdc-borne__screen-inner">
-      <h1 class="rdc-borne__screen-title">Choisissez une catégorie</h1>
-      <div class="rdc-borne__carousel-container">
-        <div class="rdc-borne__carousel rdc-borne__categories-grid">
-          {%- for cat in categories_array -%}
-            {%- assign cat_icon = nil -%}
-            {%- assign cat_image = nil -%}
-            {%- for pm in all_produits_meta -%}
-              {%- assign pm_cat = pm.categorie | strip -%}
-              {%- if pm_cat == cat -%}
-                {%- if cat_icon == nil and pm.icone != blank -%}
-                  {%- assign cat_icon = pm.icone -%}
-                {%- endif -%}
-                {%- if cat_image == nil and pm.image != blank -%}
-                  {%- assign cat_image = pm.image -%}
-                {%- endif -%}
-                {%- if cat_icon != nil and cat_image != nil -%}
-                  {%- break -%}
-                {%- endif -%}
-              {%- endif -%}
-            {%- endfor -%}
-            <div class="rdc-borne__card-wrapper">
-              <button class="rdc-borne__category-card" data-category="{{ cat }}">
-                <div class="rdc-borne__category-card-img">
-                  {%- if cat_image != nil -%}
-                    <img src="{{ cat_image | image_url: width: 400 }}" alt="{{ cat }}" loading="lazy">
-                  {%- else -%}
-                    <div class="rdc-borne__placeholder"></div>
-                  {%- endif -%}
-                </div>
-                <span class="rdc-borne__category-card-label">{{ cat }}</span>
-              </button>
-            </div>
-          {%- endfor -%}
-        </div>
-        <button class="rdc-borne__carousel-nav rdc-borne__carousel-prev" aria-label="Précédent">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
-        </button>
-        <button class="rdc-borne__carousel-nav rdc-borne__carousel-next" aria-label="Suivant">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </button>
-        <div class="rdc-borne__carousel-counter"><span class="rdc-borne__counter-current">1</span> / <span class="rdc-borne__counter-total">{{ categories_array.size }}</span></div>
-      </div>
-    </div>
-  </div>
-
   {%- comment -%} ===== ÉCRAN 1b : ILLUSTRATIONS (par illustration) ===== {%- endcomment -%}
   <div class="rdc-borne__screen" data-screen="1b" data-active="false">
     <div class="rdc-borne__screen-inner">
@@ -339,10 +275,10 @@
                 data-collection-handle="{% if pm.collection.value %}{{ pm.collection.value.handle }}{% elsif pm.collection %}{{ pm.collection.handle }}{% endif %}"
               >
                 <div class="rdc-borne__produit-card-img">
-                  {%- if pm.icone != blank -%}
+                  {%- if pm.image != blank -%}
+                    <img src="{{ pm.image | image_url: width: 500 }}" alt="{{ pm.label | default: pm.nom }}" loading="lazy">
+                  {%- elsif pm.icone != blank -%}
                     <img src="{{ pm.icone | image_url: width: 200 }}" alt="{{ pm.label | default: pm.nom }}" loading="lazy">
-                  {%- elsif pm.image != blank -%}
-                    <img src="{{ pm.image | image_url: width: 300 }}" alt="{{ pm.label | default: pm.nom }}" loading="lazy">
                   {%- else -%}
                     <div class="rdc-borne__placeholder"></div>
                   {%- endif -%}
