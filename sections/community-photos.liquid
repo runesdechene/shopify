@@ -84,8 +84,8 @@
   /* Dots indicateur */
   .community-photos__dots {
     position: absolute;
-    bottom: 50px;
-    right: 12px;
+    top: 15px;
+    right: 15px;
     display: flex;
     gap: 5px;
     z-index: 3;
@@ -160,7 +160,12 @@
     display: flex;
     flex-direction: column;
     gap: 3px;
+    transition: opacity 0.3s;
     pointer-events: none;
+  }
+
+  .community-photos__card:hover .community-photos__overlay {
+    opacity: 0;
   }
 
   .community-photos__overlay > * {
@@ -168,10 +173,27 @@
   }
 
   .community-photos__name {
-    font-weight: 600;
-    font-size: 1.2rem;
+    font-weight: 400;
+    font-size: 1.4rem;
     color: #fff;
     line-height: 1.2;
+    font-family: var(--font-heading--family);
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .community-photos__instagram {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: color 0.15s;
+    font-family: var(--font-body--family);
+  }
+
+  .community-photos__instagram:hover {
+    color: #fff;
   }
 
   .community-photos__location {
@@ -188,22 +210,11 @@
     flex-shrink: 0;
   }
 
-  .community-photos__instagram {
-    font-size: 0.72rem;
-    color: rgba(255, 255, 255, 0.7);
-    text-decoration: none;
-    transition: color 0.15s;
-  }
-
-  .community-photos__instagram:hover {
-    color: #fff;
-  }
-
   .community-photos__product {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     color: rgba(255, 255, 255, 0.85);
     background: rgba(255, 255, 255, 0.12);
     padding: 6px 12px;
@@ -214,9 +225,10 @@
     text-decoration: none;
     transition: background 0.2s, color 0.2s;
     cursor: pointer;
-    font-family: inherit;
     line-height: 1;
     -webkit-tap-highlight-color: transparent;
+    width: fit-content;
+    font-family: var(--font-accent--family);
   }
 
   .community-photos__product:hover {
@@ -231,7 +243,7 @@
   }
 
   .community-photos__message {
-    font-size: 0.72rem;
+    font-size: 0.92rem;
     color: rgba(255, 255, 255, 0.6);
     font-style: italic;
     line-height: 1.4;
@@ -297,9 +309,13 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 8px;
     }
+
+    .community-photos__card {
+      aspect-ratio: 1.5 / 3;
+    }
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 798px) {
     .community-photos {
       padding: 2rem 0.5rem;
     }
@@ -322,6 +338,10 @@
 
     .community-photos__name {
       font-size: 0.78rem;
+    }
+      
+    .community-photos__message {
+      font-size: 0.72rem;
     }
   }
 </style>
@@ -479,18 +499,22 @@
 
         /* Overlay */
         html += '<div class="community-photos__overlay">';
-        if (sub.name) {
-          html += '<span class="community-photos__name">' + sub.name + '</span>';
+        if (sub.name || sub.instagram) {
+          html += '<div class="community-photos__name">';
+          if (sub.name) {
+            html += sub.name;
+          }
+          if (sub.instagram) {
+            var handle = sub.instagram.replace('@', '');
+            html += '<a class="community-photos__instagram" href="https://instagram.com/' + handle + '" target="_blank" rel="noopener">@' + handle + '</a>';
+          }
+          html += '</div>';
         }
         if (sub.location) {
           html += '<span class="community-photos__location">';
           html += '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
           html += sub.location + (sub.location_zip ? ' (' + sub.location_zip + ')' : '');
           html += '</span>';
-        }
-        if (sub.instagram) {
-          var handle = sub.instagram.replace('@', '');
-          html += '<a class="community-photos__instagram" href="https://instagram.com/' + handle + '" target="_blank" rel="noopener">@' + handle + '</a>';
         }
         if (sub.product_worn) {
           html += '<button class="community-photos__product" data-search-term="' + sub.product_worn.replace(/"/g, '&quot;') + '">';
