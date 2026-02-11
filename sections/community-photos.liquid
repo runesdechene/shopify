@@ -1,139 +1,254 @@
 {% comment %}
-  Section "Ils nous portent" — Galerie photos communautaires
+  Section "Ils nous portent" — Galerie photos communautaires (v2 Instagram-style)
   Récupère les photos approuvées depuis Supabase via l'API RPC get_approved_photos_by_tag.
   
-  Configuration :
-  - Renseigner l'URL Supabase et la clé anon dans les settings de la section
-  - Choisir le tag à afficher (ex: "ils-nous-portent")
-  - Ajouter la section via l'éditeur de thème sur n'importe quelle page
+  Features :
+  - Grid portrait 2/3
+  - Overlay dégradé blur sombre avec infos discrètes
+  - Mini-carrousel par carte (swipe entre photos)
+  - Location au lieu de email/taille
 {% endcomment %}
 
 <style>
   .community-photos {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 3rem 1.5rem;
+    padding: 3rem 1rem;
+  }
+
+  .community-photos__header {
+    text-align: center;
+    margin-bottom: 2.5rem;
   }
 
   .community-photos__title {
-    text-align: center;
     font-size: 2.4rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
     letter-spacing: 0.04em;
   }
 
   .community-photos__subtitle {
-    text-align: center;
     font-size: 1rem;
     color: #6b4c3b;
-    margin-bottom: 2.5rem;
   }
 
   .community-photos__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
   }
 
+  /* --- Card --- */
   .community-photos__card {
-    border-radius: 12px;
-    overflow: hidden;
-    background: #fff;
-    border: 1px solid #e8e0d8;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .community-photos__card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(59, 35, 20, 0.08);
-  }
-
-  .community-photos__image-wrapper {
     position: relative;
-    aspect-ratio: 1;
+    border-radius: 14px;
     overflow: hidden;
-    cursor: pointer;
+    background: #111;
+    aspect-ratio: 2 / 3;
   }
 
-  .community-photos__image-wrapper img {
+  /* --- Carousel interne --- */
+  .community-photos__carousel {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .community-photos__carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .community-photos__slide {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .community-photos__slide img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    display: block;
+    transition: transform 0.4s ease;
   }
 
-  .community-photos__card:hover .community-photos__image-wrapper img {
-    transform: scale(1.03);
+  .community-photos__card:hover .community-photos__slide img {
+    transform: scale(1.05);
   }
 
-  .community-photos__info {
-    padding: 1rem 1.25rem;
+  /* Dots indicateur */
+  .community-photos__dots {
+    position: absolute;
+    bottom: 50px;
+    right: 12px;
+    display: flex;
+    gap: 5px;
+    z-index: 3;
+  }
+
+  .community-photos__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.45);
+    transition: background 0.25s, transform 0.25s;
+  }
+
+  .community-photos__dot.active {
+    background: #fff;
+    transform: scale(1.25);
+  }
+
+  /* Flèches carrousel — chevrons visibles au hover */
+  .community-photos__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-70%);
+    z-index: 4;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0, 0, 0, 0.35);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.25s, background 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .community-photos__card:hover .community-photos__nav {
+    opacity: 1;
+  }
+
+  .community-photos__nav:hover {
+    background: rgba(0, 0, 0, 0.55);
+  }
+
+  .community-photos__nav:focus { outline: none; }
+
+  .community-photos__nav svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .community-photos__nav--prev { left: 6px; }
+  .community-photos__nav--next { right: 6px; }
+
+  /* Masquer les flèches sur mobile (swipe natif) */
+  @media (hover: none) {
+    .community-photos__nav { display: none; }
+  }
+
+  /* --- Overlay dégradé blur --- */
+  .community-photos__overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 40px 14px 14px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.25) 55%, transparent 100%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    pointer-events: none;
+  }
+
+  .community-photos__overlay > * {
+    pointer-events: auto;
   }
 
   .community-photos__name {
     font-weight: 600;
-    font-size: 0.95rem;
-    color: #3b2314;
+    font-size: 1.2rem;
+    color: #fff;
+    line-height: 1.2;
+  }
+
+  .community-photos__location {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .community-photos__location svg {
+    width: 11px;
+    height: 11px;
+    flex-shrink: 0;
   }
 
   .community-photos__instagram {
-    font-size: 0.8rem;
-    color: #e1306c;
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
-    display: block;
-    margin-top: 0.15rem;
+    transition: color 0.15s;
   }
 
   .community-photos__instagram:hover {
-    text-decoration: underline;
+    color: #fff;
   }
 
-  .community-photos__details {
-    display: flex;
-    gap: 0.4rem;
-    flex-wrap: wrap;
-    margin-top: 0.5rem;
-  }
-
-  .community-photos__badge {
-    display: inline-block;
-    padding: 0.2rem 0.6rem;
-    border-radius: 20px;
+  .community-photos__product {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
     font-size: 0.7rem;
-    font-weight: 600;
-    background: #f5f0eb;
-    color: #6b4c3b;
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.12);
+    padding: 6px 12px;
+    border: none;
+    border-radius: 10px;
+    margin-top: 4px;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    cursor: pointer;
+    font-family: inherit;
+    line-height: 1;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .community-photos__product:hover {
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+  }
+
+  .community-photos__product svg {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
   }
 
   .community-photos__message {
-    font-size: 0.85rem;
-    color: #5a3a2a;
-    margin-top: 0.5rem;
-    line-height: 1.5;
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.6);
     font-style: italic;
+    line-height: 1.4;
+    margin-top: 2px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
-  .community-photos__loading {
-    text-align: center;
-    padding: 3rem;
-    color: #8b6f5e;
-    font-size: 0.9rem;
-  }
-
-  .community-photos__empty {
-    text-align: center;
-    padding: 3rem;
-    color: #8b6f5e;
-    font-size: 1rem;
-  }
-
-  /* Lightbox */
+  /* --- Lightbox --- */
   .community-photos__lightbox {
     display: none;
     position: fixed;
     inset: 0;
     z-index: 9999;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.92);
     align-items: center;
     justify-content: center;
   }
@@ -144,50 +259,83 @@
 
   .community-photos__lightbox img {
     max-width: 90vw;
-    max-height: 85vh;
+    max-height: 90vh;
     object-fit: contain;
-    border-radius: 8px;
+    border-radius: 6px;
   }
 
   .community-photos__lightbox-close {
     position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
+    top: 1rem;
+    right: 1rem;
     background: none;
     border: none;
     color: white;
-    font-size: 2rem;
+    font-size: 1.8rem;
     cursor: pointer;
     opacity: 0.7;
     transition: opacity 0.15s;
+    line-height: 1;
   }
 
   .community-photos__lightbox-close:hover {
     opacity: 1;
   }
 
-  @media (max-width: 640px) {
+  /* --- States --- */
+  .community-photos__loading,
+  .community-photos__empty {
+    text-align: center;
+    padding: 3rem;
+    color: #8b6f5e;
+    font-size: 0.95rem;
+  }
+
+  /* --- Responsive --- */
+  @media (max-width: 900px) {
     .community-photos__grid {
       grid-template-columns: repeat(2, 1fr);
-      gap: 0.75rem;
+      gap: 8px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .community-photos {
+      padding: 2rem 0.5rem;
+    }
+
+    .community-photos__grid {
+      gap: 6px;
     }
 
     .community-photos__title {
       font-size: 1.8rem;
     }
 
-    .community-photos__info {
-      padding: 0.75rem;
+    .community-photos__card {
+      border-radius: 10px;
+    }
+
+    .community-photos__overlay {
+      padding: 30px 10px 10px;
+    }
+
+    .community-photos__name {
+      font-size: 0.78rem;
     }
   }
 </style>
 
 <div class="community-photos" id="community-photos-{{ section.id }}">
-  {% if section.settings.title != blank %}
-    <h2 class="community-photos__title">{{ section.settings.title }}</h2>
-  {% endif %}
-  {% if section.settings.subtitle != blank %}
-    <p class="community-photos__subtitle">{{ section.settings.subtitle }}</p>
+  {% if section.settings.title != blank or section.settings.subtitle != blank %}
+    <div class="community-photos__header">
+      {% if section.settings.title != blank %}
+        <h2 class="community-photos__title">{{ section.settings.title }}</h2>
+      {% endif %}
+      {% if section.settings.subtitle != blank %}
+        <p class="community-photos__subtitle">{{ section.settings.subtitle }}</p>
+      {% endif %}
+    </div>
   {% endif %}
 
   <div class="community-photos__loading" id="community-photos-loading-{{ section.id }}">
@@ -203,40 +351,40 @@
 
 <!-- Lightbox -->
 <div class="community-photos__lightbox" id="community-photos-lightbox-{{ section.id }}">
-  <button class="community-photos__lightbox-close" onclick="closeCommunityLightbox_{{ section.id | replace: '-', '_' }}()">✕</button>
+  <button class="community-photos__lightbox-close" aria-label="Fermer">&#x2715;</button>
   <img id="community-photos-lightbox-img-{{ section.id }}" src="" alt="" />
 </div>
 
 <script>
   (function() {
-    const SUPABASE_URL = {{ section.settings.supabase_url | json }};
-    const SUPABASE_KEY = {{ section.settings.supabase_anon_key | json }};
-    const TAG_NAME = {{ section.settings.tag_name | json }};
-    const SECTION_ID = {{ section.id | json }};
+    var SUPABASE_URL = {{ section.settings.supabase_url | json }};
+    var SUPABASE_KEY = {{ section.settings.supabase_anon_key | json }};
+    var TAG_NAME = {{ section.settings.tag_name | json }};
+    var SECTION_ID = {{ section.id | json }};
 
-    const gridEl = document.getElementById('community-photos-grid-' + SECTION_ID);
-    const loadingEl = document.getElementById('community-photos-loading-' + SECTION_ID);
-    const emptyEl = document.getElementById('community-photos-empty-' + SECTION_ID);
-    const lightboxEl = document.getElementById('community-photos-lightbox-' + SECTION_ID);
-    const lightboxImg = document.getElementById('community-photos-lightbox-img-' + SECTION_ID);
+    var gridEl = document.getElementById('community-photos-grid-' + SECTION_ID);
+    var loadingEl = document.getElementById('community-photos-loading-' + SECTION_ID);
+    var emptyEl = document.getElementById('community-photos-empty-' + SECTION_ID);
+    var lightboxEl = document.getElementById('community-photos-lightbox-' + SECTION_ID);
+    var lightboxImg = document.getElementById('community-photos-lightbox-img-' + SECTION_ID);
+    var lightboxClose = lightboxEl.querySelector('.community-photos__lightbox-close');
 
-    // Lightbox functions (global for onclick)
-    const safeSectionId = SECTION_ID.replace(/-/g, '_');
-    window['openCommunityLightbox_' + safeSectionId] = function(url) {
+    /* --- Lightbox --- */
+    function openLightbox(url) {
       lightboxImg.src = url;
       lightboxEl.classList.add('active');
       document.body.style.overflow = 'hidden';
-    };
-    window['closeCommunityLightbox_' + safeSectionId] = function() {
+    }
+
+    function closeLightbox() {
       lightboxEl.classList.remove('active');
       lightboxImg.src = '';
       document.body.style.overflow = '';
-    };
+    }
 
+    lightboxClose.addEventListener('click', closeLightbox);
     lightboxEl.addEventListener('click', function(e) {
-      if (e.target === lightboxEl) {
-        window['closeCommunityLightbox_' + safeSectionId]();
-      }
+      if (e.target === lightboxEl) closeLightbox();
     });
 
     if (!SUPABASE_URL || !SUPABASE_KEY || !TAG_NAME) {
@@ -264,7 +412,7 @@
         return;
       }
 
-      // Group by submission id (multiple images per submission)
+      /* Group by submission id */
       var submissions = {};
       data.forEach(function(row) {
         if (!submissions[row.id]) {
@@ -272,8 +420,9 @@
             id: row.id,
             name: row.submitter_name,
             instagram: row.submitter_instagram,
-            size: row.product_size,
-            height: row.model_height_cm,
+            location: row.location_name || '',
+            location_zip: row.location_zip || '',
+            product_worn: row.product_worn || '',
             message: row.message,
             created_at: row.created_at,
             images: []
@@ -294,39 +443,119 @@
       gridEl.style.display = 'grid';
 
       sorted.forEach(function(sub) {
-        sub.images.sort(function(a, b) { return a.order - b.order; });
-        var firstImage = sub.images[0];
-        if (!firstImage) return;
+        /* Shuffle images randomly */
+        for (var si = sub.images.length - 1; si > 0; si--) {
+          var sj = Math.floor(Math.random() * (si + 1));
+          var tmp = sub.images[si];
+          sub.images[si] = sub.images[sj];
+          sub.images[sj] = tmp;
+        }
+        if (!sub.images.length) return;
 
         var card = document.createElement('div');
         card.className = 'community-photos__card';
 
         var html = '';
-        html += '<div class="community-photos__image-wrapper" onclick="openCommunityLightbox_' + safeSectionId + '(\'' + firstImage.url.replace(/'/g, "\\'") + '\')">';
-        html += '<img src="' + firstImage.url + '" alt="Photo de ' + (sub.name || 'la communauté') + '" loading="lazy" />';
-        html += '</div>';
-        html += '<div class="community-photos__info">';
-        html += '<span class="community-photos__name">' + (sub.name || '') + '</span>';
 
+        /* Carousel */
+        html += '<div class="community-photos__carousel">';
+        sub.images.forEach(function(img) {
+          html += '<div class="community-photos__slide">';
+          html += '<img src="' + img.url + '" alt="Photo de ' + (sub.name || 'la communauté').replace(/"/g, '&quot;') + '" loading="lazy" />';
+          html += '</div>';
+        });
+        html += '</div>';
+
+        /* Dots (only if multiple images) */
+        if (sub.images.length > 1) {
+          html += '<div class="community-photos__dots">';
+          sub.images.forEach(function(_, i) {
+            html += '<span class="community-photos__dot' + (i === 0 ? ' active' : '') + '"></span>';
+          });
+          html += '</div>';
+          html += '<button class="community-photos__nav community-photos__nav--prev" aria-label="Photo précédente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>';
+          html += '<button class="community-photos__nav community-photos__nav--next" aria-label="Photo suivante"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></button>';
+        }
+
+        /* Overlay */
+        html += '<div class="community-photos__overlay">';
+        if (sub.name) {
+          html += '<span class="community-photos__name">' + sub.name + '</span>';
+        }
+        if (sub.location) {
+          html += '<span class="community-photos__location">';
+          html += '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+          html += sub.location + (sub.location_zip ? ' (' + sub.location_zip + ')' : '');
+          html += '</span>';
+        }
         if (sub.instagram) {
           var handle = sub.instagram.replace('@', '');
           html += '<a class="community-photos__instagram" href="https://instagram.com/' + handle + '" target="_blank" rel="noopener">@' + handle + '</a>';
         }
-
-        if (sub.size || sub.height) {
-          html += '<div class="community-photos__details">';
-          if (sub.size) html += '<span class="community-photos__badge">Taille ' + sub.size + '</span>';
-          if (sub.height) html += '<span class="community-photos__badge">' + sub.height + ' cm</span>';
-          html += '</div>';
+        if (sub.product_worn) {
+          html += '<button class="community-photos__product" data-search-term="' + sub.product_worn.replace(/"/g, '&quot;') + '">';
+          html += '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>';
+          html += sub.product_worn;
+          html += '</button>';
         }
-
         if (sub.message) {
-          html += '<p class="community-photos__message">"' + sub.message + '"</p>';
+          html += '<p class="community-photos__message">' + sub.message + '</p>';
         }
-
         html += '</div>';
+
         card.innerHTML = html;
         gridEl.appendChild(card);
+
+        /* --- Wire up carousel & lightbox per card --- */
+        var carousel = card.querySelector('.community-photos__carousel');
+        var dots = card.querySelectorAll('.community-photos__dot');
+        var slides = card.querySelectorAll('.community-photos__slide');
+        var currentIdx = 0;
+
+        var prevBtn = card.querySelector('.community-photos__nav--prev');
+        var nextBtn = card.querySelector('.community-photos__nav--next');
+
+        function updateNavVisibility() {
+          if (prevBtn) prevBtn.style.display = currentIdx <= 0 ? 'none' : '';
+          if (nextBtn) nextBtn.style.display = currentIdx >= slides.length - 1 ? 'none' : '';
+        }
+
+        function goTo(idx) {
+          if (idx < 0 || idx >= slides.length) return;
+          currentIdx = idx;
+          slides[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+          dots.forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+          updateNavVisibility();
+        }
+
+        if (prevBtn) prevBtn.addEventListener('click', function(e) { e.stopPropagation(); goTo(currentIdx - 1); });
+        if (nextBtn) nextBtn.addEventListener('click', function(e) { e.stopPropagation(); goTo(currentIdx + 1); });
+        updateNavVisibility();
+
+        /* Scroll-snap sync dots */
+        if (dots.length > 1) {
+          var scrollTimer;
+          carousel.addEventListener('scroll', function() {
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(function() {
+              var scrollLeft = carousel.scrollLeft;
+              var width = carousel.offsetWidth;
+              var newIdx = Math.round(scrollLeft / width);
+              if (newIdx !== currentIdx && newIdx >= 0 && newIdx < slides.length) {
+                currentIdx = newIdx;
+                dots.forEach(function(d, i) { d.classList.toggle('active', i === currentIdx); });
+                updateNavVisibility();
+              }
+            }, 60);
+          });
+        }
+
+        /* Tap image → lightbox */
+        slides.forEach(function(slide, i) {
+          slide.addEventListener('click', function() {
+            openLightbox(sub.images[i].url);
+          });
+        });
       });
     })
     .catch(function(err) {
@@ -334,6 +563,36 @@
       loadingEl.style.display = 'none';
       emptyEl.style.display = 'block';
     });
+    /* --- Product button → open search modal with pre-filled term --- */
+    gridEl.addEventListener('click', function(e) {
+      var btn = e.target.closest('.community-photos__product');
+      if (!btn) return;
+      e.preventDefault();
+      e.stopPropagation();
+
+      var term = btn.dataset.searchTerm || '';
+      var searchModal = document.querySelector('#search-modal');
+      if (searchModal) {
+        if (typeof searchModal.showDialog === 'function') {
+          searchModal.showDialog();
+        } else if (typeof searchModal.show === 'function') {
+          searchModal.show();
+        } else {
+          searchModal.setAttribute('open', '');
+        }
+        setTimeout(function() {
+          var input = searchModal.querySelector('.search-input, input[type="search"]');
+          if (input) {
+            input.value = term;
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+            input.focus();
+          }
+        }, 150);
+      } else {
+        window.location.href = '/search?q=' + encodeURIComponent(term);
+      }
+    });
+
   })();
 </script>
 
