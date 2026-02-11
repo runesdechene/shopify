@@ -716,7 +716,7 @@
                           "type": "text",
                           "name": "t:names.text",
                           "settings": {
-                            "text": "<p>Pour co-créer nos futurs fragments et être tenu au courant de nos sessions de ventes privées, laissez-nous votre email. On revient vers vous avec un cadeau.</p>",
+                            "text": "<p>Pour co-créer nos futurs fragments et être tenu au courant de nos sessions de ventes privées, laissez-nous votre email. On revient vers vous avec un cadeau 🎁</p>",
                             "width": "fit-content",
                             "max_width": "normal",
                             "alignment": "left",
