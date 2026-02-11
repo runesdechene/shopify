@@ -162,7 +162,7 @@
               "type": "text",
               "name": "Title",
               "settings": {
-                "text": "<h3>Le phénomène Runes de Chêne rallie les amoureux de l'Histoire, des grands espaces et du patrimoine. Envoyez-nous vos photos de nos produits ou du style de vie Runes de Chêne en<strong> </strong><a href=\"https://hub.runesdechene.com/soumission-photos\" title=\"https://hub.runesdechene.com/soumission-photos\"><strong>remplissant ce formulaire</strong></a>.</h3>",
+                "text": "<h3>Le phénomène Runes de Chêne rallie les amoureux de l'Histoire, des grands espaces et du patrimoine. Envoyez-nous vos photos de nos produits ou du style de vie Runes de Chêne en<strong> </strong><a href=\"https://hub.runesdechene.com/soumettre-contenu\" title=\"https://hub.runesdechene.com/soumettre-contenu\"><strong>remplissant ce formulaire</strong></a>.</h3>",
                 "width": "100%",
                 "max_width": "none",
                 "alignment": "left",

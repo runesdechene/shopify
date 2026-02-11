@@ -217,6 +217,21 @@
         "condition_invert": false
       }
     },
+    "lecture_fragment_v2_UPfCbK": {
+      "type": "lecture-fragment-v2",
+      "name": "Lecture Fragment",
+      "settings": {
+        "show_section": "{% if template.name == 'collection' and collection.metafields.custom.illustrations != blank %}\n  true\n{% endif %}",
+        "pretitle": "L'HISTOIRE DERRIÈRE CE FRAGMENT",
+        "title": "{{ collection.metafields.custom.illustrations.value.nom.value }}",
+        "artist": "{{ collection.metafields.custom.illustrations.value.artiste.value.nom.value }}",
+        "description": "{{ collection.metafields.custom.illustrations.value.son_histoire | metafield_tag }}",
+        "icon_image": "shopify://shop_images/grimoire.png",
+        "main_illustration": "{{ collection.metafields.custom.illustrations.value.image_pour_fond_clair.value }}",
+        "background_image_metaobject": "{{ collection.metafields.custom.illustrations.value.image_fond_de_fragment.value }}",
+        "background_image": "shopify://shop_images/fond_explore.webp"
+      }
+    },
     "main": {
       "type": "main-collection",
       "blocks": {
@@ -408,6 +423,7 @@
   },
   "order": [
     "section",
+    "lecture_fragment_v2_UPfCbK",
     "main"
   ]
 }
