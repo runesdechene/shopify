@@ -1,0 +1,384 @@
+{% comment %}
+  Section "Ils nous portent" — Galerie photos communautaires
+  Récupère les photos approuvées depuis Supabase via l'API RPC get_approved_photos_by_tag.
+  
+  Configuration :
+  - Renseigner l'URL Supabase et la clé anon dans les settings de la section
+  - Choisir le tag à afficher (ex: "ils-nous-portent")
+  - Ajouter la section via l'éditeur de thème sur n'importe quelle page
+{% endcomment %}
+
+<style>
+  .community-photos {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+  }
+
+  .community-photos__title {
+    text-align: center;
+    font-size: 2.4rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.04em;
+  }
+
+  .community-photos__subtitle {
+    text-align: center;
+    font-size: 1rem;
+    color: #6b4c3b;
+    margin-bottom: 2.5rem;
+  }
+
+  .community-photos__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .community-photos__card {
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #e8e0d8;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .community-photos__card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(59, 35, 20, 0.08);
+  }
+
+  .community-photos__image-wrapper {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .community-photos__image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .community-photos__card:hover .community-photos__image-wrapper img {
+    transform: scale(1.03);
+  }
+
+  .community-photos__info {
+    padding: 1rem 1.25rem;
+  }
+
+  .community-photos__name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #3b2314;
+  }
+
+  .community-photos__instagram {
+    font-size: 0.8rem;
+    color: #e1306c;
+    text-decoration: none;
+    display: block;
+    margin-top: 0.15rem;
+  }
+
+  .community-photos__instagram:hover {
+    text-decoration: underline;
+  }
+
+  .community-photos__details {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+  }
+
+  .community-photos__badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    background: #f5f0eb;
+    color: #6b4c3b;
+  }
+
+  .community-photos__message {
+    font-size: 0.85rem;
+    color: #5a3a2a;
+    margin-top: 0.5rem;
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  .community-photos__loading {
+    text-align: center;
+    padding: 3rem;
+    color: #8b6f5e;
+    font-size: 0.9rem;
+  }
+
+  .community-photos__empty {
+    text-align: center;
+    padding: 3rem;
+    color: #8b6f5e;
+    font-size: 1rem;
+  }
+
+  /* Lightbox */
+  .community-photos__lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.9);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .community-photos__lightbox.active {
+    display: flex;
+  }
+
+  .community-photos__lightbox img {
+    max-width: 90vw;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  .community-photos__lightbox-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.15s;
+  }
+
+  .community-photos__lightbox-close:hover {
+    opacity: 1;
+  }
+
+  @media (max-width: 640px) {
+    .community-photos__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+
+    .community-photos__title {
+      font-size: 1.8rem;
+    }
+
+    .community-photos__info {
+      padding: 0.75rem;
+    }
+  }
+</style>
+
+<div class="community-photos" id="community-photos-{{ section.id }}">
+  {% if section.settings.title != blank %}
+    <h2 class="community-photos__title">{{ section.settings.title }}</h2>
+  {% endif %}
+  {% if section.settings.subtitle != blank %}
+    <p class="community-photos__subtitle">{{ section.settings.subtitle }}</p>
+  {% endif %}
+
+  <div class="community-photos__loading" id="community-photos-loading-{{ section.id }}">
+    Chargement des photos...
+  </div>
+
+  <div class="community-photos__grid" id="community-photos-grid-{{ section.id }}" style="display: none;"></div>
+
+  <div class="community-photos__empty" id="community-photos-empty-{{ section.id }}" style="display: none;">
+    Aucune photo pour le moment.
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="community-photos__lightbox" id="community-photos-lightbox-{{ section.id }}">
+  <button class="community-photos__lightbox-close" onclick="closeCommunityLightbox_{{ section.id | replace: '-', '_' }}()">✕</button>
+  <img id="community-photos-lightbox-img-{{ section.id }}" src="" alt="" />
+</div>
+
+<script>
+  (function() {
+    const SUPABASE_URL = {{ section.settings.supabase_url | json }};
+    const SUPABASE_KEY = {{ section.settings.supabase_anon_key | json }};
+    const TAG_NAME = {{ section.settings.tag_name | json }};
+    const SECTION_ID = {{ section.id | json }};
+
+    const gridEl = document.getElementById('community-photos-grid-' + SECTION_ID);
+    const loadingEl = document.getElementById('community-photos-loading-' + SECTION_ID);
+    const emptyEl = document.getElementById('community-photos-empty-' + SECTION_ID);
+    const lightboxEl = document.getElementById('community-photos-lightbox-' + SECTION_ID);
+    const lightboxImg = document.getElementById('community-photos-lightbox-img-' + SECTION_ID);
+
+    // Lightbox functions (global for onclick)
+    const safeSectionId = SECTION_ID.replace(/-/g, '_');
+    window['openCommunityLightbox_' + safeSectionId] = function(url) {
+      lightboxImg.src = url;
+      lightboxEl.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    };
+    window['closeCommunityLightbox_' + safeSectionId] = function() {
+      lightboxEl.classList.remove('active');
+      lightboxImg.src = '';
+      document.body.style.overflow = '';
+    };
+
+    lightboxEl.addEventListener('click', function(e) {
+      if (e.target === lightboxEl) {
+        window['closeCommunityLightbox_' + safeSectionId]();
+      }
+    });
+
+    if (!SUPABASE_URL || !SUPABASE_KEY || !TAG_NAME) {
+      loadingEl.style.display = 'none';
+      emptyEl.style.display = 'block';
+      emptyEl.textContent = 'Configuration manquante. Renseignez les paramètres de la section.';
+      return;
+    }
+
+    fetch(SUPABASE_URL + '/rest/v1/rpc/get_approved_photos_by_tag', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY
+      },
+      body: JSON.stringify({ p_tag_name: TAG_NAME })
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      loadingEl.style.display = 'none';
+
+      if (!data || data.length === 0) {
+        emptyEl.style.display = 'block';
+        return;
+      }
+
+      // Group by submission id (multiple images per submission)
+      var submissions = {};
+      data.forEach(function(row) {
+        if (!submissions[row.id]) {
+          submissions[row.id] = {
+            id: row.id,
+            name: row.submitter_name,
+            instagram: row.submitter_instagram,
+            size: row.product_size,
+            height: row.model_height_cm,
+            message: row.message,
+            created_at: row.created_at,
+            images: []
+          };
+        }
+        if (row.image_url) {
+          submissions[row.id].images.push({
+            url: row.image_url,
+            order: row.image_sort_order || 0
+          });
+        }
+      });
+
+      var sorted = Object.values(submissions).sort(function(a, b) {
+        return new Date(b.created_at) - new Date(a.created_at);
+      });
+
+      gridEl.style.display = 'grid';
+
+      sorted.forEach(function(sub) {
+        sub.images.sort(function(a, b) { return a.order - b.order; });
+        var firstImage = sub.images[0];
+        if (!firstImage) return;
+
+        var card = document.createElement('div');
+        card.className = 'community-photos__card';
+
+        var html = '';
+        html += '<div class="community-photos__image-wrapper" onclick="openCommunityLightbox_' + safeSectionId + '(\'' + firstImage.url.replace(/'/g, "\\'") + '\')">';
+        html += '<img src="' + firstImage.url + '" alt="Photo de ' + (sub.name || 'la communauté') + '" loading="lazy" />';
+        html += '</div>';
+        html += '<div class="community-photos__info">';
+        html += '<span class="community-photos__name">' + (sub.name || '') + '</span>';
+
+        if (sub.instagram) {
+          var handle = sub.instagram.replace('@', '');
+          html += '<a class="community-photos__instagram" href="https://instagram.com/' + handle + '" target="_blank" rel="noopener">@' + handle + '</a>';
+        }
+
+        if (sub.size || sub.height) {
+          html += '<div class="community-photos__details">';
+          if (sub.size) html += '<span class="community-photos__badge">Taille ' + sub.size + '</span>';
+          if (sub.height) html += '<span class="community-photos__badge">' + sub.height + ' cm</span>';
+          html += '</div>';
+        }
+
+        if (sub.message) {
+          html += '<p class="community-photos__message">"' + sub.message + '"</p>';
+        }
+
+        html += '</div>';
+        card.innerHTML = html;
+        gridEl.appendChild(card);
+      });
+    })
+    .catch(function(err) {
+      console.error('Community photos error:', err);
+      loadingEl.style.display = 'none';
+      emptyEl.style.display = 'block';
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Galerie communautaire",
+  "tag": "section",
+  "class": "section-community-photos",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Ils nous portent"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "Découvrez notre communauté en Runes de Chêne"
+    },
+    {
+      "type": "text",
+      "id": "tag_name",
+      "label": "Nom du tag",
+      "info": "Le tag utilisé dans le Hub pour filtrer les photos (ex: ils-nous-portent)",
+      "default": "ils-nous-portent"
+    },
+    {
+      "type": "text",
+      "id": "supabase_url",
+      "label": "URL Supabase",
+      "info": "L'URL de votre projet Supabase (ex: https://xxxxx.supabase.co)"
+    },
+    {
+      "type": "text",
+      "id": "supabase_anon_key",
+      "label": "Clé Supabase (anon)",
+      "info": "La clé publique anon de votre projet Supabase"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Galerie communautaire"
+    }
+  ]
+}
+{% endschema %}

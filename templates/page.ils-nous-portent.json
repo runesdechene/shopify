@@ -1,0 +1,76 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "Title",
+          "settings": {
+            "text": "<h1>{{ closest.page.title }}</h1>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "page-content": {
+          "type": "page-content",
+          "settings": {},
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "page-content"
+      ],
+      "disabled": true,
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "color_scheme": "",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "community_photos_JkmdPQ": {
+      "type": "community-photos",
+      "name": "Galerie communautaire",
+      "settings": {
+        "title": "Ils nous portent",
+        "subtitle": "Découvrez notre communauté en Runes de Chêne",
+        "tag_name": "ils_nous_portent",
+        "supabase_url": "https://ukpapqssgsxirsgmcvof.supabase.co",
+        "supabase_anon_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrcGFwcXNzZ3N4aXJzZ21jdm9mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAyOTU5OTMsImV4cCI6MjA4NTg3MTk5M30.Le1gdE3HhmZ2gzMJF9hVhlZVsILmLd5GQgk87xC_dUY"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "community_photos_JkmdPQ"
+  ]
+}
