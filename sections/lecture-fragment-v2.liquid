@@ -27,7 +27,7 @@
   endif
 -%}
 
-<div class="lecture-fragment">
+<div class="lecture-fragment{% if section.settings.collapsed_default %} lecture-fragment--collapsed{% endif %}">
   <div class="lecture-fragment__container section section--full-width">
     <div
       class="lecture-fragment__content-wrapper section-content-wrapper page-width"
@@ -35,6 +35,12 @@
         style="background-image: url('{{ background_image_url }}');"
       {% endif %}
     >
+      <span class="lecture-fragment__chevron-label">Cliquez pour lire</span>
+      <button class="lecture-fragment__chevron" aria-label="Afficher/masquer le contenu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
       <div class="lecture-fragment__content">
         {%- comment -%} Contenu textuel à gauche {%- endcomment -%}
         <div class="lecture-fragment__text-content">
@@ -57,11 +63,6 @@
                 <h2 class="lecture-fragment__title">{{ section.settings.title }}</h2>
               {%- endif -%}
             </div>
-            <button class="lecture-fragment__chevron" aria-label="Afficher/masquer le contenu">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </button>
           </div>
           {%- if section.settings.description != blank -%}
             <div class="lecture-fragment__description">
@@ -88,17 +89,21 @@
 </div>
 
 <script>
-  // Accordéon mobile
+  // Accordéon mobile + mode replié desktop
   document.addEventListener('DOMContentLoaded', function () {
-    const headers = document.querySelectorAll('.lecture-fragment__header');
+    function toggleFragment(el) {
+      const root = el.closest('.lecture-fragment');
+      if (!root) return;
+      const isMobile = window.matchMedia('(max-width: 749px)').matches;
+      const isCollapsedMode = root.classList.contains('lecture-fragment--collapsed');
+      if (isMobile || isCollapsedMode) {
+        root.classList.toggle('is-open');
+      }
+    }
 
-    headers.forEach((header) => {
-      header.addEventListener('click', function () {
-        // Vérifier si on est sur mobile
-        if (window.matchMedia('(max-width: 749px)').matches) {
-          const content = this.closest('.lecture-fragment__content');
-          content.classList.toggle('is-open');
-        }
+    document.querySelectorAll('.lecture-fragment__content-wrapper').forEach((wrapper) => {
+      wrapper.addEventListener('click', function () {
+        toggleFragment(this);
       });
     });
   });
@@ -179,6 +184,105 @@
     right: 0;
     background: rgba(197, 193, 173, 0.4);
     border-radius: 40px;
+  }
+
+  /* Mode replié sur desktop */
+  .lecture-fragment.lecture-fragment--collapsed .lecture-fragment__chevron {
+    display: block;
+  }
+
+  .lecture-fragment.lecture-fragment--collapsed .lecture-fragment__content-wrapper {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .lecture-fragment.lecture-fragment--collapsed.is-open .lecture-fragment__content-wrapper {
+    cursor: default;
+    user-select: auto;
+  }
+
+  .lecture-fragment.lecture-fragment--collapsed .lecture-fragment__chevron {
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .lecture-fragment__chevron-label {
+    display: none;
+    position: absolute;
+    right: 100px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    color: inherit;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 1);
+    opacity: 0.6;
+    text-transform: uppercase;
+    font-weight: 700;
+    white-space: nowrap;
+    font-family: var(--font-accent--family);
+    z-index: 3;
+  }
+
+  .lecture-fragment.lecture-fragment--collapsed .lecture-fragment__chevron-label {
+    display: inline;
+  }
+
+  .lecture-fragment.lecture-fragment--collapsed.is-open .lecture-fragment__chevron-label {
+    display: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .lecture-fragment__chevron-label {
+      display: none !important;
+    }
+  }
+
+  .lecture-fragment.lecture-fragment--collapsed.is-open .lecture-fragment__chevron {
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  .lecture-fragment.lecture-fragment--collapsed .lecture-fragment__description,
+  .lecture-fragment.lecture-fragment--collapsed .lecture-fragment__artist,
+  .lecture-fragment.lecture-fragment--collapsed .lecture-fragment__main-image {
+    display: none;
+  }
+
+  .lecture-fragment.lecture-fragment--collapsed.is-open .lecture-fragment__description,
+  .lecture-fragment.lecture-fragment--collapsed.is-open .lecture-fragment__artist,
+  .lecture-fragment.lecture-fragment--collapsed.is-open .lecture-fragment__main-image {
+    display: block;
+  }
+
+  .lecture-fragment.lecture-fragment--collapsed .lecture-fragment__content-wrapper {
+    padding: 20px 40px 10px 40px;
+  }
+
+  .lecture-fragment.lecture-fragment--collapsed.is-open .lecture-fragment__content-wrapper {
+    padding: 60px 80px;
+  }
+
+  @media screen and (max-width: 798px) {
+    .lecture-fragment.lecture-fragment--collapsed.is-open .lecture-fragment__content-wrapper {
+      padding: 30px 40px;
+    }
+
+    .lecture-fragment.lecture-fragment .lecture-fragment__icon {
+      display: none;
+    }
+
+    .lecture-fragment.lecture-fragment--collapsed.is-open .lecture-fragment__title {
+      text-align: center;
+      display: block;
+    }
+
+    .lecture-fragment.lecture-fragment--collapsed.is-open .lecture-fragment__subtitle {
+      text-align: center;
+    }
   }
 
   .lecture-fragment__chevron svg {
@@ -272,7 +376,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
+    padding: 1rem;
     margin-left: 3rem;
     background: rgba(247, 243, 233, 0.7);
     box-shadow: 0 0 30px 30px rgba(247, 243, 233, 0.7);
@@ -375,6 +479,12 @@
       "label": "Condition d'affichage (Liquid)",
       "info": "Entrez du code Liquid qui retourne true ou false. La section s'affichera seulement si le résultat est true.",
       "default": "true"
+    },
+    {
+      "type": "checkbox",
+      "id": "collapsed_default",
+      "label": "Replié par défaut (même sur desktop)",
+      "default": false
     },
     {
       "type": "header",
