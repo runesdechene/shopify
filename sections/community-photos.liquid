@@ -11,12 +11,30 @@
 
 <style>
   .community-photos {
-    padding: 1rem 1rem 5rem 1rem;
-  }
+    padding: 1rem 40px 5rem 40px;
+  } 
 
   .community-photos--page-width {
-    max-width: 1390px;
-    margin: 0 auto;
+    max-width: 1440px;
+    margin: auto;
+  }
+
+  @media (max-width: 1520px) {
+    .community-photos {
+      padding-inline: 80px;
+    }
+  }
+
+    @media (max-width: 990px) {
+    .community-photos {
+      padding-inline: 70px;
+    }
+  }
+
+      @media (max-width: 798px) {
+    .community-photos {
+      padding-inline: 10px;
+    }
   }
 
   .community-photos--full-width {
@@ -318,9 +336,6 @@
   }
 
   @media (max-width: 798px) {
-    .community-photos {
-      padding: 2rem 0.5rem;
-    }
 
     .community-photos__grid {
       gap: 6px;

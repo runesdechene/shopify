@@ -197,7 +197,8 @@
       ],
       "custom_css": [
         "a {text-decoration: underline;}",
-        "h3 {max-width: 900px;}"
+        "h3 {max-width: 900px;}",
+        "@media (max-width: 798px) {.group-block--width-fill {padding: 0; }}"
       ],
       "name": "t:names.custom_section",
       "settings": {

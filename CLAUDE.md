@@ -15,7 +15,7 @@ shopify theme push
 shopify theme pull
 
 # Auto-sync pour développement (watch les fichiers et push automatique)
-shopify theme dev
+shopify theme dev --theme-editor-sync
 
 # Push vers un thème spécifique
 shopify theme push --theme=123456789

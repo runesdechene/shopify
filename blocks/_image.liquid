@@ -33,16 +33,6 @@
       | image_tag: width: width, widths: widths, sizes: sizes, loading: loading, alt: alt
     }}
   </image-block>
-{% else %}
-  <image-block
-    ratio="{{ block_settings.ratio }}"
-    height="{{ block_settings.height }}"
-    class="{{ block_settings.custom_css_class }}"
-    style="--border-radius: {{ block_settings.border_radius }}px;"
-    {{ block.shopify_attributes }}
-  >
-    {{ placeholder | default: 'hero-apparel-2' | placeholder_svg_tag: 'hero__image' }}
-  </image-block>
 {% endif %}
 
 {% stylesheet %}

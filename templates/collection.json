@@ -351,7 +351,7 @@
               "type": "image",
               "name": "t:names.image",
               "settings": {
-                "image": "{{ closest.collection.metafields.custom.icone.value }}",
+                "image": "{{ closest.collection.image }}",
                 "link": "",
                 "image_ratio": "adapt",
                 "width": "custom",
@@ -746,7 +746,7 @@
         "group_q4NXJM"
       ],
       "custom_css": [
-        "@media (min-width: 792px){.section-wrapper {display: none; }}"
+        "@media (min-width: 792px) {.section-wrapper {display: none; }}"
       ],
       "name": "t:names.custom_section",
       "settings": {
