@@ -65,7 +65,7 @@
       endif
       
     elsif settings.condition_type == 'custom_liquid'
-      assign liquid_result = settings.condition_liquid
+      assign liquid_result = settings.condition_liquid | strip
       if liquid_result == 'true' or liquid_result == true
         assign condition_met = true
       endif

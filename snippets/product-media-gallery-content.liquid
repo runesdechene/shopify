@@ -451,8 +451,32 @@
             {% endif %}
           </div>
           {%- if block_settings.show_media_alt -%}
+            {%- liquid
+              # Chercher la valeur IMPRESSION liée à cette image via sa variante
+              assign impression_value = ''
+              assign impression_option_index = -1
+              for option in selected_product.options
+                assign option_upcase = option | upcase
+                if option_upcase == 'IMPRESSION'
+                  assign impression_option_index = forloop.index0
+                  break
+                endif
+              endfor
+
+              if impression_option_index >= 0
+                for variant in selected_product.variants
+                  if variant.featured_media and variant.featured_media.id == media.id
+                    assign impression_value = variant.options[impression_option_index]
+                    break
+                  endif
+                endfor
+              endif
+            -%}
             {%- if media.alt != blank and media.alt != selected_product.title -%}
-              <p class="product-media__caption">{{ media.alt }}</p>
+              <p class="product-media__caption">
+                {{- media.alt -}}
+                {%- if impression_value != blank %} — <b>{{ impression_value }}</b>{% endif -%}
+              </p>
             {%- else -%}
               {%- assign product_meta = selected_product.metafields.custom.base.value -%}
               {%- if product_meta != blank -%}
@@ -461,7 +485,11 @@
                 -%}
                 <p class="product-media__caption">
                   Modèle <b>{{ product_meta.nom }}</b>, Coupe {{ product_meta.coupe }}, <b>{{ tissu_clean }}</b>
+                  {%- if impression_value != blank %} — <b>{{ impression_value }}</b>{% endif -%}
                 </p>
+              {%- endif -%}
+              {%- if product_meta == blank and impression_value != blank -%}
+                <p class="product-media__caption"><b>{{ impression_value }}</b></p>
               {%- endif -%}
             {%- endif -%}
           {%- endif -%}

@@ -183,8 +183,13 @@
                               {% endif %}
                               <span class="menu-drawer__menu-item-text wrap-text">
                                 {%- liquid
+                                  assign child_collection_image = nil
+                                  if childlink.type == 'collection_link' and childlink.object.image != blank
+                                    assign child_collection_image = childlink.object.image
+                                  endif
+
                                   assign child_icon = ''
-                                  if icon_map != blank
+                                  if child_collection_image == nil and icon_map != blank
                                     assign icon_entries = icon_map | split: '||'
                                     for entry in icon_entries
                                       if entry contains '::'
@@ -199,7 +204,11 @@
                                     endfor
                                   endif
                                 -%}
-                                {%- if child_icon != blank -%}
+                                {%- if child_collection_image -%}
+                                  <span class="menu-drawer__link-icon">
+                                    <img src="{{ child_collection_image | image_url: width: 64 }}" alt="{{ childlink.title }}" loading="lazy">
+                                  </span>
+                                {%- elsif child_icon != blank -%}
                                   <span class="menu-drawer__link-icon">
                                     <img src="{{ child_icon | asset_url }}" alt="{{ childlink.title }}" loading="lazy">
                                   </span>
@@ -260,8 +269,13 @@
                           {% endif %}
                           <span class="menu-drawer__menu-item-text wrap-text">
                             {%- liquid
+                              assign child_collection_image = nil
+                              if childlink.type == 'collection_link' and childlink.object.image != blank
+                                assign child_collection_image = childlink.object.image
+                              endif
+
                               assign child_icon = ''
-                              if icon_map != blank
+                              if child_collection_image == nil and icon_map != blank
                                 assign icon_entries = icon_map | split: '||'
                                 for entry in icon_entries
                                   if entry contains '::'
@@ -276,7 +290,11 @@
                                 endfor
                               endif
                             -%}
-                            {%- if child_icon != blank -%}
+                            {%- if child_collection_image -%}
+                              <span class="menu-drawer__link-icon">
+                                <img src="{{ child_collection_image | image_url: width: 64 }}" alt="{{ childlink.title }}" loading="lazy">
+                              </span>
+                            {%- elsif child_icon != blank -%}
                               <span class="menu-drawer__link-icon">
                                 <img src="{{ child_icon | asset_url }}" alt="{{ childlink.title }}" loading="lazy">
                               </span>
@@ -412,8 +430,13 @@
                                   {% endif %}
                                   <span class="menu-drawer__menu-item-text wrap-text">
                                     {%- liquid
+                                      assign child_collection_image = nil
+                                      if childlink.type == 'collection_link' and childlink.object.image != blank
+                                        assign child_collection_image = childlink.object.image
+                                      endif
+
                                       assign child_icon = ''
-                                      if icon_map != blank
+                                      if child_collection_image == nil and icon_map != blank
                                         assign icon_entries = icon_map | split: '||'
                                         for entry in icon_entries
                                           if entry contains '::'
@@ -428,7 +451,11 @@
                                         endfor
                                       endif
                                     -%}
-                                    {%- if child_icon != blank -%}
+                                    {%- if child_collection_image -%}
+                                      <span class="menu-drawer__link-icon">
+                                        <img src="{{ child_collection_image | image_url: width: 64 }}" alt="{{ childlink.title }}" loading="lazy">
+                                      </span>
+                                    {%- elsif child_icon != blank -%}
                                       <span class="menu-drawer__link-icon">
                                         <img src="{{ child_icon | asset_url }}" alt="{{ childlink.title }}" loading="lazy">
                                       </span>

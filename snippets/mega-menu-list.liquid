@@ -148,9 +148,15 @@
         {% endif %}
         
         {%- liquid
-          # Check if this link has an icon mapping
+          # Priority 1: Collection image
+          assign link_collection_image = nil
+          if link.type == 'collection_link' and link.object.image != blank
+            assign link_collection_image = link.object.image
+          endif
+
+          # Priority 2: Manual icon mapping (fallback)
           assign current_icon = ''
-          if icon_map != blank
+          if link_collection_image == nil and icon_map != blank
             assign icon_entries = icon_map | split: '||'
             for entry in icon_entries
               if entry contains '::'
@@ -169,7 +175,11 @@
         <span
           class="mega-menu__link-title wrap-text"
         >
-          {%- if current_icon != blank -%}
+          {%- if link_collection_image -%}
+            <span class="mega-menu__link-icon">
+              <img src="{{ link_collection_image | image_url: width: 64 }}" alt="{{ link.title }}" loading="lazy">
+            </span>
+          {%- elsif current_icon != blank -%}
             <span class="mega-menu__link-icon">
               <img src="{{ current_icon | asset_url }}" alt="{{ link.title }}" loading="lazy">
             </span>
@@ -186,9 +196,15 @@
         >
           {% for childLink in link.links %}
             {%- liquid
-              # Check if this childLink has an icon mapping
+              # Priority 1: Collection image
+              assign child_collection_image = nil
+              if childLink.type == 'collection_link' and childLink.object.image != blank
+                assign child_collection_image = childLink.object.image
+              endif
+
+              # Priority 2: Manual icon mapping (fallback)
               assign child_icon = ''
-              if icon_map != blank
+              if child_collection_image == nil and icon_map != blank
                 assign icon_entries = icon_map | split: '||'
                 for entry in icon_entries
                   if entry contains '::'
@@ -215,7 +231,11 @@
                 class="mega-menu__link"
               >
                 <span class="mega-menu__link-title wrap-text">
-                  {%- if child_icon != blank -%}
+                  {%- if child_collection_image -%}
+                    <span class="mega-menu__link-icon">
+                      <img src="{{ child_collection_image | image_url: width: 64 }}" alt="{{ childLink.title }}" loading="lazy">
+                    </span>
+                  {%- elsif child_icon != blank -%}
                     <span class="mega-menu__link-icon">
                       <img src="{{ child_icon | asset_url }}" alt="{{ childLink.title }}" loading="lazy">
                     </span>
