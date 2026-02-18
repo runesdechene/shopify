@@ -17,7 +17,6 @@
     justify-content: {{ section_settings.items_alignment }};
   }
 {% endstyle %}
-
 <div class="similar-products color-{{ section_settings.color_scheme }}">
   <div class="similar-products__container spacing-style section section--full-width">
     <div class="similar-products__content-wrapper section-content-wrapper {{ section_settings.section_width }}">
@@ -25,8 +24,12 @@
 
       {%- if illustration_metafield != blank -%}
         {%- assign illustration = illustration_metafield.value -%}
-        {%- assign illustration_handle = illustration.system.handle -%}
-        {%- assign dynamic_collection = collections[illustration_handle] -%}
+        {%- comment -%} Priorité 1 : collection liée au métaobjet illustration {%- endcomment -%}
+        {%- assign dynamic_collection = illustration.collection.value -%}
+        {%- comment -%} Fallback : collection par handle du métaobjet {%- endcomment -%}
+        {%- if dynamic_collection == blank -%}
+          {%- assign dynamic_collection = collections[illustration.system.handle] -%}
+        {%- endif -%}
 
         {%- if dynamic_collection != blank and dynamic_collection.products.size > 0 -%}
           <div class="rdc-aussi-disponible" {{ section.shopify_attributes }}>

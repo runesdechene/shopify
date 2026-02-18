@@ -12,14 +12,6 @@
     "section": {
       "type": "section",
       "blocks": {
-        "custom_liquid_Ubhh9q": {
-          "type": "custom-liquid",
-          "name": "t:names.custom_liquid",
-          "settings": {
-            "custom_liquid": "{% if template.name == 'collection' and collection.metafields.custom.illustrations != blank %}\n  true\n{% endif %}"
-          },
-          "blocks": {}
-        },
         "group_eKKwrD": {
           "type": "group",
           "name": "t:names.group",
@@ -413,7 +405,6 @@
         }
       },
       "block_order": [
-        "custom_liquid_Ubhh9q",
         "group_eKKwrD",
         "group_7Xy78f",
         "group_jbMCxW"

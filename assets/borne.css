@@ -390,6 +390,10 @@ cart-drawer-component {
 
 /* Counter */
 .rdc-borne__carousel-counter {
+  position: fixed;
+  bottom: 40px;
+  left: 0;
+  right: 0;
   text-align: center;
   padding: 8px 0;
   font-size: 1rem;
@@ -417,9 +421,8 @@ cart-drawer-component {
   padding: 0;
   border: none;
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(6px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background: transparent;
   cursor: pointer;
   overflow: hidden;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -443,7 +446,7 @@ cart-drawer-component {
 .rdc-borne__illustration-card-img img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .rdc-borne__illustration-card-info {
@@ -455,26 +458,33 @@ cart-drawer-component {
 }
 
 .rdc-borne__illustration-card-name {
-  font-size: 1.4rem;
+  font-size: 2.4rem;
   font-weight: 700;
   color: var(--color-foreground, #3a3a3a);
   text-transform: uppercase;
   letter-spacing: 0.03em;
+  padding-block: 30px 10px;
+  font-family: var(--font-heading--family, sans-serif);
 }
 
 .rdc-borne__illustration-card-summary {
-  font-size: 0.9rem;
+  font-size: 1.2rem;
   color: #888;
   font-style: italic;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  font-family: var(--font-body--family, sans-serif);
 }
 
 .rdc-borne__illustration-card-artist {
-  font-size: 0.85rem;
+  font-size: 1.15rem;
   color: #6d645e;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding-top: 20px;
+    font-family: var(--font-accent--family, sans-serif);
 }
 
 /* === CARTES PRODUIT MÉTAOBJET === */
