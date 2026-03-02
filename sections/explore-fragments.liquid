@@ -33,12 +33,6 @@
     color: {{ section.settings.card_summary_color }};
   }
 
-  #section-{{ section.id }} .fragment-btn {
-    background: {{ section.settings.button_bg_color }};
-    color: {{ section.settings.button_text_color }};
-    border-radius: {{ section.settings.button_border_radius }}px;
-  }
-
   #section-{{ section.id }} .fragments-back-btn {
     background: {{ section.settings.nav_button_bg }};
     color: {{ section.settings.nav_button_color }};
@@ -107,36 +101,64 @@
     <div class="fragments-filters">
       <button class="fragments-filter active" data-filter="all">{{ section.settings.filter_all_label }}</button>
 
-      {%- comment -%} Collecter tous les tags uniques depuis les metaobjects {%- endcomment -%}
-      {%- assign tags_field = section.settings.tags_field_handle | default: 'tags' -%}
-      {%- assign all_tags = '' -%}
+      {%- comment -%} Collecter toutes les collections principales uniques (titre::image_url::couleur) {%- endcomment -%}
+      {%- assign all_collections = '' -%}
+      {%- assign seen_titles = '' -%}
       {% for relique in reliques %}
-        {%- assign relique_tags = relique[tags_field] -%}
-        {% if relique_tags != blank %}
-          {%- comment -%} Gérer à la fois les champs de type liste et les listes de valeurs {%- endcomment -%}
-          {%- if relique_tags.value -%}
-            {%- assign tags_to_process = relique_tags.value -%}
-          {%- else -%}
-            {%- assign tags_to_process = relique_tags -%}
-          {%- endif -%}
-          {% for tag in tags_to_process %}
-            {%- assign clean_tag = tag | strip -%}
-            {%- unless all_tags contains clean_tag -%}
-              {%- if all_tags == '' -%}
-                {%- assign all_tags = clean_tag -%}
-              {%- else -%}
-                {%- assign all_tags = all_tags | append: '|' | append: clean_tag -%}
-              {%- endif -%}
-            {%- endunless -%}
-          {% endfor %}
-        {% endif %}
+        {%- assign col_principale = nil -%}
+        {%- if relique.collection_principale.value -%}
+          {%- assign col_principale = relique.collection_principale.value -%}
+        {%- elsif relique.collection_principale != blank -%}
+          {%- assign col_principale = relique.collection_principale -%}
+        {%- endif -%}
+        {%- if col_principale != nil and col_principale.title != blank -%}
+          {%- assign col_title = col_principale.title | strip -%}
+          {%- unless seen_titles contains col_title -%}
+            {%- assign col_img = '' -%}
+            {%- if col_principale.image -%}
+              {%- assign col_img = col_principale.image | image_url: width: 64 -%}
+            {%- endif -%}
+            {%- assign col_color = '' -%}
+            {%- if col_principale.metafields.custom.couleur != blank -%}
+              {%- assign col_color = col_principale.metafields.custom.couleur -%}
+            {%- endif -%}
+            {%- assign col_nom2 = '' -%}
+            {%- if col_principale.metafields.custom.nom_secondaire != blank -%}
+              {%- assign col_nom2 = col_principale.metafields.custom.nom_secondaire -%}
+            {%- endif -%}
+            {%- assign col_entry = col_title | append: '::' | append: col_img | append: '::' | append: col_color | append: '::' | append: col_nom2 -%}
+            {%- if all_collections == '' -%}
+              {%- assign all_collections = col_entry -%}
+              {%- assign seen_titles = col_title -%}
+            {%- else -%}
+              {%- assign all_collections = all_collections | append: '|' | append: col_entry -%}
+              {%- assign seen_titles = seen_titles | append: '|' | append: col_title -%}
+            {%- endif -%}
+          {%- endunless -%}
+        {%- endif -%}
       {% endfor %}
 
-      {%- comment -%} Afficher un bouton pour chaque tag unique {%- endcomment -%}
-      {%- assign tags_array = all_tags | split: '|' -%}
-      {% for tag in tags_array %}
-        <button class="fragments-filter" data-filter="{{ tag | handleize }}">
-          {{ tag }}
+      {%- comment -%} Afficher un bouton pour chaque collection unique {%- endcomment -%}
+      {%- assign collections_array = all_collections | split: '|' -%}
+      {% for col_entry in collections_array %}
+        {%- assign col_parts = col_entry | split: '::' -%}
+        {%- assign col_name = col_parts[0] -%}
+        {%- assign col_img_url = col_parts[1] -%}
+        {%- assign col_color = col_parts[2] -%}
+        {%- assign col_nom2 = col_parts[3] -%}
+        <button class="fragments-filter" data-filter="{{ col_name | handleize }}"
+          {%- if col_color != blank %} style="--filter-color: {{ col_color }};"{% endif -%}
+        >
+          {%- if col_img_url != blank -%}
+            <span class="fragments-filter-img-wrap">
+              <img class="fragments-filter-img" src="{{ col_img_url }}" alt="{{ col_name | escape }}" loading="lazy">
+            </span>
+          {%- endif -%}
+          {%- if col_nom2 != blank -%}
+            {{ col_nom2 }}
+          {%- else -%}
+            {{ col_name }}
+          {%- endif -%}
         </button>
       {% endfor %}
     </div>
@@ -197,25 +219,17 @@
 
       {% if reliques.size > 0 %}
         {% for relique in reliques %}
-          {%- comment -%} Convertir la liste de tags en chaîne {%- endcomment -%}
-          {%- assign tags_field = section.settings.tags_field_handle | default: 'tags' -%}
-          {%- assign relique_tags = relique[tags_field] -%}
+          {%- comment -%} Récupérer le titre de la collection principale {%- endcomment -%}
           {%- assign tags_string = '' -%}
-          {% if relique_tags != blank %}
-            {%- comment -%} Gérer à la fois les champs de type liste et les listes de valeurs {%- endcomment -%}
-            {%- if relique_tags.value -%}
-              {%- assign tags_to_process = relique_tags.value -%}
-            {%- else -%}
-              {%- assign tags_to_process = relique_tags -%}
-            {%- endif -%}
-            {% for tag in tags_to_process %}
-              {%- if forloop.first -%}
-                {%- assign tags_string = tag -%}
-              {%- else -%}
-                {%- assign tags_string = tags_string | append: ', ' | append: tag -%}
-              {%- endif -%}
-            {% endfor %}
-          {% endif %}
+          {%- assign card_col_principale = nil -%}
+          {%- if relique.collection_principale.value -%}
+            {%- assign card_col_principale = relique.collection_principale.value -%}
+          {%- elsif relique.collection_principale != blank -%}
+            {%- assign card_col_principale = relique.collection_principale -%}
+          {%- endif -%}
+          {%- if card_col_principale != nil and card_col_principale.title != blank -%}
+            {%- assign tags_string = card_col_principale.title -%}
+          {%- endif -%}
 
           {%- comment -%} Récupérer l'URL et la date de l'article {%- endcomment -%}
           {%- assign article_url = '' -%}
@@ -421,11 +435,6 @@
     <span class="counter-current">1</span> / <span class="counter-total">{{ reliques.size }}</span>
   </div>
 
-  {%- comment -%} Bouton d'action double fixe {%- endcomment -%}
-  <div class="fragments-fixed-actions" id="fragments-fixed-actions-{{ section.id }}">
-    <button type="button" class="fragment-btn" data-action="shop">Découvrir les produits</button>
-  </div>
-
   {%- comment -%} Images de décoration en bas {%- endcomment -%}
   {%- assign opacity_value = section.settings.bottom_images_opacity | default: 100 | divided_by: 100.0 -%}
   <div class="bottom-decoration-images" style="opacity: {{ opacity_value }};">
@@ -526,13 +535,6 @@
       "label": "Handle du champ résumé",
       "info": "Nom du champ résumé du métaobjet (ex: resume, description)",
       "default": "resume"
-    },
-    {
-      "type": "text",
-      "id": "tags_field_handle",
-      "label": "Handle du champ tags",
-      "info": "Nom du champ tags du métaobjet (ex: tags, categories)",
-      "default": "tags"
     },
     {
       "type": "header",
@@ -652,38 +654,6 @@
       "id": "card_summary_color",
       "label": "Couleur du résumé",
       "default": "#665f56"
-    },
-    {
-      "type": "header",
-      "content": "Bouton d'action"
-    },
-    {
-      "type": "text",
-      "id": "button_text",
-      "label": "Texte du bouton",
-      "default": "Découvrir les produits"
-    },
-    {
-      "type": "color",
-      "id": "button_bg_color",
-      "label": "Couleur de fond du bouton",
-      "default": "#6d1e1e"
-    },
-    {
-      "type": "color",
-      "id": "button_text_color",
-      "label": "Couleur du texte du bouton",
-      "default": "#e9e4e4"
-    },
-    {
-      "type": "range",
-      "id": "button_border_radius",
-      "min": 0,
-      "max": 50,
-      "step": 2,
-      "unit": "px",
-      "label": "Arrondi du bouton",
-      "default": 50
     },
     {
       "type": "header",

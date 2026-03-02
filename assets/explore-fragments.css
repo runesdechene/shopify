@@ -203,12 +203,16 @@ header, .bar-announcement, footer, .footer-immersif, .footer-utilities
 }
 
 .fragments-filter {
-  padding: 10px 20px;
-  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px 6px 7px;
+  border-radius: 50px;
   cursor: pointer;
   border: none;
   transition: all 0.3s ease;
   font-family: var(--font-accent--family);
+  font-size: 16px;
   font-weight: 600;
   white-space: nowrap;
   flex-shrink: 0;
@@ -217,66 +221,31 @@ header, .bar-announcement, footer, .footer-immersif, .footer-utilities
   border: 1px solid transparent;
 }
 
-/* Couleurs pastel équilibrées pour chaque filtre */
-.fragments-filter:nth-child(1) {
-  background: #f8eed8;
-  color: #5a4d4d;
-  outline: 1px solid currentColor;
+.fragments-filter-img-wrap {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--filter-color);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.fragments-filter:nth-child(2) {
-  background: #f8eed8;
-  color: #5a1e5a;
-  outline: 1px solid currentColor;
+.fragments-filter-img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
 }
 
-.fragments-filter:nth-child(3) {
-  background: #f8eed8;
-  color: #1e4e5a;
-  outline: 1px solid currentColor;
-}
-
-.fragments-filter:nth-child(4) {
-  background: #f8eed8;
-  color: #1e5a2b;
-  outline: 1px solid currentColor;
-}
-
-.fragments-filter:nth-child(5) {
-  background: #e8f5e8;
-  color: #3a6b3a;
-  outline: 1px solid currentColor;
-}
-
-.fragments-filter:nth-child(6) {
-  background: #fce8f0;
-  color: #7a4560;
-}
-
-.fragments-filter:nth-child(7) {
-  background: #e8f5fc;
-  color: #3a5f77;
-}
-
-.fragments-filter:nth-child(8) {
-  background: #fdf0e8;
-  color: #7a5738;
-}
-
-.fragments-filter:nth-child(9) {
-  background: #f3e8f7;
-  color: #604577;
-}
-
-.fragments-filter:nth-child(10) {
-  background: #e8f7f0;
-  color: #3a7760;
-}
-
-/* Répéter les couleurs pour les filtres suivants */
-.fragments-filter:nth-child(n + 11) {
-  background: #e8f0f5;
-  color: #3a5366;
+/* Couleur dynamique depuis la collection (--filter-color) */
+.fragments-filter {
+  --filter-color: #5a4d4d;
+  background: color-mix(in srgb, var(--filter-color) 10%, transparent);
+  border: 1.5px solid var(--filter-color) !important;
+  color: var(--filter-color);
 }
 
 .fragments-filter:hover {
@@ -287,7 +256,6 @@ header, .bar-announcement, footer, .footer-immersif, .footer-utilities
 .fragments-filter.active {
   transform: scale(1.05);
   opacity: 1;
-  border: 1px solid currentColor;
 }
 
 /* ========================================
@@ -744,45 +712,6 @@ header, .bar-announcement, footer, .footer-immersif, .footer-utilities
 }
 
 /* ========================================
-   BOUTONS D'ACTION FIXES
-   ======================================== */
-
-.fragments-fixed-actions {
-  position: fixed;
-  bottom: 8vh;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 15px;
-  z-index: 100;
-
-}
-
-.fragment-btn {
-  display: inline-block;
-  padding: 18px 40px;
-  font-size: 1rem;
-  font-weight: 800;
-  font-family: var(--font-accent--family);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: none;
-  color: #e9e4e4;
-  background: rgb(109, 30, 30);
-  border-radius: 50px;
-  padding: 22px 90px;
-}
-
-
-.fragment-btn:hover {
-  transform: scale(1.1);
-  filter: brightness(1.1);
-}
-
-/* ========================================
    IMAGES DE DÉCORATION EN BAS
    ======================================== */
 
@@ -1058,25 +987,6 @@ header, .bar-announcement, footer, .footer-immersif, .footer-utilities
   .fragment-card 
   {
     height: 75vh;
-  }
-
-  .fragments-fixed-actions {
-    bottom: 20px;
-  }
-
-  /* Adapter le dual-btn pour mobile */
-  .fragment-dual-btn {
-    width: 90vw;
-    max-width: 90vw;
-  }
-
-  .fragment-btn {
-    flex: 1;
-    padding: 16px 40px;
-    width: 80vw;
-    font-size: 0.9rem;
-    letter-spacing: 0.05em;
-    text-align: center;
   }
 
   /* Réduire l'opacité des images du bas */

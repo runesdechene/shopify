@@ -22,11 +22,6 @@ class FragmentsCarousel {
     this.searchInput = section.querySelector(".fragments-search-input");
     this.filters = Array.from(section.querySelectorAll(".fragments-filter"));
     this.excerptElement = section.querySelector(".fragments-excerpt");
-    this.fixedActionsContainer = section.querySelector(
-      ".fragments-fixed-actions",
-    );
-    this.fixedBtnShop = section.querySelector(".fragment-btn");
-
     this.currentIndex = 0;
     this.totalCards = this.cards.length;
     this.scrollTimeout = null;
@@ -41,32 +36,6 @@ class FragmentsCarousel {
     this.checkNewBadges();
 
     this.init();
-  }
-
-  /**
-   * Configurer le bouton ACHETER
-   */
-  setupShopButton() {
-    console.log("🔧 setupShopButton appelé");
-    console.log("🔍 fixedBtnShop:", this.fixedBtnShop);
-
-    if (!this.fixedBtnShop) {
-      console.error("❌ Bouton ACHETER non trouvé !");
-      console.log(
-        "🔍 Recherche manuelle:",
-        this.section.querySelector(".fragment-btn-shop"),
-      );
-      return;
-    }
-
-    this.fixedBtnShop.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      console.log("🛍️ Clic sur ACHETER détecté");
-      this.redirectToCollectionWithFilter();
-    });
-
-    console.log("✅ Listener ACHETER configuré sur:", this.fixedBtnShop);
   }
 
   /**
@@ -178,15 +147,10 @@ class FragmentsCarousel {
     // Toggle thème sombre
     this.setupThemeToggle();
 
-    // Configurer le bouton ACHETER
-    this.setupShopButton();
-
     // Centrer la carte du milieu au chargement
     setTimeout(() => {
       const middleIndex = Math.floor(this.totalCards / 2);
       this.scrollToCard(middleIndex);
-      // Mettre à jour le bouton avec le nombre de produits
-      this.updateFixedButtons();
     }, 100);
   }
 
@@ -352,7 +316,6 @@ class FragmentsCarousel {
     if (this.excerptElement) {
       this.updateExcerpt(this.currentIndex);
     }
-    this.updateFixedButtons();
     this.updateBackgroundImage();
   }
 
@@ -659,7 +622,7 @@ class FragmentsCarousel {
         });
         this.scrollToCard(firstVisibleIndex);
         this.updateIndicators();
-        this.updateFixedButtons();
+
 
         // Désactiver le flag après le scroll
         setTimeout(() => {
@@ -763,7 +726,7 @@ class FragmentsCarousel {
         });
         this.scrollToCard(firstVisibleIndex);
         this.updateIndicators();
-        this.updateFixedButtons();
+
 
         // Désactiver le flag après le scroll
         setTimeout(() => {
@@ -872,41 +835,6 @@ class FragmentsCarousel {
   }
 
   /**
-   * Rediriger vers la collection reliée au métaobjet
-   */
-  redirectToCollectionWithFilter() {
-    console.log("🔍 Début de redirectToCollectionWithFilter");
-    console.log("📊 currentIndex:", this.currentIndex);
-    console.log("📦 Total cards:", this.cards.length);
-
-    const currentCard = this.cards[this.currentIndex];
-
-    if (!currentCard) {
-      console.error("❌ Pas de carte courante trouvée");
-      return;
-    }
-
-    console.log("✅ Carte courante trouvée:", currentCard);
-    console.log("📋 Datasets de la carte:", currentCard.dataset);
-
-    // Récupérer l'URL de la collection depuis le métaobjet
-    const collectionUrl = currentCard.dataset.collectionUrl;
-
-    if (!collectionUrl) {
-      console.error("⚠️ Pas de collection reliée à cette relique");
-      console.log(
-        "💡 Astuce: Ajoute une collection dans le champ 'collection' du métaobjet",
-      );
-      return;
-    }
-
-    console.log("🛍️ Redirection vers collection:", collectionUrl);
-
-    // Rediriger
-    window.location.href = collectionUrl;
-  }
-
-  /**
    * Configuration du toggle thème sombre
    */
   setupThemeToggle() {
@@ -957,48 +885,6 @@ class FragmentsCarousel {
         img.src = isDark ? darkImageUrl : lightImageUrl;
       }
     });
-  }
-
-  /**
-   * Mettre à jour les boutons fixes en fonction de la carte active
-   */
-  updateFixedButtons() {
-    if (!this.fixedBtnShop) return;
-
-    const currentCard = this.cards[this.currentIndex];
-    if (!currentCard) return;
-
-    // Récupérer le nombre de produits associés
-    const productCount = parseInt(currentCard.dataset.productCount) || 0;
-
-    // Récupérer l'URL de la collection pour savoir si le bouton doit être actif
-    const collectionUrl = currentCard.dataset.collectionUrl || "";
-
-    // Mettre à jour le bouton
-    if (collectionUrl) {
-      // Bouton actif si une collection est reliée
-      if (productCount > 0) {
-        // Afficher "Voir X produits"
-        const productText = productCount === 1 ? "produit" : "produits";
-        this.fixedBtnShop.textContent = `Voir ${productCount} ${productText}`;
-      } else {
-        // Collection vide : texte générique
-        this.fixedBtnShop.textContent = "Voir la collection";
-      }
-      this.fixedBtnShop.style.opacity = "1";
-      this.fixedBtnShop.style.pointerEvents = "auto";
-      this.fixedBtnShop.style.cursor = "pointer";
-      this.fixedBtnShop.style.backgroundColor = ""; // Réinitialiser la couleur
-      this.fixedBtnShop.style.color = ""; // Réinitialiser la couleur du texte
-    } else {
-      // Pas de collection : bouton désactivé
-      this.fixedBtnShop.textContent = "Aucune collection";
-      this.fixedBtnShop.style.opacity = "0.5";
-      this.fixedBtnShop.style.pointerEvents = "none";
-      this.fixedBtnShop.style.cursor = "not-allowed";
-      this.fixedBtnShop.style.backgroundColor = "#707070ff"; // Gris
-      this.fixedBtnShop.style.color = "#fff"; // Texte blanc
-    }
   }
 
   /**
