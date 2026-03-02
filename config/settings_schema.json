@@ -390,6 +390,12 @@
         "info": "Entrez le nom exact de la Google Font (ex: 'Montserrat', 'Playfair Display')"
       },
       {
+        "type": "text",
+        "id": "custom_google_font_fragment",
+        "label": "Google Font (Fragment)",
+        "info": "Police pour les textes d'histoire des Fragments (ex: 'Alegreya'). Utilisée comme --font-fragment--family."
+      },
+      {
         "type": "header",
         "content": "t:content.text_presets"
       },

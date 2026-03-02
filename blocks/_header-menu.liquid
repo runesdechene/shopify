@@ -22,7 +22,12 @@
         class: 'header__drawer--mobile',
         linklist: block_settings.menu,
         data_header_drawer_type: 'mobile-drawer',
-        menu_icons_mapping: block_settings.menu_icons_mapping
+        menu_icons_mapping: block_settings.menu_icons_mapping,
+        column2_links: block_settings.mega_menu_column2,
+        column2_title: block_settings.mega_menu_column2_title,
+        column3_links: block_settings.mega_menu_column3,
+        column3_title: block_settings.mega_menu_column3_title,
+        hot_links: block_settings.mega_menu_hot_links
       %}
     </div>
 
@@ -127,7 +132,13 @@
                       menu_content_type: menu_content_type,
                       content_aspect_ratio: ratio,
                       image_border_radius: image_border_radius,
-                      menu_icons_mapping: block_settings.menu_icons_mapping
+                      menu_icons_mapping: block_settings.menu_icons_mapping,
+                      column1_title: block_settings.mega_menu_column1_title,
+                      column2_links: block_settings.mega_menu_column2,
+                      column2_title: block_settings.mega_menu_column2_title,
+                      column3_links: block_settings.mega_menu_column3,
+                      column3_title: block_settings.mega_menu_column3_title,
+                      hot_links: block_settings.mega_menu_hot_links
                     %}
                   </div>
                 </div>
@@ -727,6 +738,47 @@
     display: inline-flex;
     align-items: center;
   }
+
+  /* Layout méga menu avec colonnes supplémentaires */
+  .mega-menu__list--has-columns {
+    display: flex;
+    gap: 0 60px;
+  }
+
+  .mega-menu__column--col2 {
+    border-left: 1px solid rgba(0, 0, 0, 0.08);
+    padding-left: 40px;
+    flex-shrink: 0;
+  }
+
+  .mega-menu__col2-title {
+    display: block;
+    font-weight: var(--menu-parent-font-weight, 600);
+    font-size: var(--menu-parent-font-size, 0.875rem);
+    color: var(--menu-parent-font-color, currentColor);
+    margin-bottom: 8px;
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.7rem;
+  }
+
+  .mega-menu__hot-badge {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 6px;
+    padding: 1px 7px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff;
+    background: linear-gradient(135deg, #e74c3c, #f39c12);
+    border-radius: 20px;
+    white-space: nowrap;
+    vertical-align: middle;
+    line-height: 1.6;
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -965,6 +1017,63 @@
       "label": "Mapping Icônes",
       "info": "Format: Nom du lien|nom-image.extension (un par ligne). Utilisez des images PNG/JPG/WEBP.",
       "placeholder": "Collection celtique|triskell.png\nCollection scandinave|vegvisir.png\nCollection animalière|dragon.png"
+    },
+    {
+      "type": "header",
+      "content": "Méga menu — Colonnes personnalisées"
+    },
+    {
+      "type": "text",
+      "id": "mega_menu_column1_title",
+      "label": "Titre colonne 1",
+      "info": "Titre affiché au-dessus de la première colonne (visible uniquement si des colonnes 2 ou 3 sont configurées).",
+      "placeholder": "Nos produits"
+    },
+    {
+      "type": "header",
+      "content": "Méga menu — Colonne secondaire"
+    },
+    {
+      "type": "textarea",
+      "id": "mega_menu_column2",
+      "label": "Liens en colonne 2",
+      "info": "Noms exacts des liens à afficher dans une seconde colonne (un par ligne).",
+      "placeholder": "Collection celtique\nCollection scandinave\nCollection Byzantine"
+    },
+    {
+      "type": "text",
+      "id": "mega_menu_column2_title",
+      "label": "Titre colonne 2",
+      "info": "Titre affiché au-dessus de la colonne secondaire (optionnel).",
+      "placeholder": "Nos collections"
+    },
+    {
+      "type": "header",
+      "content": "Méga menu — Colonne tertiaire"
+    },
+    {
+      "type": "textarea",
+      "id": "mega_menu_column3",
+      "label": "Liens en colonne 3",
+      "info": "Noms exacts des liens à afficher dans une troisième colonne (un par ligne).",
+      "placeholder": "Collection Byzantine\nCollection Romaine (à venir)"
+    },
+    {
+      "type": "text",
+      "id": "mega_menu_column3_title",
+      "label": "Titre colonne 3",
+      "info": "Titre affiché au-dessus de la colonne tertiaire (optionnel)."
+    },
+    {
+      "type": "header",
+      "content": "Badges"
+    },
+    {
+      "type": "textarea",
+      "id": "mega_menu_hot_links",
+      "label": "Liens HOT 🔥",
+      "info": "Noms exacts des liens qui afficheront un badge « 🔥 HOT » (un par ligne).",
+      "placeholder": "Collection celtique\nExplorer nos Fragments"
     }
   ]
 }

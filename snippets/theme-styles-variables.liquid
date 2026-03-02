@@ -167,6 +167,7 @@
     --font-accent--family: {% if settings.custom_google_font_accent != blank %}'{{ settings.custom_google_font_accent }}', {% endif %}{{ settings.type_accent_font.family }}, {{ settings.type_accent_font.fallback_families }};
     --font-accent--style: {{ settings.type_accent_font.style }};
     --font-accent--weight: {{ settings.type_accent_font.weight }};
+    --font-fragment--family: {% if settings.custom_google_font_fragment != blank %}'{{ settings.custom_google_font_fragment }}', {% endif %}serif;
 
     /* Margin sizes */
     --font-h1--spacing: 0.25em;

@@ -968,6 +968,7 @@
                 "text_Kj7gTA": {
                   "type": "text",
                   "name": "t:names.text",
+                  "disabled": true,
                   "settings": {
                     "text": "<p>{{ closest.product.metafields.custom.base.value.description | metafield_tag }}</p>",
                     "width": "fit-content",
@@ -1531,11 +1532,12 @@
       "custom_css": [],
       "name": "Lecture Fragment",
       "settings": {
-        "show_section": "{% if product.metafields.custom.illustration_produit.value.histoire != blank %}true{% else %}false{% endif %}",
+        "show_section": "{% if product.metafields.custom.illustration_produit.value.son_histoire != blank %}true{% else %}false{% endif %}",
+        "collapsed_default": false,
         "pretitle": "L'HISTOIRE DERRIÈRE CE FRAGMENT",
         "title": "{{ product.metafields.custom.illustration_produit.value.nom.value }}",
         "artist": "{{ product.metafields.custom.illustration_produit.value.artiste.value.nom.value }}",
-        "description": "<p>{{ product.metafields.custom.illustration_produit.value.histoire | metafield_tag }}</p>",
+        "description": "{{ product.metafields.custom.illustration_produit.value.son_histoire | metafield_tag }}",
         "icon_image": "shopify://shop_images/grimoire.png",
         "main_illustration": "{{ product.metafields.custom.illustration_produit.value.image_pour_fond_clair.value }}",
         "background_image_metaobject": "{{ product.metafields.custom.illustration_produit.value.image_fond_de_fragment.value }}",

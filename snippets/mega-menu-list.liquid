@@ -40,6 +40,49 @@
     endfor
   endif
 
+  # Parse column 2 links (newline-separated list of link titles)
+  assign col2_list = ''
+  assign has_column2 = false
+  if column2_links != blank
+    assign col2_lines = column2_links | newline_to_br | split: '<br />'
+    for line in col2_lines
+      assign clean_line = line | strip
+      if clean_line != ''
+        assign col2_list = col2_list | append: '||' | append: clean_line | append: '||'
+        assign has_column2 = true
+      endif
+    endfor
+  endif
+
+  # Parse hot links (badge 🔥 HOT)
+  assign hot_list = ''
+  if hot_links != blank
+    assign hot_lines = hot_links | newline_to_br | split: '<br />'
+    for line in hot_lines
+      assign clean_line = line | strip
+      if clean_line != ''
+        assign hot_list = hot_list | append: '||' | append: clean_line | append: '||'
+      endif
+    endfor
+  endif
+
+  # Parse column 3 links
+  assign col3_list = ''
+  assign has_column3 = false
+  if column3_links != blank
+    assign col3_lines = column3_links | newline_to_br | split: '<br />'
+    for line in col3_lines
+      assign clean_line = line | strip
+      if clean_line != ''
+        assign col3_list = col3_list | append: '||' | append: clean_line | append: '||'
+        assign has_column3 = true
+      endif
+    endfor
+  endif
+
+  # Track whether column 1 title has been rendered
+  assign col1_title_rendered = false
+
   ##
   # We only eager load heavy elements of the page when rendering this template
   # through the Section Rendering API.
@@ -87,10 +130,28 @@
 %}
 <ul
   data-menu-list-id="{{ id }}"
-  class="mega-menu__list list-unstyled"
+  class="mega-menu__list list-unstyled{% if has_column2 or has_column3 %} mega-menu__list--has-columns{% endif %}"
   style="--menu-image-border-radius: {{ image_border_radius }}px;"
 >
   {% for link in parent_link.links %}
+    {% liquid
+      # Si ce lien est dans la colonne 2, on le saute ici (rendu plus bas)
+      assign is_col2_link = false
+      assign is_col3_link = false
+      if has_column2
+        assign col2_check = '||' | append: link.title | append: '||'
+        if col2_list contains col2_check
+          assign is_col2_link = true
+        endif
+      endif
+      if has_column3
+        assign col3_check = '||' | append: link.title | append: '||'
+        if col3_list contains col3_check
+          assign is_col3_link = true
+        endif
+      endif
+    %}
+    {% if is_col2_link or is_col3_link %}{% continue %}{% endif %}
     {% liquid
       # Decide whether to open a column span, and how many columns of the grid to span
       if forloop.first or open_column_span == false
@@ -121,7 +182,13 @@
         echo '<li class="mega-menu__column ' | append: span_class | append: '">'
       endif
     %}
-    <div>
+    {%- if col1_title_rendered == false and column1_title != blank -%}
+      {%- if has_column2 or has_column3 -%}
+        <span class="mega-menu__col2-title">{{ column1_title }}</span>
+        {%- assign col1_title_rendered = true -%}
+      {%- endif -%}
+    {%- endif -%}
+    <div data-link-type="{{ link.type }}">
       <a
         href="{{ link.url }}"
         class="mega-menu__link {% if link.links != blank %}mega-menu__link--parent{% endif %}"
@@ -185,6 +252,7 @@
             </span>
           {%- endif -%}
           {{- link.title -}}
+          {%- if hot_list != blank -%}{%- assign hot_check = '||' | append: link.title | append: '||' -%}{%- if hot_list contains hot_check -%}<span class="mega-menu__hot-badge">🔥 HOT</span>{%- endif -%}{%- endif -%}
         </span>
       </a>
       {% if link.links != blank %}
@@ -241,6 +309,7 @@
                     </span>
                   {%- endif -%}
                   {{- childLink.title -}}
+                  {%- if hot_list != blank -%}{%- assign hot_check = '||' | append: childLink.title | append: '||' -%}{%- if hot_list contains hot_check -%}<span class="mega-menu__hot-badge">🔥 HOT</span>{%- endif -%}{%- endif -%}
                 </span>
               </a>
             </li>
@@ -268,6 +337,110 @@
       endif
     %}
   {% endfor %}
+
+  {%- comment -%} Colonne 2 : liens configurés dans le schema {%- endcomment -%}
+  {% if has_column2 %}
+    <li class="mega-menu__column mega-menu__column--col2">
+      {% if column2_title != blank %}
+        <span class="mega-menu__col2-title">{{ column2_title }}</span>
+      {% endif %}
+      {% for link in parent_link.links %}
+        {%- assign col2_check = '||' | append: link.title | append: '||' -%}
+        {% if col2_list contains col2_check %}
+          <div data-link-type="{{ link.type }}">
+            <a href="{{ link.url }}" class="mega-menu__link">
+              {%- liquid
+                assign link_collection_image = nil
+                if link.type == 'collection_link' and link.object.image != blank
+                  assign link_collection_image = link.object.image
+                endif
+
+                assign current_icon = ''
+                if link_collection_image == nil and icon_map != blank
+                  assign icon_entries = icon_map | split: '||'
+                  for entry in icon_entries
+                    if entry contains '::'
+                      assign entry_parts = entry | split: '::'
+                      assign entry_name = entry_parts[0] | strip
+                      assign entry_icon = entry_parts[1] | strip
+                      if entry_name == link.title
+                        assign current_icon = entry_icon
+                        break
+                      endif
+                    endif
+                  endfor
+                endif
+              -%}
+              <span class="mega-menu__link-title wrap-text">
+                {%- if link_collection_image -%}
+                  <span class="mega-menu__link-icon">
+                    <img src="{{ link_collection_image | image_url: width: 64 }}" alt="{{ link.title }}" loading="lazy">
+                  </span>
+                {%- elsif current_icon != blank -%}
+                  <span class="mega-menu__link-icon">
+                    <img src="{{ current_icon | asset_url }}" alt="{{ link.title }}" loading="lazy">
+                  </span>
+                {%- endif -%}
+                {{- link.title -}}
+              </span>
+            </a>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </li>
+  {% endif %}
+
+  {%- comment -%} Colonne 3 : liens configurés dans le schema {%- endcomment -%}
+  {% if has_column3 %}
+    <li class="mega-menu__column mega-menu__column--col2">
+      {% if column3_title != blank %}
+        <span class="mega-menu__col2-title">{{ column3_title }}</span>
+      {% endif %}
+      {% for link in parent_link.links %}
+        {%- assign col3_check = '||' | append: link.title | append: '||' -%}
+        {% if col3_list contains col3_check %}
+          <div data-link-type="{{ link.type }}">
+            <a href="{{ link.url }}" class="mega-menu__link">
+              {%- liquid
+                assign link_collection_image = nil
+                if link.type == 'collection_link' and link.object.image != blank
+                  assign link_collection_image = link.object.image
+                endif
+
+                assign current_icon = ''
+                if link_collection_image == nil and icon_map != blank
+                  assign icon_entries = icon_map | split: '||'
+                  for entry in icon_entries
+                    if entry contains '::'
+                      assign entry_parts = entry | split: '::'
+                      assign entry_name = entry_parts[0] | strip
+                      assign entry_icon = entry_parts[1] | strip
+                      if entry_name == link.title
+                        assign current_icon = entry_icon
+                        break
+                      endif
+                    endif
+                  endfor
+                endif
+              -%}
+              <span class="mega-menu__link-title wrap-text">
+                {%- if link_collection_image -%}
+                  <span class="mega-menu__link-icon">
+                    <img src="{{ link_collection_image | image_url: width: 64 }}" alt="{{ link.title }}" loading="lazy">
+                  </span>
+                {%- elsif current_icon != blank -%}
+                  <span class="mega-menu__link-icon">
+                    <img src="{{ current_icon | asset_url }}" alt="{{ link.title }}" loading="lazy">
+                  </span>
+                {%- endif -%}
+                {{- link.title -}}
+              </span>
+            </a>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </li>
+  {% endif %}
 </ul>
 
 {% liquid

@@ -49,6 +49,46 @@
       endif
     endfor
   endif
+
+  # Parse column 2 links
+  assign col2_list = ''
+  assign has_column2 = false
+  if column2_links != blank
+    assign col2_lines = column2_links | newline_to_br | split: '<br />'
+    for line in col2_lines
+      assign clean_line = line | strip
+      if clean_line != ''
+        assign col2_list = col2_list | append: '||' | append: clean_line | append: '||'
+        assign has_column2 = true
+      endif
+    endfor
+  endif
+
+  # Parse column 3 links
+  assign col3_list = ''
+  assign has_column3 = false
+  if column3_links != blank
+    assign col3_lines = column3_links | newline_to_br | split: '<br />'
+    for line in col3_lines
+      assign clean_line = line | strip
+      if clean_line != ''
+        assign col3_list = col3_list | append: '||' | append: clean_line | append: '||'
+        assign has_column3 = true
+      endif
+    endfor
+  endif
+
+  # Parse hot links
+  assign hot_list = ''
+  if hot_links != blank
+    assign hot_lines = hot_links | newline_to_br | split: '<br />'
+    for line in hot_lines
+      assign clean_line = line | strip
+      if clean_line != ''
+        assign hot_list = hot_list | append: '||' | append: clean_line | append: '||'
+      endif
+    endfor
+  endif
 %}
 
 <script
@@ -162,6 +202,17 @@
                         tabindex="-1"
                       >
                         {%- for childlink in link.links -%}
+                          {%- assign is_col2_link = false -%}
+                          {%- assign is_col3_link = false -%}
+                          {%- if has_column2 -%}
+                            {%- assign col2_check = '||' | append: childlink.title | append: '||' -%}
+                            {%- if col2_list contains col2_check -%}{%- assign is_col2_link = true -%}{%- endif -%}
+                          {%- endif -%}
+                          {%- if has_column3 -%}
+                            {%- assign col3_check = '||' | append: childlink.title | append: '||' -%}
+                            {%- if col3_list contains col3_check -%}{%- assign is_col3_link = true -%}{%- endif -%}
+                          {%- endif -%}
+                          {%- if is_col2_link or is_col3_link -%}{%- continue -%}{%- endif -%}
                           <li
                             class="menu-drawer__list-item"
                             style="--menu-drawer-animation-index: {{ forloop.index }};"
@@ -218,6 +269,148 @@
                             </a>
                           </li>
                         {%- endfor -%}
+
+                        {%- comment -%} Sous-accordéon colonne 2 {%- endcomment -%}
+                        {%- if has_column2 -%}
+                          {%- assign col2_has_links = false -%}
+                          {%- for childlink in link.links -%}
+                            {%- assign col2_check = '||' | append: childlink.title | append: '||' -%}
+                            {%- if col2_list contains col2_check -%}{%- assign col2_has_links = true -%}{%- break -%}{%- endif -%}
+                          {%- endfor -%}
+                          {%- if col2_has_links -%}
+                            <li class="menu-drawer__list-item menu-drawer__list-item--subgroup">
+                              <accordion-custom>
+                                <details>
+                                  <summary class="menu-drawer__menu-item menu-drawer__menu-item--child menu-drawer__subgroup-summary focus-inset">
+                                    <span class="menu-drawer__menu-item-text wrap-text">{{ column2_title | default: 'Plus' }}</span>
+                                    <span class="svg-wrapper icon-plus">
+                                      {{- 'icon-plus.svg' | inline_asset_content -}}
+                                    </span>
+                                  </summary>
+                                  <ul class="menu-drawer__menu menu-drawer__menu--childlist details-content" role="list" tabindex="-1">
+                                    {%- for childlink in link.links -%}
+                                      {%- assign col2_check = '||' | append: childlink.title | append: '||' -%}
+                                      {%- if col2_list contains col2_check -%}
+                                        <li class="menu-drawer__list-item">
+                                          <a
+                                            href="{{ childlink.url }}"
+                                            class="menu-drawer__menu-item menu-drawer__menu-item--child focus-inset{% if childlink.current %} menu-drawer__menu-item--active{% endif %}"
+                                          >
+                                            <span class="menu-drawer__menu-item-text wrap-text">
+                                              {%- liquid
+                                                assign child_collection_image = nil
+                                                if childlink.type == 'collection_link' and childlink.object.image != blank
+                                                  assign child_collection_image = childlink.object.image
+                                                endif
+                                                assign child_icon = ''
+                                                if child_collection_image == nil and icon_map != blank
+                                                  assign icon_entries = icon_map | split: '||'
+                                                  for entry in icon_entries
+                                                    if entry contains '::'
+                                                      assign entry_parts = entry | split: '::'
+                                                      assign entry_name = entry_parts[0] | strip
+                                                      assign entry_icon = entry_parts[1] | strip
+                                                      if entry_name == childlink.title
+                                                        assign child_icon = entry_icon
+                                                        break
+                                                      endif
+                                                    endif
+                                                  endfor
+                                                endif
+                                              -%}
+                                              {%- if child_collection_image -%}
+                                                <span class="menu-drawer__link-icon">
+                                                  <img src="{{ child_collection_image | image_url: width: 64 }}" alt="{{ childlink.title }}" loading="lazy">
+                                                </span>
+                                              {%- elsif child_icon != blank -%}
+                                                <span class="menu-drawer__link-icon">
+                                                  <img src="{{ child_icon | asset_url }}" alt="{{ childlink.title }}" loading="lazy">
+                                                </span>
+                                              {%- endif -%}
+                                              {{ childlink.title | escape }}
+                                              {%- if hot_list != blank -%}{%- assign hot_check = '||' | append: childlink.title | append: '||' -%}{%- if hot_list contains hot_check -%}<span class="mega-menu__hot-badge">🔥 HOT</span>{%- endif -%}{%- endif -%}
+                                            </span>
+                                          </a>
+                                        </li>
+                                      {%- endif -%}
+                                    {%- endfor -%}
+                                  </ul>
+                                </details>
+                              </accordion-custom>
+                            </li>
+                          {%- endif -%}
+                        {%- endif -%}
+
+                        {%- comment -%} Sous-accordéon colonne 3 {%- endcomment -%}
+                        {%- if has_column3 -%}
+                          {%- assign col3_has_links = false -%}
+                          {%- for childlink in link.links -%}
+                            {%- assign col3_check = '||' | append: childlink.title | append: '||' -%}
+                            {%- if col3_list contains col3_check -%}{%- assign col3_has_links = true -%}{%- break -%}{%- endif -%}
+                          {%- endfor -%}
+                          {%- if col3_has_links -%}
+                            <li class="menu-drawer__list-item menu-drawer__list-item--subgroup">
+                              <accordion-custom>
+                                <details>
+                                  <summary class="menu-drawer__menu-item menu-drawer__menu-item--child menu-drawer__subgroup-summary focus-inset">
+                                    <span class="menu-drawer__menu-item-text wrap-text">{{ column3_title | default: 'Plus' }}</span>
+                                    <span class="svg-wrapper icon-plus">
+                                      {{- 'icon-plus.svg' | inline_asset_content -}}
+                                    </span>
+                                  </summary>
+                                  <ul class="menu-drawer__menu menu-drawer__menu--childlist details-content" role="list" tabindex="-1">
+                                    {%- for childlink in link.links -%}
+                                      {%- assign col3_check = '||' | append: childlink.title | append: '||' -%}
+                                      {%- if col3_list contains col3_check -%}
+                                        <li class="menu-drawer__list-item">
+                                          <a
+                                            href="{{ childlink.url }}"
+                                            class="menu-drawer__menu-item menu-drawer__menu-item--child focus-inset{% if childlink.current %} menu-drawer__menu-item--active{% endif %}"
+                                          >
+                                            <span class="menu-drawer__menu-item-text wrap-text">
+                                              {%- liquid
+                                                assign child_collection_image = nil
+                                                if childlink.type == 'collection_link' and childlink.object.image != blank
+                                                  assign child_collection_image = childlink.object.image
+                                                endif
+                                                assign child_icon = ''
+                                                if child_collection_image == nil and icon_map != blank
+                                                  assign icon_entries = icon_map | split: '||'
+                                                  for entry in icon_entries
+                                                    if entry contains '::'
+                                                      assign entry_parts = entry | split: '::'
+                                                      assign entry_name = entry_parts[0] | strip
+                                                      assign entry_icon = entry_parts[1] | strip
+                                                      if entry_name == childlink.title
+                                                        assign child_icon = entry_icon
+                                                        break
+                                                      endif
+                                                    endif
+                                                  endfor
+                                                endif
+                                              -%}
+                                              {%- if child_collection_image -%}
+                                                <span class="menu-drawer__link-icon">
+                                                  <img src="{{ child_collection_image | image_url: width: 64 }}" alt="{{ childlink.title }}" loading="lazy">
+                                                </span>
+                                              {%- elsif child_icon != blank -%}
+                                                <span class="menu-drawer__link-icon">
+                                                  <img src="{{ child_icon | asset_url }}" alt="{{ childlink.title }}" loading="lazy">
+                                                </span>
+                                              {%- endif -%}
+                                              {{ childlink.title | escape }}
+                                              {%- if hot_list != blank -%}{%- assign hot_check = '||' | append: childlink.title | append: '||' -%}{%- if hot_list contains hot_check -%}<span class="mega-menu__hot-badge">🔥 HOT</span>{%- endif -%}{%- endif -%}
+                                            </span>
+                                          </a>
+                                        </li>
+                                      {%- endif -%}
+                                    {%- endfor -%}
+                                  </ul>
+                                </details>
+                              </accordion-custom>
+                            </li>
+                          {%- endif -%}
+                        {%- endif -%}
                       </ul>
                     </details>
                   </accordion-custom>
@@ -252,6 +445,17 @@
                     tabindex="-1"
                   >
                     {%- for childlink in link.links -%}
+                      {%- assign is_col2_link = false -%}
+                      {%- assign is_col3_link = false -%}
+                      {%- if has_column2 -%}
+                        {%- assign col2_check = '||' | append: childlink.title | append: '||' -%}
+                        {%- if col2_list contains col2_check -%}{%- assign is_col2_link = true -%}{%- endif -%}
+                      {%- endif -%}
+                      {%- if has_column3 -%}
+                        {%- assign col3_check = '||' | append: childlink.title | append: '||' -%}
+                        {%- if col3_list contains col3_check -%}{%- assign is_col3_link = true -%}{%- endif -%}
+                      {%- endif -%}
+                      {%- if is_col2_link or is_col3_link -%}{%- continue -%}{%- endif -%}
                       <li
                         class="menu-drawer__list-item"
                         style="--menu-drawer-animation-index: {{ animation_index }};"
@@ -304,6 +508,128 @@
                         </a>
                       </li>
                     {%- endfor -%}
+
+                    {%- comment -%} Sous-accordéon colonne 2 (flat mode) {%- endcomment -%}
+                    {%- if has_column2 -%}
+                      {%- assign col2_has_links = false -%}
+                      {%- for childlink in link.links -%}
+                        {%- assign col2_check = '||' | append: childlink.title | append: '||' -%}
+                        {%- if col2_list contains col2_check -%}{%- assign col2_has_links = true -%}{%- break -%}{%- endif -%}
+                      {%- endfor -%}
+                      {%- if col2_has_links -%}
+                        <li class="menu-drawer__list-item menu-drawer__list-item--subgroup">
+                          <accordion-custom>
+                            <details>
+                              <summary class="menu-drawer__menu-item menu-drawer__menu-item--child menu-drawer__subgroup-summary focus-inset">
+                                <span class="menu-drawer__menu-item-text wrap-text">{{ column2_title | default: 'Plus' }}</span>
+                                <span class="svg-wrapper icon-plus">{{- 'icon-plus.svg' | inline_asset_content -}}</span>
+                              </summary>
+                              <ul class="menu-drawer__menu menu-drawer__menu--childlist details-content" role="list" tabindex="-1">
+                                {%- for childlink in link.links -%}
+                                  {%- assign col2_check = '||' | append: childlink.title | append: '||' -%}
+                                  {%- if col2_list contains col2_check -%}
+                                    <li class="menu-drawer__list-item">
+                                      <a href="{{ childlink.url }}" class="menu-drawer__menu-item menu-drawer__menu-item--child focus-inset{% if childlink.current %} menu-drawer__menu-item--active{% endif %}">
+                                        <span class="menu-drawer__menu-item-text wrap-text">
+                                          {%- liquid
+                                            assign child_collection_image = nil
+                                            if childlink.type == 'collection_link' and childlink.object.image != blank
+                                              assign child_collection_image = childlink.object.image
+                                            endif
+                                            assign child_icon = ''
+                                            if child_collection_image == nil and icon_map != blank
+                                              assign icon_entries = icon_map | split: '||'
+                                              for entry in icon_entries
+                                                if entry contains '::'
+                                                  assign entry_parts = entry | split: '::'
+                                                  assign entry_name = entry_parts[0] | strip
+                                                  assign entry_icon = entry_parts[1] | strip
+                                                  if entry_name == childlink.title
+                                                    assign child_icon = entry_icon
+                                                    break
+                                                  endif
+                                                endif
+                                              endfor
+                                            endif
+                                          -%}
+                                          {%- if child_collection_image -%}
+                                            <span class="menu-drawer__link-icon"><img src="{{ child_collection_image | image_url: width: 64 }}" alt="{{ childlink.title }}" loading="lazy"></span>
+                                          {%- elsif child_icon != blank -%}
+                                            <span class="menu-drawer__link-icon"><img src="{{ child_icon | asset_url }}" alt="{{ childlink.title }}" loading="lazy"></span>
+                                          {%- endif -%}
+                                          {{ childlink.title | escape }}
+                                        </span>
+                                      </a>
+                                    </li>
+                                  {%- endif -%}
+                                {%- endfor -%}
+                              </ul>
+                            </details>
+                          </accordion-custom>
+                        </li>
+                      {%- endif -%}
+                    {%- endif -%}
+
+                    {%- comment -%} Sous-accordéon colonne 3 (flat mode) {%- endcomment -%}
+                    {%- if has_column3 -%}
+                      {%- assign col3_has_links = false -%}
+                      {%- for childlink in link.links -%}
+                        {%- assign col3_check = '||' | append: childlink.title | append: '||' -%}
+                        {%- if col3_list contains col3_check -%}{%- assign col3_has_links = true -%}{%- break -%}{%- endif -%}
+                      {%- endfor -%}
+                      {%- if col3_has_links -%}
+                        <li class="menu-drawer__list-item menu-drawer__list-item--subgroup">
+                          <accordion-custom>
+                            <details>
+                              <summary class="menu-drawer__menu-item menu-drawer__menu-item--child menu-drawer__subgroup-summary focus-inset">
+                                <span class="menu-drawer__menu-item-text wrap-text">{{ column3_title | default: 'Plus' }}</span>
+                                <span class="svg-wrapper icon-plus">{{- 'icon-plus.svg' | inline_asset_content -}}</span>
+                              </summary>
+                              <ul class="menu-drawer__menu menu-drawer__menu--childlist details-content" role="list" tabindex="-1">
+                                {%- for childlink in link.links -%}
+                                  {%- assign col3_check = '||' | append: childlink.title | append: '||' -%}
+                                  {%- if col3_list contains col3_check -%}
+                                    <li class="menu-drawer__list-item">
+                                      <a href="{{ childlink.url }}" class="menu-drawer__menu-item menu-drawer__menu-item--child focus-inset{% if childlink.current %} menu-drawer__menu-item--active{% endif %}">
+                                        <span class="menu-drawer__menu-item-text wrap-text">
+                                          {%- liquid
+                                            assign child_collection_image = nil
+                                            if childlink.type == 'collection_link' and childlink.object.image != blank
+                                              assign child_collection_image = childlink.object.image
+                                            endif
+                                            assign child_icon = ''
+                                            if child_collection_image == nil and icon_map != blank
+                                              assign icon_entries = icon_map | split: '||'
+                                              for entry in icon_entries
+                                                if entry contains '::'
+                                                  assign entry_parts = entry | split: '::'
+                                                  assign entry_name = entry_parts[0] | strip
+                                                  assign entry_icon = entry_parts[1] | strip
+                                                  if entry_name == childlink.title
+                                                    assign child_icon = entry_icon
+                                                    break
+                                                  endif
+                                                endif
+                                              endfor
+                                            endif
+                                          -%}
+                                          {%- if child_collection_image -%}
+                                            <span class="menu-drawer__link-icon"><img src="{{ child_collection_image | image_url: width: 64 }}" alt="{{ childlink.title }}" loading="lazy"></span>
+                                          {%- elsif child_icon != blank -%}
+                                            <span class="menu-drawer__link-icon"><img src="{{ child_icon | asset_url }}" alt="{{ childlink.title }}" loading="lazy"></span>
+                                          {%- endif -%}
+                                          {{ childlink.title | escape }}
+                                        </span>
+                                      </a>
+                                    </li>
+                                  {%- endif -%}
+                                {%- endfor -%}
+                              </ul>
+                            </details>
+                          </accordion-custom>
+                        </li>
+                      {%- endif -%}
+                    {%- endif -%}
                   </ul>
                 {% else %}
                   {%- comment -%}
@@ -1399,5 +1725,38 @@
       opacity: 0;
       transform: translateX(-1rem);
     }
+  }
+
+  /* Indentation progressive des niveaux du menu mobile */
+  .menu-drawer__menu--childlist:not(.menu-drawer__menu--grid) {
+    padding-inline-start: calc(var(--drawer-padding));
+  }
+
+  .menu-drawer__list-item--subgroup .menu-drawer__menu--childlist {
+    padding-inline-start: calc(var(--drawer-padding));
+  }
+
+  .menu-drawer__menu--grandchildlist {
+    padding-inline-start: calc(var(--drawer-padding) + 1rem);
+  }
+
+  .menu-drawer__menu-item--mainlist
+  {
+    background: rgba(90, 83, 61, 0.1);
+    margin-top: 4px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+
+  .menu-drawer__list-item--deep:not(.menu-drawer__list-item--divider) .menu-drawer__menu
+  {
+    padding-top: 15px;
+  }
+
+  .menu-drawer__menu-item > .svg-wrapper
+  {
+    height: 10px;
   }
 {% endstylesheet %}

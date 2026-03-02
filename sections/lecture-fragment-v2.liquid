@@ -3,9 +3,6 @@
   assign should_show = section.settings.show_section
 -%}
 
-<!-- DEBUG: show_section = "{{ section.settings.show_section }}" -->
-<!-- DEBUG: should_show = "{{ should_show }}" -->
-<!-- DEBUG: should_show type = "{{ should_show | type_of }}" -->
 
 {%- liquid
   # Ne rien afficher si la condition retourne false (comparaison de string)
@@ -338,6 +335,7 @@
   }
 
   .lecture-fragment__description {
+    font-family: var(--font-fragment--family);
     font-size: 1.1rem;
     text-align: justify;
     margin-bottom: 1rem;

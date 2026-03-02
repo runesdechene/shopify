@@ -161,7 +161,7 @@
                   "name": "t:names.button",
                   "settings": {
                     "label": "Explorer par fragments",
-                    "link": "shopify://collections/explorer-nos-illustrations-fragments-dhistoire",
+                    "link": "shopify://collections/explorer-fragments",
                     "open_in_new_tab": false,
                     "style_class": "button-secondary",
                     "width": "fit-content",
@@ -710,7 +710,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "Explorer par fragments",
-                "link": "shopify://collections/explorer-nos-illustrations-fragments-dhistoire",
+                "link": "shopify://collections/explorer-fragments",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "fit-content",

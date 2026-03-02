@@ -516,14 +516,17 @@ class FragmentsCarousel {
   setupFilters() {
     this.filters.forEach((filter) => {
       filter.addEventListener("click", (e) => {
+        // Utiliser le bouton (pas l'enfant img/span qui a reçu le clic)
+        const btn = e.currentTarget;
+
         // Retirer la classe active de tous les filtres
         this.filters.forEach((f) => f.classList.remove("active"));
 
         // Ajouter la classe active au filtre cliqué
-        e.target.classList.add("active");
+        btn.classList.add("active");
 
-        const filterValue = e.target.dataset.filter;
-        const filterType = e.target.dataset.filterType;
+        const filterValue = btn.dataset.filter;
+        const filterType = btn.dataset.filterType;
         console.log("🔍 Filter selected:", filterValue, "Type:", filterType);
 
         this.filterCards(filterValue, filterType);

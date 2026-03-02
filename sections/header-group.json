@@ -91,7 +91,13 @@
             "drawer_accordion": true,
             "drawer_accordion_expand_first": false,
             "drawer_dividers": false,
-            "menu_icons_mapping": "Collection Romaine (à venir)|spqr.png"
+            "menu_icons_mapping": "Collection Romaine (à venir)|spqr.png",
+            "mega_menu_column1_title": "Explorer",
+            "mega_menu_column2": "Collection Celtique\nCollection Scandinave\nCollection Romaine (à venir)\nCollection Byzantine\nCollection Animalière\nCollection Festival Yggdrasil",
+            "mega_menu_column2_title": "Par thème",
+            "mega_menu_column3": "T-shirt unisexe\nT-shirt oversized\nSweatshirt unisexe\nSweatshirt oversized\nVeste Zip\nDébardeur femme\nDébardeur homme",
+            "mega_menu_column3_title": "Par coupe",
+            "mega_menu_hot_links": "Nos Fragments d'Histoire"
           },
           "blocks": {}
         }
