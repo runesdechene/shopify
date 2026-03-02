@@ -873,6 +873,7 @@
                         "countdown_CCGK8A": {
                           "type": "countdown",
                           "name": "Compte à rebours",
+                          "disabled": true,
                           "settings": {
                             "icon": "shopify://shop_images/Carton_1df4d771-9ae3-4e3c-a8a8-b9378bfa83bc.png",
                             "heading": "Prochaine session d'impression",

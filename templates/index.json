@@ -88,7 +88,13 @@
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "padding-block-start": 20,
-        "padding-block-end": 0
+        "padding-block-end": 0,
+        "enable_display_condition": false,
+        "condition_type": "metafield",
+        "condition_metafield": "",
+        "condition_value": "",
+        "condition_liquid": "",
+        "condition_invert": false
       }
     },
     "illustration_list_FjwKWn": {
@@ -96,10 +102,11 @@
       "name": "t:names.illustrations_carousel",
       "settings": {
         "collection_list": [
-          "avalon",
           "totem-du-hibou",
+          "lesprit-du-loup",
           "morrigan",
           "valkyrie",
+          "valsgard",
           "varegue"
         ],
         "layout_type": "carousel",
@@ -167,7 +174,13 @@
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-end": 0,
+            "enable_display_condition": false,
+            "condition_type": "metafield",
+            "condition_metafield": "",
+            "condition_value": "",
+            "condition_liquid": "",
+            "condition_invert": false
           },
           "blocks": {
             "icon_NqaPxG": {
@@ -217,7 +230,13 @@
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "padding-inline-end": 0,
+                "enable_display_condition": false,
+                "condition_type": "metafield",
+                "condition_metafield": "",
+                "condition_value": "",
+                "condition_liquid": "",
+                "condition_invert": false
               },
               "blocks": {
                 "text_JJMQ8r": {
@@ -318,7 +337,13 @@
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-end": 0,
+            "enable_display_condition": false,
+            "condition_type": "metafield",
+            "condition_metafield": "",
+            "condition_value": "",
+            "condition_liquid": "",
+            "condition_invert": false
           },
           "blocks": {
             "icon_3qLAnA": {
@@ -368,7 +393,13 @@
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "padding-inline-end": 0,
+                "enable_display_condition": false,
+                "condition_type": "metafield",
+                "condition_metafield": "",
+                "condition_value": "",
+                "condition_liquid": "",
+                "condition_invert": false
               },
               "blocks": {
                 "text_6tXtqf": {
@@ -469,7 +500,13 @@
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-end": 0,
+            "enable_display_condition": false,
+            "condition_type": "metafield",
+            "condition_metafield": "",
+            "condition_value": "",
+            "condition_liquid": "",
+            "condition_invert": false
           },
           "blocks": {
             "icon_zb9Jmd": {
@@ -519,7 +556,13 @@
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "padding-inline-end": 0,
+                "enable_display_condition": false,
+                "condition_type": "metafield",
+                "condition_metafield": "",
+                "condition_value": "",
+                "condition_liquid": "",
+                "condition_invert": false
               },
               "blocks": {
                 "text_9LxqnC": {
@@ -620,7 +663,13 @@
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-end": 0,
+            "enable_display_condition": false,
+            "condition_type": "metafield",
+            "condition_metafield": "",
+            "condition_value": "",
+            "condition_liquid": "",
+            "condition_invert": false
           },
           "blocks": {
             "icon_fNFUYJ": {
@@ -670,7 +719,13 @@
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "padding-inline-end": 0,
+                "enable_display_condition": false,
+                "condition_type": "metafield",
+                "condition_metafield": "",
+                "condition_value": "",
+                "condition_liquid": "",
+                "condition_invert": false
               },
               "blocks": {
                 "text_xHcbG9": {
@@ -772,7 +827,13 @@
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "padding-block-start": 48,
-        "padding-block-end": 48
+        "padding-block-end": 48,
+        "enable_display_condition": false,
+        "condition_type": "metafield",
+        "condition_metafield": "",
+        "condition_value": "",
+        "condition_liquid": "",
+        "condition_invert": false
       }
     },
     "section_YjqMVK": {
@@ -834,7 +895,7 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p>Chaque article vous est délivré avec un QRcode qui raconte la signification ou le récit de nos illustrations, inspirées par des figures ou des concepts de notre Histoire.</p><p><strong>Apprenez. Incarnez. Transmettez !</strong></p>",
+            "text": "<p>Chaque article est un Fragment d'Histoire. Il conte l'Histoire, la légende ou le récit de figures ou de concepts de notre Histoire qui méritent selon nous de ne pas être oublié.</p><p><strong>Apprenez. Incarnez. Transmettez !</strong></p>",
             "width": "100%",
             "max_width": "none",
             "alignment": "center",
@@ -860,7 +921,7 @@
           "type": "button",
           "name": "t:names.button",
           "settings": {
-            "label": "Découvrir notre mission",
+            "label": "Découvrir notre mission : Contre l'Oubli",
             "link": "shopify://pages/notre-mission",
             "open_in_new_tab": false,
             "style_class": "button",
@@ -910,7 +971,13 @@
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "padding-block-start": 80,
-        "padding-block-end": 80
+        "padding-block-end": 80,
+        "enable_display_condition": false,
+        "condition_type": "metafield",
+        "condition_metafield": "",
+        "condition_value": "",
+        "condition_liquid": "",
+        "condition_invert": false
       }
     }
   },

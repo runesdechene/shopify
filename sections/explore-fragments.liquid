@@ -1,5 +1,4 @@
-{{ 'explore-illustrations.css' | asset_url | stylesheet_tag }}
-{{ 'explore-illustrations-dark.css' | asset_url | stylesheet_tag }}
+{{ 'explore-fragments.css' | asset_url | stylesheet_tag }}
 
 {% style %}
   #section-{{ section.id }}.rdc-fragments-section {
@@ -456,13 +455,13 @@
   </div>
 </div>
 
-<script src="{{ 'explore-illustrations.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'explore-fragments.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {
-  "name": "Explorer : Illustrations",
+  "name": "Explorer : Fragments",
   "tag": "section",
-  "class": "section-explore-illustrations",
+  "class": "section-explore-fragments",
   "settings": [
     {
       "type": "header",
@@ -762,7 +761,7 @@
   ],
   "presets": [
     {
-      "name": "Explorer : Illustrations v2"
+      "name": "Explorer : Fragments"
     }
   ]
 }
