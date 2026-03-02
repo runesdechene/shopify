@@ -271,13 +271,8 @@ class FragmentsCarousel {
       // Mais seulement parmi les cartes visibles
       const scrollLeft = this.carousel.scrollLeft;
 
-      // Détecter si on est sur mobile (< 798px)
-      const isMobile = window.innerWidth < 798;
-
-      // Calculer la largeur de la carte en fonction du viewport
-      const cardWidth = isMobile
-        ? window.innerWidth * 0.7 // 70vw sur mobile
-        : window.innerWidth * 0.2; // 20vw sur desktop
+      // Chaque carte = 100vw
+      const cardWidth = window.innerWidth;
 
       const visibleCards = this.getVisibleCards();
 
@@ -317,6 +312,17 @@ class FragmentsCarousel {
       this.updateExcerpt(this.currentIndex);
     }
     this.updateBackgroundImage();
+    this.updateNavArrows();
+  }
+
+  /**
+   * Mettre à jour l'opacité des flèches selon le nombre de cartes visibles
+   */
+  updateNavArrows() {
+    const visibleCards = this.getVisibleCards();
+    const dim = visibleCards.length <= 1;
+    if (this.prevBtn) this.prevBtn.style.opacity = dim ? '0.2' : '';
+    if (this.nextBtn) this.nextBtn.style.opacity = dim ? '0.2' : '';
   }
 
   /**
@@ -368,13 +374,8 @@ class FragmentsCarousel {
     const card = this.cards[index];
     if (!card || card.classList.contains("hidden")) return;
 
-    // Détecter si on est sur mobile (< 798px)
-    const isMobile = window.innerWidth < 798;
-
-    // Calculer la largeur de la carte en fonction du viewport
-    const cardWidth = isMobile
-      ? window.innerWidth * 0.7 // 70vw sur mobile
-      : window.innerWidth * 0.2; // 20vw sur desktop
+    // Chaque carte = 100vw
+    const cardWidth = window.innerWidth;
 
     // Compter uniquement les cartes visibles avant l'index cible
     let visibleCardsBeforeTarget = 0;
@@ -550,6 +551,25 @@ class FragmentsCarousel {
         if (firstVisibleIndex === -1) firstVisibleIndex = index;
         visibleCount++;
       });
+    } else if (filterType === "stand") {
+      // Filtrer par disponibilité sur stand
+      this.cards.forEach((card, index) => {
+        const surStand = card.dataset.surStand === "true";
+
+        if (surStand) {
+          card.classList.remove("hidden");
+          card.style.display = "";
+          if (firstVisibleIndex === -1) firstVisibleIndex = index;
+          visibleCount++;
+        } else {
+          card.classList.add("hidden");
+          setTimeout(() => {
+            if (card.classList.contains("hidden")) {
+              card.style.display = "none";
+            }
+          }, 500);
+        }
+      });
     } else if (filterType === "date" && filterValue === "recent") {
       // Filtrer par date (articles de moins de 60 jours)
       const now = Math.floor(Date.now() / 1000);
@@ -607,6 +627,9 @@ class FragmentsCarousel {
     this.indicators = Array.from(this.section.querySelectorAll(".indicator"));
     this.setupIndicators();
 
+    // Mettre à jour l'opacité des flèches selon le nombre de cartes visibles
+    this.updateNavArrows();
+
     // Toujours scroller vers la première carte visible après un filtrage
     if (firstVisibleIndex !== -1) {
       console.log("➡️ Scrolling to first visible card:", firstVisibleIndex);
@@ -622,7 +645,7 @@ class FragmentsCarousel {
         });
         this.scrollToCard(firstVisibleIndex);
         this.updateIndicators();
-
+        this.updateBackgroundImage();
 
         // Désactiver le flag après le scroll
         setTimeout(() => {
@@ -711,6 +734,9 @@ class FragmentsCarousel {
     this.indicators = Array.from(this.section.querySelectorAll(".indicator"));
     this.setupIndicators();
 
+    // Mettre à jour l'opacité des flèches selon le nombre de cartes visibles
+    this.updateNavArrows();
+
     // Toujours scroller vers la première carte visible après une recherche
     if (firstVisibleIndex !== -1) {
       console.log("➡️ Scrolling to first visible card:", firstVisibleIndex);
@@ -726,7 +752,7 @@ class FragmentsCarousel {
         });
         this.scrollToCard(firstVisibleIndex);
         this.updateIndicators();
-
+        this.updateBackgroundImage();
 
         // Désactiver le flag après le scroll
         setTimeout(() => {
