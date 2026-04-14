@@ -62,6 +62,33 @@
       "id": "welcome_info",
       "label": "Texte d'information",
       "default": "<p>Choisissez vos articles, personnalisez-les, puis validez votre commande. Vous pourrez régler directement sur place.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Illustrations — Tri & Filtres"
+    },
+    {
+      "type": "select",
+      "id": "illustrations_sort",
+      "label": "Tri des illustrations",
+      "options": [
+        { "value": "default", "label": "Ordre par défaut (admin)" },
+        { "value": "alphabetical", "label": "Alphabétique (A → Z)" }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "checkbox",
+      "id": "illustrations_show_filters",
+      "label": "Afficher les filtres par Collection d'Héritage",
+      "info": "Affiche des boutons de filtre au-dessus du carousel, basés sur le métachamp 'Collection d'Héritage' de chaque illustration.",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "illustrations_filter_all_label",
+      "label": "Libellé du bouton 'Toutes'",
+      "default": "Toutes"
     }
   ],
   "presets": [
@@ -144,7 +171,7 @@
 
 {%- comment -%} ========== HTML ========== {%- endcomment -%}
 
-<div class="rdc-borne" id="rdc-borne" data-section-id="{{ section.id }}">
+<div class="rdc-borne" id="rdc-borne" data-section-id="{{ section.id }}" data-illustrations-sort="{{ section.settings.illustrations_sort }}">
 
   {%- comment -%} Loader overlay — style inline pour être visible AVANT le chargement du CSS externe {%- endcomment -%}
   <div id="rdc-borne-loader" style="position:fixed;inset:0;z-index:99999;background:#fff;transition:opacity 0.5s ease;"></div>
@@ -221,11 +248,78 @@
   <div class="rdc-borne__screen" data-screen="1b" data-active="false">
     <div class="rdc-borne__screen-inner">
       <h1 class="rdc-borne__screen-title">Choisissez une illustration</h1>
+
+      {%- comment -%} Filtres par Collection d'Héritage {%- endcomment -%}
+      {%- if section.settings.illustrations_show_filters -%}
+        {%- assign all_heritage_tags = '' -%}
+        {%- assign seen_heritage = '' -%}
+        {%- for illus in all_illustrations -%}
+          {%- if illus.collection_d_heritage != blank -%}
+            {%- if illus.collection_d_heritage.value -%}
+              {%- assign h_obj = illus.collection_d_heritage.value -%}
+            {%- else -%}
+              {%- assign h_obj = illus.collection_d_heritage -%}
+            {%- endif -%}
+            {%- assign h_title = h_obj.title | strip -%}
+            {%- if h_title != '' -%}
+              {%- unless seen_heritage contains h_title -%}
+                {%- assign h_image = '' -%}
+                {%- if h_obj.image -%}
+                  {%- assign h_image = h_obj.image | image_url: width: 80 -%}
+                {%- endif -%}
+                {%- assign h_color = '' -%}
+                {%- if h_obj.metafields.custom.couleur -%}
+                  {%- assign h_color = h_obj.metafields.custom.couleur.value | default: h_obj.metafields.custom.couleur -%}
+                {%- endif -%}
+                {%- assign entry = h_title | append: '::' | append: h_image | append: '::' | append: h_color -%}
+                {%- if all_heritage_tags == '' -%}
+                  {%- assign all_heritage_tags = entry -%}
+                  {%- assign seen_heritage = h_title -%}
+                {%- else -%}
+                  {%- assign all_heritage_tags = all_heritage_tags | append: '||' | append: entry -%}
+                  {%- assign seen_heritage = seen_heritage | append: '|' | append: h_title -%}
+                {%- endif -%}
+              {%- endunless -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- assign heritage_entries = all_heritage_tags | split: '||' -%}
+        {%- if heritage_entries.size > 0 and all_heritage_tags != '' -%}
+          <div class="rdc-borne__filters">
+            <button class="rdc-borne__filter active" data-filter="all">{{ section.settings.illustrations_filter_all_label | default: 'Toutes' }}</button>
+            {%- for entry in heritage_entries -%}
+              {%- assign parts = entry | split: '::' -%}
+              {%- assign h_tag = parts[0] -%}
+              {%- assign h_img = parts[1] -%}
+              {%- assign h_clr = parts[2] | default: '#5a4d4d' -%}
+              <button class="rdc-borne__filter" data-filter="{{ h_tag | handleize }}" style="--filter-color: {{ h_clr }};">
+                {%- if h_img != blank -%}
+                  <span class="rdc-borne__filter-img-wrap">
+                    <img src="{{ h_img }}" alt="{{ h_tag }}" class="rdc-borne__filter-img" width="24" height="24" loading="lazy">
+                  </span>
+                {%- endif -%}
+                {{ h_tag }}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+
       <div class="rdc-borne__carousel-container">
         <div class="rdc-borne__carousel rdc-borne__illustrations-grid">
           {%- for illus in all_illustrations -%}
-            <div class="rdc-borne__card-wrapper">
-              <button class="rdc-borne__illustration-card" 
+            {%- comment -%} Récupérer le handle de la Collection d'Héritage pour le filtre {%- endcomment -%}
+            {%- assign heritage_tag = '' -%}
+            {%- if illus.collection_d_heritage != blank -%}
+              {%- if illus.collection_d_heritage.value -%}
+                {%- assign heritage_tag = illus.collection_d_heritage.value.title | strip | handleize -%}
+              {%- elsif illus.collection_d_heritage.title -%}
+                {%- assign heritage_tag = illus.collection_d_heritage.title | strip | handleize -%}
+              {%- endif -%}
+            {%- endif -%}
+            <div class="rdc-borne__card-wrapper" data-heritage="{{ heritage_tag }}">
+              <button class="rdc-borne__illustration-card"
                 data-illustration-handle="{{ illus.system.handle }}"
                 data-bg-image="{% if illus.image_fond_de_fragment != blank %}{{ illus.image_fond_de_fragment | image_url: width: 1920 }}{% endif %}"
               >

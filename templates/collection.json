@@ -170,26 +170,10 @@
                     "custom_width_mobile": 100
                   },
                   "blocks": {}
-                },
-                "button_hCahBB": {
-                  "type": "button",
-                  "name": "t:names.button",
-                  "settings": {
-                    "label": "Explorer par coupe",
-                    "link": "shopify://collections/explorer-nos-illustrations-fragments-dhistoire-copie",
-                    "open_in_new_tab": true,
-                    "style_class": "button",
-                    "width": "fit-content",
-                    "custom_width": 100,
-                    "width_mobile": "fit-content",
-                    "custom_width_mobile": 100
-                  },
-                  "blocks": {}
                 }
               },
               "block_order": [
-                "button_8GTGfN",
-                "button_hCahBB"
+                "button_8GTGfN"
               ]
             }
           },

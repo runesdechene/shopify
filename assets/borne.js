@@ -323,6 +323,82 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /* ============================
+   * ÉCRAN 1b : TRI DES ILLUSTRATIONS
+   * ============================ */
+  var sortMode = borneEl.dataset.illustrationsSort || "default";
+  if (sortMode === "alphabetical") {
+    var illustGrid = borneEl.querySelector(".rdc-borne__illustrations-grid");
+    if (illustGrid) {
+      var cardWrappers = Array.from(
+        illustGrid.querySelectorAll(".rdc-borne__card-wrapper"),
+      );
+      cardWrappers.sort(function (a, b) {
+        var nameA =
+          (a.querySelector(".rdc-borne__illustration-card-name") || {})
+            .textContent || "";
+        var nameB =
+          (b.querySelector(".rdc-borne__illustration-card-name") || {})
+            .textContent || "";
+        nameA = nameA.trim();
+        nameB = nameB.trim();
+
+        // Emojis first: check if name starts with a non-ASCII character
+        var aIsEmoji = nameA.charCodeAt(0) > 127;
+        var bIsEmoji = nameB.charCodeAt(0) > 127;
+        if (aIsEmoji && !bIsEmoji) return -1;
+        if (!aIsEmoji && bIsEmoji) return 1;
+
+        return nameA.localeCompare(nameB, "fr", { sensitivity: "base" });
+      });
+      cardWrappers.forEach(function (w) {
+        illustGrid.appendChild(w);
+      });
+    }
+  }
+
+  /* ============================
+   * ÉCRAN 1b : FILTRES PAR COLLECTION D'HÉRITAGE
+   * ============================ */
+  var filterButtons = borneEl.querySelectorAll(".rdc-borne__filter");
+  filterButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      // Toggle active state
+      filterButtons.forEach(function (b) {
+        b.classList.remove("active");
+      });
+      this.classList.add("active");
+
+      var filterValue = this.dataset.filter;
+      var illustGrid = borneEl.querySelector(".rdc-borne__illustrations-grid");
+      if (!illustGrid) return;
+
+      var wrappers = illustGrid.querySelectorAll(".rdc-borne__card-wrapper");
+      wrappers.forEach(function (wrapper) {
+        if (filterValue === "all") {
+          wrapper.style.display = "";
+          wrapper.classList.remove("hidden");
+        } else {
+          var heritage = wrapper.dataset.heritage || "";
+          if (heritage === filterValue) {
+            wrapper.style.display = "";
+            wrapper.classList.remove("hidden");
+          } else {
+            wrapper.classList.add("hidden");
+            wrapper.style.display = "none";
+          }
+        }
+      });
+
+      // Re-init carousel to recalculate with visible cards
+      var container = illustGrid.closest(".rdc-borne__carousel-container");
+      if (container) {
+        container._carouselInit = false;
+        initCarousel(container);
+      }
+    });
+  });
+
+  /* ============================
    * ÉCRAN 1b : ILLUSTRATIONS
    * ============================ */
   var illustrationCards = borneEl.querySelectorAll(
@@ -330,6 +406,47 @@ document.addEventListener("DOMContentLoaded", function () {
   );
   illustrationCards.forEach(function (card) {
     card.addEventListener("click", function () {
+      var wrapper = this.closest(".rdc-borne__card-wrapper");
+
+      // Si la carte n'est pas au centre, la scroller au centre sans naviguer
+      if (wrapper && !wrapper.classList.contains("is-center")) {
+        var container = wrapper.closest(".rdc-borne__carousel-container");
+        if (container) {
+          var carousel = container.querySelector(".rdc-borne__carousel");
+          if (carousel) {
+            var visible = Array.from(
+              carousel.querySelectorAll(".rdc-borne__card-wrapper"),
+            ).filter(function (w) {
+              return (
+                w.style.display !== "none" && !w.classList.contains("hidden")
+              );
+            });
+            var idx = visible.indexOf(wrapper);
+            if (idx !== -1) {
+              // Re-use scrollToIndex via reinit
+              wrapper.scrollIntoView({
+                behavior: "smooth",
+                inline: "center",
+                block: "nearest",
+              });
+              // Manually set is-center
+              carousel
+                .querySelectorAll(".rdc-borne__card-wrapper")
+                .forEach(function (w) {
+                  w.classList.remove("is-center");
+                });
+              wrapper.classList.add("is-center");
+              var counterCurrent = container.querySelector(
+                ".rdc-borne__counter-current",
+              );
+              if (counterCurrent) counterCurrent.textContent = idx + 1;
+            }
+          }
+        }
+        return; // Ne pas naviguer
+      }
+
+      // Carte au centre : naviguer vers la collection
       var handle = this.dataset.illustrationHandle;
       var bgImage = this.dataset.bgImage;
 

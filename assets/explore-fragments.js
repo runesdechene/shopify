@@ -35,6 +35,9 @@ class FragmentsCarousel {
     // Vérifier et afficher les badges NOUVEAU
     this.checkNewBadges();
 
+    // Bouton collection flottant mobile
+    this.mobileCollectionBtn = section.querySelector('.fragment-mobile-collection-btn');
+
     this.init();
   }
 
@@ -137,6 +140,9 @@ class FragmentsCarousel {
 
     // Clics sur les cartes
     this.setupCardClicks();
+
+    // Sur mobile, rendre l'image cliquable vers la collection
+    this.setupMobileImageLinks();
 
     // Empêcher propagation des boutons d'action
     this.setupActionButtons();
@@ -313,6 +319,7 @@ class FragmentsCarousel {
     }
     this.updateBackgroundImage();
     this.updateNavArrows();
+    this.updateMobileCollectionBtn();
   }
 
   /**
@@ -323,6 +330,28 @@ class FragmentsCarousel {
     const dim = visibleCards.length <= 1;
     if (this.prevBtn) this.prevBtn.style.opacity = dim ? '0.2' : '';
     if (this.nextBtn) this.nextBtn.style.opacity = dim ? '0.2' : '';
+  }
+
+  /**
+   * Met à jour le bouton collection flottant mobile avec les données de la carte active
+   */
+  updateMobileCollectionBtn() {
+    if (!this.mobileCollectionBtn) return;
+    const activeCard = this.cards[this.currentIndex];
+    if (!activeCard) return;
+
+    const cardBtn = activeCard.querySelector('.fragment-collection-btn:not(.fragment-collection-btn--disabled)');
+    if (cardBtn) {
+      this.mobileCollectionBtn.href = cardBtn.href;
+      const countEl = cardBtn.querySelector('.fragment-collection-btn-count');
+      const mobileCount = this.mobileCollectionBtn.querySelector('.fragment-collection-btn-count');
+      if (countEl && mobileCount) {
+        mobileCount.textContent = countEl.textContent;
+      }
+      this.mobileCollectionBtn.style.display = '';
+    } else {
+      this.mobileCollectionBtn.style.display = 'none';
+    }
   }
 
   /**
@@ -649,6 +678,7 @@ class FragmentsCarousel {
         this.scrollToCard(firstVisibleIndex);
         this.updateIndicators();
         this.updateBackgroundImage();
+        this.updateMobileCollectionBtn();
 
         // Désactiver le flag après le scroll
         setTimeout(() => {
@@ -658,6 +688,7 @@ class FragmentsCarousel {
     } else {
       // Si aucune carte visible, désactiver le flag immédiatement
       this.isFiltering = false;
+      this.updateMobileCollectionBtn();
     }
   }
 
@@ -796,6 +827,28 @@ class FragmentsCarousel {
 
           // Puis scroller vers la carte
           this.scrollToCard(index);
+        }
+      });
+    });
+  }
+
+  /**
+   * Sur mobile, rendre l'image cliquable vers la collection
+   */
+  setupMobileImageLinks() {
+    if (window.innerWidth > 798) return;
+
+    this.cards.forEach((card) => {
+      const imageCol = card.querySelector('.fragment-card-image-col');
+      if (!imageCol) return;
+
+      imageCol.style.cursor = 'pointer';
+      imageCol.addEventListener('click', (e) => {
+        if (!card.classList.contains('is-center')) return;
+        const collectionUrl = card.dataset.collectionUrl;
+        if (collectionUrl) {
+          e.stopPropagation();
+          window.location.href = collectionUrl;
         }
       });
     });

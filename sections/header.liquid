@@ -167,7 +167,20 @@
   endif
 %}
 
+{% capture cta_button_markup %}
+  {% if section.settings.cta_show and section.settings.cta_url != blank %}
+    <a
+      href="{{ section.settings.cta_url }}"
+      class="header-cta-button mobile:hidden"
+      {% if section.settings.cta_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+    >
+      <span class="header-cta-button__text">{{ section.settings.cta_text | default: 'LA CARTE' }}</span>
+    </a>
+  {% endif %}
+{% endcapture %}
+
 {% capture localization_markup %}
+  {{ cta_button_markup }}
   {% liquid
     assign localization_font = '--menu-localization-font: var(--font-[localization_font]--family); ' | replace: '[localization_font]', section.settings.localization_font
     assign localization_font_size = '--menu-localization-font-size: [localization_font_size]; ' | replace: '[localization_font_size]', section.settings.localization_font_size
@@ -643,11 +656,13 @@
     .header__column:has(header-menu:hover),
     .header__column:has(.header-actions__action:hover),
     .header__column:has(.dropdown-localization__button:hover),
-    .header__column:has(.header__icon--menu:hover) {
+    .header__column:has(.header__icon--menu:hover),
+    .header__column:has(.header-cta-button:hover) {
       header-menu:not(:hover),
       .header-actions__action:not(:hover),
       .dropdown-localization__button:not(:hover),
-      .header__icon--menu:not(:hover) {
+      .header__icon--menu:not(:hover),
+      .header-cta-button:not(:hover) {
         opacity: var(--opacity-subdued-text);
         transition: opacity var(--animation-speed) var(--animation-easing);
       }
@@ -658,7 +673,8 @@
   header-menu,
   .header-actions__action,
   .dropdown-localization__button,
-  .header__icon--menu {
+  .header__icon--menu,
+  .header-cta-button {
     transition: opacity var(--animation-speed) var(--animation-easing);
   }
 
@@ -742,6 +758,95 @@
   .header-menu details[open] .menu-list__submenu,
   .header-menu .menu-list__submenu[data-active] {
     content-visibility: visible;
+  }
+
+  /* =============================================
+     CTA Button — "LA CARTE"
+     ============================================= */
+
+  .header-cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    padding: 12px 15px;
+    font-family: var(--font-accent--family);
+    font-size: var(--font-size--xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-primary-button-text);
+    border: 1px solid rgba(0,0,0,0.3);
+    border-radius: 10px;
+    white-space: nowrap;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition:
+      background-color var(--animation-speed) var(--animation-easing),
+      color var(--animation-speed) var(--animation-easing),
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .header-cta-button:hover {
+    color: var(--color-primary-button-hover-text);
+    background-color: var(--color-primary-button-background);
+    border: 1px solid rgba(0,0,0,0.4);
+    transform: translateY(-1px);
+  }
+
+  .header-cta-button:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+
+  /* Shimmer subtil */
+  .header-cta-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgb(255 255 255 / 0.2) 50%,
+      transparent 100%
+    );
+    animation: header-cta-shimmer 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes header-cta-shimmer {
+    0%, 70% { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  .header-cta-button__text {
+    line-height: 1;
+  }
+
+  /* Variante mobile drawer */
+  .header-cta-button--drawer {
+    display: flex;
+    justify-content: center;
+    width: calc(100% - var(--padding-xl));
+    padding: 0.8em 1.2em;
+    font-size: var(--font-size--sm);
+    margin-bottom: var(--padding-md);
+    margin-inline-start: 0;
+  }
+
+  /* Header transparent */
+  .header[transparent]:not([data-sticky-state='active']) .header-cta-button {
+    color: currentColor;
+    background-color: transparent;
+    border-color: currentColor;
+  }
+
+  .header[transparent]:not([data-sticky-state='active']) .header-cta-button:hover {
+    background-color: rgb(255 255 255 / 0.1);
   }
 {% endstylesheet %}
 
@@ -987,6 +1092,33 @@
       ],
       "default": "top",
       "visible_if": "{{ section.settings.show_country or section.settings.show_language }}"
+    },
+    {
+      "type": "header",
+      "content": "Bouton CTA"
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_show",
+      "label": "Afficher le bouton CTA",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Texte du bouton",
+      "default": "LA CARTE"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Lien du bouton"
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_new_tab",
+      "label": "Ouvrir dans un nouvel onglet",
+      "default": false
     },
     {
       "type": "header",

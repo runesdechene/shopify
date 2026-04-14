@@ -296,27 +296,12 @@
                       "type": "button",
                       "name": "t:names.button",
                       "settings": {
-                        "label": "Explorer par illustrations",
+                        "label": "Explorer nos fragments",
                         "link": "shopify://collections/explorer-fragments",
                         "open_in_new_tab": false,
                         "style_class": "button-secondary",
                         "width": "custom",
-                        "custom_width": 40,
-                        "width_mobile": "custom",
-                        "custom_width_mobile": 100
-                      },
-                      "blocks": {}
-                    },
-                    "button_rekerR": {
-                      "type": "button",
-                      "name": "t:names.button",
-                      "settings": {
-                        "label": "Explorer par coupe",
-                        "link": "shopify://collections/explorer-nos-illustrations-fragments-dhistoire-copie",
-                        "open_in_new_tab": false,
-                        "style_class": "button",
-                        "width": "custom",
-                        "custom_width": 40,
+                        "custom_width": 52,
                         "width_mobile": "custom",
                         "custom_width_mobile": 100
                       },
@@ -324,8 +309,7 @@
                     }
                   },
                   "block_order": [
-                    "button_aiVGFR",
-                    "button_rekerR"
+                    "button_aiVGFR"
                   ]
                 }
               },

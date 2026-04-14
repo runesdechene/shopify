@@ -1000,6 +1000,16 @@
         class="menu-drawer__utility-links menu-drawer__animated-element"
         style="--menu-drawer-animation-index: {{ linklist.links.size }};"
       >
+        {% if section.settings.cta_show and section.settings.cta_url != blank %}
+          <a
+            href="{{ section.settings.cta_url }}"
+            class="header-cta-button header-cta-button--drawer"
+            {% if section.settings.cta_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+          >
+            <span class="header-cta-button__text">{{ section.settings.cta_text | default: 'LA CARTE' }}</span>
+          </a>
+        {% endif %}
+
         {% liquid
           assign show_language = section.settings.show_language
           if localization.available_languages.size <= 1

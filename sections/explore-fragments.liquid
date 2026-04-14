@@ -44,12 +44,36 @@
     color: {{ section.settings.nav_button_color }};
   }
 
-  @media screen and (max-width: 749px) {
+  @media screen and (min-width: 799px) and (max-height: 950px) {
     #section-{{ section.id }} .fragments-title {
       font-size: {{ section.settings.title_size | divided_by: 2 }}px;
     }
     #section-{{ section.id }} .fragments-subtitle {
       font-size: {{ section.settings.subtitle_size | divided_by: 2 }}px;
+    }
+    #section-{{ section.id }} .fragment-card-title {
+      font-size: {{ section.settings.card_title_size | divided_by: 1.4 | round }}px;
+    }
+  }
+
+  @media screen and (min-width: 799px) and (max-height: 750px) {
+    #section-{{ section.id }} .fragments-title {
+      font-size: {{ section.settings.title_size | divided_by: 3 }}px;
+    }
+    #section-{{ section.id }} .fragments-subtitle {
+      font-size: {{ section.settings.subtitle_size | divided_by: 3 }}px;
+    }
+    #section-{{ section.id }} .fragment-card-title {
+      font-size: {{ section.settings.card_title_size | divided_by: 1.8 | round }}px;
+    }
+  }
+
+  @media screen and (max-width: 798px) {
+    #section-{{ section.id }} .fragments-title {
+      font-size: 1.6rem;
+    }
+    #section-{{ section.id }} .fragments-subtitle {
+      font-size: 1rem;
     }
     #section-{{ section.id }} .fragment-card-title {
       font-size: {{ section.settings.card_title_size | divided_by: 1.5 | round }}px;
@@ -366,7 +390,7 @@
                   {%- assign suivi_stand = relique.suivi_sur_stand -%}
                   {%- if suivi_stand == true or suivi_stand.value == true -%}
                     <div class="fragment-card-stock fragment-stock-on-stand">
-                      <span class="fragment-stock-on-stand-badge">●</span>
+                      <span class="fragment-stock-on-stand-badge">✅</span>
                       <div class="fragment-stock-on-stand-text">
                         <span class="fragment-stock-on-stand-title">Disponible sur ce stand</span>
                         <span class="fragment-stock-on-stand-sub">Stock limité — profitez-en maintenant</span>
@@ -468,6 +492,15 @@
   <div class="fragments-counter" id="fragments-counter-{{ section.id }}">
     <span class="counter-current">1</span> / <span class="counter-total">{{ reliques.size }}</span>
   </div>
+
+  {%- comment -%} Bouton collection flottant mobile {%- endcomment -%}
+  {%- unless section.settings.mode_ecran -%}
+    <a href="#" class="fragment-mobile-collection-btn" id="fragment-mobile-collection-btn-{{ section.id }}" style="display:none;">
+      <span class="fragment-collection-btn-text">Accéder à la collection</span>
+      <span class="fragment-collection-btn-count"></span>
+      <svg class="fragment-collection-btn-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  {%- endunless -%}
 
   {%- comment -%} Module avis flottant en bas à gauche {%- endcomment -%}
   {%- if section.settings.avis_url != blank and section.settings.mode_ecran == true -%}
