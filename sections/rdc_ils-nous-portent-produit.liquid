@@ -140,7 +140,7 @@
   }
 </style>
 
-<div class="rdc-inp-{{ section.id }}" id="rdc-inp-{{ section.id }}">
+<div class="rdc-inp-{{ section.id }}" id="rdc-inp-{{ section.id }}" style="display: none;">
   <div class="rdc-inp__header">
     {% if section.settings.title != blank %}<h2 class="rdc-inp__title">{{ section.settings.title }}</h2>{% endif %}
     {% if section.settings.subtitle != blank %}<p class="rdc-inp__subtitle">{{ section.settings.subtitle }}</p>{% endif %}
@@ -171,6 +171,11 @@
     var gridEl = document.getElementById('rdc-inp-grid-' + SID);
     var loadingEl = document.getElementById('rdc-inp-loading-' + SID);
     var emptyEl = document.getElementById('rdc-inp-empty-' + SID);
+    var sectionEl = document.getElementById('rdc-inp-' + SID);
+    var hostEl = (sectionEl && sectionEl.closest('.shopify-section')) || sectionEl;
+    function hideAll() { if (hostEl) hostEl.style.display = 'none'; }
+    function showSection() { if (hostEl) hostEl.style.display = ''; if (sectionEl) sectionEl.style.display = ''; }
+    hideAll();
     var modalEl = document.getElementById('rdc-inp-modal-' + SID);
     var modalImg = document.getElementById('rdc-inp-modal-img-' + SID);
     var overlayEl = document.getElementById('rdc-inp-modal-overlay-' + SID);
@@ -248,12 +253,7 @@
       if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
     }, { passive: true });
 
-    if (!SUPABASE_URL || !SUPABASE_KEY || !PRODUCT_HANDLE) {
-      loadingEl.style.display = 'none';
-      emptyEl.style.display = 'block';
-      if (!PRODUCT_HANDLE) emptyEl.textContent = 'Configuration manquante (handle produit).';
-      return;
-    }
+    if (!SUPABASE_URL || !SUPABASE_KEY || !PRODUCT_HANDLE) { hideAll(); return; }
 
     fetch(SUPABASE_URL + '/rest/v1/rpc/get_community_photos_by_product', {
       method: 'POST',
@@ -268,7 +268,8 @@
       .then(function (rows) {
         loadingEl.style.display = 'none';
         allRows = (rows || []).filter(function (r) { return r.image_url; });
-        if (!allRows.length) { emptyEl.style.display = 'block'; return; }
+        if (!allRows.length) { hideAll(); return; }
+        showSection();
         gridEl.style.display = 'flex';
         allRows.forEach(function (row, i) {
           var img = document.createElement('img');
@@ -282,8 +283,7 @@
       })
       .catch(function (err) {
         console.error('RDC ils-nous-portent:', err);
-        loadingEl.style.display = 'none';
-        emptyEl.style.display = 'block';
+        hideAll();
       });
   })();
 </script>
