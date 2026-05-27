@@ -36,7 +36,7 @@
         "tags_field_handle": "tags",
         "mode_ecran": true,
         "qr_code_url": "shopify://pages/borne",
-        "avis_url": "https://hub.runesdechene.com/soumettre-avis",
+        "avis_url": "https://hub.runesdechene.com/soumettre-contenu",
         "section_width": "full-width",
         "title": "EXPLORER",
         "items_label": "illustrations disponibles",
