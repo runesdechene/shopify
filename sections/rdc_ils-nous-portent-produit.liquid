@@ -47,6 +47,7 @@
     display: block;
     cursor: pointer;
     background: #ece5d8;
+    border-radius: 10px;
     scroll-snap-align: start;
     transition: filter .2s ease;
   }
@@ -54,11 +55,11 @@
   .rdc-inp-{{ section.id }} .rdc-inp__add {
     flex: 0 0 auto; height: 220px; width: 170px;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
-    background: #f3ede1; border: 2px dashed #c9b79a; color: #6b4c3b;
+    background: rgba(107, 76, 59, .3); border: none; border-radius: 10px; color: #5d4634;
     text-decoration: none; cursor: pointer; text-align: center; padding: 10px;
-    transition: background .2s, border-color .2s;
+    transition: background .2s;
   }
-  .rdc-inp-{{ section.id }} .rdc-inp__add:hover { background: #ece3d2; border-color: #a98b63; }
+  .rdc-inp-{{ section.id }} .rdc-inp__add:hover { background: rgba(107, 76, 59, .42); }
   .rdc-inp-{{ section.id }} .rdc-inp__add-plus { font-size: 2.4rem; line-height: 1; font-weight: 300; }
   .rdc-inp-{{ section.id }} .rdc-inp__add-label { font-size: .85rem; font-weight: 600; letter-spacing: .02em; }
   @media (max-width: 749px) { .rdc-inp-{{ section.id }} .rdc-inp__add { height: 160px; width: 120px; } }
@@ -69,6 +70,7 @@
   }
 
   @media (max-width: 749px) {
+    .rdc-inp-{{ section.id }} { padding-inline: var(--page-margin, 16px); }
     .rdc-inp-{{ section.id }} .rdc-inp__grid { gap: 3px; }
     .rdc-inp-{{ section.id }} .rdc-inp__photo { height: 160px; }
     .rdc-inp-{{ section.id }} .rdc-inp__title { font-size: clamp(2rem, 9vw, 2.8rem); }
