@@ -558,7 +558,67 @@
       "default": false,
       "info": "Afficher si la condition est FAUSSE",
       "visible_if": "{{ block.settings.enable_display_condition }}"
+    },
+        {
+      "type": "header",
+      "content": "Images sur mobile"
+    },
+    {
+      "type": "select",
+      "id": "mobile_image_layout",
+      "label": "Disposition des images",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Grille"
+        },
+        {
+          "value": "carousel",
+          "label": "Carrousel (ligne unique)"
+        }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "select",
+      "id": "mobile_image_fit",
+      "label": "Ajustement des images",
+      "info": "Choisir 'Contenir' évite tout rognage",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Couvrir (peut rogner)"
+        },
+        {
+          "value": "contain",
+          "label": "Contenir (sans rognage)"
+        }
+      ],
+      "default": "contain"
+    },
+    {
+      "type": "range",
+      "id": "mobile_carousel_item_width",
+      "label": "Largeur d'un item (carrousel)",
+      "info": "Pourcentage de la largeur de l'écran",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 80,
+      "visible_if": "{{ block.settings.mobile_image_layout == 'carousel' }}"
+    },
+    {
+      "type": "range",
+      "id": "mobile_grid_columns",
+      "label": "Colonnes (grille)",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2,
+      "visible_if": "{{ block.settings.mobile_image_layout == 'grid' }}"
     }
+
   ],
   "presets": [
     {

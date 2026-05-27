@@ -216,7 +216,7 @@
                   "type": "text",
                   "name": "t:names.heading",
                   "settings": {
-                    "text": "<h3>Une rébellion artistique<br/>pour réenchanter le monde moderne</h3>",
+                    "text": "<h3>Une marque française<br/>pour réenchanter le monde moderne</h3>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -242,7 +242,7 @@
                   "type": "custom-liquid",
                   "name": "t:names.custom_liquid",
                   "settings": {
-                    "custom_liquid": "<p class=\"text\">Depuis 2019, les Runes de Chêne fleurissent dans toutes les contrées, comme un cri d’amour pour <b>l’Histoire, le patrimoine et la Nature.</b> Portées, gravées, collées par ceux qui refusent la froideur du monde moderne.</p>\n<p class=\"text\">Ce n’est pas juste un t-shirt.<Br/>C’est un signe de <span style=\"text-decoration: underline; font-weight: bold; color: #833434;\">renaissance.</span></p>"
+                    "custom_liquid": "<p class=\"text\">Depuis 2023, les vêtements Runes de Chêne fleurissent dans toutes les contrées de France et d'ailleurs, comme un cri d’amour pour <b>l’Histoire, le patrimoine et la Nature.</b> Portés par ceux qui ne se retrouvent pas dans la modernité froide et qui ont gardé une flamme au creux du coeur.</p>\n<p class=\"text\">Ce ne sont pas juste des t-shirts.<Br/>Ce sont des signes de <span style=\"text-decoration: underline; font-weight: bold; color: #833434;\">renaissance.</span></p>"
                   },
                   "blocks": {}
                 },

@@ -1,4 +1,3 @@
-
 {% assign block_settings = block.settings %}
 <div
   class="
@@ -20,6 +19,27 @@
     {% endif %}
   </span>
 </div>
+
+
+{% stylesheet %}
+
+/* Empêche le texte de déborder hors de l'écran sur mobile */
+.footer-utilities__group-copyright {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+}
+
+.footer-utilities__group-copyright .footer-utilities__text {
+  display: inline;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+}
+
+{% endstylesheet %}
+
 
 {% schema %}
 {

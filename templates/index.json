@@ -9,6 +9,74 @@
  */
 {
   "sections": {
+    "rdc_hero_main": {
+      "type": "rdc_hero-saison",
+      "blocks": {
+        "tagline_NN7qkf": {
+          "type": "tagline",
+          "settings": {
+            "text": "Le Pokémon Go du patrimoine."
+          }
+        },
+        "tagline_zdNYgx": {
+          "type": "tagline",
+          "settings": {
+            "text": "Une rébellion contre le monde moderne"
+          }
+        },
+        "tagline_VbprxY": {
+          "type": "tagline",
+          "settings": {
+            "text": "Un mmorpg dans la vraie vie"
+          }
+        }
+      },
+      "block_order": [
+        "tagline_NN7qkf",
+        "tagline_zdNYgx",
+        "tagline_VbprxY"
+      ],
+      "settings": {
+        "reopen_enable": true,
+        "reopen_image": "shopify://shop_images/bonus_e2141a09-8845-4d63-816f-4643a7fd20d5.webp",
+        "popup_delay": 3,
+        "popup_show_once": true,
+        "popup_storage_key": "rdc_hero_seen_summer_2026",
+        "image_desktop": "shopify://shop_images/essai2_11afbdb6-a5ff-4fe5-86b7-28ee70b1b9ab.webp",
+        "image_alt": "Personne face aux montagnes",
+        "frame_image": "shopify://shop_images/essai_23105c58-ad91-4f4b-aaed-7ecf39a21dbc.webp",
+        "frame_image_mobile": "shopify://shop_images/fond_mobile_23dddd6d-1296-41a9-8262-e2dce1b8954b.webp",
+        "frame_opacity": 100,
+        "top_image_max_width": 140,
+        "overline": "🗝️ CET ÉTÉ, VIVEZ",
+        "title": "L'EXPERIENCE RUNES DE CHÊNE",
+        "subtitle": "<p><strong>Une marque + Une application. </strong></p><p>L'une vous fait porter l'Histoire.</p><p>La seconde vous la fait vivre.</p>",
+        "pitch": "Explore + de 2600 lieux uniques, échange avec la communauté Runes de Chêne et participe à la Coupe des Héritages !",
+        "perk_1_text": "",
+        "perk_2_text": "",
+        "perk_1_color": "#4c4fd9",
+        "perk_2_color": "#7f6f8e",
+        "cta_primary_label": "Essayer l'application",
+        "cta_primary_url": "https://app.runesdechene.com",
+        "cta_secondary_label": "Retourner sur la boutique",
+        "cta_secondary_url": "https://runesdechene.com",
+        "taglines_max_width": 380,
+        "text_color": "#46352e",
+        "title_color": "#963e3e",
+        "cta_primary_color": "#2a2418",
+        "modal_max_width": 720,
+        "modal_padding_block": 60,
+        "modal_padding_inline": 40,
+        "backdrop_color": "#f5f0e6",
+        "backdrop_strength": 15,
+        "backdrop_blur": 10,
+        "color_scheme": "scheme-1",
+        "overlay_color": "#000000",
+        "overlay_strength": 0,
+        "overlay_blur": 0,
+        "enable_ken_burns": true
+      }
+    },
     "section_MgkEX9": {
       "type": "section",
       "blocks": {
@@ -20,7 +88,7 @@
             "width": "fit-content",
             "max_width": "narrow",
             "alignment": "left",
-            "type_preset": "h2",
+            "type_preset": "h1",
             "font": "var(--font-body--family)",
             "font_size": "1rem",
             "line_height": "normal",
@@ -42,13 +110,13 @@
           "type": "jumbo-text",
           "name": "t:names.jumbo_text",
           "settings": {
-            "text": "Portez des fragments d'Histoire.",
+            "text": "Portez des Fragments d'Histoire",
             "font": "heading",
             "alignment": "left",
             "line_height": "0.8",
             "letter_spacing": "0.03em",
             "case": "none",
-            "text_effect": "none",
+            "text_effect": "reveal",
             "animation_repeat": false
           },
           "blocks": {}
@@ -60,7 +128,7 @@
       ],
       "custom_css": [
         "@media screen and (max-width: 798px) {h1 {font-size: 14vw; }}",
-        "@media (min-width: 798px) {h1 {margin-top: 50px; }}"
+        "@media (min-width: 798px) {h1 {margin-top: 30px; }}"
       ],
       "name": "Heading",
       "settings": {
@@ -87,7 +155,7 @@
         "overlay_color": "#00000026",
         "overlay_style": "solid",
         "gradient_direction": "to top",
-        "padding-block-start": 20,
+        "padding-block-start": 0,
         "padding-block-end": 0,
         "enable_display_condition": false,
         "condition_type": "metafield",
@@ -180,7 +248,11 @@
             "condition_metafield": "",
             "condition_value": "",
             "condition_liquid": "",
-            "condition_invert": false
+            "condition_invert": false,
+            "mobile_image_layout": "grid",
+            "mobile_image_fit": "contain",
+            "mobile_carousel_item_width": 80,
+            "mobile_grid_columns": 2
           },
           "blocks": {
             "icon_NqaPxG": {
@@ -236,7 +308,11 @@
                 "condition_metafield": "",
                 "condition_value": "",
                 "condition_liquid": "",
-                "condition_invert": false
+                "condition_invert": false,
+                "mobile_image_layout": "grid",
+                "mobile_image_fit": "contain",
+                "mobile_carousel_item_width": 80,
+                "mobile_grid_columns": 2
               },
               "blocks": {
                 "text_JJMQ8r": {
@@ -343,7 +419,11 @@
             "condition_metafield": "",
             "condition_value": "",
             "condition_liquid": "",
-            "condition_invert": false
+            "condition_invert": false,
+            "mobile_image_layout": "grid",
+            "mobile_image_fit": "contain",
+            "mobile_carousel_item_width": 80,
+            "mobile_grid_columns": 2
           },
           "blocks": {
             "icon_3qLAnA": {
@@ -399,7 +479,11 @@
                 "condition_metafield": "",
                 "condition_value": "",
                 "condition_liquid": "",
-                "condition_invert": false
+                "condition_invert": false,
+                "mobile_image_layout": "grid",
+                "mobile_image_fit": "contain",
+                "mobile_carousel_item_width": 80,
+                "mobile_grid_columns": 2
               },
               "blocks": {
                 "text_6tXtqf": {
@@ -506,7 +590,11 @@
             "condition_metafield": "",
             "condition_value": "",
             "condition_liquid": "",
-            "condition_invert": false
+            "condition_invert": false,
+            "mobile_image_layout": "grid",
+            "mobile_image_fit": "contain",
+            "mobile_carousel_item_width": 80,
+            "mobile_grid_columns": 2
           },
           "blocks": {
             "icon_zb9Jmd": {
@@ -562,7 +650,11 @@
                 "condition_metafield": "",
                 "condition_value": "",
                 "condition_liquid": "",
-                "condition_invert": false
+                "condition_invert": false,
+                "mobile_image_layout": "grid",
+                "mobile_image_fit": "contain",
+                "mobile_carousel_item_width": 80,
+                "mobile_grid_columns": 2
               },
               "blocks": {
                 "text_9LxqnC": {
@@ -669,7 +761,11 @@
             "condition_metafield": "",
             "condition_value": "",
             "condition_liquid": "",
-            "condition_invert": false
+            "condition_invert": false,
+            "mobile_image_layout": "grid",
+            "mobile_image_fit": "contain",
+            "mobile_carousel_item_width": 80,
+            "mobile_grid_columns": 2
           },
           "blocks": {
             "icon_fNFUYJ": {
@@ -725,7 +821,11 @@
                 "condition_metafield": "",
                 "condition_value": "",
                 "condition_liquid": "",
-                "condition_invert": false
+                "condition_invert": false,
+                "mobile_image_layout": "grid",
+                "mobile_image_fit": "contain",
+                "mobile_carousel_item_width": 80,
+                "mobile_grid_columns": 2
               },
               "blocks": {
                 "text_xHcbG9": {
@@ -797,6 +897,7 @@
         "group_xajCF9",
         "group_qGmGez"
       ],
+      "disabled": true,
       "custom_css": [
         "img,h2,p {border-radius: 60px; transition: all 0.3s ease-in-out;}",
         ".group-block:hover img,.group-block:hover h2,div.group-block:hover p {transform: scale(1.1);}"
@@ -869,7 +970,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h2>Qui se bat pour rénchanter<br/>Le monde moderne</h2>",
+            "text": "<h2>Qui se bat pour rendre au monde <br/>sa mémoire & son souffle</h2>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -895,8 +996,8 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p>Chaque article est un Fragment d'Histoire. Il conte l'Histoire, la légende ou le récit de figures ou de concepts de notre Histoire qui méritent selon nous de ne pas être oublié.</p><p><strong>Apprenez. Incarnez. Transmettez !</strong></p>",
-            "width": "100%",
+            "text": "<p>Chacun de nos articles est une création originale appelée <em><strong>Fragment d'Histoire. </strong></em>Ce sont des échos du passé qui méritent d'être portés.</p><p>Notre application mobile, quant à elle, <strong>rassemble la plus grosse communauté francophone jamais fédérée </strong> sur l'Histoire, l'Aventure & la Nature.</p><p><strong>Apprenez. Incarnez. Explorez !</strong></p>",
+            "width": "fit-content",
             "max_width": "none",
             "alignment": "center",
             "type_preset": "h5",
@@ -920,6 +1021,7 @@
         "button_zNznd9": {
           "type": "button",
           "name": "t:names.button",
+          "disabled": true,
           "settings": {
             "label": "Découvrir notre mission : Contre l'Oubli",
             "link": "shopify://pages/notre-mission",
@@ -971,7 +1073,200 @@
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "padding-block-start": 80,
-        "padding-block-end": 80,
+        "padding-block-end": 30,
+        "enable_display_condition": false,
+        "condition_type": "metafield",
+        "condition_metafield": "",
+        "condition_value": "",
+        "condition_liquid": "",
+        "condition_invert": false
+      }
+    },
+    "double_carres_V4Px4V": {
+      "type": "double-carres",
+      "blocks": {
+        "card_YVFxPH": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/essai2_11afbdb6-a5ff-4fe5-86b7-28ee70b1b9ab.webp",
+            "title": "l'application",
+            "subtitle": "4600 utilisateurs, 2600+ lieux",
+            "link_mode": "card",
+            "card_link": "https://app.runesdechene.com",
+            "btn_link": "",
+            "btn_label": "",
+            "btn_bg": "#fae3d6",
+            "btn_text_color": "#962b21",
+            "btn_border_color": "#fae3d6",
+            "btn_hover_bg": "#962b21",
+            "btn_hover_text_color": "#ffffff",
+            "btn_hover_border_color": "#962b21",
+            "overlay_color": "#000000",
+            "overlay_opacity": 40,
+            "overlay_opacity_hover": 20,
+            "disable_animation": false,
+            "zoom_factor": 110,
+            "saturation_rest": 70
+          }
+        },
+        "card_N8FPgU": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Gael-Sweat-shirt-oversized-Varegue-Bleu_marine.webp",
+            "title": "la boutique",
+            "subtitle": "Histoire, mythologie & Nature",
+            "link_mode": "card",
+            "card_link": "shopify://pages/boutique",
+            "btn_link": "",
+            "btn_label": "",
+            "btn_bg": "#fae3d6",
+            "btn_text_color": "#962b21",
+            "btn_border_color": "#fae3d6",
+            "btn_hover_bg": "#962b21",
+            "btn_hover_text_color": "#ffffff",
+            "btn_hover_border_color": "#962b21",
+            "overlay_color": "#000000",
+            "overlay_opacity": 40,
+            "overlay_opacity_hover": 20,
+            "disable_animation": false,
+            "zoom_factor": 110,
+            "saturation_rest": 70
+          }
+        }
+      },
+      "block_order": [
+        "card_YVFxPH",
+        "card_N8FPgU"
+      ],
+      "name": "RDC - Double Carrés",
+      "settings": {
+        "color_scheme": "",
+        "section_width": "page",
+        "section_max_width": 1250,
+        "section_margin_top": 40,
+        "section_margin_bottom": 45,
+        "section_padding_top": 40,
+        "section_padding_bottom": 40,
+        "section_padding_horizontal": 20,
+        "cards_gap": 20,
+        "card_height": 500,
+        "card_padding": 40,
+        "card_border_radius": 0,
+        "mobile_cards_gap": 15,
+        "mobile_card_height": 300,
+        "mobile_card_width": 100,
+        "content_vertical_alignment": "center",
+        "content_horizontal_alignment": "center",
+        "text_alignment": "center",
+        "title_color": "#ffffff",
+        "title_font_size": 32,
+        "mobile_title_font_size": 24,
+        "title_font_weight": "700",
+        "title_margin_bottom": 12,
+        "subtitle_color": "#ffffff",
+        "subtitle_font_size": 16,
+        "mobile_subtitle_font_size": 14,
+        "subtitle_font_weight": "400",
+        "subtitle_margin_bottom": 20,
+        "button_font_size": 15,
+        "mobile_button_font_size": 14,
+        "button_font_weight": "600",
+        "button_padding_vertical": 12,
+        "button_padding_horizontal": 32,
+        "button_border_radius": 20,
+        "button_border_width": 0
+      }
+    },
+    "section_im7EFF": {
+      "type": "section",
+      "blocks": {
+        "text_9nRmHR": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h3>Ils parlent de nous</h3>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "group_partenaire_qKLtLX": {
+          "type": "group-partenaire",
+          "name": "Groupe partenaires",
+          "settings": {
+            "image_size": 150,
+            "gap": 60,
+            "images_per_row_mobile": 3,
+            "grayscale": false,
+            "image_1": "shopify://shop_images/skali_5b793a46-2d92-47a7-ba6f-c8fb86849ef3.webp",
+            "link_1": "https://skali.ch",
+            "image_2": "shopify://shop_images/logo-2_-_Copie.png",
+            "link_2": "https://www.labuchescandinave.fr",
+            "image_3": "shopify://shop_images/Bilskirnig_Logo_Details.png",
+            "link_3": "https://bilskirnir.fr",
+            "image_4": "shopify://shop_images/Logo_mug_-_Copie.png",
+            "link_4": "https://www.lafabriqueauxdragons.com",
+            "image_5": "shopify://shop_images/crom_LD_4c781005-a3ba-4c49-a6f1-758c8a3009bb.png",
+            "link_5": "https://www.hydromel-crom.fr",
+            "image_6": "shopify://shop_images/0._CITE_MILLE_DRAGONS_-_RECTO_DTG-VR2.png",
+            "link_6": "https://festyggdrasil.fr",
+            "link_7": "",
+            "link_8": ""
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_9nRmHR",
+        "group_partenaire_qKLtLX"
+      ],
+      "custom_css": [
+        "img {opacity: 0.5; height: 120px;}",
+        "h3 {opacity: 0.7; margin-bottom: 20px;}"
+      ],
+      "name": "t:names.custom_section",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 75,
+        "padding-block-end": 0,
         "enable_display_condition": false,
         "condition_type": "metafield",
         "condition_metafield": "",
@@ -982,9 +1277,12 @@
     }
   },
   "order": [
+    "rdc_hero_main",
     "section_MgkEX9",
     "illustration_list_FjwKWn",
     "section_GbDEgR",
-    "section_YjqMVK"
+    "section_YjqMVK",
+    "double_carres_V4Px4V",
+    "section_im7EFF"
   ]
 }

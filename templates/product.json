@@ -175,7 +175,7 @@
                 "align_baseline": false,
                 "horizontal_alignment_flex_direction_column": "flex-start",
                 "vertical_alignment_flex_direction_column": "center",
-                "gap": 24,
+                "gap": 10,
                 "width": "custom",
                 "custom_width": 80,
                 "width_mobile": "fill",
@@ -207,7 +207,11 @@
                 "condition_metafield": "",
                 "condition_value": "",
                 "condition_liquid": "",
-                "condition_invert": false
+                "condition_invert": false,
+                "mobile_image_layout": "grid",
+                "mobile_image_fit": "contain",
+                "mobile_carousel_item_width": 80,
+                "mobile_grid_columns": 2
               },
               "blocks": {
                 "group_nMm3w6": {
@@ -253,7 +257,11 @@
                     "condition_metafield": "",
                     "condition_value": "",
                     "condition_liquid": "",
-                    "condition_invert": false
+                    "condition_invert": false,
+                    "mobile_image_layout": "grid",
+                    "mobile_image_fit": "contain",
+                    "mobile_carousel_item_width": 80,
+                    "mobile_grid_columns": 2
                   },
                   "blocks": {
                     "text_rwpyUz": {
@@ -285,6 +293,7 @@
                     "text_rF3pQm": {
                       "type": "text",
                       "name": "t:names.text",
+                      "disabled": true,
                       "settings": {
                         "text": "<p>{{ closest.product.metafields.custom.base.value.force_de_vente | metafield_tag }}</p>",
                         "width": "fit-content",
@@ -325,7 +334,7 @@
                         "letter_spacing": "normal",
                         "case": "none",
                         "color": "var(--color-foreground)",
-                        "padding-block-start": 4,
+                        "padding-block-start": 0,
                         "padding-block-end": 0,
                         "padding-inline-start": 0,
                         "padding-inline-end": 0
@@ -339,40 +348,14 @@
                     "price_iBYhxh"
                   ]
                 },
-                "product_features_MTyx7p": {
-                  "type": "product-features",
-                  "name": "Caractéristiques produit",
-                  "settings": {
-                    "heading": "",
-                    "keyword_1": "bio",
-                    "icon_1": "shopify://shop_images/rdc_icon-arbre.png",
-                    "keyword_2": "main",
-                    "icon_2": "shopify://shop_images/rdc_icon-no-ia.png",
-                    "keyword_3": "imprimé",
-                    "icon_3": "shopify://shop_images/rdc_icon-eau.png",
-                    "keyword_4": "respect",
-                    "icon_4": "shopify://shop_images/rdc_icon-rune.png",
-                    "keyword_5": "plastique",
-                    "icon_5": "shopify://shop_images/rdc_icon-colis.png",
-                    "keyword_6": "g/m²",
-                    "icon_6": "shopify://shop_images/rdc_icon-tissu_8832c990-7a86-41fc-8b0b-25b5fb4cb06f.png",
-                    "keyword_7": "",
-                    "keyword_8": "",
-                    "keyword_9": "",
-                    "keyword_10": "",
-                    "padding-block-start": 0,
-                    "padding-block-end": 0
-                  },
-                  "blocks": {}
-                },
                 "variant_picker_VT89rh": {
                   "type": "variant-picker",
                   "settings": {
                     "variant_style": "buttons",
                     "show_swatches": true,
                     "alignment": "left",
-                    "padding-block-start": 10,
-                    "padding-block-end": 10,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
                     "padding-inline-start": 0,
                     "padding-inline-end": 0
                   },
@@ -392,7 +375,7 @@
                     "stacking": true,
                     "show_pickup_availability": false,
                     "gift_card_form": true,
-                    "padding-block-start": 0,
+                    "padding-block-start": 24,
                     "padding-block-end": 0,
                     "padding-inline-start": 0,
                     "padding-inline-end": 0
@@ -464,7 +447,11 @@
                     "condition_metafield": "",
                     "condition_value": "",
                     "condition_liquid": "",
-                    "condition_invert": false
+                    "condition_invert": false,
+                    "mobile_image_layout": "grid",
+                    "mobile_image_fit": "contain",
+                    "mobile_carousel_item_width": 80,
+                    "mobile_grid_columns": 2
                   },
                   "blocks": {
                     "text_Yh9KYq": {
@@ -498,9 +485,36 @@
                     "text_Yh9KYq"
                   ]
                 },
+                "text_XEkBy7": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "{{ closest.product.metafields.custom.illustration_produit.value.description_borne | metafield_tag }}",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-primary--family)",
+                    "font_size": "",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
                 "group_JK8NUb": {
                   "type": "group",
                   "name": "Info icons",
+                  "disabled": true,
                   "settings": {
                     "content_direction": "row",
                     "vertical_on_mobile": false,
@@ -541,7 +555,11 @@
                     "condition_metafield": "",
                     "condition_value": "",
                     "condition_liquid": "",
-                    "condition_invert": false
+                    "condition_invert": false,
+                    "mobile_image_layout": "grid",
+                    "mobile_image_fit": "contain",
+                    "mobile_carousel_item_width": 80,
+                    "mobile_grid_columns": 2
                   },
                   "blocks": {
                     "group_xKNtX4": {
@@ -587,7 +605,11 @@
                         "condition_metafield": "",
                         "condition_value": "",
                         "condition_liquid": "",
-                        "condition_invert": false
+                        "condition_invert": false,
+                        "mobile_image_layout": "grid",
+                        "mobile_image_fit": "contain",
+                        "mobile_carousel_item_width": 80,
+                        "mobile_grid_columns": 2
                       },
                       "blocks": {
                         "icon_9Erkpa": {
@@ -686,7 +708,11 @@
                         "condition_metafield": "",
                         "condition_value": "",
                         "condition_liquid": "",
-                        "condition_invert": false
+                        "condition_invert": false,
+                        "mobile_image_layout": "grid",
+                        "mobile_image_fit": "contain",
+                        "mobile_carousel_item_width": 80,
+                        "mobile_grid_columns": 2
                       },
                       "blocks": {
                         "icon_tJpnRn": {
@@ -785,7 +811,11 @@
                         "condition_metafield": "",
                         "condition_value": "",
                         "condition_liquid": "",
-                        "condition_invert": false
+                        "condition_invert": false,
+                        "mobile_image_layout": "grid",
+                        "mobile_image_fit": "contain",
+                        "mobile_carousel_item_width": 80,
+                        "mobile_grid_columns": 2
                       },
                       "blocks": {
                         "icon_8ci8XA": {
@@ -884,7 +914,11 @@
                         "condition_metafield": "",
                         "condition_value": "",
                         "condition_liquid": "",
-                        "condition_invert": false
+                        "condition_invert": false,
+                        "mobile_image_layout": "grid",
+                        "mobile_image_fit": "contain",
+                        "mobile_carousel_item_width": 80,
+                        "mobile_grid_columns": 2
                       },
                       "blocks": {
                         "icon_m9YPRU": {
@@ -939,32 +973,6 @@
                     "group_WXkUAx"
                   ]
                 },
-                "text_XEkBy7": {
-                  "type": "text",
-                  "name": "t:names.text",
-                  "settings": {
-                    "text": "{{ closest.product.description }}",
-                    "width": "fit-content",
-                    "max_width": "normal",
-                    "alignment": "left",
-                    "type_preset": "rte",
-                    "font": "var(--font-primary--family)",
-                    "font_size": "",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "wrap": "pretty",
-                    "color": "",
-                    "background": false,
-                    "background_color": "#00000026",
-                    "corner_radius": 0,
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                },
                 "text_Kj7gTA": {
                   "type": "text",
                   "name": "t:names.text",
@@ -989,6 +997,33 @@
                     "padding-block-end": 0,
                     "padding-inline-start": 0,
                     "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "product_features_MTyx7p": {
+                  "type": "product-features",
+                  "name": "Caractéristiques produit",
+                  "disabled": true,
+                  "settings": {
+                    "heading": "",
+                    "keyword_1": "bio",
+                    "icon_1": "shopify://shop_images/rdc_icon-arbre.png",
+                    "keyword_2": "main",
+                    "icon_2": "shopify://shop_images/rdc_icon-no-ia.png",
+                    "keyword_3": "imprimé",
+                    "icon_3": "shopify://shop_images/rdc_icon-eau.png",
+                    "keyword_4": "respect",
+                    "icon_4": "shopify://shop_images/rdc_icon-rune.png",
+                    "keyword_5": "plastique",
+                    "icon_5": "shopify://shop_images/rdc_icon-colis.png",
+                    "keyword_6": "g/m²",
+                    "icon_6": "shopify://shop_images/rdc_icon-tissu_8832c990-7a86-41fc-8b0b-25b5fb4cb06f.png",
+                    "keyword_7": "",
+                    "keyword_8": "",
+                    "keyword_9": "",
+                    "keyword_10": "",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0
                   },
                   "blocks": {}
                 },
@@ -1151,14 +1186,14 @@
               },
               "block_order": [
                 "group_nMm3w6",
-                "product_features_MTyx7p",
                 "variant_picker_VT89rh",
                 "custom_liquid_Fh9YNn",
                 "buy_buttons_64taHw",
                 "group_wNUjBe",
-                "group_JK8NUb",
                 "text_XEkBy7",
+                "group_JK8NUb",
                 "text_Kj7gTA",
+                "product_features_MTyx7p",
                 "product_recommendations_Rpc8dN"
               ]
             }
@@ -1170,7 +1205,7 @@
       },
       "custom_css": [
         ".price {font-weight: bold;}",
-        "p {line-height: 1.1rem;}"
+        "p {line-height: 1.5rem;}"
       ],
       "settings": {
         "content_width": "content-center-aligned",
@@ -1231,7 +1266,11 @@
             "condition_metafield": "",
             "condition_value": "",
             "condition_liquid": "",
-            "condition_invert": false
+            "condition_invert": false,
+            "mobile_image_layout": "grid",
+            "mobile_image_fit": "contain",
+            "mobile_carousel_item_width": 80,
+            "mobile_grid_columns": 2
           },
           "blocks": {
             "popup_block_Px94FM": {
@@ -1240,7 +1279,7 @@
               "settings": {
                 "title": "Guide de tailles",
                 "title_preset": "h3",
-                "description": "<p>Les mesures de nos coupes varient selon les modèles. Economisez vous du temps !</p>",
+                "description": "<p>Les tailles peuvent varier sur les modèles oversized & les vestes.</p>",
                 "text_color": "#564b4b",
                 "button_text": "",
                 "link_type": "popup",
@@ -1425,7 +1464,11 @@
             "condition_metafield": "",
             "condition_value": "",
             "condition_liquid": "",
-            "condition_invert": false
+            "condition_invert": false,
+            "mobile_image_layout": "grid",
+            "mobile_image_fit": "contain",
+            "mobile_carousel_item_width": 80,
+            "mobile_grid_columns": 2
           },
           "blocks": {
             "popup_block_mJyY8j": {
@@ -1434,7 +1477,7 @@
               "settings": {
                 "title": "Notre mission",
                 "title_preset": "h3",
-                "description": "<p>Runes de Chêne est plus qu'une marque. Cliquez pour découvrir notre concept.</p>",
+                "description": "<p>Découvrez ce qui nous motive depuis 2023.</p>",
                 "text_color": "#564b4b",
                 "button_text": "",
                 "link_type": "url",
@@ -1729,11 +1772,11 @@
       ],
       "name": "t:names.product_recommendations",
       "settings": {
-        "product": "{{ closest.product }}",
+        "product": "t-shirt-overzised-varegue",
         "recommendation_type": "complementary",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 4,
+        "layout_type": "carousel",
+        "carousel_on_mobile": true,
+        "max_products": 10,
         "columns": 4,
         "mobile_columns": "2",
         "columns_gap": 12,
@@ -1793,7 +1836,11 @@
             "condition_metafield": "",
             "condition_value": "",
             "condition_liquid": "",
-            "condition_invert": false
+            "condition_invert": false,
+            "mobile_image_layout": "grid",
+            "mobile_image_fit": "contain",
+            "mobile_carousel_item_width": 80,
+            "mobile_grid_columns": 2
           },
           "blocks": {}
         }

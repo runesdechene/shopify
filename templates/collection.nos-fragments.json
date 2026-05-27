@@ -342,7 +342,7 @@
         "back_url": "/",
         "nav_button_bg": "#e6dcc7",
         "nav_button_color": "#5e5444",
-        "show_filters": true,
+        "show_filters": false,
         "filter_all_label": "✨ Tous",
         "bottom_images_opacity": 100
       }

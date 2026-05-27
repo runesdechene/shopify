@@ -13,6 +13,7 @@
     "logo_inverse": "shopify://shop_images/LOGO_ligne_blanc.webp",
     "logo_height": 50,
     "logo_height_mobile": 28,
+    "favicon": "shopify://shop_images/favicon.png",
     "type_body_font": "cabin_n4",
     "type_subheading_font": "cabin_n4",
     "type_heading_font": "bebas_neue_n4",
@@ -35,6 +36,7 @@
     "type_line_height_h6": "display-normal",
     "type_letter_spacing_h6": "heading-loose",
     "type_case_h6": "uppercase",
+    "page_width": "narrow",
     "transition_to_main_product": true,
     "primary_button_border_width": 0,
     "secondary_button_border_width": 1,
@@ -71,6 +73,22 @@
     "variant_button_radius": 100,
     "variant_button_width": "default-width-buttons",
     "content_for_index": [],
+    "blocks": {
+      "15683396631634586217": {
+        "type": "shopify://apps/inbox/blocks/chat/841fc607-4181-4ad1-842d-e24d7f8bad6b",
+        "disabled": false,
+        "settings": {
+          "button_color": "#5b2f2f",
+          "secondary_color": "#FFFFFF",
+          "ternary_color": "#6A6A6A",
+          "button_icon": "chat_bubble",
+          "button_text": "chat_with_us",
+          "button_horizontal_position": "bottom_right",
+          "button_vertical_position": "lowest",
+          "greeting_message": ""
+        }
+      }
+    },
     "color_schemes": {
       "scheme-1": {
         "settings": {

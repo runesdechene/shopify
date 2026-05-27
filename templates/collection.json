@@ -55,7 +55,11 @@
             "condition_metafield": "",
             "condition_value": "",
             "condition_liquid": "",
-            "condition_invert": false
+            "condition_invert": false,
+            "mobile_image_layout": "grid",
+            "mobile_image_fit": "contain",
+            "mobile_carousel_item_width": 80,
+            "mobile_grid_columns": 2
           },
           "blocks": {
             "text_Dftjfc": {
@@ -110,6 +114,32 @@
               },
               "blocks": {}
             },
+            "text_ELjgGV": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "{{ closest.collection.description }}",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 20,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
             "group_aUXdLi": {
               "type": "group",
               "name": "t:names.group",
@@ -153,7 +183,11 @@
                 "condition_metafield": "",
                 "condition_value": "",
                 "condition_liquid": "",
-                "condition_invert": false
+                "condition_invert": false,
+                "mobile_image_layout": "grid",
+                "mobile_image_fit": "contain",
+                "mobile_carousel_item_width": 80,
+                "mobile_grid_columns": 2
               },
               "blocks": {
                 "button_8GTGfN": {
@@ -180,12 +214,14 @@
           "block_order": [
             "text_Dftjfc",
             "text_tbkKN7",
+            "text_ELjgGV",
             "group_aUXdLi"
           ]
         },
         "group_7Xy78f": {
           "type": "group",
           "name": "Illus Info",
+          "disabled": true,
           "settings": {
             "content_direction": "column",
             "vertical_on_mobile": true,
@@ -226,7 +262,11 @@
             "condition_metafield": "",
             "condition_value": "",
             "condition_liquid": "{% if template.name == 'collection' and collection.metafields.custom.illustrations != blank %}\n  true\n{% endif %}",
-            "condition_invert": false
+            "condition_invert": false,
+            "mobile_image_layout": "grid",
+            "mobile_image_fit": "contain",
+            "mobile_carousel_item_width": 80,
+            "mobile_grid_columns": 2
           },
           "blocks": {
             "image_QjWgzY": {
@@ -288,6 +328,7 @@
         "group_jbMCxW": {
           "type": "group",
           "name": "COllection Info",
+          "disabled": true,
           "settings": {
             "content_direction": "column",
             "vertical_on_mobile": true,
@@ -328,7 +369,11 @@
             "condition_metafield": "",
             "condition_value": "",
             "condition_liquid": "{% if template.name == 'collection' and collection.metafields.custom.illustrations != blank %}\n  true\n{% endif %}",
-            "condition_invert": true
+            "condition_invert": true,
+            "mobile_image_layout": "grid",
+            "mobile_image_fit": "contain",
+            "mobile_carousel_item_width": 80,
+            "mobile_grid_columns": 2
           },
           "blocks": {
             "image_Hyy994": {
@@ -396,7 +441,7 @@
       "custom_css": [
         ".button,.button-secondary {padding-inline: 40px;}",
         "p {max-width: 800px;}",
-        "@media screen and (max-width: 798px) {.button, .button-secondary {display: none; } h2, h1 {text-align: center; }}"
+        "@media screen and (max-width: 798px) {.button, .button-secondary {display: none; } h2, h1 {text-align: center; } p {text-align: center !important; }}"
       ],
       "name": "Collection heading",
       "settings": {
@@ -435,6 +480,7 @@
     },
     "lecture_fragment_v2_UPfCbK": {
       "type": "lecture-fragment-v2",
+      "disabled": true,
       "custom_css": [
         "@media (min-width: 798px) {.section-wrapper {padding-top: 20px; }}"
       ],
@@ -686,7 +732,11 @@
             "condition_metafield": "",
             "condition_value": "",
             "condition_liquid": "",
-            "condition_invert": false
+            "condition_invert": false,
+            "mobile_image_layout": "grid",
+            "mobile_image_fit": "contain",
+            "mobile_carousel_item_width": 80,
+            "mobile_grid_columns": 2
           },
           "blocks": {
             "button_99KMpQ": {
@@ -729,9 +779,7 @@
       "block_order": [
         "group_q4NXJM"
       ],
-      "custom_css": [
-        "@media (min-width: 792px) {.section-wrapper {display: none; }}"
-      ],
+      "disabled": true,
       "name": "t:names.custom_section",
       "settings": {
         "content_direction": "column",

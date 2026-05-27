@@ -33,6 +33,7 @@
         "extra_field_handle": "edition",
         "extra_field_prefix": "",
         "summary_field_handle": "resume",
+        "tags_field_handle": "tags",
         "mode_ecran": true,
         "qr_code_url": "shopify://pages/borne",
         "avis_url": "https://hub.runesdechene.com/soumettre-avis",
@@ -53,7 +54,7 @@
         "back_url": "/",
         "nav_button_bg": "#e6dcc7",
         "nav_button_color": "#5e5444",
-        "show_filters": true,
+        "show_filters": false,
         "filter_all_label": "✨ Tous",
         "bottom_images_opacity": 100
       }
