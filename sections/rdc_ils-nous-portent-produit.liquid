@@ -29,24 +29,28 @@
   /* Grille pleine largeur, vignettes nues et petites */
   .rdc-inp-{{ section.id }} .rdc-inp__grid {
     display: flex;
-    flex-flow: row wrap;
+    flex-wrap: nowrap;
     align-items: flex-start;
     gap: 4px;
     width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+    padding-bottom: 6px;
   }
-  .rdc-inp-{{ section.id }} .rdc-inp__cell {
+  .rdc-inp-{{ section.id }} .rdc-inp__photo {
     height: 220px;
+    width: auto;
+    max-width: none;
     flex: 0 0 auto;
-    overflow: hidden;
+    display: block;
     cursor: pointer;
     background: #ece5d8;
+    scroll-snap-align: start;
+    transition: filter .2s ease;
   }
-  .rdc-inp-{{ section.id }} .rdc-inp__cell img {
-    height: 100%; width: auto;
-    max-width: none;
-    display: block;
-    transition: transform .35s ease;
-  }
+  .rdc-inp-{{ section.id }} .rdc-inp__photo:hover { filter: brightness(1.06); }
   .rdc-inp-{{ section.id }} .rdc-inp__cell:hover img { transform: scale(1.06); }
 
   .rdc-inp-{{ section.id }} .rdc-inp__loading,
@@ -56,7 +60,7 @@
 
   @media (max-width: 749px) {
     .rdc-inp-{{ section.id }} .rdc-inp__grid { gap: 3px; }
-    .rdc-inp-{{ section.id }} .rdc-inp__cell { height: 150px; }
+    .rdc-inp-{{ section.id }} .rdc-inp__photo { height: 160px; }
     .rdc-inp-{{ section.id }} .rdc-inp__title { font-size: clamp(2rem, 9vw, 2.8rem); }
   }
 
@@ -197,18 +201,16 @@
       .then(function (rows) {
         loadingEl.style.display = 'none';
         if (!rows || !rows.length) { emptyEl.style.display = 'block'; return; }
-        gridEl.style.display = 'grid';
+        gridEl.style.display = 'flex';
         rows.forEach(function (row) {
           if (!row.image_url) return;
-          var cell = document.createElement('div');
-          cell.className = 'rdc-inp__cell';
           var img = document.createElement('img');
+          img.className = 'rdc-inp__photo';
           img.src = row.image_url;
           img.loading = 'lazy';
           img.alt = 'Photo de ' + (row.submitter_name || 'la communauté');
-          cell.appendChild(img);
-          cell.addEventListener('click', function () { openModal(row); });
-          gridEl.appendChild(cell);
+          img.addEventListener('click', function () { openModal(row); });
+          gridEl.appendChild(img);
         });
       })
       .catch(function (err) {
