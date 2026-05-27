@@ -29,18 +29,21 @@
   /* Grille pleine largeur, vignettes nues et petites */
   .rdc-inp-{{ section.id }} .rdc-inp__grid {
     display: flex;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
+    align-items: flex-start;
     gap: 4px;
     width: 100%;
   }
   .rdc-inp-{{ section.id }} .rdc-inp__cell {
     height: 220px;
+    flex: 0 0 auto;
     overflow: hidden;
     cursor: pointer;
     background: #ece5d8;
   }
   .rdc-inp-{{ section.id }} .rdc-inp__cell img {
     height: 100%; width: auto;
+    max-width: none;
     display: block;
     transition: transform .35s ease;
   }
