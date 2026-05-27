@@ -159,7 +159,13 @@
           assign matches_color = true
         endif
 
-        unless matches_color
+        # Exception : garder l'image en tout temps si elle a un alt custom (≠ titre produit), typiquement une photo de personne
+        assign has_custom_alt = false
+        if media.alt != blank and media.alt != selected_product.title
+          assign has_custom_alt = true
+        endif
+
+        unless matches_color or has_custom_alt
           continue
         endunless
       endif
@@ -194,7 +200,13 @@
           assign matches_color = true
         endif
 
-        if matches_color
+        # Exception : garder l'image en tout temps si elle a un alt custom (≠ titre produit), typiquement une photo de personne
+        assign has_custom_alt = false
+        if media.alt != blank and media.alt != selected_product.title
+          assign has_custom_alt = true
+        endif
+
+        if matches_color or has_custom_alt
           assign found_media = selected_product.media | where: 'id', media.id
           assign sorted_media = sorted_media | concat: found_media
         endif
@@ -205,13 +217,32 @@
   endif
 
   # Tri pour afficher en premier l'image avec alt personnalisé (différent du titre produit)
+  # On ne remonte en tête que si l'image à alt custom matche AUSSI la couleur de la variante
   assign desktop_first_with_alt = null
-  for media in sorted_media
-    if media.alt != blank and media.alt != selected_product.title
-      assign desktop_first_with_alt = media
-      break
-    endif
-  endfor
+  if variant_color_name != ''
+    for media in sorted_media
+      if media.alt != blank and media.alt != selected_product.title
+        assign media_filename = media.src | split: '/' | last | downcase
+        assign alt_matches_color = false
+        if media_filename contains variant_color_name
+          assign alt_matches_color = true
+        endif
+        if media_filename contains variant_color_handle
+          assign alt_matches_color = true
+        endif
+        if media_filename contains variant_color_handle_compact
+          assign alt_matches_color = true
+        endif
+        if media_filename contains variant_color_handle_underscore
+          assign alt_matches_color = true
+        endif
+        if alt_matches_color
+          assign desktop_first_with_alt = media
+          break
+        endif
+      endif
+    endfor
+  endif
 
   if desktop_first_with_alt
     assign temp_sorted_media = '' | split: ','
@@ -757,16 +788,35 @@
         1) Première image avec alt personnalisé (différent du titre)
         2) Les autres images dans leur ordre original
       {%- endcomment -%}
+      {%- comment -%} On ne remonte en tête que si l'image à alt custom matche AUSSI la couleur de la variante {%- endcomment -%}
       {%- assign mobile_first_with_alt = null -%}
       {%- assign mobile_first_with_alt_index = -1 -%}
 
-      {%- for media in sorted_media -%}
-        {%- if mobile_first_with_alt == null and media.alt != blank and media.alt != selected_product.title -%}
-          {%- assign mobile_first_with_alt = media -%}
-          {%- assign mobile_first_with_alt_index = forloop.index0 -%}
-          {%- break -%}
-        {%- endif -%}
-      {%- endfor -%}
+      {%- if variant_color_name != '' -%}
+        {%- for media in sorted_media -%}
+          {%- if mobile_first_with_alt == null and media.alt != blank and media.alt != selected_product.title -%}
+            {%- assign media_filename = media.src | split: '/' | last | downcase -%}
+            {%- assign alt_matches_color = false -%}
+            {%- if media_filename contains variant_color_name -%}
+              {%- assign alt_matches_color = true -%}
+            {%- endif -%}
+            {%- if media_filename contains variant_color_handle -%}
+              {%- assign alt_matches_color = true -%}
+            {%- endif -%}
+            {%- if media_filename contains variant_color_handle_compact -%}
+              {%- assign alt_matches_color = true -%}
+            {%- endif -%}
+            {%- if media_filename contains variant_color_handle_underscore -%}
+              {%- assign alt_matches_color = true -%}
+            {%- endif -%}
+            {%- if alt_matches_color -%}
+              {%- assign mobile_first_with_alt = media -%}
+              {%- assign mobile_first_with_alt_index = forloop.index0 -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
 
       {%- assign mobile_sorted_media = sorted_media -%}
 
