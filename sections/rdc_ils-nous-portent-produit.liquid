@@ -51,6 +51,17 @@
     transition: filter .2s ease;
   }
   .rdc-inp-{{ section.id }} .rdc-inp__photo:hover { filter: brightness(1.06); }
+  .rdc-inp-{{ section.id }} .rdc-inp__add {
+    flex: 0 0 auto; height: 220px; width: 170px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+    background: #f3ede1; border: 2px dashed #c9b79a; color: #6b4c3b;
+    text-decoration: none; cursor: pointer; text-align: center; padding: 10px;
+    transition: background .2s, border-color .2s;
+  }
+  .rdc-inp-{{ section.id }} .rdc-inp__add:hover { background: #ece3d2; border-color: #a98b63; }
+  .rdc-inp-{{ section.id }} .rdc-inp__add-plus { font-size: 2.4rem; line-height: 1; font-weight: 300; }
+  .rdc-inp-{{ section.id }} .rdc-inp__add-label { font-size: .85rem; font-weight: 600; letter-spacing: .02em; }
+  @media (max-width: 749px) { .rdc-inp-{{ section.id }} .rdc-inp__add { height: 160px; width: 120px; } }
 
   .rdc-inp-{{ section.id }} .rdc-inp__loading,
   .rdc-inp-{{ section.id }} .rdc-inp__empty {
@@ -167,6 +178,7 @@
     var SUPABASE_KEY = {{ section.settings.supabase_anon_key | json }};
     var PRODUCT_HANDLE = {{ product.handle | json }};
     var SID = {{ section.id | json }};
+    var SUBMIT_URL = {{ section.settings.submit_url | default: 'https://hub.runesdechene.com/soumettre-contenu' | json }};
 
     var gridEl = document.getElementById('rdc-inp-grid-' + SID);
     var loadingEl = document.getElementById('rdc-inp-loading-' + SID);
@@ -280,6 +292,15 @@
           img.addEventListener('click', function () { openModal(i); });
           gridEl.appendChild(img);
         });
+        if (SUBMIT_URL) {
+          var add = document.createElement('a');
+          add.className = 'rdc-inp__add';
+          add.href = SUBMIT_URL;
+          add.target = '_blank';
+          add.rel = 'noopener';
+          add.innerHTML = '<span class="rdc-inp__add-plus">+</span><span class="rdc-inp__add-label">Ajouter ma photo</span>';
+          gridEl.appendChild(add);
+        }
       })
       .catch(function (err) {
         console.error('RDC ils-nous-portent:', err);
@@ -305,6 +326,12 @@
       "id": "subtitle",
       "label": "Sous-titre",
       "default": "La communauté Runes de Chêne en parle"
+    },
+    {
+      "type": "text",
+      "id": "submit_url",
+      "label": "Lien « Ajouter ma photo »",
+      "default": "https://hub.runesdechene.com/soumettre-contenu"
     },
     {
       "type": "text",
