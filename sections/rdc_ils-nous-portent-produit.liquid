@@ -108,6 +108,7 @@
   .rdc-inp-modal-{{ section.id }} .rdc-inp__modal-rating {
     font-size: .95rem; letter-spacing: .04em; margin-top: 2px;
   }
+  .rdc-inp-modal-{{ section.id }} .rdc-inp__star-off { filter: grayscale(1); opacity: .4; }
   .rdc-inp-modal-{{ section.id }} .rdc-inp__modal-msg {
     font-size: .98rem; font-style: italic; margin-top: 8px; opacity: .92; line-height: 1.4;
   }
@@ -157,7 +158,12 @@
         .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
-    function stars(n) { n = parseInt(n, 10); return n > 0 ? '⭐'.repeat(Math.min(5, n)) : ''; }
+    function stars(n) {
+      n = Math.max(0, Math.min(5, parseInt(n, 10) || 0));
+      var html = '⭐'.repeat(n);
+      for (var i = n; i < 5; i++) html += '<span class="rdc-inp__star-off">⭐</span>';
+      return html;
+    }
 
     function openModal(row) {
       modalImg.src = row.image_url;
