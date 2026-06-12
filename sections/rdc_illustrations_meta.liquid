@@ -1,0 +1,229 @@
+{%- comment -%}
+  rdc_illustrations_meta.liquid
+
+  Copie de la section illustrations, en GRILLE, qui affiche les ILLUSTRATIONS
+  (métaobjet `custom.illustrations` lié à chaque collection) au lieu d'une photo
+  produit. Tu choisis les collections ; chaque carte montre l'illustration liée
+  et renvoie vers la collection.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = 'RdcIll-' | append: section.id
+  assign img_field = section.settings.image_field
+  assign collections = section.settings.collections
+
+  comment
+    Ordre d'affichage. Par défaut = ordre manuel du réglage. Option "recent" =
+    tri par date d'illustration décroissante (clé "epoch.index" triée puis inversée).
+  endcomment
+  assign order_list = ''
+  for collection in collections
+    assign order_list = order_list | append: forloop.index0 | append: ','
+  endfor
+  if section.settings.sort_order == 'recent'
+    assign sort_keys = ''
+    for collection in collections
+      assign ill = collection.metafields.custom.illustrations.value
+      assign d = ill.date | date: '%s'
+      if d == blank
+        assign d = '0000000000'
+      endif
+      assign sort_keys = sort_keys | append: d | append: '.' | append: forloop.index0 | append: ','
+    endfor
+    assign sorted_keys = sort_keys | split: ',' | sort | reverse
+    assign order_list = ''
+    for k in sorted_keys
+      assign parts = k | split: '.'
+      assign order_list = order_list | append: parts[1] | append: ','
+    endfor
+  endif
+  assign order_indices = order_list | split: ','
+
+  # Seuil "nouveaute" en secondes (mois * 30 jours)
+  assign now_epoch = 'now' | date: '%s'
+  assign new_seconds = section.settings.new_months | times: 2592000
+-%}
+
+<style>
+  #{{ uid }} .rdc-ill__inner{min-width:0;
+    padding-block:{{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px}
+  #{{ uid }} .rdc-ill__head{text-align:center;margin-bottom:clamp(26px,3vw,42px)}
+  #{{ uid }} .rdc-ill__overline{font-family:var(--font-body--family);font-weight:700;font-size:.74rem;
+    letter-spacing:.26em;text-transform:uppercase;color:{{ section.settings.accent_color }};margin-bottom:10px}
+  #{{ uid }} .rdc-ill__heading{font-family:var(--font-heading--family, sans-serif);text-transform:uppercase;
+    font-size:clamp(1.8rem,3.2vw,2.6rem);letter-spacing:.04em;line-height:1;color:var(--color-foreground-heading, #403434)}
+  #{{ uid }} .rdc-ill__grid{display:grid;width:100%;
+    grid-template-columns:repeat({{ section.settings.columns }},1fr);
+    column-gap:{{ section.settings.columns_gap }}px;row-gap:{{ section.settings.rows_gap }}px}
+  #{{ uid }} .rdc-ill__card{display:block;text-decoration:none;color:inherit;transition:transform .3s ease}
+  #{{ uid }} .rdc-ill__card:hover{transform:translateY(-4px)}
+  #{{ uid }} .rdc-ill__image{position:relative;aspect-ratio:{{ section.settings.image_ratio }};overflow:hidden;
+    border-radius:{{ section.settings.corner_radius }}px;padding:{{ section.settings.image_padding }}px;box-sizing:border-box}
+  #{{ uid }} .rdc-ill__image img{width:100%;height:100%;object-fit:contain;display:block;opacity:.8;transition:transform .6s ease, opacity .3s ease}
+  #{{ uid }} .rdc-ill__card:hover .rdc-ill__image img{opacity:1}
+  {% if section.settings.hover_zoom %}#{{ uid }} .rdc-ill__card:hover .rdc-ill__image img{transform:scale(1.05)}{% endif %}
+  #{{ uid }} .rdc-ill__new{position:absolute;top:12px;left:12px;z-index:2;display:inline-flex;align-items:center;gap:5px;
+    padding:5px 11px 5px 9px;border-radius:999px;font-family:var(--font-body--family);font-weight:700;
+    font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;line-height:1;
+    box-shadow:0 3px 12px rgba(0,0,0,.22)}
+  #{{ uid }} .rdc-ill__flame{width:13px;height:13px;flex:0 0 auto}
+  #{{ uid }} .rdc-ill__content{padding-top:14px;text-align:center}
+  #{{ uid }} .rdc-ill__title{font-family:var(--font-heading--family, sans-serif);text-transform:uppercase;
+    font-size:clamp(1.3rem,1.9vw,1.7rem);letter-spacing:.04em;line-height:1.05;
+    color:var(--color-foreground-heading, #403434);margin:0 0 6px}
+  #{{ uid }} .rdc-ill__summary{font-family:var(--font-body--family);font-size:.95rem;line-height:1.5;
+    color:var(--color-foreground, #594848);margin:0 0 8px}
+  #{{ uid }} .rdc-ill__artist{font-family:var(--font-body--family);font-size:.72rem;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--color-foreground, #594848);opacity:.65;margin:6px 0 0}
+  #{{ uid }} .rdc-ill__link{font-family:var(--font-body--family);font-weight:700;font-size:.74rem;
+    letter-spacing:.1em;text-transform:uppercase;color:{{ section.settings.accent_color }}}
+  #{{ uid }} .rdc-ill__placeholder{display:flex;align-items:center;justify-content:center;text-align:center;
+    min-height:200px;border:2px dashed var(--color-border, #d8ccb6);border-radius:8px;padding:24px;
+    font-family:var(--font-body--family);color:var(--color-foreground, #594848)}
+
+  @media (max-width:749px){
+    #{{ uid }} .rdc-ill__grid{grid-template-columns:repeat({{ section.settings.mobile_columns }},1fr);
+      column-gap:{{ section.settings.columns_gap | divided_by: 2 }}px}
+  }
+</style>
+
+<div id="{{ uid }}" class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} rdc-ill">
+  {%- if section.settings.overline != blank or section.settings.heading != blank -%}
+    <div class="rdc-ill__head">
+      {%- if section.settings.overline != blank -%}<div class="rdc-ill__overline">{{ section.settings.overline }}</div>{%- endif -%}
+      {%- if section.settings.heading != blank -%}<div class="rdc-ill__heading">{{ section.settings.heading }}</div>{%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="rdc-ill__inner">
+    {%- if collections != blank and collections.size > 0 -%}
+      <div class="rdc-ill__grid">
+        {%- for idx_str in order_indices -%}
+          {%- liquid
+            assign idx = idx_str | plus: 0
+            assign collection = empty
+            for c in collections
+              if forloop.index0 == idx
+                assign collection = c
+                break
+              endif
+            endfor
+            assign illustration = collection.metafields.custom.illustrations.value
+            if illustration == blank
+              assign illustration = collection.metafields.custom.illustrations
+            endif
+            assign img = illustration[img_field]
+            if img == blank
+              assign img = collection.image
+            endif
+            assign title = illustration.nom | default: collection.title
+            assign summary = illustration.resume
+            assign artist = illustration.artiste.value.nom.value | default: illustration.artiste.value.nom
+
+            assign is_new = false
+            assign ill_epoch = illustration.date | date: '%s'
+            if ill_epoch != blank
+              assign age = now_epoch | minus: ill_epoch
+              if age < new_seconds
+                assign is_new = true
+              endif
+            endif
+          -%}
+          <a class="rdc-ill__card" href="{{ collection.url | default: '#' }}" aria-label="{{ title | escape }}">
+            <div class="rdc-ill__image">
+              {%- if section.settings.show_new_badge and is_new -%}
+                <span class="rdc-ill__new" style="background:{{ section.settings.new_bg }};color:{{ section.settings.new_text }}">
+                  <svg class="rdc-ill__flame" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2c.5 3-1.6 4.3-2.9 5.8C7.6 9.5 7 11 7 12.7 7 16.2 9.2 19 12 19s5-2.8 5-6.3c0-2.4-1.2-4.2-2.4-5.6C13.9 9 13.4 9.6 12.6 9.3c-.9-.3-.8-1.5-.6-2.6.2-1.3.3-2.9 0-4.7Zm.2 11.2c.3 1.3-.4 1.8-1 1.9-.7.1-1.5-.3-1.6-1.3-.1-.8.4-1.4.7-1.9.4.5 1.6.5 1.9 1.3Z"/></svg>
+                  {{ section.settings.new_label }}
+                </span>
+              {%- endif -%}
+              {%- if img != blank -%}
+                {{ img | image_url: width: 700 | image_tag: alt: title, loading: 'lazy', class: 'rdc-ill__img', widths: '350, 500, 700, 900' }}
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <div class="rdc-ill__content">
+              {%- if section.settings.show_name and title != blank -%}
+                <h3 class="rdc-ill__title">{{ title }}</h3>
+              {%- endif -%}
+              {%- if section.settings.show_summary and summary != blank -%}
+                <p class="rdc-ill__summary">{{ summary }}</p>
+              {%- endif -%}
+              {%- if section.settings.show_artist and artist != blank -%}
+                <p class="rdc-ill__artist">Par {{ artist }}</p>
+              {%- endif -%}
+              {%- if section.settings.show_link -%}
+                <span class="rdc-ill__link">{{ section.settings.link_label }} →</span>
+              {%- endif -%}
+            </div>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="rdc-ill__placeholder">Choisis tes collections dans le réglage « Collections (illustrations) ». Chacune affichera son illustration liée.</div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "RDC — Illustrations",
+  "tag": "section",
+  "class": "section-rdc-illustrations",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "header", "content": "Illustrations" },
+    { "type": "collection_list", "id": "collections", "label": "Collections (illustrations)", "limit": 24 },
+    { "type": "select", "id": "image_field", "label": "Image affichée", "options": [
+      { "value": "image_pour_fond_clair", "label": "Version claire" },
+      { "value": "image_pour_fond_sombre", "label": "Version sombre" } ], "default": "image_pour_fond_clair" },
+    { "type": "select", "id": "sort_order", "label": "Ordre d'affichage", "options": [
+      { "value": "manual", "label": "Ordre manuel (réglage ci-dessus)" },
+      { "value": "recent", "label": "Plus récentes d'abord (date d'illustration)" } ], "default": "manual" },
+
+    { "type": "header", "content": "Titre de section (optionnel)" },
+    { "type": "inline_richtext", "id": "overline", "label": "Sur-titre" },
+    { "type": "inline_richtext", "id": "heading", "label": "Titre" },
+
+    { "type": "header", "content": "Grille" },
+    { "type": "range", "id": "columns", "label": "Colonnes (desktop)", "min": 1, "max": 6, "step": 1, "default": 3 },
+    { "type": "select", "id": "mobile_columns", "label": "Colonnes (mobile)", "options": [
+      { "value": "1", "label": "1" }, { "value": "2", "label": "2" } ], "default": "2" },
+    { "type": "range", "id": "columns_gap", "label": "Espace horizontal", "unit": "px", "min": 0, "max": 60, "step": 2, "default": 16 },
+    { "type": "range", "id": "rows_gap", "label": "Espace vertical", "unit": "px", "min": 0, "max": 80, "step": 2, "default": 28 },
+    { "type": "select", "id": "image_ratio", "label": "Format des images", "options": [
+      { "value": "3/4", "label": "Portrait" },
+      { "value": "2/3", "label": "Portrait allongé" },
+      { "value": "9/16", "label": "Très allongé" } ], "default": "2/3" },
+    { "type": "range", "id": "corner_radius", "label": "Arrondi des coins", "unit": "px", "min": 0, "max": 30, "step": 1, "default": 0 },
+    { "type": "range", "id": "image_padding", "label": "Padding des illustrations", "unit": "px", "min": 0, "max": 60, "step": 2, "default": 30 },
+    { "type": "checkbox", "id": "hover_zoom", "label": "Zoom au survol", "default": true },
+
+    { "type": "header", "content": "Affichage" },
+    { "type": "checkbox", "id": "show_name", "label": "Afficher le nom", "default": true },
+    { "type": "checkbox", "id": "show_summary", "label": "Afficher le résumé", "default": true },
+    { "type": "checkbox", "id": "show_artist", "label": "Afficher l'artiste", "default": true },
+    { "type": "checkbox", "id": "show_link", "label": "Afficher un lien « voir la collection »", "default": false },
+    { "type": "text", "id": "link_label", "label": "Texte du lien", "default": "Voir la collection" },
+
+    { "type": "header", "content": "Macaron nouveauté" },
+    { "type": "checkbox", "id": "show_new_badge", "label": "Afficher « Nouveauté » si récent", "default": true },
+    { "type": "text", "id": "new_label", "label": "Texte du macaron", "default": "Nouveauté" },
+    { "type": "range", "id": "new_months", "label": "Considérer comme nouveau pendant (mois)", "unit": "mo", "min": 1, "max": 12, "step": 1, "default": 3 },
+    { "type": "color", "id": "new_bg", "label": "Couleur du macaron", "default": "#833434" },
+    { "type": "color", "id": "new_text", "label": "Couleur du texte", "default": "#f4eee1" },
+
+    { "type": "header", "content": "Mise en page" },
+    { "type": "select", "id": "section_width", "label": "Largeur", "options": [
+      { "value": "page-width", "label": "Largeur de page" }, { "value": "full-width", "label": "Pleine largeur" } ], "default": "page-width" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Schéma de couleur", "default": "scheme-1" },
+    { "type": "color", "id": "accent_color", "label": "Couleur d'accent", "default": "#b4894f" },
+    { "type": "range", "id": "padding_top", "label": "Marge haut", "unit": "px", "min": 0, "max": 120, "step": 4, "default": 56 },
+    { "type": "range", "id": "padding_bottom", "label": "Marge bas", "unit": "px", "min": 0, "max": 120, "step": 4, "default": 56 }
+  ],
+  "presets": [
+    { "name": "RDC — Illustrations" }
+  ]
+}
+{% endschema %}
