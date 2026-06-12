@@ -219,6 +219,7 @@
     var MAX = {{ s.max_photos }};
     var PROD_PREFIX = {{ '/products/' | json }};
     var DESIGN = {{ request.design_mode | json }};
+    var RANDOM = {% if s.random_order == false %}false{% else %}true{% endif %};
 
     function placeholder(msg) {
       /* Section toujours visible ; on affiche un message d'état lisible dans la zone du mur. */
@@ -362,6 +363,12 @@
       .then(function(data) {
         photos = (data || []).filter(function(p) { return p && p.image_url; });
         if (!photos.length) { placeholder('Aucune photo approuvée pour le moment. La section apparaîtra ici dès qu\'il y aura des photos.'); return; }
+        if (RANDOM) {
+          for (var k = photos.length - 1; k > 0; k--) {
+            var j = Math.floor(Math.random() * (k + 1));
+            var tmp = photos[k]; photos[k] = photos[j]; photos[j] = tmp;
+          }
+        }
         root.style.display = '';
         render();
       })
@@ -397,6 +404,7 @@
     { "type": "range", "id": "speed", "label": "Durée d'un cycle (s)", "info": "Plus grand = plus lent", "min": 20, "max": 180, "step": 2, "default": 90 },
     { "type": "range", "id": "card_width", "label": "Largeur des cartes (px)", "min": 120, "max": 260, "step": 4, "default": 188 },
     { "type": "range", "id": "max_photos", "label": "Nombre max de photos chargées", "min": 10, "max": 100, "step": 5, "default": 40 },
+    { "type": "checkbox", "id": "random_order", "label": "Ordre aléatoire des photos", "info": "Décoché = les plus récentes d'abord", "default": true },
 
     { "type": "header", "content": "Lien de soumission" },
     { "type": "text", "id": "submit_intro", "label": "Intro", "default": "Toi aussi tu portes l'Histoire ?" },
