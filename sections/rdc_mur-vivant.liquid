@@ -156,6 +156,7 @@
   }
 </style>
 
+{%- if s.anchor_id != blank -%}<span id="{{ s.anchor_id }}" class="rdc-mv__anchor" aria-hidden="true" style="display:block;scroll-margin-top:var(--header-group-height,90px)"></span>{%- endif -%}
 <div class="section-background color-{{ s.color_scheme }}"></div>
 <div id="{{ uid }}" class="section section--full-width color-{{ s.color_scheme }} rdc-mv">
 
@@ -421,7 +422,10 @@
     { "type": "color_scheme", "id": "color_scheme", "label": "Schéma de couleur", "default": "scheme-1" },
     { "type": "color", "id": "accent_color", "label": "Couleur d'accent", "default": "#962B21" },
     { "type": "range", "id": "padding_top", "label": "Marge haut (px)", "min": 0, "max": 160, "step": 4, "default": 72 },
-    { "type": "range", "id": "padding_bottom", "label": "Marge bas (px)", "min": 0, "max": 160, "step": 4, "default": 64 }
+    { "type": "range", "id": "padding_bottom", "label": "Marge bas (px)", "min": 0, "max": 160, "step": 4, "default": 64 },
+
+    { "type": "header", "content": "Ancre" },
+    { "type": "text", "id": "anchor_id", "label": "Ancre (ID)", "info": "Ex. « mouvement » → lie un bouton avec #mouvement. Sans espace ni accent.", "default": "mouvement" }
   ],
   "presets": [
     { "name": "RDC — Mouvement vivant" }
