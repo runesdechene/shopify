@@ -1,0 +1,12 @@
+# Fichiers temporaires d'édition (atomic writes des éditeurs/outils).
+# Évite l'erreur "contains illegal characters" du watcher `shopify theme dev`.
+*.tmp.*
+**/*.tmp.*
+*.tmp
+*~
+*.swp
+.DS_Store
+
+# Dossiers non-thème (par sécurité)
+.superpowers/
+docs/
