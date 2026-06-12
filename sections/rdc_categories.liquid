@@ -60,6 +60,7 @@
   }
 </style>
 
+{%- if section.settings.anchor_id != blank -%}<span id="{{ section.settings.anchor_id }}" aria-hidden="true" style="display:block;scroll-margin-top:var(--header-group-height,90px)"></span>{%- endif -%}
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <div id="{{ uid }}" class="section section--page-width color-{{ section.settings.color_scheme }} rdc-cat">
   <div class="rdc-cat__inner">
@@ -173,7 +174,10 @@
 
     { "type": "header", "content": "Couleurs" },
     { "type": "color_scheme", "id": "color_scheme", "label": "Schéma de couleur", "default": "scheme-1" },
-    { "type": "color", "id": "accent_color", "label": "Couleur du sur-titre", "default": "#b4894f" }
+    { "type": "color", "id": "accent_color", "label": "Couleur du sur-titre", "default": "#b4894f" },
+
+    { "type": "header", "content": "Ancre" },
+    { "type": "text", "id": "anchor_id", "label": "Ancre (ID)", "info": "Ex. « creations » → lie un bouton avec #creations. Sans espace ni accent.", "default": "creations" }
   ],
   "blocks": [
     {
