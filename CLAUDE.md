@@ -76,3 +76,9 @@ shopify theme pull --theme=123456789
 - **Conventional Commits** (`feat:`, `fix:`, `chore:`, `docs:`)
 - **Pas de console.log en prod** dans les scripts JS
 - **Naming `rdc_*`** pour tout fichier custom pour pas confondre avec les fichiers d'origine Heritage
+
+### ⚠️ Pièges Shopify à NE PAS refaire
+
+- **`name` de section (et de preset) ≤ 25 caractères.** Au-delà, Shopify **rejette** la section : elle n'apparaît **jamais** dans l'éditeur (« Ajouter une section »). Mettre le nom long dans le réglage `title`, pas dans le `name` du schema. (Ex. : schema `name: "RDC — Mouvement vivant"` mais `title: "Le mouvement est vivant"`.)
+- **Nouveau fichier de section pendant un `shopify theme dev`** : le serveur scanne `sections/` au démarrage → **redémarrer le dev** pour qu'il registre un fichier de section nouvellement créé.
+- **`git push` ≠ `shopify theme push`** : git ne pousse rien vers le store. Le rendu se voit via le `shopify theme dev` en cours (sync local) ou un push explicite.
