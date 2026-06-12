@@ -94,9 +94,11 @@
   @media (max-width:749px){
     #{{ uid }} .rdc-ill__grid{grid-template-columns:repeat({{ section.settings.mobile_columns }},1fr);
       column-gap:{{ section.settings.columns_gap | divided_by: 2 }}px}
+    #{{ uid }} .rdc-ill__image{padding:5px}
   }
 </style>
 
+{%- if section.settings.anchor_id != blank -%}<span id="{{ section.settings.anchor_id }}" aria-hidden="true" style="display:block;scroll-margin-top:var(--header-group-height,90px)"></span>{%- endif -%}
 <div id="{{ uid }}" class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} rdc-ill">
   {%- if section.settings.overline != blank or section.settings.heading != blank -%}
     <div class="rdc-ill__head">
@@ -232,7 +234,10 @@
     { "type": "color_scheme", "id": "color_scheme", "label": "Schéma de couleur", "default": "scheme-1" },
     { "type": "color", "id": "accent_color", "label": "Couleur d'accent", "default": "#b4894f" },
     { "type": "range", "id": "padding_top", "label": "Marge haut", "unit": "px", "min": 0, "max": 120, "step": 4, "default": 56 },
-    { "type": "range", "id": "padding_bottom", "label": "Marge bas", "unit": "px", "min": 0, "max": 120, "step": 4, "default": 56 }
+    { "type": "range", "id": "padding_bottom", "label": "Marge bas", "unit": "px", "min": 0, "max": 120, "step": 4, "default": 56 },
+
+    { "type": "header", "content": "Ancre" },
+    { "type": "text", "id": "anchor_id", "label": "Ancre (ID)", "info": "Ex. « creations » → lie un bouton avec #creations. Sans espace ni accent.", "default": "creations" }
   ],
   "presets": [
     { "name": "RDC — Illustrations" }
