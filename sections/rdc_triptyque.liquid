@@ -1,0 +1,128 @@
+{%- comment -%}
+  rdc_triptyque.liquid
+
+  Bande "manifeste" légère : le triptyque de marque (Apprenez · Incarnez · Explorez).
+  3 mots forts + une courte ligne chacun, un sur-titre optionnel et un lien mission.
+  Volontairement SLIM (pas un pavé) — le récit complet vit sur la page /notre-mission.
+
+  Structure alignée sur le modèle natif du thème (.section-background + .section).
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = 'RdcTri-' | append: section.id
+  assign talign = section.settings.text_align
+-%}
+
+<style>
+  #{{ uid }} .rdc-tri__inner{width:100%;max-width:{{ section.settings.content_max_width }}px;margin-inline:auto;
+    box-sizing:border-box;padding-inline:clamp(20px,5vw,40px);
+    padding-block:{{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;
+    text-align:{{ talign }};}
+  #{{ uid }} .rdc-tri__overline{font-family:var(--font-body--family);font-weight:700;
+    font-size:.74rem;letter-spacing:.26em;text-transform:uppercase;
+    color:{{ section.settings.accent_color }};margin-bottom:14px}
+  #{{ uid }} .rdc-tri__intro{font-family:var(--font-fragment--family, 'Alegreya', serif);font-style:italic;
+    font-size:clamp(1.3rem,2.2vw,1.8rem);line-height:1.35;color:var(--color-primary, #833434);
+    max-width:24ch;margin:0 auto 8px;}
+  #{{ uid }} .rdc-tri__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,4vw,48px);
+    margin-top:{{ section.settings.grid_gap_top }}px;
+    {% if talign == 'left' %}text-align:left;{% else %}text-align:center;{% endif %}}
+  #{{ uid }} .rdc-tri__sep{width:34px;height:3px;border-radius:2px;background:{{ section.settings.accent_color }};
+    margin-bottom:14px;{% if talign != 'left' %}margin-inline:auto;{% endif %}}
+  #{{ uid }} .rdc-tri__word{font-family:var(--font-heading--family, sans-serif);text-transform:uppercase;
+    font-size:clamp(1.5rem,2.6vw,2.1rem);letter-spacing:.08em;line-height:1;
+    color:var(--color-foreground-heading, #403434);margin-bottom:8px}
+  #{{ uid }} .rdc-tri__text{font-family:var(--font-body--family);font-size:.95rem;line-height:1.5;
+    color:var(--color-foreground, #594848);max-width:34ch;
+    {% if talign != 'left' %}margin-inline:auto;{% endif %}}
+  #{{ uid }} .rdc-tri__link{display:inline-block;margin-top:clamp(28px,4vw,42px);
+    font-family:var(--font-body--family);font-weight:700;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--color-primary, #833434);text-decoration:none;
+    border-bottom:2px solid {{ section.settings.accent_color }};padding-bottom:4px;transition:.2s}
+  #{{ uid }} .rdc-tri__link:hover{opacity:.7}
+
+  @media (max-width:749px){
+    #{{ uid }} .rdc-tri__grid{grid-template-columns:1fr;gap:30px;text-align:center}
+    #{{ uid }} .rdc-tri__sep,#{{ uid }} .rdc-tri__text{margin-inline:auto}
+  }
+</style>
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div id="{{ uid }}" class="section section--full-width color-{{ section.settings.color_scheme }} rdc-tri">
+  <div class="rdc-tri__inner">
+    {%- if section.settings.overline != blank -%}
+      <div class="rdc-tri__overline">{{ section.settings.overline }}</div>
+    {%- endif -%}
+    {%- if section.settings.intro != blank -%}
+      <p class="rdc-tri__intro">{{ section.settings.intro }}</p>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="rdc-tri__grid">
+        {%- for block in section.blocks -%}
+          <div class="rdc-tri__pillar" {{ block.shopify_attributes }}>
+            <div class="rdc-tri__sep"></div>
+            {%- if block.settings.word != blank -%}
+              <div class="rdc-tri__word">{{ block.settings.word }}</div>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <div class="rdc-tri__text">{{ block.settings.text }}</div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.link_label != blank -%}
+      <a class="rdc-tri__link" href="{{ section.settings.link_url | default: '#' }}">{{ section.settings.link_label }} →</a>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "RDC — Triptyque",
+  "tag": "section",
+  "class": "rdc-triptyque-section",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "header", "content": "Contenu" },
+    { "type": "inline_richtext", "id": "overline", "label": "Sur-titre (optionnel)", "default": "Notre combat" },
+    { "type": "inline_richtext", "id": "intro", "label": "Phrase d'intro (optionnelle — garder courte)", "default": "Rendre au monde sa mémoire & son souffle." },
+    { "type": "text", "id": "link_label", "label": "Lien — texte", "default": "Notre mission : Contre l'Oubli" },
+    { "type": "url", "id": "link_url", "label": "Lien — URL" },
+
+    { "type": "header", "content": "Mise en page" },
+    { "type": "select", "id": "text_align", "label": "Alignement", "options": [
+      { "value": "left", "label": "Gauche" }, { "value": "center", "label": "Centre" } ], "default": "center" },
+    { "type": "range", "id": "content_max_width", "label": "Largeur max du contenu", "unit": "px", "min": 600, "max": 1300, "step": 20, "default": 1000 },
+    { "type": "range", "id": "grid_gap_top", "label": "Espace au-dessus du triptyque", "unit": "px", "min": 0, "max": 80, "step": 4, "default": 40 },
+    { "type": "range", "id": "padding_top", "label": "Marge haut", "unit": "px", "min": 0, "max": 160, "step": 4, "default": 88 },
+    { "type": "range", "id": "padding_bottom", "label": "Marge bas", "unit": "px", "min": 0, "max": 160, "step": 4, "default": 80 },
+
+    { "type": "header", "content": "Couleurs" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Schéma de couleur", "default": "scheme-1" },
+    { "type": "color", "id": "accent_color", "label": "Couleur d'accent (traits, sur-titre)", "default": "#b4894f" }
+  ],
+  "blocks": [
+    {
+      "type": "pilier",
+      "name": "Pilier",
+      "settings": [
+        { "type": "text", "id": "word", "label": "Mot", "default": "Apprenez" },
+        { "type": "text", "id": "text", "label": "Phrase courte", "default": "L'Histoire et le patrimoine, racontés comme une aventure." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RDC — Triptyque",
+      "blocks": [
+        { "type": "pilier", "settings": { "word": "Apprenez", "text": "L'Histoire et le patrimoine, racontés comme une aventure." } },
+        { "type": "pilier", "settings": { "word": "Incarnez", "text": "Porte un Fragment d'Histoire — un écho du passé qui mérite d'être porté." } },
+        { "type": "pilier", "settings": { "word": "Explorez", "text": "+2600 lieux à découvrir près de chez toi, dans l'application." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,147 @@
+{%- comment -%}
+  rdc_categories.liquid
+
+  Bande de tuiles "navigation par coupe" (T-shirts · Sweats · Débardeurs…).
+  Chaque tuile = un bloc lié à une COLLECTION : image + label cliquables.
+  Image et label repris de la collection par défaut (surchargeables).
+
+  Modèle natif du thème (.section-background + .section). Overlays contenus
+  dans chaque tuile → aucun risque d'empilement.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = 'RdcCat-' | append: section.id
+  assign ratio = '3 / 4'
+  case section.settings.tile_ratio
+    when 'square'
+      assign ratio = '1 / 1'
+    when 'landscape'
+      assign ratio = '4 / 3'
+    when 'wide'
+      assign ratio = '16 / 9'
+  endcase
+-%}
+
+<style>
+  #{{ uid }} .rdc-cat__inner{min-width:0;
+    padding-block:{{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;}
+  #{{ uid }} .rdc-cat__head{text-align:{{ section.settings.text_align }};margin-bottom:clamp(26px,3vw,40px)}
+  #{{ uid }} .rdc-cat__overline{font-family:var(--font-body--family);font-weight:700;
+    font-size:.74rem;letter-spacing:.26em;text-transform:uppercase;color:{{ section.settings.accent_color }};margin-bottom:10px}
+  #{{ uid }} .rdc-cat__title{font-family:var(--font-heading--family, sans-serif);text-transform:uppercase;
+    font-size:clamp(1.8rem,3.2vw,2.6rem);letter-spacing:.04em;line-height:1;color:var(--color-foreground-heading, #403434)}
+  #{{ uid }} .rdc-cat__grid{display:grid;width:100%;grid-template-columns:repeat({{ section.settings.columns }},1fr);
+    gap:{{ section.settings.gap }}px}
+  #{{ uid }} .rdc-cat__tile{position:relative;display:block;overflow:hidden;text-decoration:none;
+    border-radius:{{ section.settings.corner_radius }}px;aspect-ratio:{{ ratio }};background:#1c1812}
+  #{{ uid }} .rdc-cat__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
+    transition:transform .6s ease}
+  {% if section.settings.hover_zoom %}#{{ uid }} .rdc-cat__tile:hover .rdc-cat__img{transform:scale(1.06)}{% endif %}
+  #{{ uid }} .rdc-cat__overlay{position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.55) 100%);transition:.3s}
+  #{{ uid }} .rdc-cat__tile:hover .rdc-cat__overlay{background:linear-gradient(180deg,rgba(0,0,0,.05) 30%,rgba(0,0,0,.62) 100%)}
+  #{{ uid }} .rdc-cat__label{position:absolute;left:0;right:0;bottom:0;
+    padding:18px 20px;color:#fff;font-family:var(--font-heading--family, sans-serif);text-transform:uppercase;
+    font-size:clamp(1.2rem,1.8vw,1.6rem);letter-spacing:.06em;text-shadow:0 2px 14px rgba(0,0,0,.4);
+    text-align:{{ section.settings.label_align }}}
+  #{{ uid }} .rdc-cat__placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,#55584a,#2b2d23);color:#e9e0cb;font-family:var(--font-body--family);
+    font-size:.85rem;text-align:center;padding:16px}
+
+  @media (max-width:749px){
+    #{{ uid }} .rdc-cat__grid{grid-template-columns:repeat({{ section.settings.columns_mobile }},1fr);
+      gap:{{ section.settings.gap | divided_by: 2 }}px}
+  }
+</style>
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div id="{{ uid }}" class="section section--page-width color-{{ section.settings.color_scheme }} rdc-cat">
+  <div class="rdc-cat__inner">
+    {%- if section.settings.overline != blank or section.settings.title != blank -%}
+      <div class="rdc-cat__head">
+        {%- if section.settings.overline != blank -%}<div class="rdc-cat__overline">{{ section.settings.overline }}</div>{%- endif -%}
+        {%- if section.settings.title != blank -%}<div class="rdc-cat__title">{{ section.settings.title }}</div>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="rdc-cat__grid">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign coll = block.settings.collection
+            assign img = block.settings.image | default: coll.image
+            assign label = block.settings.label | default: coll.title
+            assign url = coll.url | default: '#'
+          -%}
+          <a class="rdc-cat__tile" href="{{ url }}" {{ block.shopify_attributes }}>
+            {%- if img != blank -%}
+              <img class="rdc-cat__img"
+                src="{{ img | image_url: width: 800 }}"
+                srcset="{{ img | image_url: width: 500 }} 500w, {{ img | image_url: width: 800 }} 800w, {{ img | image_url: width: 1100 }} 1100w"
+                sizes="(min-width: 750px) {{ 100 | divided_by: section.settings.columns }}vw, 100vw"
+                width="{{ img.width }}" height="{{ img.height }}"
+                alt="{{ img.alt | default: label | escape }}" loading="lazy" decoding="async">
+            {%- else -%}
+              <div class="rdc-cat__placeholder">Choisis une collection (ou ajoute une image)</div>
+            {%- endif -%}
+            <div class="rdc-cat__overlay"></div>
+            {%- if label != blank -%}<span class="rdc-cat__label">{{ label }}</span>{%- endif -%}
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "RDC — Tuiles collections",
+  "tag": "section",
+  "class": "rdc-categories-section",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "header", "content": "Titre (optionnel)" },
+    { "type": "inline_richtext", "id": "overline", "label": "Sur-titre" },
+    { "type": "inline_richtext", "id": "title", "label": "Titre" },
+
+    { "type": "header", "content": "Tuiles" },
+    { "type": "range", "id": "columns", "label": "Colonnes (desktop)", "min": 2, "max": 5, "step": 1, "default": 3 },
+    { "type": "range", "id": "columns_mobile", "label": "Colonnes (mobile)", "min": 1, "max": 3, "step": 1, "default": 1 },
+    { "type": "select", "id": "tile_ratio", "label": "Format des tuiles", "options": [
+      { "value": "portrait", "label": "Portrait (3:4)" }, { "value": "square", "label": "Carré" },
+      { "value": "landscape", "label": "Paysage (4:3)" }, { "value": "wide", "label": "Large (16:9)" } ], "default": "portrait" },
+    { "type": "range", "id": "gap", "label": "Espacement", "unit": "px", "min": 4, "max": 40, "step": 2, "default": 18 },
+    { "type": "range", "id": "corner_radius", "label": "Arrondi des coins", "unit": "px", "min": 0, "max": 30, "step": 1, "default": 0 },
+    { "type": "select", "id": "label_align", "label": "Alignement du label", "options": [
+      { "value": "left", "label": "Gauche" }, { "value": "center", "label": "Centre" } ], "default": "left" },
+    { "type": "checkbox", "id": "hover_zoom", "label": "Zoom au survol", "default": true },
+
+    { "type": "header", "content": "Mise en page" },
+    { "type": "select", "id": "text_align", "label": "Alignement du titre", "options": [
+      { "value": "left", "label": "Gauche" }, { "value": "center", "label": "Centre" } ], "default": "center" },
+    { "type": "range", "id": "padding_top", "label": "Marge haut", "unit": "px", "min": 0, "max": 160, "step": 4, "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Marge bas", "unit": "px", "min": 0, "max": 160, "step": 4, "default": 72 },
+
+    { "type": "header", "content": "Couleurs" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Schéma de couleur", "default": "scheme-1" },
+    { "type": "color", "id": "accent_color", "label": "Couleur du sur-titre", "default": "#b4894f" }
+  ],
+  "blocks": [
+    {
+      "type": "tuile",
+      "name": "Tuile collection",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "image", "label": "Image (sinon image de la collection)" },
+        { "type": "text", "id": "label", "label": "Label (sinon titre de la collection)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RDC — Tuiles collections",
+      "blocks": [ { "type": "tuile" }, { "type": "tuile" }, { "type": "tuile" } ]
+    }
+  ]
+}
+{% endschema %}

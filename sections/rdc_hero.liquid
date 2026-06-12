@@ -55,6 +55,13 @@
     assign sub_mx_l = 'auto'
     assign sub_mx_r = '0'
   endif
+
+  assign mobile_vjustify = 'center'
+  if section.settings.mobile_vertical == 'top'
+    assign mobile_vjustify = 'flex-start'
+  elsif section.settings.mobile_vertical == 'bottom'
+    assign mobile_vjustify = 'flex-end'
+  endif
 -%}
 
 <style>
@@ -118,6 +125,17 @@
 
   @media (max-width:749px){
     #{{ uid }}{min-height:{{ section.settings.min_height_mobile }}vh}
+    #{{ uid }} .rdc-hero__content{position:absolute;inset:0;display:flex;flex-direction:column;
+      justify-content:{{ mobile_vjustify }};
+      padding-inline:24px;
+      padding-block:max(calc(var(--header-group-height, 0px) + 16px), 88px) 52px}
+    #{{ uid }} .rdc-hero__overline{font-size:.66rem;letter-spacing:.18em;margin-bottom:12px}
+    #{{ uid }} .rdc-hero__title{font-size:{{ section.settings.mobile_title_size }}px;line-height:.98}
+    #{{ uid }} .rdc-hero__title2{font-size:calc({{ section.settings.mobile_title_size }}px * 0.56);margin-top:6px}
+    #{{ uid }} .rdc-hero__subtitle{font-size:1rem;line-height:1.5;margin-top:14px;max-width:42ch}
+    {% if section.settings.mobile_hide_subtitle %}#{{ uid }} .rdc-hero__subtitle{display:none}{% endif %}
+    #{{ uid }} .rdc-hero__actions{gap:10px;margin-top:24px}
+    #{{ uid }} .rdc-hero__btn{padding:13px 24px;font-size:.8rem}
   }
   @media (prefers-reduced-motion: reduce){
     #{{ uid }} .rdc-hero__slide{transition:none}
@@ -263,6 +281,12 @@
     { "type": "range", "id": "content_padding_x", "label": "Marge horizontale du contenu", "unit": "px", "min": 0, "max": 200, "step": 4, "default": 56 },
     { "type": "range", "id": "min_height", "label": "Hauteur (desktop)", "unit": "vh", "min": 40, "max": 100, "step": 2, "default": 84 },
     { "type": "range", "id": "min_height_mobile", "label": "Hauteur (mobile)", "unit": "vh", "min": 40, "max": 100, "step": 2, "default": 80 },
+
+    { "type": "header", "content": "📱 Réglages mobile" },
+    { "type": "select", "id": "mobile_vertical", "label": "Position verticale (mobile)", "options": [
+      { "value": "top", "label": "Haut" }, { "value": "center", "label": "Centre" }, { "value": "bottom", "label": "Bas" } ], "default": "center" },
+    { "type": "range", "id": "mobile_title_size", "label": "Taille du titre (mobile)", "unit": "px", "min": 22, "max": 56, "step": 2, "default": 38 },
+    { "type": "checkbox", "id": "mobile_hide_subtitle", "label": "Masquer le sous-titre sur mobile", "default": false },
 
     { "type": "header", "content": "Couleurs & overlay" },
     { "type": "color_scheme", "id": "color_scheme", "label": "Schéma de couleur (fond si pas d'image)", "default": "scheme-3" },
