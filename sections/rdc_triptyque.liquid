@@ -11,6 +11,12 @@
 {%- liquid
   assign uid = 'RdcTri-' | append: section.id
   assign talign = section.settings.text_align
+  assign bg = section.settings.background_image
+  if section.settings.background_fit == 'tile'
+    assign bg_url = bg | image_url: width: 900
+  else
+    assign bg_url = bg | image_url: width: 2400
+  endif
 -%}
 
 <style>
@@ -21,18 +27,20 @@
   #{{ uid }} .rdc-tri__overline{font-family:var(--font-body--family);font-weight:700;
     font-size:.74rem;letter-spacing:.26em;text-transform:uppercase;
     color:{{ section.settings.accent_color }};margin-bottom:14px}
-  #{{ uid }} .rdc-tri__intro{font-family:var(--font-fragment--family, 'Alegreya', serif);font-style:italic;
-    font-size:clamp(1.3rem,2.2vw,1.8rem);line-height:1.35;color:var(--color-primary, #833434);
-    max-width:24ch;margin:0 auto 8px;}
+  #{{ uid }} .rdc-tri__intro{font-family:var(--font-heading--family, sans-serif);text-transform:uppercase;
+    font-size:clamp(1.6rem,2.8vw,2.4rem);letter-spacing:.03em;line-height:1.1;color:var(--color-primary, #833434);
+    max-width:22ch;margin:0 auto 8px;}
   #{{ uid }} .rdc-tri__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,4vw,48px);
     margin-top:{{ section.settings.grid_gap_top }}px;
     {% if talign == 'left' %}text-align:left;{% else %}text-align:center;{% endif %}}
+  #{{ uid }} .rdc-tri__icon{display:block;width:{{ section.settings.image_size }}px;height:{{ section.settings.image_size }}px;
+    object-fit:contain;margin-bottom:16px;{% if talign != 'left' %}margin-inline:auto;{% endif %}}
   #{{ uid }} .rdc-tri__sep{width:34px;height:3px;border-radius:2px;background:{{ section.settings.accent_color }};
     margin-bottom:14px;{% if talign != 'left' %}margin-inline:auto;{% endif %}}
   #{{ uid }} .rdc-tri__word{font-family:var(--font-heading--family, sans-serif);text-transform:uppercase;
-    font-size:clamp(1.5rem,2.6vw,2.1rem);letter-spacing:.08em;line-height:1;
-    color:var(--color-foreground-heading, #403434);margin-bottom:8px}
-  #{{ uid }} .rdc-tri__text{font-family:var(--font-body--family);font-size:.95rem;line-height:1.5;
+    font-size:{{ section.settings.word_size }}px;letter-spacing:.08em;line-height:1;
+    color:{{ section.settings.word_color }};margin-bottom:8px}
+  #{{ uid }} .rdc-tri__text{font-family:var(--font-body--family);font-size:1.075rem;line-height:1.5;
     color:var(--color-foreground, #594848);max-width:34ch;
     {% if talign != 'left' %}margin-inline:auto;{% endif %}}
   #{{ uid }} .rdc-tri__link{display:inline-block;margin-top:clamp(28px,4vw,42px);
@@ -43,11 +51,12 @@
 
   @media (max-width:749px){
     #{{ uid }} .rdc-tri__grid{grid-template-columns:1fr;gap:30px;text-align:center}
-    #{{ uid }} .rdc-tri__sep,#{{ uid }} .rdc-tri__text{margin-inline:auto}
+    #{{ uid }} .rdc-tri__sep,#{{ uid }} .rdc-tri__text,#{{ uid }} .rdc-tri__icon{margin-inline:auto}
   }
 </style>
 
-<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div class="section-background color-{{ section.settings.color_scheme }}"
+  {%- if bg != blank %} style="background-image:url({{ bg_url }});background-position:center;{% if section.settings.background_fit == 'tile' %}background-repeat:repeat;background-size:auto{% else %}background-repeat:no-repeat;background-size:cover{% endif %}"{% endif -%}></div>
 <div id="{{ uid }}" class="section section--full-width color-{{ section.settings.color_scheme }} rdc-tri">
   <div class="rdc-tri__inner">
     {%- if section.settings.overline != blank -%}
@@ -61,6 +70,13 @@
       <div class="rdc-tri__grid">
         {%- for block in section.blocks -%}
           <div class="rdc-tri__pillar" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              <img class="rdc-tri__icon"
+                src="{{ block.settings.image | image_url: width: 160 }}"
+                srcset="{{ block.settings.image | image_url: width: 160 }} 1x, {{ block.settings.image | image_url: width: 320 }} 2x"
+                width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}"
+                alt="{{ block.settings.image.alt | escape }}" loading="lazy" decoding="async">
+            {%- endif -%}
             <div class="rdc-tri__sep"></div>
             {%- if block.settings.word != blank -%}
               <div class="rdc-tri__word">{{ block.settings.word }}</div>
@@ -97,18 +113,27 @@
       { "value": "left", "label": "Gauche" }, { "value": "center", "label": "Centre" } ], "default": "center" },
     { "type": "range", "id": "content_max_width", "label": "Largeur max du contenu", "unit": "px", "min": 600, "max": 1300, "step": 20, "default": 1000 },
     { "type": "range", "id": "grid_gap_top", "label": "Espace au-dessus du triptyque", "unit": "px", "min": 0, "max": 80, "step": 4, "default": 40 },
+    { "type": "range", "id": "image_size", "label": "Taille des illustrations", "unit": "px", "min": 32, "max": 160, "step": 4, "default": 72 },
+    { "type": "range", "id": "word_size", "label": "Taille des titres", "unit": "px", "min": 16, "max": 56, "step": 1, "default": 32 },
     { "type": "range", "id": "padding_top", "label": "Marge haut", "unit": "px", "min": 0, "max": 160, "step": 4, "default": 88 },
     { "type": "range", "id": "padding_bottom", "label": "Marge bas", "unit": "px", "min": 0, "max": 160, "step": 4, "default": 80 },
 
     { "type": "header", "content": "Couleurs" },
     { "type": "color_scheme", "id": "color_scheme", "label": "Schéma de couleur", "default": "scheme-1" },
-    { "type": "color", "id": "accent_color", "label": "Couleur d'accent (traits, sur-titre)", "default": "#b4894f" }
+    { "type": "color", "id": "accent_color", "label": "Couleur d'accent (traits, sur-titre)", "default": "#b4894f" },
+    { "type": "color", "id": "word_color", "label": "Couleur des titres", "default": "#403434" },
+
+    { "type": "header", "content": "Fond de section" },
+    { "type": "image_picker", "id": "background_image", "label": "Image de fond (ex. parchemin)" },
+    { "type": "select", "id": "background_fit", "label": "Affichage du fond", "options": [
+      { "value": "cover", "label": "Couvrir toute la section" }, { "value": "tile", "label": "Texture répétée" } ], "default": "cover" }
   ],
   "blocks": [
     {
       "type": "pilier",
       "name": "Pilier",
       "settings": [
+        { "type": "image_picker", "id": "image", "label": "Illustration (au-dessus du titre)" },
         { "type": "text", "id": "word", "label": "Mot", "default": "Apprenez" },
         { "type": "text", "id": "text", "label": "Phrase courte", "default": "L'Histoire et le patrimoine, racontés comme une aventure." }
       ]

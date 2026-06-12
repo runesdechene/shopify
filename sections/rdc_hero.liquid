@@ -69,81 +69,81 @@
     position:relative;
     display:flex;
     min-height:{{ section.settings.min_height }}vh;
-    --rdc-hero-shadow:0 2px 24px rgba(0,0,0,{{ shadow_a }});
+    --rdchero-shadow:0 2px 24px rgba(0,0,0,{{ shadow_a }});
     align-items:{{ align_items }};
     text-align:{{ text_align }};
   }
-  #{{ uid }}-bg .rdc-hero__slides{position:absolute;inset:0;overflow:hidden;background:#1c1812}
-  #{{ uid }}-bg .rdc-hero__slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease-in-out}
-  #{{ uid }}-bg .rdc-hero__slide.is-active{opacity:1}
-  #{{ uid }}-bg .rdc-hero__slide picture{position:absolute;inset:0;display:block;width:100%;height:100%}
-  #{{ uid }}-bg .rdc-hero__slide img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+  #{{ uid }}-bg .rdchero__slides{position:absolute;inset:0;overflow:hidden;background:#1c1812}
+  #{{ uid }}-bg .rdchero__slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease-in-out}
+  #{{ uid }}-bg .rdchero__slide.is-active{opacity:1}
+  #{{ uid }}-bg .rdchero__slide picture{position:absolute;inset:0;display:block;width:100%;height:100%}
+  #{{ uid }}-bg .rdchero__slide img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
   /* scrim degrade (lisibilite) + overlay couleur reglable */
-  #{{ uid }}-bg .rdc-hero__scrim{position:absolute;inset:0;pointer-events:none;
+  #{{ uid }}-bg .rdchero__scrim{position:absolute;inset:0;pointer-events:none;
     background:
       linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,0) 38%, rgba(0,0,0,.62) 100%),
       rgba({{ overlay_r }},{{ overlay_g }},{{ overlay_b }},{{ overlay_a }});}
-  #{{ uid }} .rdc-hero__content{position:relative;width:100%;
+  #{{ uid }} .rdchero__content{position:relative;width:100%;
     padding-inline:{{ section.settings.content_padding_x }}px;
     padding-block:{{ pad_block }};}
-  #{{ uid }} .rdc-hero__inner{max-width:{{ section.settings.content_max_width }}ch;
+  #{{ uid }} .rdchero__inner{max-width:{{ section.settings.content_max_width }}ch;
     margin-left:{{ inner_ml }};margin-right:{{ inner_mr }};}
-  #{{ uid }} .rdc-hero__overline{font-family:var(--font-body--family);font-weight:700;
+  #{{ uid }} .rdchero__overline{font-family:var(--font-body--family);font-weight:700;
     font-size:.74rem;letter-spacing:.26em;text-transform:uppercase;
     color:{{ section.settings.overline_color }};margin-bottom:16px}
-  #{{ uid }} .rdc-hero__title{font-family:var(--font-heading--family, sans-serif);
+  #{{ uid }} .rdchero__title{font-family:var(--font-heading--family, sans-serif);
     color:{{ section.settings.text_color }};text-transform:uppercase;line-height:.94;letter-spacing:.02em;
-    font-size:clamp(2.2rem,5.2vw,4.6rem);text-shadow:var(--rdc-hero-shadow);margin:0}
-  #{{ uid }} .rdc-hero__title2{font-family:var(--font-heading--family, sans-serif);
+    font-size:clamp(2.2rem,5.2vw,4.6rem);text-shadow:var(--rdchero-shadow);margin:0}
+  #{{ uid }} .rdchero__title2{font-family:var(--font-heading--family, sans-serif);
     color:{{ section.settings.text_color }};text-transform:uppercase;line-height:.98;letter-spacing:.02em;
-    font-size:clamp(1.4rem,3vw,2.6rem);opacity:.92;text-shadow:var(--rdc-hero-shadow);margin:8px 0 0}
-  #{{ uid }} .rdc-hero__subtitle{font-family:var(--font-body--family);
+    font-size:clamp(1.4rem,3vw,2.6rem);opacity:.92;text-shadow:var(--rdchero-shadow);margin:8px 0 0}
+  #{{ uid }} .rdchero__subtitle{font-family:var(--font-body--family);
     color:{{ section.settings.text_color }};font-size:clamp(1rem,1.4vw,1.18rem);line-height:1.5;
-    max-width:48ch;margin:18px {{ sub_mx_r }} 0 {{ sub_mx_l }};text-shadow:var(--rdc-hero-shadow)}
-  #{{ uid }} .rdc-hero__subtitle p{margin:0}
-  #{{ uid }} .rdc-hero__actions{display:flex;flex-wrap:wrap;gap:13px;margin-top:30px;
+    max-width:48ch;margin:18px {{ sub_mx_r }} 0 {{ sub_mx_l }};text-shadow:var(--rdchero-shadow)}
+  #{{ uid }} .rdchero__subtitle p{margin:0}
+  #{{ uid }} .rdchero__actions{display:flex;flex-wrap:wrap;gap:13px;margin-top:30px;
     justify-content:{{ actions_justify }};}
   /* Style harmonisé des CTA — contour clair (style "Rejoindre la communauté") */
-  #{{ uid }} .rdc-hero__btn{display:inline-flex;align-items:center;font-family:var(--font-body--family);
+  #{{ uid }} .rdchero__btn{display:inline-flex;align-items:center;font-family:var(--font-body--family);
     font-weight:700;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;
     padding:14px 30px;border-radius:var(--style-border-radius-buttons, 6px);
     color:#fff;border:1px solid rgba(255,255,255,.6);text-decoration:none;transition:.2s;background:transparent}
-  #{{ uid }} .rdc-hero__btn:hover{background:#fff;color:#222;border-color:#fff}
+  #{{ uid }} .rdchero__btn:hover{background:#fff;color:#222;border-color:#fff}
   /* CTA principal : doré (signature marque), s'éclaircit au survol */
-  #{{ uid }} .rdc-hero__btn--solid{background:#f4d694;color:#623c3c;border-color:#f4d694}
-  #{{ uid }} .rdc-hero__btn--solid:hover{background:#f9e6bd;color:#623c3c;border-color:#f9e6bd}
+  #{{ uid }} .rdchero__btn--solid{background:#f4d694;color:#623c3c;border-color:#f4d694}
+  #{{ uid }} .rdchero__btn--solid:hover{background:#f9e6bd;color:#623c3c;border-color:#f9e6bd}
   /* Points de navigation du diaporama */
-  #{{ uid }} .rdc-hero__dots{position:absolute;left:0;right:0;bottom:22px;z-index:3;
+  #{{ uid }} .rdchero__dots{position:absolute;left:0;right:0;bottom:22px;z-index:3;
     display:flex;justify-content:center;gap:10px;pointer-events:none}
-  #{{ uid }} .rdc-hero__dot{pointer-events:auto;width:9px;height:9px;padding:0;border:0;cursor:pointer;
+  #{{ uid }} .rdchero__dot{pointer-events:auto;width:9px;height:9px;padding:0;border:0;cursor:pointer;
     border-radius:50%;background:rgba(255,255,255,.45);transition:.25s ease;box-shadow:0 1px 4px rgba(0,0,0,.35)}
-  #{{ uid }} .rdc-hero__dot:hover{background:rgba(255,255,255,.8)}
-  #{{ uid }} .rdc-hero__dot.is-active{background:#fff;width:26px;border-radius:5px}
-  #{{ uid }}-bg .rdc-hero__placeholder{display:flex;align-items:center;justify-content:center;
+  #{{ uid }} .rdchero__dot:hover{background:rgba(255,255,255,.8)}
+  #{{ uid }} .rdchero__dot.is-active{background:#fff;width:26px;border-radius:5px}
+  #{{ uid }}-bg .rdchero__placeholder{display:flex;align-items:center;justify-content:center;
     position:absolute;inset:0;background:linear-gradient(135deg,#55584a,#2b2d23);color:#e9e0cb;
     font-family:var(--font-body--family);font-size:.9rem;text-align:center;padding:20px}
 
   @media (max-width:749px){
     #{{ uid }}{min-height:{{ section.settings.min_height_mobile }}vh}
-    #{{ uid }} .rdc-hero__content{position:absolute;inset:0;display:flex;flex-direction:column;
+    #{{ uid }} .rdchero__content{position:absolute;inset:0;display:flex;flex-direction:column;
       justify-content:{{ mobile_vjustify }};
       padding-inline:24px;
       padding-block:max(calc(var(--header-group-height, 0px) + 16px), 88px) 52px}
-    #{{ uid }} .rdc-hero__overline{font-size:.66rem;letter-spacing:.18em;margin-bottom:12px}
-    #{{ uid }} .rdc-hero__title{font-size:{{ section.settings.mobile_title_size }}px;line-height:.98}
-    #{{ uid }} .rdc-hero__title2{font-size:calc({{ section.settings.mobile_title_size }}px * 0.56);margin-top:6px}
-    #{{ uid }} .rdc-hero__subtitle{font-size:1rem;line-height:1.5;margin-top:14px;max-width:42ch}
-    {% if section.settings.mobile_hide_subtitle %}#{{ uid }} .rdc-hero__subtitle{display:none}{% endif %}
-    #{{ uid }} .rdc-hero__actions{gap:10px;margin-top:24px}
-    #{{ uid }} .rdc-hero__btn{padding:13px 24px;font-size:.8rem}
+    #{{ uid }} .rdchero__overline{font-size:.66rem;letter-spacing:.18em;margin-bottom:12px}
+    #{{ uid }} .rdchero__title{font-size:{{ section.settings.mobile_title_size }}px;line-height:.98}
+    #{{ uid }} .rdchero__title2{font-size:calc({{ section.settings.mobile_title_size }}px * 0.56);margin-top:6px}
+    #{{ uid }} .rdchero__subtitle{font-size:1rem;line-height:1.5;margin-top:14px;max-width:42ch}
+    {% if section.settings.mobile_hide_subtitle %}#{{ uid }} .rdchero__subtitle{display:none}{% endif %}
+    #{{ uid }} .rdchero__actions{gap:10px;margin-top:24px}
+    #{{ uid }} .rdchero__btn{padding:13px 24px;font-size:.8rem}
   }
   @media (prefers-reduced-motion: reduce){
-    #{{ uid }} .rdc-hero__slide{transition:none}
+    #{{ uid }} .rdchero__slide{transition:none}
   }
 </style>
 
-<div id="{{ uid }}-bg" class="section-background color-{{ section.settings.color_scheme }} rdc-hero__bg">
-  <div class="rdc-hero__slides">
+<div id="{{ uid }}-bg" class="section-background color-{{ section.settings.color_scheme }} rdchero__bg">
+  <div class="rdchero__slides">
     {%- if section.blocks.size > 0 -%}
       {%- for block in section.blocks -%}
         {%- liquid
@@ -157,7 +157,7 @@
             assign fetch = 'auto'
           endif
         -%}
-        <div class="rdc-hero__slide{% if forloop.first %} is-active{% endif %}" {{ block.shopify_attributes }}>
+        <div class="rdchero__slide{% if forloop.first %} is-active{% endif %}" {{ block.shopify_attributes }}>
           {%- if img != blank -%}
             <picture>
               {%- if img_m != blank -%}
@@ -174,49 +174,49 @@
                 loading="{{ loading }}" fetchpriority="{{ fetch }}" decoding="async">
             </picture>
           {%- else -%}
-            <div class="rdc-hero__placeholder">Ajoute une image à ce bloc « Image »</div>
+            <div class="rdchero__placeholder">Ajoute une image à ce bloc « Image »</div>
           {%- endif -%}
         </div>
       {%- endfor -%}
     {%- else -%}
-      <div class="rdc-hero__placeholder">Ajoute des blocs « Image » pour démarrer le diaporama du hero.</div>
+      <div class="rdchero__placeholder">Ajoute des blocs « Image » pour démarrer le diaporama du hero.</div>
     {%- endif -%}
   </div>
-  <div class="rdc-hero__scrim"></div>
+  <div class="rdchero__scrim"></div>
 </div>
 
-<div id="{{ uid }}" class="rdc-hero section section--full-width color-{{ section.settings.color_scheme }}" data-rdc-hero data-interval="{{ interval_ms }}" data-autoplay="{{ section.settings.autoplay }}">
+<div id="{{ uid }}" class="rdchero section section--full-width color-{{ section.settings.color_scheme }}" data-rdchero data-interval="{{ interval_ms }}" data-autoplay="{{ section.settings.autoplay }}">
 
-  <div class="rdc-hero__content">
-    <div class="rdc-hero__inner">
+  <div class="rdchero__content">
+    <div class="rdchero__inner">
       {%- if section.settings.overline != blank -%}
-        <div class="rdc-hero__overline">{{ section.settings.overline }}</div>
+        <div class="rdchero__overline">{{ section.settings.overline }}</div>
       {%- endif -%}
       {%- if section.settings.title != blank -%}
-        <h1 class="rdc-hero__title">{{ section.settings.title }}</h1>
+        <h1 class="rdchero__title">{{ section.settings.title }}</h1>
       {%- endif -%}
       {%- if section.settings.title_2 != blank -%}
-        <p class="rdc-hero__title2">{{ section.settings.title_2 }}</p>
+        <p class="rdchero__title2">{{ section.settings.title_2 }}</p>
       {%- endif -%}
       {%- if section.settings.subtitle != blank -%}
-        <div class="rdc-hero__subtitle">{{ section.settings.subtitle }}</div>
+        <div class="rdchero__subtitle">{{ section.settings.subtitle }}</div>
       {%- endif -%}
       {%- if section.settings.cta_primary_label != blank or section.settings.cta_secondary_label != blank -%}
-        <div class="rdc-hero__actions">
+        <div class="rdchero__actions">
           {%- if section.settings.cta_primary_label != blank -%}
-            <a class="rdc-hero__btn rdc-hero__btn--solid" href="{{ section.settings.cta_primary_url | default: '#' }}">{{ section.settings.cta_primary_label }}</a>
+            <a class="rdchero__btn rdchero__btn--solid" href="{{ section.settings.cta_primary_url | default: '#' }}">{{ section.settings.cta_primary_label }}</a>
           {%- endif -%}
           {%- if section.settings.cta_secondary_label != blank -%}
-            <a class="rdc-hero__btn" href="{{ section.settings.cta_secondary_url | default: '#' }}">{{ section.settings.cta_secondary_label }}</a>
+            <a class="rdchero__btn" href="{{ section.settings.cta_secondary_url | default: '#' }}">{{ section.settings.cta_secondary_label }}</a>
           {%- endif -%}
         </div>
       {%- endif -%}
     </div>
   </div>
   {%- if section.blocks.size > 1 and section.settings.show_dots -%}
-    <div class="rdc-hero__dots" aria-label="Navigation des images">
+    <div class="rdchero__dots" aria-label="Navigation des images">
       {%- for block in section.blocks -%}
-        <button type="button" class="rdc-hero__dot{% if forloop.first %} is-active{% endif %}" data-rdc-dot="{{ forloop.index0 }}" aria-label="Image {{ forloop.index }}"></button>
+        <button type="button" class="rdchero__dot{% if forloop.first %} is-active{% endif %}" data-rdc-dot="{{ forloop.index0 }}" aria-label="Image {{ forloop.index }}"></button>
       {%- endfor -%}
     </div>
   {%- endif -%}
@@ -228,8 +228,8 @@
     if(!root) return;
     if(root._rdcHeroTimer){ clearInterval(root._rdcHeroTimer); root._rdcHeroTimer = null; }
     var bg = document.getElementById('{{ uid }}-bg');
-    var slides = bg ? bg.querySelectorAll('.rdc-hero__slide') : [];
-    var dots = root.querySelectorAll('.rdc-hero__dot');
+    var slides = bg ? bg.querySelectorAll('.rdchero__slide') : [];
+    var dots = root.querySelectorAll('.rdchero__dot');
     if(slides.length < 2) return;
     var i = 0;
     function goTo(n){
@@ -257,7 +257,7 @@
 {
   "name": "RDC — Hero diaporama",
   "tag": "section",
-  "class": "rdc-hero-section",
+  "class": "rdchero-section",
   "max_blocks": 8,
   "settings": [
     { "type": "header", "content": "Contenu fixe (au-dessus des images)" },
