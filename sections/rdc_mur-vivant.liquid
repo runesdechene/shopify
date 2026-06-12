@@ -146,8 +146,11 @@
   @media (max-width: 680px) {
     #{{ uid }} .rdc-mv__lb-nav { width: 38px; height: 38px; font-size: 1.5rem; }
     #{{ uid }} .rdc-mv__lb-name { font-size: 1.6rem; }
-    #{{ uid }} .rdc-mv__stat { padding: 6px 18px; }
-    #{{ uid }} .rdc-mv__stat b { font-size: 2rem; }
+    #{{ uid }} .rdc-mv__stats { width: auto; max-width: 100%; margin-left: 0; transform: none;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px 6px; }
+    #{{ uid }} .rdc-mv__stat { padding: 4px 8px; }
+    #{{ uid }} .rdc-mv__stat + .rdc-mv__stat::before { display: none; }
+    #{{ uid }} .rdc-mv__stat b { font-size: 1.9rem; }
     #{{ uid }} { --mv-card-w: 150px; }
   }
 
