@@ -9,6 +9,411 @@
  */
 {
   "sections": {
+    "rdc_hero_mTtVLE": {
+      "type": "rdc_hero",
+      "blocks": {
+        "slide_37dEyh": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/fond_site_e9a28972-2ad7-478a-a9de-48deeefb381a.webp"
+          }
+        }
+      },
+      "block_order": [
+        "slide_37dEyh"
+      ],
+      "name": "RDC — Hero diaporama",
+      "settings": {
+        "overline": "",
+        "title": "Porte un Fragment d'Histoire.",
+        "title_2": "Deviens un aventurier de ton territoire.",
+        "subtitle": "<p>Des vêtements durables, illustrés à la main, qui vous font voyager dans le passé.<br/>Un mouvement francophone qui arpente l'Histoire, la Nature & le Patrimoine.</p>",
+        "cta_primary_label": "Découvrir les produits",
+        "cta_primary_url": "",
+        "cta_secondary_label": "le mouvement",
+        "cta_secondary_url": "",
+        "content_vertical": "center",
+        "content_horizontal": "left",
+        "content_text_align": "",
+        "content_max_width": 60,
+        "content_padding_x": 200,
+        "min_height": 88,
+        "min_height_mobile": 100,
+        "mobile_vertical": "center",
+        "mobile_title_size": 38,
+        "mobile_hide_subtitle": false,
+        "color_scheme": "",
+        "text_color": "#ffffff",
+        "overline_color": "#f4d694",
+        "overlay_color": "#464d50",
+        "overlay_opacity": 30,
+        "text_shadow": 10,
+        "autoplay": true,
+        "show_dots": true,
+        "autoplay_interval": 7
+      }
+    },
+    "rdc_triptyque_MWyQpm": {
+      "type": "rdc_triptyque",
+      "blocks": {
+        "pilier_FMPpH9": {
+          "type": "pilier",
+          "settings": {
+            "image": "shopify://shop_images/voyageur_qui_apprend_ef577f29-3c2f-4504-b461-e446a6e57506.webp",
+            "word": "Apprenez",
+            "text": "Des illustrations originales qui racontent notre passé sans cliché"
+          }
+        },
+        "pilier_g6gzHM": {
+          "type": "pilier",
+          "settings": {
+            "image": "shopify://shop_images/voyageur_qui_incarne.webp",
+            "word": "Incarnez",
+            "text": "Des vêtements iconiques et durables, portés pour inspirer le présent"
+          }
+        },
+        "pilier_CjV4xj": {
+          "type": "pilier",
+          "settings": {
+            "image": "shopify://shop_images/voyageur_qui_explore_8567b2bc-c2a5-461d-8a9b-065a99f76165.webp",
+            "word": "Explorez",
+            "text": "Une application qui référence 2800+ lieux anciens à découvrir et à protéger"
+          }
+        }
+      },
+      "block_order": [
+        "pilier_FMPpH9",
+        "pilier_g6gzHM",
+        "pilier_CjV4xj"
+      ],
+      "name": "RDC — Triptyque",
+      "settings": {
+        "overline": "Runes de Chêne en 3 mots",
+        "intro": "Notre Mantra",
+        "link_label": "",
+        "link_url": "",
+        "text_align": "center",
+        "content_max_width": 1000,
+        "grid_gap_top": 40,
+        "image_size": 128,
+        "word_size": 32,
+        "padding_top": 100,
+        "padding_bottom": 80,
+        "color_scheme": "",
+        "accent_color": "#b4894f",
+        "word_color": "#403434",
+        "background_image": "shopify://shop_images/Fond_section_173d7ca4-1587-465e-be60-3ce8abe92f99.jpg",
+        "background_fit": "cover"
+      }
+    },
+    "rdc_categories_PPbH9J": {
+      "type": "rdc_categories",
+      "blocks": {
+        "tuile_8zpYGt": {
+          "type": "tuile",
+          "settings": {
+            "collection": "t-shirts-debardeurs",
+            "image": "shopify://shop_images/Tshirt_929d6fb6-d170-4e48-95a6-39b42f520d92.webp",
+            "label": "",
+            "badge_text": "100% BIO"
+          }
+        },
+        "tuile_CxPjDn": {
+          "type": "tuile",
+          "settings": {
+            "collection": "debardeurs",
+            "image": "shopify://shop_images/Deb.webp",
+            "label": "",
+            "badge_text": "100% BIO"
+          }
+        },
+        "tuile_wazb4L": {
+          "type": "tuile",
+          "settings": {
+            "collection": "vestes-sweatshirts",
+            "image": "shopify://shop_images/sweat_1c49a169-fa5e-43a4-9996-e634551ad833.webp",
+            "label": "",
+            "badge_text": "100% BIO"
+          }
+        }
+      },
+      "block_order": [
+        "tuile_8zpYGt",
+        "tuile_CxPjDn",
+        "tuile_wazb4L"
+      ],
+      "name": "RDC — Tuiles collections",
+      "settings": {
+        "overline": "",
+        "title": "",
+        "columns": 3,
+        "columns_mobile": 1,
+        "tile_ratio": "portrait",
+        "gap": 18,
+        "corner_radius": 9,
+        "label_align": "left",
+        "hover_zoom": true,
+        "show_badge": false,
+        "badge_text": "100% biologique",
+        "badge_bg": "#f4e3d3",
+        "badge_text_color": "#623c3c",
+        "show_price": true,
+        "price_color": "#ffffff",
+        "text_align": "center",
+        "padding_top": 0,
+        "padding_bottom": 72,
+        "color_scheme": "",
+        "accent_color": "#b4894f"
+      }
+    },
+    "slideshow_hf3iVq": {
+      "type": "slideshow",
+      "blocks": {
+        "slide_Cb9GqA": {
+          "type": "_slide",
+          "settings": {
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/fond_site_e9a28972-2ad7-478a-a9de-48deeefb381a.webp",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "inherit_color_scheme": false,
+            "color_scheme": "scheme-6",
+            "toggle_overlay": true,
+            "overlay_color": "#3d272726",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 48,
+            "padding-block-end": 48,
+            "padding-inline-start": 48,
+            "padding-inline-end": 48
+          },
+          "blocks": {
+            "text_7JGXbr": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>Porte un Fragment d'histoire</h2>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h1",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_94eHwE": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>Devient un aventurier de ton territoire</h2>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h2",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_p3YQ4W": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Des vêtements durables illustrés à la main, inspirés par nos grandes époques passées + Un mouvement d'aventurier qui explore nos régions avec camaraderie.</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h5",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 20,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "button_6aAVRe": {
+              "type": "button",
+              "settings": {
+                "label": "Acheter maintenant",
+                "link": "shopify://collections/all",
+                "open_in_new_tab": false,
+                "style_class": "button",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_7JGXbr",
+            "text_94eHwE",
+            "text_p3YQ4W",
+            "button_6aAVRe"
+          ]
+        },
+        "slide_BWHGFh": {
+          "type": "_slide",
+          "settings": {
+            "media_type_1": "image",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "inherit_color_scheme": false,
+            "color_scheme": "scheme-6",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 48,
+            "padding-block-end": 48,
+            "padding-inline-start": 48,
+            "padding-inline-end": 48
+          },
+          "blocks": {
+            "text_hyHBTQ": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>Meilleures ventes</h2>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_fUTFE4": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Découvrez les meilleures ventes qui ont conquis le cœur de nos clients grâce à leur mélange parfait de fonctionnalité et de style.</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 20,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "button_48izbc": {
+              "type": "button",
+              "settings": {
+                "label": "Acheter maintenant",
+                "link": "shopify://collections/all",
+                "open_in_new_tab": false,
+                "style_class": "button",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_hyHBTQ",
+            "text_fUTFE4",
+            "button_48izbc"
+          ]
+        }
+      },
+      "block_order": [
+        "slide_Cb9GqA",
+        "slide_BWHGFh"
+      ],
+      "disabled": true,
+      "name": "t:names.slideshow_full_frame",
+      "settings": {
+        "display_mode": "full_frame",
+        "section_width": "full-width",
+        "full_frame_on_mobile": false,
+        "slideshow_gap": 12,
+        "corner_radius": 0,
+        "slide_height": 70,
+        "content_position": "on-media",
+        "color_scheme": "",
+        "icons_style": "arrows_large",
+        "icons_shape": "none",
+        "slideshow_controls_style": "dots",
+        "autoplay": false,
+        "autoplay_speed": 4,
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
     "rdc_hero_main": {
       "type": "rdc_hero-saison",
       "blocks": {
@@ -39,7 +444,7 @@
       "settings": {
         "reopen_enable": true,
         "reopen_image": "shopify://shop_images/bonus_e2141a09-8845-4d63-816f-4643a7fd20d5.webp",
-        "popup_delay": 3,
+        "popup_delay": 10,
         "popup_show_once": true,
         "popup_storage_key": "rdc_hero_seen_summer_2026",
         "image_desktop": "shopify://shop_images/essai2_11afbdb6-a5ff-4fe5-86b7-28ee70b1b9ab.webp",
@@ -84,11 +489,11 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h1>Soyez audacieux.</h1>",
+            "text": "<h1>Nos créations</h1>",
             "width": "fit-content",
             "max_width": "narrow",
             "alignment": "left",
-            "type_preset": "h1",
+            "type_preset": "h2",
             "font": "var(--font-body--family)",
             "font_size": "1rem",
             "line_height": "normal",
@@ -106,29 +511,40 @@
           },
           "blocks": {}
         },
-        "jumbo_text_Ae7GXm": {
-          "type": "jumbo-text",
-          "name": "t:names.jumbo_text",
+        "text_PVNaPp": {
+          "type": "text",
+          "name": "t:names.heading",
           "settings": {
-            "text": "Portez des Fragments d'Histoire",
-            "font": "heading",
+            "text": "<h1>Originales — Artistes indépendants — Imprimées en bretagne — Encres écologiques</h1>",
+            "width": "fit-content",
+            "max_width": "none",
             "alignment": "left",
-            "line_height": "0.8",
-            "letter_spacing": "0.03em",
+            "type_preset": "h4",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
             "case": "none",
-            "text_effect": "reveal",
-            "animation_repeat": false
+            "wrap": "pretty",
+            "color": "var(--color-primary)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
           },
           "blocks": {}
         }
       },
       "block_order": [
         "text_kfVmdT",
-        "jumbo_text_Ae7GXm"
+        "text_PVNaPp"
       ],
       "custom_css": [
         "@media screen and (max-width: 798px) {h1 {font-size: 14vw; }}",
-        "@media (min-width: 798px) {h1 {margin-top: 30px; }}"
+        "@media (min-width: 798px) {h1 {margin-top: 10px; }}"
       ],
       "name": "Heading",
       "settings": {
@@ -137,9 +553,9 @@
         "horizontal_alignment": "flex-start",
         "vertical_alignment": "center",
         "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "flex-start",
+        "horizontal_alignment_flex_direction_column": "center",
         "vertical_alignment_flex_direction_column": "center",
-        "gap": 12,
+        "gap": 0,
         "section_width": "page-width",
         "section_height": "",
         "section_height_custom": 50,
@@ -165,19 +581,58 @@
         "condition_invert": false
       }
     },
+    "rdc_illustrations_meta_zxHWmV": {
+      "type": "rdc_illustrations_meta",
+      "name": "RDC — Illustrations",
+      "settings": {
+        "collections": [
+          "avalon",
+          "valkyrie",
+          "varegue",
+          "skjaldmo",
+          "morrigan",
+          "lesprit-du-loup",
+          "totem-du-hibou",
+          "druide",
+          "hoplite",
+          "hecate",
+          "loutre"
+        ],
+        "image_field": "image_pour_fond_clair",
+        "sort_order": "recent",
+        "overline": "",
+        "heading": "",
+        "columns": 3,
+        "mobile_columns": "2",
+        "columns_gap": 16,
+        "rows_gap": 28,
+        "image_ratio": "2/3",
+        "corner_radius": 0,
+        "image_padding": 30,
+        "hover_zoom": true,
+        "show_name": true,
+        "show_summary": true,
+        "show_artist": true,
+        "show_link": false,
+        "link_label": "Voir la collection",
+        "section_width": "page-width",
+        "color_scheme": "",
+        "accent_color": "#b4894f",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
     "illustration_list_FjwKWn": {
       "type": "illustration-list",
       "name": "t:names.illustrations_carousel",
       "settings": {
         "collection_list": [
-          "totem-du-hibou",
-          "lesprit-du-loup",
-          "morrigan",
+          "varegue",
           "valkyrie",
-          "valsgard",
-          "varegue"
+          "morrigan",
+          "lesprit-du-loup"
         ],
-        "layout_type": "carousel",
+        "layout_type": "grid",
         "carousel_on_mobile": false,
         "columns": 3,
         "mobile_columns": "2",
@@ -199,7 +654,7 @@
         "section_width": "page-width",
         "gap": 12,
         "color_scheme": "",
-        "padding-block-start": 20,
+        "padding-block-start": 60,
         "padding-block-end": 48
       }
     },
@@ -1277,8 +1732,13 @@
     }
   },
   "order": [
+    "rdc_hero_mTtVLE",
+    "rdc_triptyque_MWyQpm",
+    "rdc_categories_PPbH9J",
+    "slideshow_hf3iVq",
     "rdc_hero_main",
     "section_MgkEX9",
+    "rdc_illustrations_meta_zxHWmV",
     "illustration_list_FjwKWn",
     "section_GbDEgR",
     "section_YjqMVK",

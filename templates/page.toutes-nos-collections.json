@@ -64,19 +64,12 @@
           "settings": {
             "title": "les mysteres celtes",
             "subtitle": "Sous-titre",
-            "link": "",
+            "btn_link": "",
+            "btn_label": "Découvrir",
+            "btn_bg": "#FAE3D6",
             "overlay_color": "#000000",
             "overlay_opacity": 40,
-            "btn_bg": "#FAE3D6",
-            "btn_text": "#962B21",
-            "btn_label": "Découvrir",
-            "btn_link": "",
-            "disable_all": false,
-            "disable_zoom": false,
-            "disable_rotate": false,
-            "zoom_factor": 105,
-            "shrink_factor": 96,
-            "rotate_angle": 2
+            "zoom_factor": 105
           }
         },
         "card_bm43ER": {
@@ -84,19 +77,12 @@
           "settings": {
             "title": "Titre",
             "subtitle": "Sous-titre",
-            "link": "",
+            "btn_link": "",
+            "btn_label": "Découvrir",
+            "btn_bg": "#FAE3D6",
             "overlay_color": "#000000",
             "overlay_opacity": 40,
-            "btn_bg": "#FAE3D6",
-            "btn_text": "#962B21",
-            "btn_label": "Découvrir",
-            "btn_link": "",
-            "disable_all": false,
-            "disable_zoom": false,
-            "disable_rotate": false,
-            "zoom_factor": 105,
-            "shrink_factor": 96,
-            "rotate_angle": 2
+            "zoom_factor": 105
           }
         },
         "card_TqtUQL": {
@@ -104,19 +90,12 @@
           "settings": {
             "title": "Titre",
             "subtitle": "Sous-titre",
-            "link": "",
+            "btn_link": "",
+            "btn_label": "Découvrir",
+            "btn_bg": "#FAE3D6",
             "overlay_color": "#000000",
             "overlay_opacity": 40,
-            "btn_bg": "#FAE3D6",
-            "btn_text": "#962B21",
-            "btn_label": "Découvrir",
-            "btn_link": "",
-            "disable_all": false,
-            "disable_zoom": false,
-            "disable_rotate": false,
-            "zoom_factor": 105,
-            "shrink_factor": 96,
-            "rotate_angle": 2
+            "zoom_factor": 105
           }
         }
       },
@@ -127,16 +106,7 @@
       ],
       "name": "RDC - Double Carrés Granulaire",
       "settings": {
-        "container_width": 1200,
-        "gap": 30,
-        "border_radius": 20,
-        "card_height": 500,
-        "card_height_mobile": 350,
-        "title_size": 32,
-        "subtitle_size": 18,
-        "section_bg": "transparent",
-        "padding_top": 40,
-        "padding_bottom": 40
+        "card_height": 500
       }
     }
   },

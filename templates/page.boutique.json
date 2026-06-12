@@ -35,9 +35,9 @@
       "type": "hero",
       "name": "Collection vignette",
       "settings": {
-        "image_desktop": "shopify://shop_images/banniere_garde_d_acier_946ab891-5bc9-49dc-b8fa-8741ce868e5c.webp",
-        "image_mobile": "shopify://shop_images/garde_acier_carre_1_copie_bc644469-7afa-4889-b32c-5c5689839eda.png",
-        "link": "shopify://collections/garde-d-acier",
+        "image_desktop": "shopify://shop_images/BANNIEREE_PC_OMBNRE_AIRAIN.webp",
+        "image_mobile": "shopify://shop_images/D_OMBRE_D_AIRAIN_CARRE.webp",
+        "link": "shopify://collections/lombre-et-lairain",
         "margin_top": 15,
         "margin_bottom": 0
       }
@@ -484,8 +484,8 @@
           "static": true,
           "settings": {
             "placement": "on_image",
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "flex-start",
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
             "collection_card_gap": 8,
             "inherit_color_scheme": true,
             "color_scheme": "",
@@ -520,6 +520,7 @@
       "name": "t:names.collections_grid",
       "settings": {
         "collection_list": [
+          "lombre-et-lairain",
           "les-mysteres-celtes",
           "garde-d-acier",
           "le-pacte-sauvage"
