@@ -141,7 +141,7 @@
 </style>
 
 <div class="section-background color-{{ s.color_scheme }}"></div>
-<div id="{{ uid }}" class="section section--full-width color-{{ s.color_scheme }} rdc-mv" style="display:none;">
+<div id="{{ uid }}" class="section section--full-width color-{{ s.color_scheme }} rdc-mv"{% unless request.design_mode %} style="display:none;"{% endunless %}>
 
   {%- if s.overline != blank or s.title != blank or s.subtitle != blank or s.show_stats -%}
     <div class="rdc-mv__head">
@@ -193,6 +193,13 @@
     var CARD_W = {{ s.card_width }};
     var MAX = {{ s.max_photos }};
     var PROD_PREFIX = {{ '/products/' | json }};
+    var DESIGN = {{ request.design_mode | json }};
+
+    function placeholder(msg) {
+      if (!DESIGN) { root.style.display = 'none'; return; }
+      root.style.display = '';
+      wall.innerHTML = '<p style="text-align:center;opacity:.6;padding:2.5rem 1rem;font-family:var(--font-body--family);color:var(--color-foreground)">' + msg + '</p>';
+    }
 
     var root = document.getElementById(UID);
     var wall = document.getElementById(UID + '-wall');
@@ -201,7 +208,7 @@
     var lbClose = lb.querySelector('.rdc-mv__lb-close');
     if (!root || !wall) return;
 
-    if (!URL_BASE || !KEY) { root.style.display = 'none'; return; }
+    if (!URL_BASE || !KEY) { placeholder("Mur communautaire — renseigne l'URL et la clé Supabase dans les réglages de la section."); return; }
 
     function esc(str) {
       return String(str == null ? '' : str)
@@ -278,13 +285,13 @@
       .then(function(res) { return res.json(); })
       .then(function(data) {
         photos = (data || []).filter(function(p) { return p && p.image_url; });
-        if (!photos.length) { root.style.display = 'none'; return; }
+        if (!photos.length) { placeholder('Aucune photo approuvée pour le moment. La section apparaîtra ici dès qu\'il y aura des photos.'); return; }
         root.style.display = '';
         render();
       })
       .catch(function(err) {
         console.error('[rdc-mur-vivant]', err);
-        root.style.display = 'none';
+        placeholder('Impossible de charger les photos du mur (vérifie la connexion Supabase).');
       });
   })();
 </script>
