@@ -244,7 +244,6 @@
       return String(str == null ? '' : str)
         .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
-    function rot(arr, n) { n = n % arr.length; return arr.slice(n).concat(arr.slice(0, n)); }
 
     var photos = [];
 
@@ -341,9 +340,12 @@
 
     function render() {
       photos.forEach(function(p, i) { p._idx = i; });
+      /* Répartition round-robin : chaque image n'apparaît que dans UNE rangée (pas de doublon haut/bas). */
       var html = '';
-      for (var r = 0; r < ROWS; r++) {
-        var list = rot(photos, (r * Math.ceil(photos.length / Math.max(ROWS, 1))) % photos.length || 0);
+      var nbRows = Math.min(ROWS, photos.length) || 1;
+      for (var r = 0; r < nbRows; r++) {
+        var list = photos.filter(function(_p, i) { return i % nbRows === r; });
+        if (!list.length) continue;
         html += buildRow(list, SPEED + r * 6, r % 2 === 1);
       }
       wall.innerHTML = html;
