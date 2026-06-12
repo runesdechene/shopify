@@ -176,13 +176,13 @@
             </div>
           {%- endif -%}
           {%- if s.stat2_value != blank -%}
-            <div class="rdc-mv__stat"><b>{{ s.stat2_value }}</b><span>{{ s.stat2_label }}</span></div>
+            <div class="rdc-mv__stat"><b{% if s.stat2_source != blank %} data-source="{{ s.stat2_source }}"{% endif %}>{{ s.stat2_value }}</b><span>{{ s.stat2_label }}</span></div>
           {%- endif -%}
           {%- if s.stat3_value != blank -%}
-            <div class="rdc-mv__stat"><b>{{ s.stat3_value }}</b><span>{{ s.stat3_label }}</span></div>
+            <div class="rdc-mv__stat"><b{% if s.stat3_source != blank %} data-source="{{ s.stat3_source }}"{% endif %}>{{ s.stat3_value }}</b><span>{{ s.stat3_label }}</span></div>
           {%- endif -%}
           {%- if s.stat4_value != blank -%}
-            <div class="rdc-mv__stat"><b>{{ s.stat4_value }}</b><span>{{ s.stat4_label }}</span></div>
+            <div class="rdc-mv__stat"><b{% if s.stat4_source != blank %} data-source="{{ s.stat4_source }}"{% endif %}>{{ s.stat4_value }}</b><span>{{ s.stat4_label }}</span></div>
           {%- endif -%}
         </div>
       {%- endif -%}
@@ -362,6 +362,23 @@
       });
     }
 
+    /* --- Stats live (comptes Hub + lieux appli) --- */
+    (function loadStats() {
+      if (!root.querySelector('[data-source]')) return;
+      fetch(URL_BASE.replace(/\/$/, '') + '/rest/v1/movement_stats?select=users_count,places_count', { headers: { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY } })
+        .then(function(r) { return r.json(); })
+        .then(function(rows) {
+          var st = (rows && rows[0]) || {};
+          var map = { clients: st.users_count, lieux: st.places_count };
+          var els = root.querySelectorAll('[data-source]');
+          for (var i = 0; i < els.length; i++) {
+            var v = map[els[i].getAttribute('data-source')];
+            if (v != null) els[i].textContent = Number(v).toLocaleString('fr-FR');
+          }
+        })
+        .catch(function(e) { console.error('[rdc-mur-vivant] stats', e); });
+    })();
+
     var endpoint = URL_BASE.replace(/\/$/, '') +
       '/rest/v1/movement_wall_photos?select=image_url,submitter_name,submitter_instagram,shopify_product_handle,shopify_product_title,message,created_at,rating_experience,rating_products&order=created_at.desc&limit=' + MAX;
 
@@ -403,10 +420,13 @@
     { "type": "text", "id": "stat_rating_label", "label": "Stat 1 — texte note", "default": "4,6/5 de moyenne" },
     { "type": "text", "id": "stat2_value", "label": "Stat 2 — chiffre", "default": "+5 000" },
     { "type": "text", "id": "stat2_label", "label": "Stat 2 — légende", "default": "clients conquis" },
+    { "type": "select", "id": "stat2_source", "label": "Stat 2 — valeur live", "info": "Remplace le chiffre par le total réel", "options": [ { "value": "", "label": "Manuel (texte ci-dessus)" }, { "value": "clients", "label": "Comptes Hub (live)" }, { "value": "lieux", "label": "Lieux appli (live)" } ], "default": "clients" },
     { "type": "text", "id": "stat3_value", "label": "Stat 3 — chiffre", "default": "+30/an" },
     { "type": "text", "id": "stat3_label", "label": "Stat 3 — légende", "default": "festivals en France" },
-    { "type": "text", "id": "stat4_value", "label": "Stat 4 — chiffre", "default": "2800+ Lieux" },
-    { "type": "text", "id": "stat4_label", "label": "Stat 4 — légende", "default": "cartographiés sur l'application" },
+    { "type": "select", "id": "stat3_source", "label": "Stat 3 — valeur live", "options": [ { "value": "", "label": "Manuel (texte ci-dessus)" }, { "value": "clients", "label": "Comptes Hub (live)" }, { "value": "lieux", "label": "Lieux appli (live)" } ], "default": "" },
+    { "type": "text", "id": "stat4_value", "label": "Stat 4 — chiffre", "default": "2 800+" },
+    { "type": "text", "id": "stat4_label", "label": "Stat 4 — légende", "default": "Lieux cartographiés sur l'application" },
+    { "type": "select", "id": "stat4_source", "label": "Stat 4 — valeur live", "options": [ { "value": "", "label": "Manuel (texte ci-dessus)" }, { "value": "clients", "label": "Comptes Hub (live)" }, { "value": "lieux", "label": "Lieux appli (live)" } ], "default": "lieux" },
 
     { "type": "header", "content": "Carrousel" },
     { "type": "range", "id": "rows", "label": "Nombre de rangées", "min": 1, "max": 3, "step": 1, "default": 2 },
