@@ -187,8 +187,11 @@
 <script>
   (function() {
     var UID = {{ uid | json }};
-    var URL_BASE = {{ s.supabase_url | json }};
-    var KEY = {{ s.supabase_anon_key | json }};
+    /* Valeurs de secours (projet Supabase RDC, clé anon publique) si les réglages sont vides/mauvais. */
+    var URL_FALLBACK = 'https://ukpapqssgsxirsgmcvof.supabase.co';
+    var KEY_FALLBACK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrcGFwcXNzZ3N4aXJzZ21jdm9mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAyOTU5OTMsImV4cCI6MjA4NTg3MTk5M30.Le1gdE3HhmZ2gzMJF9hVhlZVsILmLd5GQgk87xC_dUY';
+    var URL_BASE = ({{ s.supabase_url | json }} || URL_FALLBACK).trim();
+    var KEY = ({{ s.supabase_anon_key | json }} || KEY_FALLBACK).trim();
     var ROWS = {{ s.rows }};
     var SPEED = {{ s.speed }};
     var CARD_W = {{ s.card_width }};
@@ -329,8 +332,8 @@
     { "type": "text", "id": "submit_url", "label": "Lien", "info": "URL complète (ex : formulaire Hub)", "default": "https://hub.runesdechene.com/soumettre-contenu" },
 
     { "type": "header", "content": "Données (Supabase)" },
-    { "type": "text", "id": "supabase_url", "label": "URL Supabase", "info": "Ex : https://xxxxx.supabase.co" },
-    { "type": "text", "id": "supabase_anon_key", "label": "Clé Supabase (anon)" },
+    { "type": "text", "id": "supabase_url", "label": "URL Supabase", "info": "Laisser vide pour utiliser le projet RDC par défaut", "default": "https://ukpapqssgsxirsgmcvof.supabase.co" },
+    { "type": "text", "id": "supabase_anon_key", "label": "Clé Supabase (anon)", "info": "Laisser vide pour utiliser la clé par défaut" },
 
     { "type": "header", "content": "Style" },
     { "type": "color_scheme", "id": "color_scheme", "label": "Schéma de couleur", "default": "scheme-1" },
