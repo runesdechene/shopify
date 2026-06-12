@@ -63,6 +63,7 @@
 
   /* Marquee */
   #{{ uid }} .rdc-mv__wall { margin-top: 36px; }
+  #{{ uid }} .rdc-mv__status { text-align: center; opacity: .6; padding: 2.5rem 1rem; font-family: var(--font-body--family); color: var(--color-foreground); }
   #{{ uid }} .rdc-mv__row {
     overflow: hidden;
     -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
@@ -141,7 +142,7 @@
 </style>
 
 <div class="section-background color-{{ s.color_scheme }}"></div>
-<div id="{{ uid }}" class="section section--full-width color-{{ s.color_scheme }} rdc-mv"{% unless request.design_mode %} style="display:none;"{% endunless %}>
+<div id="{{ uid }}" class="section section--full-width color-{{ s.color_scheme }} rdc-mv">
 
   {%- if s.overline != blank or s.title != blank or s.subtitle != blank or s.show_stats -%}
     <div class="rdc-mv__head">
@@ -168,7 +169,7 @@
     </div>
   {%- endif -%}
 
-  <div class="rdc-mv__wall" id="{{ uid }}-wall"></div>
+  <div class="rdc-mv__wall" id="{{ uid }}-wall"><p class="rdc-mv__status">Chargement du mur…</p></div>
 
   {%- if s.submit_label != blank and s.submit_url != blank -%}
     <div class="rdc-mv__foot">
@@ -196,9 +197,9 @@
     var DESIGN = {{ request.design_mode | json }};
 
     function placeholder(msg) {
-      if (!DESIGN) { root.style.display = 'none'; return; }
+      /* Section toujours visible ; on affiche un message d'état lisible dans la zone du mur. */
       root.style.display = '';
-      wall.innerHTML = '<p style="text-align:center;opacity:.6;padding:2.5rem 1rem;font-family:var(--font-body--family);color:var(--color-foreground)">' + msg + '</p>';
+      wall.innerHTML = '<p class="rdc-mv__status">' + msg + '</p>';
     }
 
     var root = document.getElementById(UID);
