@@ -104,32 +104,47 @@
   }
   #{{ uid }} .rdc-mv__submit:hover { border-bottom-color: var(--mv-accent); }
 
-  /* Lightbox */
-  #{{ uid }} .rdc-mv__lb { display: none; position: fixed; inset: 0; z-index: 1000; padding: 24px;
-    background: rgba(20,12,6,.93); align-items: center; justify-content: center; }
+  /* Lightbox — style galerie produit : grande image + overlay infos en bas */
+  #{{ uid }} .rdc-mv__lb { display: none; position: fixed; inset: 0; z-index: 1000;
+    background: rgba(20,12,6,.92); align-items: center; justify-content: center; padding: 4vh 4vw; }
   #{{ uid }} .rdc-mv__lb.is-open { display: flex; }
-  #{{ uid }} .rdc-mv__lb-card { display: flex; max-width: 860px; width: 100%; max-height: 88vh;
-    background: var(--color-background); border-radius: 16px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.5); }
-  #{{ uid }} .rdc-mv__lb-img { flex: 0 0 48%; background: #221a12; }
-  #{{ uid }} .rdc-mv__lb-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  #{{ uid }} .rdc-mv__lb-body { flex: 1; padding: 38px 34px; display: flex; flex-direction: column; }
-  #{{ uid }} .rdc-mv__lb-name { font-family: var(--font-heading--family); font-weight: 400; font-size: 2.5rem;
-    line-height: .95; letter-spacing: .02em; color: var(--color-foreground-heading, var(--color-foreground)); }
-  #{{ uid }} .rdc-mv__lb-ig { color: var(--mv-accent); text-decoration: none; font-family: var(--font-accent--family);
-    font-size: .95rem; margin-top: 6px; display: inline-block; }
-  #{{ uid }} .rdc-mv__lb-msg { margin-top: 20px; font-family: var(--font-fragment--family); font-style: italic;
-    font-size: 1.18rem; line-height: 1.6; color: var(--color-foreground); }
-  #{{ uid }} .rdc-mv__lb-prod { margin-top: auto; padding-top: 24px; }
-  #{{ uid }} .rdc-mv__lb-prod a { display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
-    background: var(--color-primary, var(--mv-accent)); color: #fff; padding: 12px 18px; border-radius: 10px;
-    font-family: var(--font-accent--family); letter-spacing: .03em; font-size: .95rem; }
-  #{{ uid }} .rdc-mv__lb-close { position: absolute; top: 20px; right: 24px; background: none; border: none;
-    color: #fff; font-size: 2.2rem; line-height: 1; cursor: pointer; opacity: .8; }
+  #{{ uid }} .rdc-mv__lb-inner { position: relative; max-width: min(92vw, 720px); max-height: 92vh; }
+  #{{ uid }} .rdc-mv__lb-img { display: block; max-width: 100%; max-height: 92vh; object-fit: contain; border-radius: 10px; }
+  #{{ uid }} .rdc-mv__lb-overlay { position: absolute; left: 0; right: 0; bottom: 0; padding: 52px 24px 22px;
+    background: linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.35) 55%, transparent 100%);
+    color: #fff; border-radius: 0 0 10px 10px; pointer-events: none; }
+  #{{ uid }} .rdc-mv__lb-overlay a { pointer-events: auto; }
+  #{{ uid }} .rdc-mv__lb-name { font-family: var(--font-heading--family); font-weight: 400; font-size: 1.9rem;
+    line-height: 1.12; letter-spacing: .02em; margin-bottom: 6px; }
+  #{{ uid }} .rdc-mv__lb-verified { display: inline-flex; align-items: center; gap: 3px;
+    font-family: var(--font-body--family); font-size: .66rem; font-weight: 600; letter-spacing: .02em;
+    color: #d7f0d0; background: rgba(34,197,94,.22); border: 1px solid rgba(34,197,94,.55);
+    padding: 2px 8px; border-radius: 999px; vertical-align: middle; white-space: nowrap; }
+  #{{ uid }} .rdc-mv__lb-rating { font-size: .95rem; letter-spacing: .04em; margin-top: 2px; }
+  #{{ uid }} .rdc-mv__lb-star-off { filter: grayscale(1); opacity: .4; }
+  #{{ uid }} .rdc-mv__lb-msg { font-family: var(--font-fragment--family); font-style: italic;
+    font-size: 1.02rem; line-height: 1.45; margin-top: 8px; opacity: .95; }
+  #{{ uid }} .rdc-mv__lb-prod { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; margin-right: 8px;
+    font-family: var(--font-accent--family); letter-spacing: .03em; font-size: .88rem; color: #fff;
+    text-decoration: none; background: rgba(255,255,255,.16); padding: 8px 14px; border-radius: 999px; transition: background .2s; }
+  #{{ uid }} .rdc-mv__lb-prod:hover { background: rgba(255,255,255,.30); }
+  #{{ uid }} .rdc-mv__lb-close { position: absolute; top: -40px; right: 0; background: none; border: none;
+    color: #fff; font-size: 2rem; line-height: 1; cursor: pointer; opacity: .85; }
   #{{ uid }} .rdc-mv__lb-close:hover { opacity: 1; }
+  #{{ uid }} .rdc-mv__lb-nav { position: fixed; top: 50%; transform: translateY(-50%);
+    width: 46px; height: 46px; border-radius: 50%; border: none; background: rgba(255,255,255,.16);
+    color: #fff; font-size: 1.9rem; line-height: 1; cursor: pointer; padding: 0; display: flex;
+    align-items: center; justify-content: center; z-index: 6; transition: background .2s; }
+  #{{ uid }} .rdc-mv__lb-nav:hover { background: rgba(255,255,255,.32); }
+  #{{ uid }} .rdc-mv__lb-nav--prev { left: max(2vw, 12px); }
+  #{{ uid }} .rdc-mv__lb-nav--next { right: max(2vw, 12px); }
+  #{{ uid }} .rdc-mv__lb-counter { position: absolute; bottom: 12px; right: 12px;
+    background: rgba(0,0,0,.6); color: #fff; font-size: .78rem; letter-spacing: .03em;
+    padding: 3px 10px; border-radius: 999px; }
 
   @media (max-width: 680px) {
-    #{{ uid }} .rdc-mv__lb-card { flex-direction: column; max-height: 92vh; overflow: auto; }
-    #{{ uid }} .rdc-mv__lb-img { flex: none; height: 50vh; }
+    #{{ uid }} .rdc-mv__lb-nav { width: 38px; height: 38px; font-size: 1.5rem; }
+    #{{ uid }} .rdc-mv__lb-name { font-size: 1.6rem; }
     #{{ uid }} .rdc-mv__stat { padding: 6px 18px; }
     #{{ uid }} .rdc-mv__stat b { font-size: 2rem; }
     #{{ uid }} { --mv-card-w: 150px; }
@@ -179,8 +194,14 @@
   {%- endif -%}
 
   <div class="rdc-mv__lb" id="{{ uid }}-lb">
-    <button class="rdc-mv__lb-close" aria-label="Fermer">&times;</button>
-    <div class="rdc-mv__lb-card" id="{{ uid }}-lb-card"></div>
+    <button class="rdc-mv__lb-nav rdc-mv__lb-nav--prev" id="{{ uid }}-lb-prev" aria-label="Précédent">&#x2039;</button>
+    <button class="rdc-mv__lb-nav rdc-mv__lb-nav--next" id="{{ uid }}-lb-next" aria-label="Suivant">&#x203A;</button>
+    <div class="rdc-mv__lb-inner">
+      <button class="rdc-mv__lb-close" aria-label="Fermer">&#x2715;</button>
+      <img class="rdc-mv__lb-img" id="{{ uid }}-lb-img" src="" alt="">
+      <div class="rdc-mv__lb-overlay" id="{{ uid }}-lb-overlay"></div>
+      <span class="rdc-mv__lb-counter" id="{{ uid }}-lb-counter"></span>
+    </div>
   </div>
 </div>
 
@@ -208,7 +229,11 @@
     var root = document.getElementById(UID);
     var wall = document.getElementById(UID + '-wall');
     var lb = document.getElementById(UID + '-lb');
-    var lbCard = document.getElementById(UID + '-lb-card');
+    var lbImg = document.getElementById(UID + '-lb-img');
+    var lbOverlay = document.getElementById(UID + '-lb-overlay');
+    var lbCounter = document.getElementById(UID + '-lb-counter');
+    var navPrev = document.getElementById(UID + '-lb-prev');
+    var navNext = document.getElementById(UID + '-lb-next');
     var lbClose = lb.querySelector('.rdc-mv__lb-close');
     if (!root || !wall) return;
 
@@ -222,30 +247,77 @@
 
     var photos = [];
 
-    /* --- Lightbox --- */
-    function openLightbox(p) {
-      var ig = p.submitter_instagram
-        ? '<a class="rdc-mv__lb-ig" href="https://instagram.com/' + esc(String(p.submitter_instagram).replace('@', '')) + '" target="_blank" rel="noopener">@' + esc(String(p.submitter_instagram).replace('@', '')) + '</a>'
-        : '';
-      var msg = p.message ? '<p class="rdc-mv__lb-msg">« ' + esc(p.message) + ' »</p>' : '';
-      var prod = p.shopify_product_handle
-        ? '<div class="rdc-mv__lb-prod"><a href="' + PROD_PREFIX + esc(p.shopify_product_handle) + '">' + esc(p.shopify_product_title || 'Voir le produit') + '</a></div>'
-        : '';
-      var name = p.submitter_name ? '<div class="rdc-mv__lb-name">' + esc(p.submitter_name) + '</div>' : '';
-      lbCard.innerHTML =
-        '<div class="rdc-mv__lb-img"><img src="' + esc(p.image_url) + '" alt="' + esc(p.submitter_name || '') + '"></div>' +
-        '<div class="rdc-mv__lb-body">' + name + ig + msg + prod + '</div>';
+    /* --- Lightbox (style galerie produit : overlay infos sur la photo + navigation) --- */
+    var current = 0;
+
+    function stars(n) {
+      n = Math.max(0, Math.min(5, parseInt(n, 10) || 0));
+      var html = '⭐'.repeat(n);
+      for (var i = n; i < 5; i++) html += '<span class="rdc-mv__lb-star-off">⭐</span>';
+      return html;
+    }
+    function buildOverlay(p) {
+      var html = '';
+      if (p.submitter_name) {
+        html += '<div class="rdc-mv__lb-name">' + esc(p.submitter_name);
+        if (p.shopify_product_handle) html += ' <span class="rdc-mv__lb-verified">✓ Avis vérifié · produit acheté</span>';
+        html += '</div>';
+      }
+      if (p.rating_experience) html += '<div class="rdc-mv__lb-rating">Expérience ' + stars(p.rating_experience) + '</div>';
+      if (p.rating_products) html += '<div class="rdc-mv__lb-rating">Produits ' + stars(p.rating_products) + '</div>';
+      if (p.message) html += '<div class="rdc-mv__lb-msg">« ' + esc(p.message) + ' »</div>';
+      if (p.submitter_instagram) {
+        var h = String(p.submitter_instagram).replace('@', '');
+        html += '<a class="rdc-mv__lb-prod" href="https://instagram.com/' + esc(h) + '" target="_blank" rel="noopener">@' + esc(h) + '</a>';
+      }
+      if (p.shopify_product_handle) html += '<a class="rdc-mv__lb-prod" href="' + PROD_PREFIX + esc(p.shopify_product_handle) + '">🛍 ' + esc(p.shopify_product_title || 'Voir le produit') + '</a>';
+      return html;
+    }
+    function renderModal() {
+      var p = photos[current];
+      if (!p) return;
+      lbImg.src = p.image_url;
+      lbImg.alt = 'Photo de ' + (p.submitter_name || 'la communauté');
+      lbOverlay.innerHTML = buildOverlay(p);
+      var multi = photos.length > 1;
+      lbCounter.textContent = (current + 1) + ' / ' + photos.length;
+      lbCounter.style.display = multi ? '' : 'none';
+      navPrev.style.display = multi ? '' : 'none';
+      navNext.style.display = multi ? '' : 'none';
+    }
+    function openModal(idx) {
+      current = idx;
+      renderModal();
       lb.classList.add('is-open');
       document.body.style.overflow = 'hidden';
     }
-    function closeLightbox() {
+    function closeModal() {
       lb.classList.remove('is-open');
-      lbCard.innerHTML = '';
+      lbImg.src = '';
       document.body.style.overflow = '';
     }
-    lbClose.addEventListener('click', closeLightbox);
-    lb.addEventListener('click', function(e) { if (e.target === lb) closeLightbox(); });
-    document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && lb.classList.contains('is-open')) closeLightbox(); });
+    function go(dir) {
+      if (!photos.length) return;
+      current = (current + dir + photos.length) % photos.length;
+      renderModal();
+    }
+    navPrev.addEventListener('click', function(e) { e.stopPropagation(); go(-1); });
+    navNext.addEventListener('click', function(e) { e.stopPropagation(); go(1); });
+    lbClose.addEventListener('click', closeModal);
+    lb.addEventListener('click', function(e) { if (e.target === lb) closeModal(); });
+    document.addEventListener('keydown', function(e) {
+      if (!lb.classList.contains('is-open')) return;
+      if (e.key === 'Escape') closeModal();
+      else if (e.key === 'ArrowLeft') go(-1);
+      else if (e.key === 'ArrowRight') go(1);
+    });
+    var touchX = null;
+    lb.addEventListener('touchstart', function(e) { touchX = e.changedTouches[0].clientX; }, { passive: true });
+    lb.addEventListener('touchend', function(e) {
+      if (touchX === null) return;
+      var dx = e.changedTouches[0].clientX - touchX; touchX = null;
+      if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+    }, { passive: true });
 
     function cardHtml(p, idx) {
       var nm = p.submitter_name ? '<div class="rdc-mv__name">' + esc(p.submitter_name) + '</div>' : '';
@@ -277,13 +349,13 @@
       wall.addEventListener('click', function(e) {
         var c = e.target.closest('.rdc-mv__ph');
         if (!c) return;
-        var p = photos[parseInt(c.getAttribute('data-idx'), 10)];
-        if (p) openLightbox(p);
+        var idx = parseInt(c.getAttribute('data-idx'), 10);
+        if (photos[idx]) openModal(idx);
       });
     }
 
     var endpoint = URL_BASE.replace(/\/$/, '') +
-      '/rest/v1/movement_wall_photos?select=image_url,submitter_name,submitter_instagram,shopify_product_handle,shopify_product_title,message,created_at&order=created_at.desc&limit=' + MAX;
+      '/rest/v1/movement_wall_photos?select=image_url,submitter_name,submitter_instagram,shopify_product_handle,shopify_product_title,message,created_at,rating_experience,rating_products&order=created_at.desc&limit=' + MAX;
 
     fetch(endpoint, { headers: { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY } })
       .then(function(res) { return res.json(); })
