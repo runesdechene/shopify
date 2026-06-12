@@ -44,8 +44,12 @@
     text-align:{{ section.settings.label_align }}}
   #{{ uid }} .rdc-cat__label{display:block;color:#fff;font-family:var(--font-heading--family, sans-serif);text-transform:uppercase;
     font-size:clamp(1.2rem,1.8vw,1.6rem);letter-spacing:.06em;text-shadow:0 2px 14px rgba(0,0,0,.4)}
-  #{{ uid }} .rdc-cat__price{display:inline-block;margin-top:9px;padding:4px 12px;border-radius:999px;
+  #{{ uid }} .rdc-cat__meta{display:flex;align-items:center;gap:10px;margin-top:9px;
+    justify-content:{% if section.settings.label_align == 'center' %}center{% else %}flex-start{% endif %};flex-wrap:wrap}
+  #{{ uid }} .rdc-cat__badge{display:inline-block;padding:4px 12px;border-radius:999px;
     font-family:var(--font-body--family);font-weight:700;font-size:.72rem;letter-spacing:.03em;line-height:1.4;white-space:nowrap}
+  #{{ uid }} .rdc-cat__price{font-family:var(--font-body--family);font-weight:600;font-size:.82rem;
+    letter-spacing:.02em;line-height:1.4;white-space:nowrap;text-shadow:0 1px 8px rgba(0,0,0,.45)}
   #{{ uid }} .rdc-cat__placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
     background:linear-gradient(135deg,#55584a,#2b2d23);color:#e9e0cb;font-family:var(--font-body--family);
     font-size:.85rem;text-align:center;padding:16px}
@@ -74,6 +78,7 @@
             assign img = block.settings.image | default: coll.image
             assign label = block.settings.label | default: coll.title
             assign url = coll.url | default: '#'
+            assign badge = block.settings.badge_text | default: section.settings.badge_text
             assign min_price = 999999999
             assign has_price = false
             for product in coll.products
@@ -82,6 +87,18 @@
                 assign min_price = product.price_min
               endif
             endfor
+            assign show_badge = false
+            if section.settings.show_badge and badge != blank
+              assign show_badge = true
+            endif
+            assign show_price = false
+            if section.settings.show_price and has_price
+              assign show_price = true
+            endif
+            assign show_meta = false
+            if show_badge or show_price
+              assign show_meta = true
+            endif
           -%}
           <a class="rdc-cat__tile" href="{{ url }}" {{ block.shopify_attributes }}>
             {%- if img != blank -%}
@@ -97,8 +114,15 @@
             <div class="rdc-cat__overlay"></div>
             <div class="rdc-cat__caption">
               {%- if label != blank -%}<span class="rdc-cat__label">{{ label }}</span>{%- endif -%}
-              {%- if section.settings.show_price and has_price -%}
-                <span class="rdc-cat__price" style="background:{{ section.settings.price_bg }};color:{{ section.settings.price_text }}">À partir de {{ min_price | money }}</span>
+              {%- if show_meta -%}
+                <div class="rdc-cat__meta">
+                  {%- if show_badge -%}
+                    <span class="rdc-cat__badge" style="background:{{ section.settings.badge_bg }};color:{{ section.settings.badge_text_color }}">{{ badge }}</span>
+                  {%- endif -%}
+                  {%- if show_price -%}
+                    <span class="rdc-cat__price" style="color:{{ section.settings.price_color }}">À partir de {{ min_price | money }}</span>
+                  {%- endif -%}
+                </div>
               {%- endif -%}
             </div>
           </a>
@@ -131,10 +155,15 @@
       { "value": "left", "label": "Gauche" }, { "value": "center", "label": "Centre" } ], "default": "left" },
     { "type": "checkbox", "id": "hover_zoom", "label": "Zoom au survol", "default": true },
 
-    { "type": "header", "content": "Macaron prix" },
+    { "type": "header", "content": "Macaron (badge)" },
+    { "type": "checkbox", "id": "show_badge", "label": "Afficher le macaron", "default": true },
+    { "type": "text", "id": "badge_text", "label": "Texte du macaron", "default": "100% biologique" },
+    { "type": "color", "id": "badge_bg", "label": "Couleur du macaron (pastel)", "default": "#f4e3d3" },
+    { "type": "color", "id": "badge_text_color", "label": "Couleur du texte du macaron", "default": "#623c3c" },
+
+    { "type": "header", "content": "Prix" },
     { "type": "checkbox", "id": "show_price", "label": "Afficher le prix (« à partir de »)", "default": true },
-    { "type": "color", "id": "price_bg", "label": "Couleur du macaron (pastel)", "default": "#f4e3d3" },
-    { "type": "color", "id": "price_text", "label": "Couleur du texte", "default": "#623c3c" },
+    { "type": "color", "id": "price_color", "label": "Couleur du prix", "default": "#ffffff" },
 
     { "type": "header", "content": "Mise en page" },
     { "type": "select", "id": "text_align", "label": "Alignement du titre", "options": [
@@ -153,7 +182,8 @@
       "settings": [
         { "type": "collection", "id": "collection", "label": "Collection" },
         { "type": "image_picker", "id": "image", "label": "Image (sinon image de la collection)" },
-        { "type": "text", "id": "label", "label": "Label (sinon titre de la collection)" }
+        { "type": "text", "id": "label", "label": "Label (sinon titre de la collection)" },
+        { "type": "text", "id": "badge_text", "label": "Texte du macaron (sinon valeur de la section)" }
       ]
     }
   ],
