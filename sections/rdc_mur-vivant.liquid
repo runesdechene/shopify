@@ -1,0 +1,337 @@
+{%- comment -%}
+  rdc_mur-vivant.liquid
+
+  Section « Le mouvement est vivant » — beat 5 (preuve sociale) de la home Boutique.
+
+  Carrousel mouvant de TOUTES les photos du mur communautaire (« ils nous portent »).
+  - Données : vue Supabase `movement_wall_photos` (anon, PostgREST direct, pas de RPC).
+  - 1 à 3 rangées (défaut 2) en sens opposés, défilement continu, pause au survol.
+  - Robuste au petit volume : duplication pour boucle sans couture même avec 4 photos.
+  - 0 photo OU config manquante → section masquée. prefers-reduced-motion → animation coupée.
+  - Clic sur une photo → fiche lightbox (nom, @insta, avis, bouton produit).
+  - Typo/couleurs via tokens du thème (--font-* / --color-*).
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = 'RdcMv-' | append: section.id
+  assign s = section.settings
+-%}
+
+<style>
+  #{{ uid }} {
+    --mv-accent: {{ s.accent_color }};
+    --mv-card-w: {{ s.card_width }}px;
+    padding-block: {{ s.padding_top }}px {{ s.padding_bottom }}px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #{{ uid }} .rdc-mv__head { text-align: center; max-width: 820px; margin: 0 auto; padding-inline: 24px; }
+  #{{ uid }} .rdc-mv__over {
+    font-family: var(--font-accent--family);
+    font-size: .82rem; letter-spacing: .34em; text-transform: uppercase;
+    color: var(--mv-accent); font-weight: 600; margin-bottom: 12px;
+  }
+  #{{ uid }} .rdc-mv__title {
+    font-family: var(--font-heading--family); font-weight: 400;
+    font-size: clamp(3rem, 7vw, 5.5rem); line-height: .92; letter-spacing: .02em;
+    color: var(--color-foreground-heading, var(--color-foreground)); margin: 0;
+  }
+  #{{ uid }} .rdc-mv__sub {
+    font-family: var(--font-body--family);
+    margin-top: 16px; font-size: 1.06rem; line-height: 1.55;
+    color: var(--color-foreground); opacity: .82;
+  }
+
+  /* Stats */
+  #{{ uid }} .rdc-mv__stats { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; margin: 30px auto 4px; }
+  #{{ uid }} .rdc-mv__stat { padding: 6px 30px; text-align: center; position: relative; }
+  #{{ uid }} .rdc-mv__stat + .rdc-mv__stat::before {
+    content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+    width: 1px; height: 38px; background: rgb(var(--color-foreground-rgb) / .18);
+  }
+  #{{ uid }} .rdc-mv__stat b {
+    display: block; font-family: var(--font-heading--family); font-weight: 400;
+    font-size: 2.5rem; line-height: 1; letter-spacing: .02em; color: var(--mv-accent);
+  }
+  #{{ uid }} .rdc-mv__stat span {
+    display: block; font-family: var(--font-accent--family);
+    font-size: .76rem; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--color-foreground); opacity: .7; margin-top: 6px;
+  }
+  #{{ uid }} .rdc-mv__stars { color: var(--mv-accent); font-size: 1.15rem; letter-spacing: 3px; line-height: 1; }
+
+  /* Marquee */
+  #{{ uid }} .rdc-mv__wall { margin-top: 36px; }
+  #{{ uid }} .rdc-mv__row {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+  }
+  #{{ uid }} .rdc-mv__row + .rdc-mv__row { margin-top: 14px; }
+  #{{ uid }} .rdc-mv__track { display: flex; gap: 14px; width: max-content; will-change: transform; }
+  #{{ uid }} .rdc-mv__row:hover .rdc-mv__track { animation-play-state: paused; }
+  @keyframes rdcMvScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  #{{ uid }} .rdc-mv__ph {
+    flex: 0 0 auto; width: var(--mv-card-w); aspect-ratio: 2/3;
+    border-radius: 14px; overflow: hidden; position: relative; background: #221a12;
+    cursor: pointer; box-shadow: 0 8px 22px rgb(var(--color-foreground-rgb) / .14);
+  }
+  #{{ uid }} .rdc-mv__ph img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
+  #{{ uid }} .rdc-mv__ph:hover img { transform: scale(1.06); }
+  #{{ uid }} .rdc-mv__name {
+    position: absolute; left: 0; right: 0; bottom: 0; padding: 26px 12px 10px;
+    background: linear-gradient(to top, rgba(0,0,0,.62), transparent);
+    color: #fff; font-family: var(--font-accent--family); letter-spacing: .04em;
+    font-size: .9rem; opacity: 0; transition: opacity .25s; pointer-events: none;
+  }
+  #{{ uid }} .rdc-mv__ph:hover .rdc-mv__name { opacity: 1; }
+
+  /* Pied / lien soumission */
+  #{{ uid }} .rdc-mv__foot { text-align: center; margin-top: 36px; padding-inline: 24px; }
+  #{{ uid }} .rdc-mv__foot p {
+    font-family: var(--font-fragment--family); font-style: italic;
+    font-size: 1.05rem; color: var(--color-foreground); opacity: .8; margin: 0 0 10px;
+  }
+  #{{ uid }} .rdc-mv__submit {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-accent--family); letter-spacing: .04em; font-size: 1.05rem;
+    color: var(--mv-accent); text-decoration: none; font-weight: 600;
+    border-bottom: 1.5px solid rgb(var(--color-foreground-rgb) / .25); padding-bottom: 2px;
+    transition: border-color .2s;
+  }
+  #{{ uid }} .rdc-mv__submit:hover { border-bottom-color: var(--mv-accent); }
+
+  /* Lightbox */
+  #{{ uid }} .rdc-mv__lb { display: none; position: fixed; inset: 0; z-index: 1000; padding: 24px;
+    background: rgba(20,12,6,.93); align-items: center; justify-content: center; }
+  #{{ uid }} .rdc-mv__lb.is-open { display: flex; }
+  #{{ uid }} .rdc-mv__lb-card { display: flex; max-width: 860px; width: 100%; max-height: 88vh;
+    background: var(--color-background); border-radius: 16px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.5); }
+  #{{ uid }} .rdc-mv__lb-img { flex: 0 0 48%; background: #221a12; }
+  #{{ uid }} .rdc-mv__lb-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #{{ uid }} .rdc-mv__lb-body { flex: 1; padding: 38px 34px; display: flex; flex-direction: column; }
+  #{{ uid }} .rdc-mv__lb-name { font-family: var(--font-heading--family); font-weight: 400; font-size: 2.5rem;
+    line-height: .95; letter-spacing: .02em; color: var(--color-foreground-heading, var(--color-foreground)); }
+  #{{ uid }} .rdc-mv__lb-ig { color: var(--mv-accent); text-decoration: none; font-family: var(--font-accent--family);
+    font-size: .95rem; margin-top: 6px; display: inline-block; }
+  #{{ uid }} .rdc-mv__lb-msg { margin-top: 20px; font-family: var(--font-fragment--family); font-style: italic;
+    font-size: 1.18rem; line-height: 1.6; color: var(--color-foreground); }
+  #{{ uid }} .rdc-mv__lb-prod { margin-top: auto; padding-top: 24px; }
+  #{{ uid }} .rdc-mv__lb-prod a { display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+    background: var(--color-primary, var(--mv-accent)); color: #fff; padding: 12px 18px; border-radius: 10px;
+    font-family: var(--font-accent--family); letter-spacing: .03em; font-size: .95rem; }
+  #{{ uid }} .rdc-mv__lb-close { position: absolute; top: 20px; right: 24px; background: none; border: none;
+    color: #fff; font-size: 2.2rem; line-height: 1; cursor: pointer; opacity: .8; }
+  #{{ uid }} .rdc-mv__lb-close:hover { opacity: 1; }
+
+  @media (max-width: 680px) {
+    #{{ uid }} .rdc-mv__lb-card { flex-direction: column; max-height: 92vh; overflow: auto; }
+    #{{ uid }} .rdc-mv__lb-img { flex: none; height: 50vh; }
+    #{{ uid }} .rdc-mv__stat { padding: 6px 18px; }
+    #{{ uid }} .rdc-mv__stat b { font-size: 2rem; }
+    #{{ uid }} { --mv-card-w: 150px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #{{ uid }} .rdc-mv__track { animation: none !important; transform: none !important; }
+    #{{ uid }} .rdc-mv__row { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  }
+</style>
+
+<div class="section-background color-{{ s.color_scheme }}"></div>
+<div id="{{ uid }}" class="section section--full-width color-{{ s.color_scheme }} rdc-mv" style="display:none;">
+
+  {%- if s.overline != blank or s.title != blank or s.subtitle != blank or s.show_stats -%}
+    <div class="rdc-mv__head">
+      {%- if s.overline != blank -%}<div class="rdc-mv__over">{{ s.overline }}</div>{%- endif -%}
+      {%- if s.title != blank -%}<h2 class="rdc-mv__title">{{ s.title }}</h2>{%- endif -%}
+      {%- if s.subtitle != blank -%}<p class="rdc-mv__sub">{{ s.subtitle }}</p>{%- endif -%}
+
+      {%- if s.show_stats -%}
+        <div class="rdc-mv__stats">
+          {%- if s.stat_rating_label != blank -%}
+            <div class="rdc-mv__stat">
+              {%- if s.show_stars -%}<div class="rdc-mv__stars">★★★★★</div>{%- endif -%}
+              <span>{{ s.stat_rating_label }}</span>
+            </div>
+          {%- endif -%}
+          {%- if s.stat2_value != blank -%}
+            <div class="rdc-mv__stat"><b>{{ s.stat2_value }}</b><span>{{ s.stat2_label }}</span></div>
+          {%- endif -%}
+          {%- if s.stat3_value != blank -%}
+            <div class="rdc-mv__stat"><b>{{ s.stat3_value }}</b><span>{{ s.stat3_label }}</span></div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="rdc-mv__wall" id="{{ uid }}-wall"></div>
+
+  {%- if s.submit_label != blank and s.submit_url != blank -%}
+    <div class="rdc-mv__foot">
+      {%- if s.submit_intro != blank -%}<p>{{ s.submit_intro }}</p>{%- endif -%}
+      <a class="rdc-mv__submit" href="{{ s.submit_url }}" target="_blank" rel="noopener">{{ s.submit_label }}</a>
+    </div>
+  {%- endif -%}
+
+  <div class="rdc-mv__lb" id="{{ uid }}-lb">
+    <button class="rdc-mv__lb-close" aria-label="Fermer">&times;</button>
+    <div class="rdc-mv__lb-card" id="{{ uid }}-lb-card"></div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    var UID = {{ uid | json }};
+    var URL_BASE = {{ s.supabase_url | json }};
+    var KEY = {{ s.supabase_anon_key | json }};
+    var ROWS = {{ s.rows }};
+    var SPEED = {{ s.speed }};
+    var CARD_W = {{ s.card_width }};
+    var MAX = {{ s.max_photos }};
+    var PROD_PREFIX = {{ '/products/' | json }};
+
+    var root = document.getElementById(UID);
+    var wall = document.getElementById(UID + '-wall');
+    var lb = document.getElementById(UID + '-lb');
+    var lbCard = document.getElementById(UID + '-lb-card');
+    var lbClose = lb.querySelector('.rdc-mv__lb-close');
+    if (!root || !wall) return;
+
+    if (!URL_BASE || !KEY) { root.style.display = 'none'; return; }
+
+    function esc(str) {
+      return String(str == null ? '' : str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    function rot(arr, n) { n = n % arr.length; return arr.slice(n).concat(arr.slice(0, n)); }
+
+    var photos = [];
+
+    /* --- Lightbox --- */
+    function openLightbox(p) {
+      var ig = p.submitter_instagram
+        ? '<a class="rdc-mv__lb-ig" href="https://instagram.com/' + esc(String(p.submitter_instagram).replace('@', '')) + '" target="_blank" rel="noopener">@' + esc(String(p.submitter_instagram).replace('@', '')) + '</a>'
+        : '';
+      var msg = p.message ? '<p class="rdc-mv__lb-msg">« ' + esc(p.message) + ' »</p>' : '';
+      var prod = p.shopify_product_handle
+        ? '<div class="rdc-mv__lb-prod"><a href="' + PROD_PREFIX + esc(p.shopify_product_handle) + '">' + esc(p.shopify_product_title || 'Voir le produit') + '</a></div>'
+        : '';
+      var name = p.submitter_name ? '<div class="rdc-mv__lb-name">' + esc(p.submitter_name) + '</div>' : '';
+      lbCard.innerHTML =
+        '<div class="rdc-mv__lb-img"><img src="' + esc(p.image_url) + '" alt="' + esc(p.submitter_name || '') + '"></div>' +
+        '<div class="rdc-mv__lb-body">' + name + ig + msg + prod + '</div>';
+      lb.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      lb.classList.remove('is-open');
+      lbCard.innerHTML = '';
+      document.body.style.overflow = '';
+    }
+    lbClose.addEventListener('click', closeLightbox);
+    lb.addEventListener('click', function(e) { if (e.target === lb) closeLightbox(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && lb.classList.contains('is-open')) closeLightbox(); });
+
+    function cardHtml(p, idx) {
+      var nm = p.submitter_name ? '<div class="rdc-mv__name">' + esc(p.submitter_name) + '</div>' : '';
+      return '<div class="rdc-mv__ph" data-idx="' + idx + '">' +
+        '<img src="' + esc(p.image_url) + '" alt="' + esc(p.submitter_name || 'Photo communautaire') + '" loading="lazy">' + nm + '</div>';
+    }
+
+    function buildRow(list, duration, reverse) {
+      /* Répète le jeu jusqu'à couvrir ~1.6× la largeur viewport pour une boucle sans couture. */
+      var unit = CARD_W + 14;
+      var target = Math.max(window.innerWidth * 1.6, unit * 6);
+      var repeats = Math.max(1, Math.ceil(target / (list.length * unit)));
+      var half = '';
+      for (var r = 0; r < repeats; r++) {
+        for (var i = 0; i < list.length; i++) { half += cardHtml(list[i], list[i]._idx); }
+      }
+      var style = 'animation: rdcMvScroll ' + duration + 's linear infinite;' + (reverse ? 'animation-direction:reverse;' : '');
+      return '<div class="rdc-mv__row"><div class="rdc-mv__track" style="' + style + '">' + half + half + '</div></div>';
+    }
+
+    function render() {
+      photos.forEach(function(p, i) { p._idx = i; });
+      var html = '';
+      for (var r = 0; r < ROWS; r++) {
+        var list = rot(photos, (r * Math.ceil(photos.length / Math.max(ROWS, 1))) % photos.length || 0);
+        html += buildRow(list, SPEED + r * 6, r % 2 === 1);
+      }
+      wall.innerHTML = html;
+      wall.addEventListener('click', function(e) {
+        var c = e.target.closest('.rdc-mv__ph');
+        if (!c) return;
+        var p = photos[parseInt(c.getAttribute('data-idx'), 10)];
+        if (p) openLightbox(p);
+      });
+    }
+
+    var endpoint = URL_BASE.replace(/\/$/, '') +
+      '/rest/v1/movement_wall_photos?select=image_url,submitter_name,submitter_instagram,shopify_product_handle,shopify_product_title,message,created_at&order=created_at.desc&limit=' + MAX;
+
+    fetch(endpoint, { headers: { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY } })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        photos = (data || []).filter(function(p) { return p && p.image_url; });
+        if (!photos.length) { root.style.display = 'none'; return; }
+        root.style.display = '';
+        render();
+      })
+      .catch(function(err) {
+        console.error('[rdc-mur-vivant]', err);
+        root.style.display = 'none';
+      });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "RDC — Le mouvement est vivant",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    { "type": "header", "content": "En-tête" },
+    { "type": "text", "id": "overline", "label": "Surtitre", "default": "Ils nous portent" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Le mouvement est vivant" },
+    { "type": "textarea", "id": "subtitle", "label": "Sous-titre", "default": "Des aventuriers, partout en France, qui portent leur Fragment d'Histoire. Vous êtes le mouvement." },
+
+    { "type": "header", "content": "Barre de stats" },
+    { "type": "checkbox", "id": "show_stats", "label": "Afficher les stats", "default": true },
+    { "type": "checkbox", "id": "show_stars", "label": "Afficher les étoiles (note)", "default": true },
+    { "type": "text", "id": "stat_rating_label", "label": "Stat 1 — texte note", "default": "4,6/5 de moyenne" },
+    { "type": "text", "id": "stat2_value", "label": "Stat 2 — chiffre", "default": "+5 000" },
+    { "type": "text", "id": "stat2_label", "label": "Stat 2 — légende", "default": "clients conquis" },
+    { "type": "text", "id": "stat3_value", "label": "Stat 3 — chiffre", "default": "+35" },
+    { "type": "text", "id": "stat3_label", "label": "Stat 3 — légende", "default": "festivals en France" },
+
+    { "type": "header", "content": "Carrousel" },
+    { "type": "range", "id": "rows", "label": "Nombre de rangées", "min": 1, "max": 3, "step": 1, "default": 2 },
+    { "type": "range", "id": "speed", "label": "Durée d'un cycle (s)", "info": "Plus grand = plus lent", "min": 20, "max": 120, "step": 1, "default": 58 },
+    { "type": "range", "id": "card_width", "label": "Largeur des cartes (px)", "min": 120, "max": 260, "step": 4, "default": 188 },
+    { "type": "range", "id": "max_photos", "label": "Nombre max de photos chargées", "min": 10, "max": 100, "step": 5, "default": 40 },
+
+    { "type": "header", "content": "Lien de soumission" },
+    { "type": "text", "id": "submit_intro", "label": "Intro", "default": "Toi aussi tu portes l'Histoire ?" },
+    { "type": "text", "id": "submit_label", "label": "Libellé du lien", "default": "Partage ta photo sur le mur →" },
+    { "type": "url", "id": "submit_url", "label": "Lien", "default": "https://hub.runesdechene.com/soumettre-contenu" },
+
+    { "type": "header", "content": "Données (Supabase)" },
+    { "type": "text", "id": "supabase_url", "label": "URL Supabase", "info": "Ex : https://xxxxx.supabase.co" },
+    { "type": "text", "id": "supabase_anon_key", "label": "Clé Supabase (anon)" },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Schéma de couleur", "default": "scheme-1" },
+    { "type": "color", "id": "accent_color", "label": "Couleur d'accent (doré)", "default": "#c98a3a" },
+    { "type": "range", "id": "padding_top", "label": "Marge haut (px)", "min": 0, "max": 160, "step": 4, "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Marge bas (px)", "min": 0, "max": 160, "step": 4, "default": 64 }
+  ],
+  "presets": [
+    { "name": "RDC — Le mouvement est vivant" }
+  ]
+}
+{% endschema %}
