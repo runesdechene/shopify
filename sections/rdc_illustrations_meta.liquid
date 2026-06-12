@@ -62,11 +62,21 @@
   #{{ uid }} .rdc-ill__image img{width:100%;height:100%;object-fit:contain;display:block;opacity:.8;transition:transform .6s ease, opacity .3s ease}
   #{{ uid }} .rdc-ill__card:hover .rdc-ill__image img{opacity:1}
   {% if section.settings.hover_zoom %}#{{ uid }} .rdc-ill__card:hover .rdc-ill__image img{transform:scale(1.05)}{% endif %}
-  #{{ uid }} .rdc-ill__new{position:absolute;top:12px;left:12px;z-index:2;display:inline-flex;align-items:center;gap:5px;
-    padding:5px 11px 5px 9px;border-radius:999px;font-family:var(--font-body--family);font-weight:700;
-    font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;line-height:1;
-    box-shadow:0 3px 12px rgba(0,0,0,.22)}
-  #{{ uid }} .rdc-ill__flame{width:13px;height:13px;flex:0 0 auto}
+  #{{ uid }} .rdc-ill__new{position:absolute;top:13px;left:13px;z-index:2;width:62px;height:62px;border-radius:50%;
+    background:var(--new-bg,#833434);color:var(--new-text,#f4eee1);display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:1px;border:2px solid var(--new-ring,#f4d694);
+    box-shadow:0 4px 14px rgba(0,0,0,.28);outline:3px solid var(--new-bg,#833434)}
+  #{{ uid }} .rdc-ill__new-ring{position:absolute;inset:5px;border-radius:50%;border:1px dashed var(--new-text,#f4eee1);
+    opacity:.5;pointer-events:none}
+  #{{ uid }} .rdc-ill__flame{width:16px;height:16px;flex:0 0 auto;margin-bottom:0}
+  #{{ uid }} .rdc-ill__new-label{font-family:var(--font-heading--family, sans-serif);font-size:1.05rem;
+    line-height:.8;letter-spacing:.05em;text-transform:uppercase}
+
+  @media (max-width:749px){
+    #{{ uid }} .rdc-ill__new{width:52px;height:52px;top:10px;left:10px}
+    #{{ uid }} .rdc-ill__flame{width:13px;height:13px}
+    #{{ uid }} .rdc-ill__new-label{font-size:.9rem}
+  }
   #{{ uid }} .rdc-ill__content{padding-top:14px;text-align:center}
   #{{ uid }} .rdc-ill__title{font-family:var(--font-heading--family, sans-serif);text-transform:uppercase;
     font-size:clamp(1.3rem,1.9vw,1.7rem);letter-spacing:.04em;line-height:1.05;
@@ -132,9 +142,10 @@
           <a class="rdc-ill__card" href="{{ collection.url | default: '#' }}" aria-label="{{ title | escape }}">
             <div class="rdc-ill__image">
               {%- if section.settings.show_new_badge and is_new -%}
-                <span class="rdc-ill__new" style="background:{{ section.settings.new_bg }};color:{{ section.settings.new_text }}">
+                <span class="rdc-ill__new" style="--new-bg:{{ section.settings.new_bg }};--new-text:{{ section.settings.new_text }};--new-ring:{{ section.settings.new_ring }}">
+                  <span class="rdc-ill__new-ring" aria-hidden="true"></span>
                   <svg class="rdc-ill__flame" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2c.5 3-1.6 4.3-2.9 5.8C7.6 9.5 7 11 7 12.7 7 16.2 9.2 19 12 19s5-2.8 5-6.3c0-2.4-1.2-4.2-2.4-5.6C13.9 9 13.4 9.6 12.6 9.3c-.9-.3-.8-1.5-.6-2.6.2-1.3.3-2.9 0-4.7Zm.2 11.2c.3 1.3-.4 1.8-1 1.9-.7.1-1.5-.3-1.6-1.3-.1-.8.4-1.4.7-1.9.4.5 1.6.5 1.9 1.3Z"/></svg>
-                  {{ section.settings.new_label }}
+                  <b class="rdc-ill__new-label">{{ section.settings.new_label }}</b>
                 </span>
               {%- endif -%}
               {%- if img != blank -%}
@@ -209,10 +220,11 @@
 
     { "type": "header", "content": "Macaron nouveauté" },
     { "type": "checkbox", "id": "show_new_badge", "label": "Afficher « Nouveauté » si récent", "default": true },
-    { "type": "text", "id": "new_label", "label": "Texte du macaron", "default": "Nouveauté" },
+    { "type": "text", "id": "new_label", "label": "Texte du macaron (court, ex. New)", "default": "New" },
     { "type": "range", "id": "new_months", "label": "Considérer comme nouveau pendant (mois)", "unit": "mo", "min": 1, "max": 12, "step": 1, "default": 3 },
     { "type": "color", "id": "new_bg", "label": "Couleur du macaron", "default": "#833434" },
     { "type": "color", "id": "new_text", "label": "Couleur du texte", "default": "#f4eee1" },
+    { "type": "color", "id": "new_ring", "label": "Couleur de l'anneau", "default": "#f4d694" },
 
     { "type": "header", "content": "Mise en page" },
     { "type": "select", "id": "section_width", "label": "Largeur", "options": [
