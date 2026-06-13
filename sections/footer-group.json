@@ -527,7 +527,7 @@
                         "facebook_url": "https://facebook.com/runesdechene",
                         "instagram_url": "https://instagram.com/runesdechene",
                         "youtube_url": "",
-                        "tiktok_url": "https://tiktok.com/@runesdechene",
+                        "tiktok_url": "",
                         "twitter_url": "",
                         "threads_url": "",
                         "linkedin_url": "",
@@ -674,10 +674,93 @@
                         "padding-inline-end": 0
                       },
                       "blocks": {}
+                    },
+                    "text_AtkKPX": {
+                      "type": "text",
+                      "name": "t:names.text",
+                      "settings": {
+                        "text": "<p>Runes de Chêne est une marque française qui se bat pour rendre au monde<br/>sa mémoire & son souffle. Chacun de nos articles est une création originale appelée <em><strong>Fragment d'Histoire. </strong></em>Ce sont des échos du passé qui méritent d'être portés. Notre application mobile, quant à elle, <strong>rassemble la plus grosse communauté francophone jamais fédérée </strong>sur l'Histoire, l'Aventure & la Nature.</p><p><strong>Apprenez. Incarnez. Explorez !</strong></p>",
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "custom",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "color": "var(--color-foreground-heading)",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 30,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    },
+                    "text_FWEkiw": {
+                      "type": "text",
+                      "name": "t:names.heading",
+                      "settings": {
+                        "text": "<h2>Partenaires & amis</h2>",
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "h4",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "color": "var(--color-foreground-heading)",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    },
+                    "group_partenaire_gtThXC": {
+                      "type": "group-partenaire",
+                      "name": "Groupe partenaires",
+                      "settings": {
+                        "image_size": 50,
+                        "gap": 4,
+                        "alignment": "left",
+                        "single_line": false,
+                        "mobile_layout": "grid",
+                        "images_per_row_mobile": 5,
+                        "grayscale": true,
+                        "image_1": "shopify://shop_images/skali_5b793a46-2d92-47a7-ba6f-c8fb86849ef3.webp",
+                        "link_1": "https://skali.ch",
+                        "image_2": "shopify://shop_images/logo-2_-_Copie.png",
+                        "link_2": "https://www.labuchescandinave.fr",
+                        "image_3": "shopify://shop_images/Bilskirnig_Logo_Details.png",
+                        "link_3": "https://bilskirnir.fr",
+                        "image_4": "shopify://shop_images/Logo_mug_-_Copie.png",
+                        "link_4": "https://www.lafabriqueauxdragons.com",
+                        "image_5": "shopify://shop_images/crom_LD_4c781005-a3ba-4c49-a6f1-758c8a3009bb.png",
+                        "link_5": "https://www.hydromel-crom.fr",
+                        "image_6": "shopify://shop_images/0._CITE_MILLE_DRAGONS_-_RECTO_DTG-VR2.png",
+                        "link_6": "https://festyggdrasil.fr",
+                        "link_7": "",
+                        "link_8": ""
+                      },
+                      "blocks": {}
                     }
                   },
                   "block_order": [
-                    "image_jh4m8K"
+                    "image_jh4m8K",
+                    "text_AtkKPX",
+                    "text_FWEkiw",
+                    "group_partenaire_gtThXC"
                   ]
                 },
                 "group_nHTEEc": {
