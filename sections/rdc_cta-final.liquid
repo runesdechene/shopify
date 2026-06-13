@@ -1,9 +1,10 @@
 {%- comment -%}
-  rdc_cta-final.liquid — CTA de clôture de la home, en DIPTYQUE CONTENU.
+  rdc_cta-final.liquid — CTA de clôture de la home.
 
-  Rectangle à coins arrondis (largeur de page) : panneau texte parchemin d'un
-  côté, photo de shooting animée (ken burns) de l'autre. Charte RDC : titre
+  Bande cinématique : photo de shooting en fond floutée/assombrie (ken burns),
+  et TITRE rempli par la même photo nette (image-in-text). Charte RDC : titre
   Bebas (--font-heading), ligne Alegreya (--font-fragment), bouton doré.
+  Rectangle arrondi contenu sur desktop, full-bleed sur mobile.
 
   Spec : docs/superpowers/specs/2026-06-13-rdc-cta-final-diptyque-design.md
 {%- endcomment -%}
@@ -11,16 +12,12 @@
 {%- liquid
   assign uid = 'RdcCta-' | append: section.id
   assign s = section.settings
-
-  # Le panneau texte n'est rendu que si au moins un champ texte est rempli.
-  assign has_text = false
-  if s.overline != blank or s.title != blank or s.subtitle != blank or s.button_label != blank
-    assign has_text = true
-  endif
-
-  assign flex_dir = 'row'
-  if s.image_side == 'left'
-    assign flex_dir = 'row-reverse'
+  assign img_url   = s.image | image_url: width: 2000
+  assign img_url_m = s.image_mobile | image_url: width: 1100
+  assign bg_bright = s.bg_brightness | default: 45 | divided_by: 100.0
+  assign align_items = 'center'
+  if s.content_align == 'left'
+    assign align_items = 'flex-start'
   endif
 -%}
 
@@ -28,118 +25,94 @@
   #{{ uid }} { padding-block: {{ s.padding_top }}px {{ s.padding_bottom }}px; }
 
   #{{ uid }} .rdc-ctaf__panel {
+    position: relative; min-height: {{ s.min_height }}px;
+    border-radius: {{ s.corner_radius }}px; overflow: hidden; background: #1c140d;
+    box-shadow: 0 30px 60px -28px rgba(60,40,20,.5), 0 0 0 1px rgb(var(--color-foreground-rgb, 60 40 20) / .12);
+    {% if s.image != blank %}--rdc-img: url('{{ img_url }}');{% endif %}
     display: flex;
-    flex-direction: {{ flex_dir }};
-    min-height: {{ s.image_min_height }}px;
-    border-radius: {{ s.corner_radius }}px;
-    overflow: hidden;
-    box-shadow: 0 30px 60px -28px rgba(60,40,20,.45), 0 0 0 1px rgb(var(--color-foreground-rgb) / .10);
   }
 
-  /* Panneau texte (parchemin via le schéma de couleur) */
-  #{{ uid }} .rdc-ctaf__text {
-    flex: 0 0 {{ s.text_panel_width }}%;
-    background:
-      radial-gradient(120% 90% at 25% 20%, rgb(255 255 255 / .30), transparent 60%),
-      var(--color-background);
-    display: flex; flex-direction: column; justify-content: center;
-    gap: 18px; padding: clamp(28px, 4vw, 56px); box-sizing: border-box;
+  /* Fond : photo floutée + assombrie, ken burns */
+  #{{ uid }} .rdc-ctaf__bg {
+    position: absolute; inset: 0; z-index: 0;
+    {% if s.image != blank %}background-image: var(--rdc-img);{% else %}background: linear-gradient(135deg, #55584a, #2b2118);{% endif %}
+    background-size: cover; background-position: center;
+    filter: blur({{ s.bg_blur }}px) brightness({{ bg_bright }}) saturate(.72) sepia(.10);
+    transform: scale(1.06); transform-origin: center;
+    {% if s.animate and s.image != blank %}animation: rdcCtaKb 20s ease-in-out infinite alternate;{% endif %}
   }
-  #{{ uid }} .rdc-ctaf__over {
-    font-family: var(--font-body--family); font-weight: 700; font-size: .76rem;
-    letter-spacing: .3em; text-transform: uppercase; color: {{ s.accent_color }}; margin: 0;
+  #{{ uid }} .rdc-ctaf__vign { position: absolute; inset: 0; z-index: 1;
+    background: radial-gradient(120% 95% at 50% 42%, rgba(0,0,0,.10), rgba(10,7,4,.60)); }
+
+  #{{ uid }} .rdc-ctaf__ct {
+    position: relative; z-index: 2; width: 100%;
+    display: flex; flex-direction: column; justify-content: center; align-items: {{ align_items }};
+    gap: 20px; padding: clamp(40px, 6vw, 76px) clamp(24px, 7vw, 90px);
+    text-align: {{ s.content_align }}; box-sizing: border-box;
   }
+
+  #{{ uid }} .rdc-ctaf__over { font-family: var(--font-body--family); font-weight: 700; font-size: .8rem;
+    letter-spacing: .3em; text-transform: uppercase; color: {{ s.accent_color }}; margin: 0; }
+
   #{{ uid }} .rdc-ctaf__title {
     font-family: var(--font-heading--family, sans-serif);
-    font-size: clamp(2.5rem, 5vw, 4.9rem); line-height: .84; letter-spacing: .02em;
-    color: var(--color-foreground-heading, var(--color-foreground)); margin: 0;
+    font-size: clamp(3rem, 8vw, 9.4rem); line-height: .8; letter-spacing: .015em;
+    margin: 0; color: {{ s.title_color }};
   }
-  #{{ uid }} .rdc-ctaf__sub {
-    font-family: var(--font-fragment--family, Georgia, serif); font-style: italic;
-    font-size: 1.06rem; line-height: 1.45; color: var(--color-foreground); opacity: .9;
-    margin: 0; max-width: 32ch;
+  {% if s.image != blank %}
+  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    #{{ uid }} .rdc-ctaf__title {
+      background-image: var(--rdc-img); background-size: cover; background-position: center;
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+      filter: contrast(1.12) brightness(1.1)
+        drop-shadow(0 2px {{ s.text_shadow }}px rgba(0,0,0,.55)) drop-shadow(0 0 1px rgba(0,0,0,.6));
+      {% if s.animate %}animation: rdcCtaPan 13s ease-in-out infinite alternate;{% endif %}
+    }
   }
+  {% endif %}
+
+  #{{ uid }} .rdc-ctaf__sub { font-family: var(--font-fragment--family, Georgia, serif); font-style: italic;
+    font-size: 1.08rem; line-height: 1.45; color: #e7dcc6; margin: 0; max-width: 46ch; }
   #{{ uid }} .rdc-ctaf__sub p { margin: 0; }
 
   #{{ uid }} .rdc-ctaf__btn {
-    align-self: flex-start; margin-top: 4px; display: inline-flex; align-items: center; gap: 9px;
+    margin-top: 6px; display: inline-flex; align-items: center; gap: 9px;
     font-family: var(--font-body--family); font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-    font-size: .92rem; padding: 14px 28px; border-radius: 12px; text-decoration: none;
-    background: {{ s.button_bg }}; color: {{ s.button_text }}; border: 1px solid rgb(var(--color-foreground-rgb) / .85);
-    box-shadow: 0 8px 20px rgba(0,0,0,.18); transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+    font-size: .92rem; padding: 15px 30px; border-radius: 12px; text-decoration: none;
+    background: {{ s.button_bg }}; color: {{ s.button_text }}; border: 1px solid rgba(0,0,0,.5);
+    box-shadow: 0 8px 22px rgba(0,0,0,.3); transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
   }
-  #{{ uid }} .rdc-ctaf__btn:hover {
-    transform: translateY(-2px); filter: brightness(.97);
-    box-shadow: 0 10px 28px rgb({{ s.button_bg | color_extract: 'red' }} {{ s.button_bg | color_extract: 'green' }} {{ s.button_bg | color_extract: 'blue' }} / .55);
-  }
+  #{{ uid }} .rdc-ctaf__btn:hover { transform: translateY(-2px); filter: brightness(.97);
+    box-shadow: 0 10px 30px rgba(244,214,148,.55); }
 
-  /* Colonne photo + ken burns (jamais hors du cadre : overflow hidden + scale >1) */
-  #{{ uid }} .rdc-ctaf__media { flex: 1; position: relative; overflow: hidden; min-width: 0; background: #2b2118; }
-  #{{ uid }} .rdc-ctaf__pic { position: absolute; inset: 0; display: block; }
-  #{{ uid }} .rdc-ctaf__img {
-    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;
-    transform-origin: center;
-    {% if s.animate %}animation: rdcCtaKenBurns 18s ease-in-out infinite alternate;{% endif %}
-  }
-  #{{ uid }} .rdc-ctaf__media::after { content: ''; position: absolute; inset: 0;
-    box-shadow: inset 26px 0 44px -22px rgba(40,28,16,.45); pointer-events: none; }
-  #{{ uid }} .rdc-ctaf__ph { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-    text-align: center; padding: 24px; color: #e9dcc4; font-family: var(--font-body--family); font-size: .85rem;
-    background: linear-gradient(135deg, #55584a, #2b2d23); }
-  #{{ uid }} .rdc-ctaf__ph svg { width: 60%; opacity: .5; }
-
-  @keyframes rdcCtaKenBurns {
-    from { transform: scale(1.03); }
-    to   { transform: scale(1.12); }
-  }
+  @keyframes rdcCtaKb { from { transform: scale(1.06); } to { transform: scale(1.18); } }
+  @keyframes rdcCtaPan { 0% { background-position: 32% 48%; } 100% { background-position: 68% 52%; } }
   @media (prefers-reduced-motion: reduce) {
-    #{{ uid }} .rdc-ctaf__img { animation: none; }
+    #{{ uid }} .rdc-ctaf__bg, #{{ uid }} .rdc-ctaf__title { animation: none; }
   }
 
-  /* Mobile : full-bleed bord à bord, sans arrondi / ombre / filet. Empilé photo en haut. */
+  /* Mobile : full-bleed bord à bord, sans arrondi / ombre */
   @media (max-width: 749px) {
-    #{{ uid }} .rdc-ctaf__panel { flex-direction: column-reverse; min-height: 0; border-radius: 0; box-shadow: none; }
-    #{{ uid }} .rdc-ctaf__text { flex: 1 1 auto; padding: 30px 24px 34px; }
-    #{{ uid }} .rdc-ctaf__media { flex: 0 0 {{ s.image_height_mobile }}px; height: {{ s.image_height_mobile }}px; }
-    #{{ uid }} .rdc-ctaf__media::after { display: none; }
+    #{{ uid }} .rdc-ctaf__panel { border-radius: 0; box-shadow: none; min-height: {{ s.height_mobile }}px;
+      {% if s.image_mobile != blank %}--rdc-img: url('{{ img_url_m }}');{% endif %} }
+    #{{ uid }} .rdc-ctaf__ct { padding: clamp(40px, 12vw, 64px) 26px; }
+    #{{ uid }} .rdc-ctaf__title { font-size: clamp(3.2rem, 17vw, 6rem); }
   }
 </style>
 
 {%- if s.anchor_id != blank -%}<span id="{{ s.anchor_id }}" aria-hidden="true" style="display:block;scroll-margin-top:var(--header-group-height,90px)"></span>{%- endif -%}
-<div id="{{ uid }}" class="section section--page-width section--mobile-full-width rdc-ctaf">
-  <div class="rdc-ctaf__panel color-{{ s.color_scheme }}">
-
-    {%- if has_text -%}
-      <div class="rdc-ctaf__text">
-        {%- if s.overline != blank -%}<p class="rdc-ctaf__over">{{ s.overline }}</p>{%- endif -%}
-        {%- if s.title != blank -%}<h2 class="rdc-ctaf__title">{{ s.title }}</h2>{%- endif -%}
-        {%- if s.subtitle != blank -%}<div class="rdc-ctaf__sub">{{ s.subtitle }}</div>{%- endif -%}
-        {%- if s.button_label != blank -%}
-          <a class="rdc-ctaf__btn" href="{{ s.button_url | default: '#' }}">{{ s.button_label }} →</a>
-        {%- endif -%}
-      </div>
-    {%- endif -%}
-
-    <div class="rdc-ctaf__media">
-      {%- if s.image != blank -%}
-        <picture class="rdc-ctaf__pic">
-          {%- if s.image_mobile != blank -%}
-            <source media="(max-width: 749px)" srcset="{{ s.image_mobile | image_url: width: 900 }} 900w, {{ s.image_mobile | image_url: width: 1200 }} 1200w" sizes="100vw">
-          {%- endif -%}
-          <img
-            class="rdc-ctaf__img"
-            src="{{ s.image | image_url: width: 1400 }}"
-            srcset="{{ s.image | image_url: width: 800 }} 800w, {{ s.image | image_url: width: 1200 }} 1200w, {{ s.image | image_url: width: 1600 }} 1600w"
-            sizes="(min-width: 750px) 56vw, 100vw"
-            alt="{{ s.image.alt | default: s.title | escape }}"
-            loading="lazy" decoding="async"
-            width="{{ s.image.width }}" height="{{ s.image.height }}">
-        </picture>
-      {%- else -%}
-        <div class="rdc-ctaf__ph">{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+<div id="{{ uid }}" class="section section--page-width section--mobile-full-width color-{{ s.color_scheme }} rdc-ctaf">
+  <div class="rdc-ctaf__panel">
+    <div class="rdc-ctaf__bg" aria-hidden="true"></div>
+    <div class="rdc-ctaf__vign" aria-hidden="true"></div>
+    <div class="rdc-ctaf__ct">
+      {%- if s.overline != blank -%}<p class="rdc-ctaf__over">{{ s.overline }}</p>{%- endif -%}
+      {%- if s.title != blank -%}<h2 class="rdc-ctaf__title">{{ s.title }}</h2>{%- endif -%}
+      {%- if s.subtitle != blank -%}<div class="rdc-ctaf__sub">{{ s.subtitle }}</div>{%- endif -%}
+      {%- if s.button_label != blank -%}
+        <a class="rdc-ctaf__btn" href="{{ s.button_url | default: '#' }}">{{ s.button_label }} →</a>
       {%- endif -%}
     </div>
-
   </div>
 </div>
 
@@ -151,28 +124,33 @@
   "disabled_on": { "groups": ["header", "footer"] },
   "settings": [
     { "type": "header", "content": "Contenu" },
-    { "type": "inline_richtext", "id": "overline", "label": "Sur-titre", "default": "Nos créations" },
-    { "type": "inline_richtext", "id": "title", "label": "Titre", "default": "Un Fragment pour chaque âme" },
-    { "type": "richtext", "id": "subtitle", "label": "Ligne d'accent", "default": "<p>Chaque article est une création originale — un écho du passé, à porter.</p>" },
-    { "type": "text", "id": "button_label", "label": "Libellé du bouton", "default": "Découvrir la boutique" },
+    { "type": "inline_richtext", "id": "overline", "label": "Sur-titre", "default": "Le voyage continue" },
+    { "type": "inline_richtext", "id": "title", "label": "Titre (rempli par la photo)", "default": "Porte ton Fragment d'Histoire" },
+    { "type": "richtext", "id": "subtitle", "label": "Ligne d'accent", "default": "<p>Des créations à porter, un monde à explorer.</p>" },
+    { "type": "text", "id": "button_label", "label": "Libellé du bouton", "default": "Explorer la boutique" },
     { "type": "url", "id": "button_url", "label": "Lien du bouton", "info": "Choisis la Page Boutique ou une Collection." },
+    { "type": "select", "id": "content_align", "label": "Alignement", "options": [
+      { "value": "center", "label": "Centré" }, { "value": "left", "label": "Gauche" } ], "default": "center" },
 
     { "type": "header", "content": "Photo" },
-    { "type": "image_picker", "id": "image", "label": "Image (bureau)" },
+    { "type": "image_picker", "id": "image", "label": "Image (bureau)", "info": "Sert à la fois de fond flouté et de remplissage du titre." },
     { "type": "image_picker", "id": "image_mobile", "label": "Image (mobile)", "info": "Si vide, l'image bureau est utilisée." },
-    { "type": "select", "id": "image_side", "label": "Côté de la photo (bureau)", "options": [
-      { "value": "right", "label": "Droite" }, { "value": "left", "label": "Gauche" } ], "default": "right" },
-    { "type": "checkbox", "id": "animate", "label": "Animation (zoom lent)", "info": "Désactivée si l'utilisateur préfère réduire les animations.", "default": true },
+    { "type": "checkbox", "id": "animate", "label": "Animation (zoom lent + pan)", "info": "Désactivée si l'utilisateur préfère réduire les animations.", "default": true },
+
+    { "type": "header", "content": "Rendu du fond" },
+    { "type": "range", "id": "bg_blur", "label": "Flou du fond", "unit": "px", "min": 0, "max": 30, "step": 1, "default": 9 },
+    { "type": "range", "id": "bg_brightness", "label": "Luminosité du fond", "unit": "%", "min": 20, "max": 90, "step": 5, "default": 45 },
+    { "type": "range", "id": "text_shadow", "label": "Ombre du titre (lisibilité)", "unit": "px", "min": 0, "max": 12, "step": 1, "default": 4 },
 
     { "type": "header", "content": "Mise en page" },
-    { "type": "range", "id": "text_panel_width", "label": "Largeur du panneau texte", "unit": "%", "min": 30, "max": 60, "step": 1, "default": 44 },
-    { "type": "range", "id": "corner_radius", "label": "Arrondi des coins", "unit": "px", "min": 0, "max": 40, "step": 1, "default": 24 },
-    { "type": "range", "id": "image_min_height", "label": "Hauteur (bureau)", "unit": "px", "min": 320, "max": 640, "step": 10, "default": 440 },
-    { "type": "range", "id": "image_height_mobile", "label": "Hauteur photo (mobile)", "unit": "px", "min": 160, "max": 420, "step": 10, "default": 240 },
+    { "type": "range", "id": "corner_radius", "label": "Arrondi des coins (bureau)", "unit": "px", "min": 0, "max": 40, "step": 1, "default": 24 },
+    { "type": "range", "id": "min_height", "label": "Hauteur (bureau)", "unit": "px", "min": 360, "max": 760, "step": 10, "default": 520 },
+    { "type": "range", "id": "height_mobile", "label": "Hauteur (mobile)", "unit": "px", "min": 280, "max": 640, "step": 10, "default": 460 },
 
     { "type": "header", "content": "Couleurs" },
     { "type": "color_scheme", "id": "color_scheme", "label": "Schéma de couleur", "default": "scheme-1" },
-    { "type": "color", "id": "accent_color", "label": "Couleur du sur-titre", "default": "#833434" },
+    { "type": "color", "id": "accent_color", "label": "Couleur du sur-titre", "default": "#f4d694" },
+    { "type": "color", "id": "title_color", "label": "Couleur du titre (repli sans image)", "default": "#fcf9f1" },
     { "type": "color", "id": "button_bg", "label": "Fond du bouton", "default": "#f4d694" },
     { "type": "color", "id": "button_text", "label": "Texte du bouton", "default": "#623c3c" },
 
