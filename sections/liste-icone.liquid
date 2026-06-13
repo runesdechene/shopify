@@ -1,7 +1,52 @@
+{%- liquid
+  assign ov_alpha     = section.settings.bg_overlay_opacity | default: 40 | divided_by: 100.0
+  assign overlay      = section.settings.bg_overlay_color | default: '#000000' | color_modify: 'alpha', ov_alpha
+  assign slant_top    = section.settings.slant_top | default: 0
+  assign slant_bottom = section.settings.slant_bottom | default: 0
+-%}
 {%- style -%}
   .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top }}px;
-    padding-bottom: {{ section.settings.padding_bottom }}px;
+    /* On ajoute l'inclinaison au padding pour que le contenu ne tombe pas dans le biseau */
+    padding-top: calc({{ section.settings.padding_top }}px + {{ slant_top }}px);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px + {{ slant_bottom }}px);
+  }
+
+  /* --- Bande de section : inclinaison haut/bas via clip-path --- */
+  .rdc-reassurance-{{ section.id }} {
+    position: relative;
+    {% if slant_top > 0 or slant_bottom > 0 %}
+      {% if section.settings.slant_direction == 'left' %}
+      clip-path: polygon(0 0, 100% {{ slant_top }}px, 100% 100%, 0 calc(100% - {{ slant_bottom }}px));
+      {% else %}
+      clip-path: polygon(0 {{ slant_top }}px, 100% 0, 100% calc(100% - {{ slant_bottom }}px), 0 100%);
+      {% endif %}
+    {% endif %}
+  }
+
+  {% if section.settings.bg_image != blank %}
+  .rdc-bg-{{ section.id }} {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: linear-gradient({{ overlay }}, {{ overlay }}), url('{{ section.settings.bg_image | image_url: width: 2400 }}');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+    {% if section.settings.bg_image_mobile != blank %}
+    @media screen and (max-width: 749px) {
+      .rdc-bg-{{ section.id }} {
+        background-image: linear-gradient({{ overlay }}, {{ overlay }}), url('{{ section.settings.bg_image_mobile | image_url: width: 1200 }}');
+      }
+    }
+    {% endif %}
+  {% endif %}
+
+  /* Contenu au-dessus de l'image de fond */
+  .rdc-header-{{ section.id }},
+  .rdc-grid-{{ section.id }} {
+    position: relative;
+    z-index: 1;
   }
 
   .rdc-grid-{{ section.id }} {
@@ -113,7 +158,11 @@
   }
 {%- endstyle -%}
 
-<div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+<div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding rdc-reassurance-{{ section.id }}">
+
+  {%- if section.settings.bg_image != blank -%}
+    <div class="rdc-bg-{{ section.id }}" aria-hidden="true"></div>
+  {%- endif -%}
 
   {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
     <div class="rdc-header-{{ section.id }}">
@@ -238,6 +287,17 @@ grid.scrollTo({
       ], "default": "center" },
     { "type": "range", "id": "heading_size", "min": 16, "max": 64, "step": 1, "unit": "px", "label": "Taille du titre", "default": 32 },
     { "type": "range", "id": "header_gap", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Espace sous le titre", "default": 32 },
+    { "type": "header", "content": "Image de fond & inclinaison" },
+    { "type": "image_picker", "id": "bg_image", "label": "Image de fond (bureau)" },
+    { "type": "image_picker", "id": "bg_image_mobile", "label": "Image de fond (mobile, optionnel)" },
+    { "type": "color", "id": "bg_overlay_color", "label": "Couleur du voile", "default": "#000000" },
+    { "type": "range", "id": "bg_overlay_opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "label": "Opacité du voile", "info": "Assombrit l'image pour garder le texte lisible", "default": 40 },
+    { "type": "range", "id": "slant_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Inclinaison du haut", "default": 0 },
+    { "type": "range", "id": "slant_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Inclinaison du bas", "default": 0 },
+    { "type": "select", "id": "slant_direction", "label": "Sens de l'inclinaison", "options": [
+        { "value": "right", "label": "Montant vers la droite" },
+        { "value": "left", "label": "Montant vers la gauche" }
+      ], "default": "right" },
     { "type": "select", "id": "width_mode", "label": "Largeur de la section", "options": [
         { "value": "page", "label": "Largeur site (standard)" },
         { "value": "full", "label": "Pleine largeur (100%)" },
