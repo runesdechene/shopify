@@ -25,6 +25,39 @@
 
   }
 
+  /* --- En-tête : titre + sous-titre --- */
+  .rdc-header-{{ section.id }} {
+    margin: 0 auto;
+    text-align: {{ section.settings.heading_alignment }};
+    margin-bottom: {{ section.settings.header_gap }}px;
+  {% if section.settings.width_mode == 'full' %}
+    max-width: 100%;
+    padding: 0 5vw;
+  {% elsif section.settings.width_mode == 'custom' %}
+    max-width: {{ section.settings.custom_width }}px;
+    padding: 0 1.5rem;
+  {% else %}
+    max-width: var(--page-width, 1200px);
+    padding: 0 1.5rem;
+  {% endif %}
+  }
+
+  .rdc-header-{{ section.id }} .rdc-heading {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: {{ section.settings.heading_size }}px;
+    line-height: 1.15;
+  }
+
+  .rdc-header-{{ section.id }} .rdc-subheading {
+    margin: 0.5rem 0 0;
+    font-family: var(--font-body--family);
+    opacity: 0.85;
+    line-height: 1.4;
+  }
+
+  .rdc-header-{{ section.id }} .rdc-subheading p { margin: 0 !important; }
+
   .rdc-item-{{ section.id }} {
     flex: 1 1 calc(25% - {{ section.settings.gap }}px);
     display: flex;
@@ -81,6 +114,18 @@
 {%- endstyle -%}
 
 <div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+
+  {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
+    <div class="rdc-header-{{ section.id }}">
+      {%- if section.settings.heading != blank -%}
+        <{{ section.settings.heading_tag }} class="rdc-heading">{{ section.settings.heading }}</{{ section.settings.heading_tag }}>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <div class="rdc-subheading rte">{{ section.settings.subheading }}</div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
   <div class="rdc-grid-{{ section.id }}" id="Slider-{{ section.id }}">
 
     {%- for block in section.blocks -%}
@@ -182,6 +227,17 @@ grid.scrollTo({
   "name": "RDC - Réassurance",
   "settings": [
     { "type": "color_scheme", "id": "color_scheme", "label": "Nuancier Boutique", "default": "background-1" },
+    { "type": "header", "content": "Titre & sous-titre" },
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Ils nous font confiance" },
+    { "type": "richtext", "id": "subheading", "label": "Sous-titre", "default": "<p>Une marque française, des partenaires de confiance.</p>" },
+    { "type": "select", "id": "heading_tag", "label": "Balise du titre (SEO)", "options": [
+        { "value": "h2", "label": "Titre 2" }, { "value": "h3", "label": "Titre 3" }, { "value": "h4", "label": "Titre 4" }, { "value": "p", "label": "Paragraphe" }
+      ], "default": "h2" },
+    { "type": "select", "id": "heading_alignment", "label": "Alignement", "options": [
+        { "value": "left", "label": "Gauche" }, { "value": "center", "label": "Centre" }, { "value": "right", "label": "Droite" }
+      ], "default": "center" },
+    { "type": "range", "id": "heading_size", "min": 16, "max": 64, "step": 1, "unit": "px", "label": "Taille du titre", "default": 32 },
+    { "type": "range", "id": "header_gap", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Espace sous le titre", "default": 32 },
     { "type": "select", "id": "width_mode", "label": "Largeur de la section", "options": [
         { "value": "page", "label": "Largeur site (standard)" },
         { "value": "full", "label": "Pleine largeur (100%)" },
