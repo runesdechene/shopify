@@ -12,15 +12,35 @@
   assign images_per_row_mob = settings.images_per_row_mobile | default: 3
   assign gap                = settings.gap                   | default: 16
   assign grayscale          = settings.grayscale             | default: false
+  assign alignment          = settings.alignment             | default: 'center'
+
+  # Carrousel mobile : true par défaut. On évite | default: true (qui écraserait false).
+  assign mobile_carousel = true
+  if settings.mobile_carousel == false
+    assign mobile_carousel = false
+  endif
+
+  # Mapping alignement -> justify-content (ligne) + align-items (colonne empilée)
+  assign justify = 'center'
+  assign align   = 'center'
+  if alignment == 'left'
+    assign justify = 'flex-start'
+    assign align   = 'flex-start'
+  elsif alignment == 'right'
+    assign justify = 'flex-end'
+    assign align   = 'flex-end'
+  endif
 -%}
 
 
 <div
-  class="partner-group{% if grayscale %} partner-group--grayscale{% endif %}"
+  class="partner-group{% if grayscale %} partner-group--grayscale{% endif %} {% if mobile_carousel %}partner-group--mobile-carousel{% else %}partner-group--mobile-stack{% endif %}"
   style="
     --partner-size: {{ image_size }}px;
     --partner-gap: {{ gap }}px;
     --partner-cols-mobile: {{ images_per_row_mob }};
+    --partner-justify: {{ justify }};
+    --partner-align: {{ align }};
   "
   {{ shopify_attributes }}
 >
@@ -69,7 +89,7 @@
   flex-wrap: wrap;
   gap: var(--partner-gap, 16px);
   align-items: center;
-  justify-content: center;
+  justify-content: var(--partner-justify, center);
 }
 
 /* ─── Item ───────────────────────────────────────────── */
@@ -107,10 +127,11 @@
   opacity: 1;
 }
 
-/* ─── Mobile : carrousel multi-items ─────────────────── */
+/* ─── Mobile ──────────────────────────────────────────── */
 @media (max-width: 749px) {
 
-  .partner-group__track {
+  /* Carrousel multi-items (option activée) */
+  .partner-group--mobile-carousel .partner-group__track {
     flex-wrap: nowrap;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -120,7 +141,7 @@
     padding-inline: calc(var(--partner-gap, 16px) / 2);
   }
 
-  .partner-group__track::-webkit-scrollbar {
+  .partner-group--mobile-carousel .partner-group__track::-webkit-scrollbar {
     display: none;
   }
 
@@ -129,12 +150,25 @@
     Exemple : 3 logos visibles, gap 16px
     → (100% - 2×16px) / 3
   */
-  .partner-group__item {
+  .partner-group--mobile-carousel .partner-group__item {
     flex: 0 0 calc(
       (100% - (var(--partner-cols-mobile, 3) - 1) * var(--partner-gap, 16px))
       / var(--partner-cols-mobile, 3)
     );
     scroll-snap-align: start;
+  }
+
+  /* Empilé (option désactivée) : logos les uns au-dessus des autres */
+  .partner-group--mobile-stack .partner-group__track {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: var(--partner-align, center);
+    justify-content: flex-start;
+  }
+
+  .partner-group--mobile-stack .partner-group__item {
+    flex: 0 0 auto;
+    width: auto;
   }
 
 }

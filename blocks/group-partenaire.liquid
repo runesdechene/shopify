@@ -35,16 +35,34 @@
       "unit": "px",
       "default": 16
     },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignement des logos",
+      "options": [
+        { "value": "left",   "label": "Gauche" },
+        { "value": "center", "label": "Centre" },
+        { "value": "right",  "label": "Droite" }
+      ],
+      "default": "center"
+    },
 
     {
       "type": "header",
       "content": "Mobile"
     },
     {
+      "type": "checkbox",
+      "id": "mobile_carousel",
+      "label": "Afficher en carrousel sur mobile",
+      "info": "Si désactivé, les logos s'empilent verticalement (les uns au-dessus des autres).",
+      "default": true
+    },
+    {
       "type": "range",
       "id": "images_per_row_mobile",
       "label": "Logos visibles simultanément",
-      "info": "Nombre affiché en même temps dans le carrousel mobile",
+      "info": "Nombre affiché en même temps dans le carrousel mobile (sans effet si le carrousel est désactivé)",
       "min": 2,
       "max": 5,
       "step": 1,
