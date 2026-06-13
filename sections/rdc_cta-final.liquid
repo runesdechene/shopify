@@ -1,10 +1,10 @@
 {%- comment -%}
   rdc_cta-final.liquid — CTA de clôture de la home.
 
-  Bande cinématique : photo de shooting en fond floutée/assombrie (ken burns),
-  et TITRE rempli par la même photo nette (image-in-text). Charte RDC : titre
-  Bebas (--font-heading), ligne Alegreya (--font-fragment), bouton doré.
-  Rectangle arrondi contenu sur desktop, full-bleed sur mobile.
+  Bande FULL-WIDTH plate : photo de shooting plein cadre, voile léger, texte plat
+  (sur-titre + titre Bebas + ligne Alegreya + bouton doré). Coupes "vague douce"
+  en haut et en bas (clip-path) qui laissent réapparaître la page → effet immersif.
+  Aligné sur l'esthétique flat du site (pas de carte, pas d'ombre, pas de flou).
 
   Spec : docs/superpowers/specs/2026-06-13-rdc-cta-final-diptyque-design.md
 {%- endcomment -%}
@@ -12,9 +12,19 @@
 {%- liquid
   assign uid = 'RdcCta-' | append: section.id
   assign s = section.settings
-  assign img_url   = s.image | image_url: width: 2000
-  assign img_url_m = s.image_mobile | image_url: width: 1100
-  assign bg_bright = s.bg_brightness | default: 45 | divided_by: 100.0
+  assign img_url   = s.image | image_url: width: 2400
+  assign img_url_m = s.image_mobile | image_url: width: 1200
+  assign bright = s.photo_brightness | default: 78 | divided_by: 100.0
+  assign scrim  = s.scrim_opacity | default: 42 | divided_by: 100.0
+
+  # Vague douce : amplitude réglable (cut_depth en % de la hauteur de bande)
+  assign d  = s.cut_depth
+  assign d2 = d | divided_by: 2.0 | round: 1
+  assign d4 = d | times: 0.4 | round: 1
+  assign b  = 100 | minus: d
+  assign b2 = 100 | minus: d2
+  assign b4 = 100 | minus: d4
+
   assign align_items = 'center'
   if s.content_align == 'left'
     assign align_items = 'flex-start'
@@ -24,87 +34,65 @@
 <style>
   #{{ uid }} { padding-block: {{ s.padding_top }}px {{ s.padding_bottom }}px; }
 
-  #{{ uid }} .rdc-ctaf__panel {
-    position: relative; min-height: {{ s.min_height }}px;
-    border-radius: {{ s.corner_radius }}px; overflow: hidden; background: #1c140d;
-    box-shadow: 0 30px 60px -28px rgba(60,40,20,.5), 0 0 0 1px rgb(var(--color-foreground-rgb, 60 40 20) / .12);
+  #{{ uid }} .rdc-ctaf__band {
+    position: relative; width: 100%; min-height: {{ s.min_height }}px; overflow: hidden;
     {% if s.image != blank %}--rdc-img: url('{{ img_url }}');{% endif %}
+    clip-path: polygon(
+      0% {{ d }}%, 16% {{ d2 }}%, 34% {{ d }}%, 52% {{ d4 }}%, 70% {{ d }}%, 86% {{ d2 }}%, 100% {{ d }}%,
+      100% {{ b }}%, 84% {{ b2 }}%, 66% {{ b }}%, 48% {{ b4 }}%, 30% {{ b }}%, 14% {{ b2 }}%, 0% {{ b }}%
+    );
     display: flex;
   }
 
-  /* Fond : photo floutée + assombrie, ken burns */
   #{{ uid }} .rdc-ctaf__bg {
     position: absolute; inset: 0; z-index: 0;
     {% if s.image != blank %}background-image: var(--rdc-img);{% else %}background: linear-gradient(135deg, #55584a, #2b2118);{% endif %}
-    background-size: cover; background-position: center;
-    filter: blur({{ s.bg_blur }}px) brightness({{ bg_bright }}) saturate(.72) sepia(.10);
-    transform: scale(1.06); transform-origin: center;
-    {% if s.animate and s.image != blank %}animation: rdcCtaKb 20s ease-in-out infinite alternate;{% endif %}
+    background-size: cover; background-position: center 35%;
+    filter: saturate(.82) brightness({{ bright }}) sepia(.06);
+    transform: scale(1.05); transform-origin: center;
+    {% if s.animate and s.image != blank %}animation: rdcCtaKb 18s ease-in-out infinite alternate;{% endif %}
   }
-  #{{ uid }} .rdc-ctaf__vign { position: absolute; inset: 0; z-index: 1;
-    background: radial-gradient(120% 95% at 50% 42%, rgba(0,0,0,.10), rgba(10,7,4,.60)); }
+  #{{ uid }} .rdc-ctaf__scrim { position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(180deg, rgba(20,14,8,{{ scrim }}), rgba(20,14,8,{{ scrim | times: 0.6 | round: 2 }}) 50%, rgba(20,14,8,{{ scrim | times: 1.15 | round: 2 }})); }
 
   #{{ uid }} .rdc-ctaf__ct {
     position: relative; z-index: 2; width: 100%;
     display: flex; flex-direction: column; justify-content: center; align-items: {{ align_items }};
-    gap: 20px; padding: clamp(40px, 6vw, 76px) clamp(24px, 7vw, 90px);
+    gap: 16px; padding: clamp(48px, 7vw, 96px) clamp(24px, 8vw, 110px);
     text-align: {{ s.content_align }}; box-sizing: border-box;
   }
-
   #{{ uid }} .rdc-ctaf__over { font-family: var(--font-body--family); font-weight: 700; font-size: .8rem;
     letter-spacing: .3em; text-transform: uppercase; color: {{ s.accent_color }}; margin: 0; }
-
-  #{{ uid }} .rdc-ctaf__title {
-    font-family: var(--font-heading--family, sans-serif);
-    font-size: clamp(3rem, 8vw, 9.4rem); line-height: .8; letter-spacing: .015em;
-    margin: 0; color: {{ s.title_color }};
-  }
-  {% if s.image != blank %}
-  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
-    #{{ uid }} .rdc-ctaf__title {
-      background-image: var(--rdc-img); background-size: cover; background-position: center;
-      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
-      filter: contrast(1.12) brightness(1.1)
-        drop-shadow(0 2px {{ s.text_shadow }}px rgba(0,0,0,.55)) drop-shadow(0 0 1px rgba(0,0,0,.6));
-      {% if s.animate %}animation: rdcCtaPan 13s ease-in-out infinite alternate;{% endif %}
-    }
-  }
-  {% endif %}
-
+  #{{ uid }} .rdc-ctaf__title { font-family: var(--font-heading--family, sans-serif);
+    font-size: clamp(2.6rem, 6.5vw, 6.2rem); line-height: .84; letter-spacing: .02em; margin: 0;
+    color: {{ s.title_color }}; text-shadow: 0 2px {{ s.title_shadow }}px rgba(0,0,0,.45); }
   #{{ uid }} .rdc-ctaf__sub { font-family: var(--font-fragment--family, Georgia, serif); font-style: italic;
-    font-size: 1.08rem; line-height: 1.45; color: #e7dcc6; margin: 0; max-width: 46ch; }
+    font-size: 1.06rem; line-height: 1.45; color: #efe7d6; margin: 0; max-width: 46ch; text-shadow: 0 1px 6px rgba(0,0,0,.4); }
   #{{ uid }} .rdc-ctaf__sub p { margin: 0; }
 
-  #{{ uid }} .rdc-ctaf__btn {
-    margin-top: 6px; display: inline-flex; align-items: center; gap: 9px;
+  #{{ uid }} .rdc-ctaf__btn { margin-top: 6px; display: inline-flex; align-items: center; gap: 9px;
     font-family: var(--font-body--family); font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
     font-size: .92rem; padding: 15px 30px; border-radius: 12px; text-decoration: none;
     background: {{ s.button_bg }}; color: {{ s.button_text }}; border: 1px solid rgba(0,0,0,.5);
-    box-shadow: 0 8px 22px rgba(0,0,0,.3); transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
-  }
-  #{{ uid }} .rdc-ctaf__btn:hover { transform: translateY(-2px); filter: brightness(.97);
-    box-shadow: 0 10px 30px rgba(244,214,148,.55); }
+    transition: transform .2s ease, filter .2s ease; }
+  #{{ uid }} .rdc-ctaf__btn:hover { transform: translateY(-2px); filter: brightness(.96); }
 
-  @keyframes rdcCtaKb { from { transform: scale(1.06); } to { transform: scale(1.18); } }
-  @keyframes rdcCtaPan { 0% { background-position: 32% 48%; } 100% { background-position: 68% 52%; } }
-  @media (prefers-reduced-motion: reduce) {
-    #{{ uid }} .rdc-ctaf__bg, #{{ uid }} .rdc-ctaf__title { animation: none; }
-  }
+  @keyframes rdcCtaKb { from { transform: scale(1.05); } to { transform: scale(1.14); } }
+  @media (prefers-reduced-motion: reduce) { #{{ uid }} .rdc-ctaf__bg { animation: none; } }
 
-  /* Mobile : full-bleed bord à bord, sans arrondi / ombre */
   @media (max-width: 749px) {
-    #{{ uid }} .rdc-ctaf__panel { border-radius: 0; box-shadow: none; min-height: {{ s.height_mobile }}px;
+    #{{ uid }} .rdc-ctaf__band { min-height: {{ s.height_mobile }}px;
       {% if s.image_mobile != blank %}--rdc-img: url('{{ img_url_m }}');{% endif %} }
-    #{{ uid }} .rdc-ctaf__ct { padding: clamp(40px, 12vw, 64px) 26px; }
-    #{{ uid }} .rdc-ctaf__title { font-size: clamp(3.2rem, 17vw, 6rem); }
+    #{{ uid }} .rdc-ctaf__ct { padding: clamp(56px, 16vw, 90px) 26px; }
+    #{{ uid }} .rdc-ctaf__title { font-size: clamp(2.8rem, 13vw, 5rem); }
   }
 </style>
 
 {%- if s.anchor_id != blank -%}<span id="{{ s.anchor_id }}" aria-hidden="true" style="display:block;scroll-margin-top:var(--header-group-height,90px)"></span>{%- endif -%}
-<div id="{{ uid }}" class="section section--page-width section--mobile-full-width color-{{ s.color_scheme }} rdc-ctaf">
-  <div class="rdc-ctaf__panel">
+<div id="{{ uid }}" class="section section--full-width color-{{ s.color_scheme }} rdc-ctaf">
+  <div class="rdc-ctaf__band">
     <div class="rdc-ctaf__bg" aria-hidden="true"></div>
-    <div class="rdc-ctaf__vign" aria-hidden="true"></div>
+    <div class="rdc-ctaf__scrim" aria-hidden="true"></div>
     <div class="rdc-ctaf__ct">
       {%- if s.overline != blank -%}<p class="rdc-ctaf__over">{{ s.overline }}</p>{%- endif -%}
       {%- if s.title != blank -%}<h2 class="rdc-ctaf__title">{{ s.title }}</h2>{%- endif -%}
@@ -125,7 +113,7 @@
   "settings": [
     { "type": "header", "content": "Contenu" },
     { "type": "inline_richtext", "id": "overline", "label": "Sur-titre", "default": "Le voyage continue" },
-    { "type": "inline_richtext", "id": "title", "label": "Titre (rempli par la photo)", "default": "Porte ton Fragment d'Histoire" },
+    { "type": "inline_richtext", "id": "title", "label": "Titre", "default": "Porte ton Fragment d'Histoire" },
     { "type": "richtext", "id": "subtitle", "label": "Ligne d'accent", "default": "<p>Des créations à porter, un monde à explorer.</p>" },
     { "type": "text", "id": "button_label", "label": "Libellé du bouton", "default": "Explorer la boutique" },
     { "type": "url", "id": "button_url", "label": "Lien du bouton", "info": "Choisis la Page Boutique ou une Collection." },
@@ -133,30 +121,30 @@
       { "value": "center", "label": "Centré" }, { "value": "left", "label": "Gauche" } ], "default": "center" },
 
     { "type": "header", "content": "Photo" },
-    { "type": "image_picker", "id": "image", "label": "Image (bureau)", "info": "Sert à la fois de fond flouté et de remplissage du titre." },
+    { "type": "image_picker", "id": "image", "label": "Image (bureau)" },
     { "type": "image_picker", "id": "image_mobile", "label": "Image (mobile)", "info": "Si vide, l'image bureau est utilisée." },
-    { "type": "checkbox", "id": "animate", "label": "Animation (zoom lent + pan)", "info": "Désactivée si l'utilisateur préfère réduire les animations.", "default": true },
+    { "type": "range", "id": "photo_brightness", "label": "Luminosité de la photo", "unit": "%", "min": 30, "max": 100, "step": 5, "default": 78 },
+    { "type": "range", "id": "scrim_opacity", "label": "Voile (lisibilité du texte)", "unit": "%", "min": 0, "max": 80, "step": 5, "default": 42 },
+    { "type": "checkbox", "id": "animate", "label": "Animation (zoom lent)", "info": "Désactivée si l'utilisateur préfère réduire les animations.", "default": true },
 
-    { "type": "header", "content": "Rendu du fond" },
-    { "type": "range", "id": "bg_blur", "label": "Flou du fond", "unit": "px", "min": 0, "max": 30, "step": 1, "default": 9 },
-    { "type": "range", "id": "bg_brightness", "label": "Luminosité du fond", "unit": "%", "min": 20, "max": 90, "step": 5, "default": 45 },
-    { "type": "range", "id": "text_shadow", "label": "Ombre du titre (lisibilité)", "unit": "px", "min": 0, "max": 12, "step": 1, "default": 4 },
+    { "type": "header", "content": "Coupes immersives (vague)" },
+    { "type": "range", "id": "cut_depth", "label": "Profondeur des coupes", "unit": "%", "min": 0, "max": 16, "step": 1, "default": 8 },
 
     { "type": "header", "content": "Mise en page" },
-    { "type": "range", "id": "corner_radius", "label": "Arrondi des coins (bureau)", "unit": "px", "min": 0, "max": 40, "step": 1, "default": 24 },
-    { "type": "range", "id": "min_height", "label": "Hauteur (bureau)", "unit": "px", "min": 360, "max": 760, "step": 10, "default": 520 },
-    { "type": "range", "id": "height_mobile", "label": "Hauteur (mobile)", "unit": "px", "min": 280, "max": 640, "step": 10, "default": 460 },
+    { "type": "range", "id": "min_height", "label": "Hauteur (bureau)", "unit": "px", "min": 280, "max": 700, "step": 10, "default": 420 },
+    { "type": "range", "id": "height_mobile", "label": "Hauteur (mobile)", "unit": "px", "min": 240, "max": 600, "step": 10, "default": 420 },
 
     { "type": "header", "content": "Couleurs" },
     { "type": "color_scheme", "id": "color_scheme", "label": "Schéma de couleur", "default": "scheme-1" },
     { "type": "color", "id": "accent_color", "label": "Couleur du sur-titre", "default": "#f4d694" },
-    { "type": "color", "id": "title_color", "label": "Couleur du titre (repli sans image)", "default": "#fcf9f1" },
+    { "type": "color", "id": "title_color", "label": "Couleur du titre", "default": "#fcf9f1" },
+    { "type": "range", "id": "title_shadow", "label": "Ombre du titre (lisibilité)", "unit": "px", "min": 0, "max": 16, "step": 1, "default": 6 },
     { "type": "color", "id": "button_bg", "label": "Fond du bouton", "default": "#f4d694" },
     { "type": "color", "id": "button_text", "label": "Texte du bouton", "default": "#623c3c" },
 
     { "type": "header", "content": "Marges" },
-    { "type": "range", "id": "padding_top", "label": "Marge haut", "unit": "px", "min": 0, "max": 200, "step": 4, "default": 72 },
-    { "type": "range", "id": "padding_bottom", "label": "Marge bas", "unit": "px", "min": 0, "max": 200, "step": 4, "default": 80 },
+    { "type": "range", "id": "padding_top", "label": "Marge haut", "unit": "px", "min": 0, "max": 200, "step": 4, "default": 40 },
+    { "type": "range", "id": "padding_bottom", "label": "Marge bas", "unit": "px", "min": 0, "max": 200, "step": 4, "default": 40 },
 
     { "type": "header", "content": "Ancre" },
     { "type": "text", "id": "anchor_id", "label": "Ancre (ID)", "info": "Sans espace ni accent." }
