@@ -17,13 +17,9 @@
   assign bright = s.photo_brightness | default: 80 | divided_by: 100.0
   assign scrim  = s.scrim_opacity | default: 40 | divided_by: 100.0
 
-  # Vague douce : amplitude réglable (cut_depth en % de la hauteur de bande)
-  assign d  = s.cut_depth
-  assign d2 = d | divided_by: 2.0 | round: 1
-  assign d4 = d | times: 0.4 | round: 1
-  assign b  = 100 | minus: d
-  assign b2 = 100 | minus: d2
-  assign b4 = 100 | minus: d4
+  # Courbes douces : amplitude réglable (cut_depth en % de la hauteur de bande)
+  assign dd  = s.cut_depth | divided_by: 100.0 | round: 3
+  assign ddb = 1.0 | minus: dd | round: 3
 
   assign align_items = 'center'
   if s.content_align == 'left'
@@ -37,10 +33,7 @@
   #{{ uid }} .rdc-ctaf__band {
     position: relative; width: 100%; min-height: {{ s.min_height }}px; overflow: hidden;
     {% if s.image != blank %}--rdc-img: url('{{ img_url }}');{% endif %}
-    clip-path: polygon(
-      0% {{ d }}%, 16% {{ d2 }}%, 34% {{ d }}%, 52% {{ d4 }}%, 70% {{ d }}%, 86% {{ d2 }}%, 100% {{ d }}%,
-      100% {{ b }}%, 84% {{ b2 }}%, 66% {{ b }}%, 48% {{ b4 }}%, 30% {{ b }}%, 14% {{ b2 }}%, 0% {{ b }}%
-    );
+    clip-path: url(#rdcCtaWave-{{ section.id }});
     display: flex;
   }
 
@@ -90,6 +83,13 @@
 
 {%- if s.anchor_id != blank -%}<span id="{{ s.anchor_id }}" aria-hidden="true" style="display:block;scroll-margin-top:var(--header-group-height,90px)"></span>{%- endif -%}
 <div id="{{ uid }}" class="section section--full-width color-{{ s.color_scheme }} rdc-ctaf">
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <defs>
+      <clipPath id="rdcCtaWave-{{ section.id }}" clipPathUnits="objectBoundingBox">
+        <path d="M 0,{{ dd }} C 0.30,0 0.70,0 1,{{ dd }} L 1,{{ ddb }} C 0.70,1 0.30,1 0,{{ ddb }} Z"></path>
+      </clipPath>
+    </defs>
+  </svg>
   <div class="rdc-ctaf__band">
     <div class="rdc-ctaf__bg" aria-hidden="true"></div>
     <div class="rdc-ctaf__scrim" aria-hidden="true"></div>
@@ -127,8 +127,8 @@
     { "type": "range", "id": "scrim_opacity", "label": "Voile (lisibilité du texte)", "unit": "%", "min": 0, "max": 80, "step": 5, "default": 40 },
     { "type": "checkbox", "id": "animate", "label": "Animation (zoom lent)", "info": "Désactivée si l'utilisateur préfère réduire les animations.", "default": true },
 
-    { "type": "header", "content": "Coupes immersives (vague)" },
-    { "type": "range", "id": "cut_depth", "label": "Profondeur des coupes", "unit": "%", "min": 0, "max": 16, "step": 1, "default": 8 },
+    { "type": "header", "content": "Coupes immersives (courbes)" },
+    { "type": "range", "id": "cut_depth", "label": "Profondeur des courbes", "unit": "%", "min": 0, "max": 20, "step": 1, "default": 8 },
 
     { "type": "header", "content": "Mise en page" },
     { "type": "range", "id": "min_height", "label": "Hauteur (bureau)", "unit": "px", "min": 280, "max": 700, "step": 10, "default": 420 },
