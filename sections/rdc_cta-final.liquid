@@ -96,17 +96,17 @@
     #{{ uid }} .rdc-ctaf__img { animation: none; }
   }
 
-  /* Mobile : empilé, photo en haut (column-reverse car le texte est avant l'image dans le DOM) */
+  /* Mobile : full-bleed bord à bord, sans arrondi / ombre / filet. Empilé photo en haut. */
   @media (max-width: 749px) {
-    #{{ uid }} .rdc-ctaf__panel { flex-direction: column-reverse; min-height: 0; }
+    #{{ uid }} .rdc-ctaf__panel { flex-direction: column-reverse; min-height: 0; border-radius: 0; box-shadow: none; }
     #{{ uid }} .rdc-ctaf__text { flex: 1 1 auto; padding: 30px 24px 34px; }
     #{{ uid }} .rdc-ctaf__media { flex: 0 0 {{ s.image_height_mobile }}px; height: {{ s.image_height_mobile }}px; }
-    #{{ uid }} .rdc-ctaf__media::after { box-shadow: inset 0 22px 40px -20px rgba(40,28,16,.45); }
+    #{{ uid }} .rdc-ctaf__media::after { display: none; }
   }
 </style>
 
 {%- if s.anchor_id != blank -%}<span id="{{ s.anchor_id }}" aria-hidden="true" style="display:block;scroll-margin-top:var(--header-group-height,90px)"></span>{%- endif -%}
-<div id="{{ uid }}" class="section section--page-width rdc-ctaf">
+<div id="{{ uid }}" class="section section--page-width section--mobile-full-width rdc-ctaf">
   <div class="rdc-ctaf__panel color-{{ s.color_scheme }}">
 
     {%- if has_text -%}
