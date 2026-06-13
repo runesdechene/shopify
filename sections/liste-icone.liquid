@@ -16,6 +16,11 @@
 {% elsif section.settings.width_mode == 'custom' %}
   max-width: {{ section.settings.custom_width }}px;
   padding: 0 1.5rem;
+{% else %}
+  /* Largeur site : ce thème (Crépuscule/Heritage) n'a PAS de classe .page-width,
+     la largeur du site est portée par la variable --page-width. */
+  max-width: var(--page-width, 1200px);
+  padding: 0 1.5rem;
 {% endif %}
 
   }
@@ -70,7 +75,7 @@
 {%- endstyle -%}
 
 <div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
-  <div class="rdc-grid-{{ section.id }}{% if section.settings.width_mode == 'page' %} page-width{% endif %}" id="Slider-{{ section.id }}">
+  <div class="rdc-grid-{{ section.id }}" id="Slider-{{ section.id }}">
 
     {%- for block in section.blocks -%}
       {%- style -%}
