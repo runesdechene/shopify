@@ -29,9 +29,9 @@
         "title_2": "Deviens un aventurier de ton territoire.",
         "subtitle": "<p>Des vêtements durables, illustrés à la main, qui vous font voyager dans le passé.<br/>Un mouvement francophone qui arpente l'Histoire, la Nature & le Patrimoine.</p>",
         "cta_primary_label": "Découvrir les produits",
-        "cta_primary_url": "",
+        "cta_primary_url": "#creations",
         "cta_secondary_label": "le mouvement",
-        "cta_secondary_url": "",
+        "cta_secondary_url": "#mouvement",
         "content_vertical": "center",
         "content_horizontal": "left",
         "content_text_align": "",
@@ -50,7 +50,9 @@
         "text_shadow": 10,
         "autoplay": true,
         "show_dots": true,
-        "autoplay_interval": 7
+        "autoplay_interval": 7,
+        "ken_burns": true,
+        "ken_burns_duration": 10
       }
     },
     "rdc_triptyque_MWyQpm": {
@@ -615,15 +617,147 @@
         "show_artist": true,
         "show_link": false,
         "link_label": "Voir la collection",
+        "show_new_badge": true,
+        "new_label": "New",
+        "new_months": 3,
+        "new_bg": "#833434",
+        "new_text": "#f4eee1",
+        "new_ring": "#f4d694",
         "section_width": "page-width",
         "color_scheme": "",
         "accent_color": "#b4894f",
         "padding_top": 56,
-        "padding_bottom": 56
+        "padding_bottom": 56,
+        "anchor_id": "creations"
+      }
+    },
+    "rdc_mur_vivant_LwJVzT": {
+      "type": "rdc_mur-vivant",
+      "name": "RDC — Mouvement vivant",
+      "settings": {
+        "overline": "Pendant que le monde entier scrolle",
+        "title": "Un mouvement s'éveille",
+        "subtitle": "Partout en France, nos client portent leurs Fragments d'Histoires pour se reconnaître, partir à l'Aventure, explorer leurs régions & s'inspirer du passé pour réenchanter le futur.",
+        "show_stats": true,
+        "show_stars": true,
+        "stat_rating_label": "4,6/5 de moyenne",
+        "stat2_value": "+7 000",
+        "stat2_label": "clients conquis",
+        "stat2_source": "clients",
+        "stat3_value": "+25/an",
+        "stat3_label": "Festivals en France",
+        "stat3_source": "",
+        "stat4_value": "2 800+",
+        "stat4_label": "Lieux cartographiés sur l'application",
+        "stat4_source": "lieux",
+        "rows": 2,
+        "speed": 120,
+        "card_width": 224,
+        "max_photos": 40,
+        "random_order": true,
+        "submit_intro": "Toi aussi tu portes l'Histoire ?",
+        "submit_label": "Partage ta photo sur le mur →",
+        "submit_url": "https://hub.runesdechene.com/soumettre-contenu",
+        "supabase_url": "",
+        "supabase_anon_key": "",
+        "color_scheme": "",
+        "accent_color": "#b44439",
+        "padding_top": 72,
+        "padding_bottom": 64,
+        "anchor_id": "mouvement"
+      }
+    },
+    "rdc_app_3t8D4m": {
+      "type": "rdc_app",
+      "blocks": {
+        "feature_yTyPDt": {
+          "type": "feature",
+          "settings": {
+            "label": "Énigmes",
+            "icon": "key"
+          }
+        },
+        "feature_fFAJir": {
+          "type": "feature",
+          "settings": {
+            "label": "Missions",
+            "icon": "target"
+          }
+        },
+        "feature_XpDzDE": {
+          "type": "feature",
+          "settings": {
+            "label": "Défis du jour",
+            "icon": "sun"
+          }
+        },
+        "feature_KGDiFQ": {
+          "type": "feature",
+          "settings": {
+            "label": "Défis collectifs",
+            "icon": "group"
+          }
+        },
+        "feature_kDmpYP": {
+          "type": "feature",
+          "settings": {
+            "label": "Événements",
+            "icon": "calendar"
+          }
+        },
+        "feature_98YcM9": {
+          "type": "feature",
+          "settings": {
+            "label": "Factions",
+            "icon": "shield"
+          }
+        },
+        "feature_WY8Uyt": {
+          "type": "feature",
+          "settings": {
+            "label": "Coupe des Héritages",
+            "icon": "trophy"
+          }
+        },
+        "feature_chat01": {
+          "type": "feature",
+          "settings": {
+            "label": "Chat communautaire",
+            "icon": "chat"
+          }
+        }
+      },
+      "block_order": [
+        "feature_yTyPDt",
+        "feature_fFAJir",
+        "feature_XpDzDE",
+        "feature_KGDiFQ",
+        "feature_kDmpYP",
+        "feature_98YcM9",
+        "feature_WY8Uyt",
+        "feature_chat01"
+      ],
+      "name": "RDC — L'application",
+      "settings": {
+        "overline": "L'application",
+        "title": "Ton territoire, un terrain d'aventure.",
+        "bridge": "« Une marque. Une application. L'une vous fait porter l'Histoire. La seconde vous la fait vivre. »",
+        "lead": "La plus grosse communauté francophone jamais fédérée autour de l'Histoire, l'Aventure & la Nature — dans ta poche.",
+        "play_heading": "Une carte. Mille façons de jouer.",
+        "free_text": "Gratuit · un clic · rien à installer",
+        "cta_label": "Essayer l'application",
+        "cta_url": "https://app.runesdechene.com",
+        "video_external_url": "https://cdn.shopify.com/videos/c/o/v/f6c638bf0b134d7397ba964e6acf4417.mp4",
+        "color_scheme": "",
+        "accent_color": "#962B21",
+        "padding_top": 0,
+        "padding_bottom": 84,
+        "anchor_id": "application"
       }
     },
     "illustration_list_FjwKWn": {
       "type": "illustration-list",
+      "disabled": true,
       "name": "t:names.illustrations_carousel",
       "settings": {
         "collection_list": [
@@ -1496,6 +1630,7 @@
         "text_cFbyRC",
         "button_zNznd9"
       ],
+      "disabled": true,
       "custom_css": [
         "h3 {opacity: 0.6;}",
         "h2 {margin-bottom: 10px;}",
@@ -1593,6 +1728,7 @@
         "card_YVFxPH",
         "card_N8FPgU"
       ],
+      "disabled": true,
       "name": "RDC - Double Carrés",
       "settings": {
         "color_scheme": "",
@@ -1729,14 +1865,6 @@
         "condition_liquid": "",
         "condition_invert": false
       }
-    },
-    "rdc_mur_vivant_main": {
-      "type": "rdc_mur-vivant",
-      "settings": {
-        "supabase_url": "https://ukpapqssgsxirsgmcvof.supabase.co",
-        "supabase_anon_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrcGFwcXNzZ3N4aXJzZ21jdm9mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAyOTU5OTMsImV4cCI6MjA4NTg3MTk5M30.Le1gdE3HhmZ2gzMJF9hVhlZVsILmLd5GQgk87xC_dUY",
-        "color_scheme": "scheme-1"
-      }
     }
   },
   "order": [
@@ -1747,11 +1875,12 @@
     "rdc_hero_main",
     "section_MgkEX9",
     "rdc_illustrations_meta_zxHWmV",
+    "rdc_mur_vivant_LwJVzT",
+    "rdc_app_3t8D4m",
     "illustration_list_FjwKWn",
     "section_GbDEgR",
     "section_YjqMVK",
     "double_carres_V4Px4V",
-    "rdc_mur_vivant_main",
     "section_im7EFF"
   ]
 }

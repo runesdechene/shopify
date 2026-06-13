@@ -131,6 +131,7 @@
                 {%- when 'compass' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>
                 {%- when 'flame' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c2 3 5 4.5 5 9a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5.3 1.2 1 2 2 2.2C10.5 8 11 5.5 12 3z"/></svg>
                 {%- when 'map' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-7-6-7-12a7 7 0 0 1 14 0c0 6-7 12-7 12z"/><circle cx="12" cy="10" r="2.6"/></svg>
+                {%- when 'chat' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-3.9-.9L3 21l1.4-4.6A8.5 8.5 0 1 1 21 11.5z"/><path d="M8.5 11h7M8.5 14h4"/></svg>
               {%- endcase -%}
               {{ block.settings.label }}
             </span>
@@ -197,7 +198,8 @@
           { "value": "gem", "label": "Fragment (gemme)" },
           { "value": "compass", "label": "Boussole" },
           { "value": "flame", "label": "Flamme" },
-          { "value": "map", "label": "Lieu (pin)" }
+          { "value": "map", "label": "Lieu (pin)" },
+          { "value": "chat", "label": "Chat (bulle)" }
         ] }
       ]
     }
@@ -213,7 +215,8 @@
         { "type": "feature", "settings": { "label": "Défis collectifs", "icon": "group" } },
         { "type": "feature", "settings": { "label": "Événements", "icon": "calendar" } },
         { "type": "feature", "settings": { "label": "Factions", "icon": "shield" } },
-        { "type": "feature", "settings": { "label": "Coupe des Héritages", "icon": "trophy" } }
+        { "type": "feature", "settings": { "label": "Coupe des Héritages", "icon": "trophy" } },
+        { "type": "feature", "settings": { "label": "Chat communautaire", "icon": "chat" } }
       ]
     }
   ]
