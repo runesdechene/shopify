@@ -14,8 +14,8 @@
   assign s = section.settings
   assign img_url   = s.image | image_url: width: 2400
   assign img_url_m = s.image_mobile | image_url: width: 1200
-  assign bright = s.photo_brightness | default: 78 | divided_by: 100.0
-  assign scrim  = s.scrim_opacity | default: 42 | divided_by: 100.0
+  assign bright = s.photo_brightness | default: 80 | divided_by: 100.0
+  assign scrim  = s.scrim_opacity | default: 40 | divided_by: 100.0
 
   # Vague douce : amplitude réglable (cut_depth en % de la hauteur de bande)
   assign d  = s.cut_depth
@@ -123,8 +123,8 @@
     { "type": "header", "content": "Photo" },
     { "type": "image_picker", "id": "image", "label": "Image (bureau)" },
     { "type": "image_picker", "id": "image_mobile", "label": "Image (mobile)", "info": "Si vide, l'image bureau est utilisée." },
-    { "type": "range", "id": "photo_brightness", "label": "Luminosité de la photo", "unit": "%", "min": 30, "max": 100, "step": 5, "default": 78 },
-    { "type": "range", "id": "scrim_opacity", "label": "Voile (lisibilité du texte)", "unit": "%", "min": 0, "max": 80, "step": 5, "default": 42 },
+    { "type": "range", "id": "photo_brightness", "label": "Luminosité de la photo", "unit": "%", "min": 30, "max": 100, "step": 5, "default": 80 },
+    { "type": "range", "id": "scrim_opacity", "label": "Voile (lisibilité du texte)", "unit": "%", "min": 0, "max": 80, "step": 5, "default": 40 },
     { "type": "checkbox", "id": "animate", "label": "Animation (zoom lent)", "info": "Désactivée si l'utilisateur préfère réduire les animations.", "default": true },
 
     { "type": "header", "content": "Coupes immersives (vague)" },
