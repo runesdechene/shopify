@@ -70,6 +70,12 @@
         flex-shrink: 0;
         padding: 0 10px;
       }
+    {% else %}
+      /* Sans carrousel : grille 2 icônes par ligne (tout reste visible) */
+      .rdc-item-{{ section.id }} {
+        flex: 0 0 calc(50% - {{ section.settings.gap | divided_by: 2.0 }}px) !important;
+        max-width: calc(50% - {{ section.settings.gap | divided_by: 2.0 }}px);
+      }
     {% endif %}
   }
 {%- endstyle -%}
