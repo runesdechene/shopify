@@ -261,7 +261,6 @@
     }
 
     var photos = [];
-    var suppressClick = false; /* passe à true pendant un drag pour ne pas ouvrir la lightbox */
 
     /* --- Lightbox (style galerie produit : overlay infos sur la photo + navigation) --- */
     var current = 0;
@@ -365,7 +364,7 @@
           var dir = row.getAttribute('data-reverse') === '1' ? -1 : 1;
           var duration = parseFloat(row.getAttribute('data-duration')) || 40;
           var pos = 0, half = 0, pxPerSec = 0, lastT = 0;
-          var dragging = false, hoverPause = false, startX = 0, startPos = 0, pid = null;
+          var dragging = false, hoverPause = false, startX = 0, startPos = 0, pid = null, moved = false, pendingPh = null;
 
           function measure() { half = track.scrollWidth / 2; pxPerSec = half > 0 ? half / duration : 0; }
           measure();
@@ -382,14 +381,15 @@
           requestAnimationFrame(frame);
 
           row.addEventListener('pointerdown', function(e) {
-            suppressClick = false; dragging = true; startX = e.clientX; startPos = pos; pid = e.pointerId;
+            dragging = true; moved = false; startX = e.clientX; startPos = pos; pid = e.pointerId;
+            pendingPh = e.target.closest ? e.target.closest('.rdc-mv__ph') : null;
             try { row.setPointerCapture(pid); } catch (_) {}
             row.classList.add('is-grabbing');
           });
           row.addEventListener('pointermove', function(e) {
             if (!dragging || half <= 0) return;
             var dx = e.clientX - startX;
-            if (Math.abs(dx) > 5) suppressClick = true; /* devient un drag : on neutralise le clic */
+            if (Math.abs(dx) > 5) moved = true; /* au-delà du seuil : c'est un drag, pas un tap */
             pos = ((startPos - dx) % half + half) % half;
             track.style.transform = 'translateX(' + (-pos) + 'px)';
           });
@@ -399,8 +399,16 @@
             if (pid != null) { try { row.releasePointerCapture(pid); } catch (_) {} pid = null; }
             row.classList.remove('is-grabbing');
           }
-          row.addEventListener('pointerup', endDrag);
-          row.addEventListener('pointercancel', endDrag);
+          row.addEventListener('pointerup', function() {
+            var wasTap = dragging && !moved;
+            endDrag();
+            if (wasTap && pendingPh) {
+              var idx = parseInt(pendingPh.getAttribute('data-idx'), 10);
+              if (!isNaN(idx) && photos[idx]) openModal(idx); /* tap = ouvre la lightbox */
+            }
+            pendingPh = null;
+          });
+          row.addEventListener('pointercancel', function() { endDrag(); pendingPh = null; });
           row.addEventListener('dragstart', function(e) { e.preventDefault(); });
           row.addEventListener('mouseenter', function() { hoverPause = true; });
           row.addEventListener('mouseleave', function() { hoverPause = false; });
@@ -419,14 +427,7 @@
         html += buildRow(list, SPEED + r * 6, r % 2 === 1);
       }
       wall.innerHTML = html;
-      wall.addEventListener('click', function(e) {
-        if (suppressClick) { suppressClick = false; return; } /* c'était un drag, pas un clic */
-        var c = e.target.closest('.rdc-mv__ph');
-        if (!c) return;
-        var idx = parseInt(c.getAttribute('data-idx'), 10);
-        if (photos[idx]) openModal(idx);
-      });
-      setupScrub();
+      setupScrub(); /* défilement auto + drag/scrub + tap->lightbox, géré par rangée */
     }
 
     /* --- Stats live (comptes Hub + lieux appli) --- */
