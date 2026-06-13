@@ -12,10 +12,13 @@
   assign uid = 'RdcTri-' | append: section.id
   assign talign = section.settings.text_align
   assign bg = section.settings.background_image
+  assign bg_mobile = section.settings.background_image_mobile
   if section.settings.background_fit == 'tile'
     assign bg_url = bg | image_url: width: 900
+    assign bg_mobile_url = bg_mobile | image_url: width: 900
   else
     assign bg_url = bg | image_url: width: 2400
+    assign bg_mobile_url = bg_mobile | image_url: width: 1200
   endif
 -%}
 
@@ -49,14 +52,22 @@
     border-bottom:2px solid {{ section.settings.accent_color }};padding-bottom:4px;transition:.2s}
   #{{ uid }} .rdc-tri__link:hover{opacity:.7}
 
+  {%- if bg != blank -%}
+  .rdc-tri-bg-{{ section.id }}{background-image:url({{ bg_url }});background-position:center;
+    {% if section.settings.background_fit == 'tile' %}background-repeat:repeat;background-size:auto{% else %}background-repeat:no-repeat;background-size:cover{% endif %}}
+  {%- endif -%}
+
   @media (max-width:749px){
     #{{ uid }} .rdc-tri__grid{grid-template-columns:1fr;gap:30px;text-align:center}
     #{{ uid }} .rdc-tri__sep,#{{ uid }} .rdc-tri__text,#{{ uid }} .rdc-tri__icon{margin-inline:auto}
+    {%- if bg_mobile != blank -%}
+    .rdc-tri-bg-{{ section.id }}{background-image:url({{ bg_mobile_url }});background-position:center;
+      {% if section.settings.background_fit == 'tile' %}background-repeat:repeat;background-size:auto{% else %}background-repeat:no-repeat;background-size:cover{% endif %}}
+    {%- endif -%}
   }
 </style>
 
-<div class="section-background color-{{ section.settings.color_scheme }}"
-  {%- if bg != blank %} style="background-image:url({{ bg_url }});background-position:center;{% if section.settings.background_fit == 'tile' %}background-repeat:repeat;background-size:auto{% else %}background-repeat:no-repeat;background-size:cover{% endif %}"{% endif -%}></div>
+<div class="section-background color-{{ section.settings.color_scheme }} rdc-tri-bg-{{ section.id }}"></div>
 <div id="{{ uid }}" class="section section--full-width color-{{ section.settings.color_scheme }} rdc-tri">
   <div class="rdc-tri__inner">
     {%- if section.settings.overline != blank -%}
@@ -125,6 +136,7 @@
 
     { "type": "header", "content": "Fond de section" },
     { "type": "image_picker", "id": "background_image", "label": "Image de fond (ex. parchemin)" },
+    { "type": "image_picker", "id": "background_image_mobile", "label": "Image de fond — mobile (optionnel)", "info": "Si vide, l'image de fond ci-dessus est utilisée aussi sur mobile." },
     { "type": "select", "id": "background_fit", "label": "Affichage du fond", "options": [
       { "value": "cover", "label": "Couvrir toute la section" }, { "value": "tile", "label": "Texture répétée" } ], "default": "cover" }
   ],
