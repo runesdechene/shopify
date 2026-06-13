@@ -15,10 +15,15 @@
   assign alignment          = settings.alignment             | default: 'center'
   assign single_line        = settings.single_line           | default: false
 
-  # Carrousel mobile : true par défaut. On évite | default: true (qui écraserait false).
-  assign mobile_carousel = true
-  if settings.mobile_carousel == false
-    assign mobile_carousel = false
+  # Disposition mobile : carousel | grid | stack.
+  # Compat ascendante : si l'ancien réglage "mobile_carousel" existait, on le respecte.
+  assign mobile_layout = settings.mobile_layout
+  if mobile_layout == blank
+    if settings.mobile_carousel == false
+      assign mobile_layout = 'stack'
+    else
+      assign mobile_layout = 'carousel'
+    endif
   endif
 
   # Mapping alignement -> justify-content (ligne) + align-items (colonne empilée)
@@ -35,7 +40,7 @@
 
 
 <div
-  class="partner-group{% if grayscale %} partner-group--grayscale{% endif %}{% if single_line %} partner-group--single-line{% endif %} {% if mobile_carousel %}partner-group--mobile-carousel{% else %}partner-group--mobile-stack{% endif %}"
+  class="partner-group{% if grayscale %} partner-group--grayscale{% endif %}{% if single_line %} partner-group--single-line{% endif %} partner-group--mobile-{{ mobile_layout }}"
   style="
     --partner-size: {{ image_size }}px;
     --partner-gap: {{ gap }}px;
@@ -175,7 +180,22 @@
     scroll-snap-align: start;
   }
 
-  /* Empilé (option désactivée) : logos les uns au-dessus des autres */
+  /* Grille : N colonnes (réglage « Logos par ligne »), qui passent à la ligne */
+  .partner-group--mobile-grid .partner-group__track {
+    flex-wrap: wrap;
+    overflow: visible;
+    justify-content: var(--partner-justify, center);
+    padding-inline: 0;
+  }
+
+  .partner-group--mobile-grid .partner-group__item {
+    flex: 0 0 calc(
+      (100% - (var(--partner-cols-mobile, 3) - 1) * var(--partner-gap, 16px))
+      / var(--partner-cols-mobile, 3)
+    );
+  }
+
+  /* Empilé : logos les uns au-dessus des autres */
   .partner-group--mobile-stack .partner-group__track {
     flex-direction: column;
     flex-wrap: nowrap;

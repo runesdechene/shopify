@@ -59,17 +59,21 @@
       "content": "Mobile"
     },
     {
-      "type": "checkbox",
-      "id": "mobile_carousel",
-      "label": "Afficher en carrousel sur mobile",
-      "info": "Si désactivé, les logos s'empilent verticalement (les uns au-dessus des autres).",
-      "default": true
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Disposition sur mobile",
+      "options": [
+        { "value": "carousel", "label": "Carrousel (défilant)" },
+        { "value": "grid",     "label": "Grille" },
+        { "value": "stack",    "label": "Empilé (1 colonne)" }
+      ],
+      "default": "carousel"
     },
     {
       "type": "range",
       "id": "images_per_row_mobile",
-      "label": "Logos visibles simultanément",
-      "info": "Nombre affiché en même temps dans le carrousel mobile (sans effet si le carrousel est désactivé)",
+      "label": "Logos par ligne (mobile)",
+      "info": "Nombre de logos par ligne en mode Grille, ou nombre visibles en même temps en mode Carrousel. Sans effet en mode Empilé.",
       "min": 2,
       "max": 5,
       "step": 1,
