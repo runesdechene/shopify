@@ -13,6 +13,7 @@
   assign gap                = settings.gap                   | default: 16
   assign grayscale          = settings.grayscale             | default: false
   assign alignment          = settings.alignment             | default: 'center'
+  assign single_line        = settings.single_line           | default: false
 
   # Carrousel mobile : true par défaut. On évite | default: true (qui écraserait false).
   assign mobile_carousel = true
@@ -34,7 +35,7 @@
 
 
 <div
-  class="partner-group{% if grayscale %} partner-group--grayscale{% endif %} {% if mobile_carousel %}partner-group--mobile-carousel{% else %}partner-group--mobile-stack{% endif %}"
+  class="partner-group{% if grayscale %} partner-group--grayscale{% endif %}{% if single_line %} partner-group--single-line{% endif %} {% if mobile_carousel %}partner-group--mobile-carousel{% else %}partner-group--mobile-stack{% endif %}"
   style="
     --partner-size: {{ image_size }}px;
     --partner-gap: {{ gap }}px;
@@ -125,6 +126,22 @@
 .partner-group--grayscale .partner-group__item:hover .partner-group__img {
   filter: grayscale(0%);
   opacity: 1;
+}
+
+/* ─── Une seule ligne (inline) ───────────────────────── */
+/* Tous les logos sur une même rangée : pas de retour, ils se réduisent pour tenir. */
+.partner-group--single-line .partner-group__track {
+  flex-wrap: nowrap;
+}
+.partner-group--single-line .partner-group__item {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.partner-group--single-line .partner-group__img {
+  width: 100%;
+  height: auto;
+  max-height: var(--partner-size, 80px);
+  object-fit: contain;
 }
 
 /* ─── Mobile ──────────────────────────────────────────── */
