@@ -31,6 +31,20 @@
     {%- render 'theme-styles-variables' -%}
     {%- render 'color-schemes' -%}
 
+    {%- comment -%}
+      RDC : sur la page d'accueil, on uniformise le radius des boutons du thème
+      (slideshow, sections, etc.) sur celui du bouton header (12px). Scopé à
+      l'accueil uniquement — n'affecte pas les autres pages ni le réglage global.
+    {%- endcomment -%}
+    {%- if request.page_type == 'index' -%}
+      {% style %}
+        :root {
+          --style-border-radius-buttons-primary: 12px;
+          --style-border-radius-buttons-secondary: 12px;
+        }
+      {% endstyle %}
+    {%- endif -%}
+
     {% if request.design_mode %}
       {%- render 'theme-editor' -%}
     {% endif %}
