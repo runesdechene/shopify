@@ -90,20 +90,24 @@
   }
   #{{ uid }} .rdc-mv__ph:hover .rdc-mv__name { opacity: 1; }
 
-  /* Pied / lien soumission */
-  #{{ uid }} .rdc-mv__foot { text-align: center; margin-top: 36px; padding-inline: 24px; }
-  #{{ uid }} .rdc-mv__foot p {
+  /* CTA soumission — bouton placé au-dessus du mur */
+  #{{ uid }} .rdc-mv__cta { text-align: center; margin-top: 24px; padding-inline: 24px; }
+  #{{ uid }} .rdc-mv__cta-intro {
     font-family: var(--font-fragment--family); font-style: italic;
-    font-size: 1.05rem; color: var(--color-foreground); opacity: .8; margin: 0 0 10px;
+    font-size: 1.05rem; color: var(--color-foreground); opacity: .8; margin: 0 0 14px;
   }
-  #{{ uid }} .rdc-mv__submit {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-family: var(--font-accent--family); letter-spacing: .04em; font-size: 1.05rem;
-    color: var(--mv-accent); text-decoration: none; font-weight: 600;
-    border-bottom: 1.5px solid rgb(var(--color-foreground-rgb) / .25); padding-bottom: 2px;
-    transition: border-color .2s;
+  #{{ uid }} .rdc-mv__submit-btn {
+    display: inline-flex; align-items: center; gap: 9px;
+    background: var(--mv-accent); color: #fff;
+    font-family: var(--font-accent--family); letter-spacing: .04em; font-weight: 600; font-size: 1rem;
+    padding: 14px 28px; border-radius: 999px; text-decoration: none;
+    box-shadow: 0 10px 26px rgb(var(--color-foreground-rgb) / .16);
+    transition: filter .2s ease, transform .2s ease;
   }
-  #{{ uid }} .rdc-mv__submit:hover { border-bottom-color: var(--mv-accent); }
+  #{{ uid }} .rdc-mv__submit-btn svg { width: 19px; height: 19px; flex: 0 0 auto; }
+  #{{ uid }} .rdc-mv__submit-btn:hover { filter: brightness(.92); transform: translateY(-2px); }
+  /* Resserre l'écart entre le bouton et la première rangée de photos */
+  #{{ uid }} .rdc-mv__cta + .rdc-mv__wall { margin-top: 18px; }
 
   /* Lightbox — style galerie produit : grande image + overlay infos en bas */
   #{{ uid }} .rdc-mv__lb { display: none; position: fixed; inset: 0; z-index: 1000;
@@ -192,14 +196,17 @@
     </div>
   {%- endif -%}
 
-  <div class="rdc-mv__wall" id="{{ uid }}-wall"><p class="rdc-mv__status">Chargement du mur…</p></div>
-
   {%- if s.submit_label != blank and s.submit_url != blank -%}
-    <div class="rdc-mv__foot">
-      {%- if s.submit_intro != blank -%}<p>{{ s.submit_intro }}</p>{%- endif -%}
-      <a class="rdc-mv__submit" href="{{ s.submit_url }}" target="_blank" rel="noopener">{{ s.submit_label }}</a>
+    <div class="rdc-mv__cta">
+      {%- if s.submit_intro != blank -%}<p class="rdc-mv__cta-intro">{{ s.submit_intro }}</p>{%- endif -%}
+      <a class="rdc-mv__submit-btn" href="{{ s.submit_url }}" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.5-2h7L16 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.2"/></svg>
+        <span>{{ s.submit_label }}</span>
+      </a>
     </div>
   {%- endif -%}
+
+  <div class="rdc-mv__wall" id="{{ uid }}-wall"><p class="rdc-mv__status">Chargement du mur…</p></div>
 
   <div class="rdc-mv__lb" id="{{ uid }}-lb">
     <button class="rdc-mv__lb-nav rdc-mv__lb-nav--prev" id="{{ uid }}-lb-prev" aria-label="Précédent">&#x2039;</button>
@@ -438,9 +445,9 @@
     { "type": "range", "id": "max_photos", "label": "Nombre max de photos chargées", "min": 10, "max": 100, "step": 5, "default": 40 },
     { "type": "checkbox", "id": "random_order", "label": "Ordre aléatoire des photos", "info": "Décoché = les plus récentes d'abord", "default": true },
 
-    { "type": "header", "content": "Lien de soumission" },
-    { "type": "text", "id": "submit_intro", "label": "Intro", "default": "Toi aussi tu portes l'Histoire ?" },
-    { "type": "text", "id": "submit_label", "label": "Libellé du lien", "default": "Partage ta photo sur le mur →" },
+    { "type": "header", "content": "Bouton de soumission" },
+    { "type": "text", "id": "submit_intro", "label": "Intro (au-dessus du bouton)", "default": "Toi aussi tu portes l'Histoire ?" },
+    { "type": "text", "id": "submit_label", "label": "Libellé du bouton", "default": "Partage ta photo sur le mur" },
     { "type": "text", "id": "submit_url", "label": "Lien", "info": "URL complète (ex : formulaire Hub)", "default": "https://hub.runesdechene.com/soumettre-contenu" },
 
     { "type": "header", "content": "Données (Supabase)" },
