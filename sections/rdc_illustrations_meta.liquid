@@ -65,20 +65,17 @@
   {% if section.settings.hover_zoom %}#{{ uid }} .rdc-ill__card:hover .rdc-ill__image img{transform:scale(1.05)}{% endif %}
 
   {% if section.settings.motif_float %}
-  /* Flottement continu subtil des motifs (2D, GPU). Le wrapper tourne/translate,
+  /* Flottement 2D subtil — UNIQUEMENT au survol. Le wrapper tourne/translate,
      l'image gère le zoom au survol → pas de conflit de transform. */
-  #{{ uid }} .rdc-ill__motif{transform-origin:50% 60%;will-change:transform;
-    animation:rdcIllFloat 6s ease-in-out infinite}
-  #{{ uid }} .rdc-ill__card:nth-child(3n+1) .rdc-ill__motif{animation-duration:6.4s;animation-delay:-1s}
-  #{{ uid }} .rdc-ill__card:nth-child(3n+2) .rdc-ill__motif{animation-duration:7.2s;animation-delay:-3s}
-  #{{ uid }} .rdc-ill__card:nth-child(3n+3) .rdc-ill__motif{animation-duration:6.8s;animation-delay:-4.5s}
+  #{{ uid }} .rdc-ill__motif{transform-origin:50% 60%;will-change:transform}
+  #{{ uid }} .rdc-ill__card:hover .rdc-ill__motif{animation:rdcIllFloat 6s ease-in-out infinite}
   @keyframes rdcIllFloat{
     0%{transform:rotate(-1.5deg) translateY(-2px)}
     50%{transform:rotate(1.5deg) translateY(2px)}
     100%{transform:rotate(-1.5deg) translateY(-2px)}
   }
   @media (prefers-reduced-motion: reduce){
-    #{{ uid }} .rdc-ill__motif{animation:none}
+    #{{ uid }} .rdc-ill__card:hover .rdc-ill__motif{animation:none}
   }
   {% endif %}
   #{{ uid }} .rdc-ill__new{position:absolute;top:13px;left:13px;z-index:2;width:62px;height:62px;border-radius:50%;
@@ -233,7 +230,7 @@
     { "type": "range", "id": "corner_radius", "label": "Arrondi des coins", "unit": "px", "min": 0, "max": 30, "step": 1, "default": 0 },
     { "type": "range", "id": "image_padding", "label": "Padding des illustrations", "unit": "px", "min": 0, "max": 60, "step": 2, "default": 30 },
     { "type": "checkbox", "id": "hover_zoom", "label": "Zoom au survol", "default": true },
-    { "type": "checkbox", "id": "motif_float", "label": "Animation flottante des motifs", "info": "Léger balancement 2D continu, déphasé entre cartes. Désactivé automatiquement si l'utilisateur préfère réduire les animations.", "default": true },
+    { "type": "checkbox", "id": "motif_float", "label": "Animation flottante des motifs (au survol)", "info": "Léger balancement 2D du motif au survol de la carte. Désactivé automatiquement si l'utilisateur préfère réduire les animations.", "default": true },
 
     { "type": "header", "content": "Affichage" },
     { "type": "checkbox", "id": "show_name", "label": "Afficher le nom", "default": true },
