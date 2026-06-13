@@ -39,6 +39,7 @@
   assign popup_delay = section.settings.popup_delay | default: 3
   assign popup_storage_key = section.settings.popup_storage_key | default: 'rdc_hero_seen'
   assign popup_show_once = section.settings.popup_show_once
+  assign popup_autoshow_disable = section.settings.popup_autoshow_disable
   assign modal_max_width = section.settings.modal_max_width | default: 820
   assign modal_padding_block = section.settings.modal_padding_block | default: 60
   assign modal_padding_inline = section.settings.modal_padding_inline | default: 40
@@ -68,6 +69,7 @@
   data-popup-delay="{{ popup_delay }}"
   data-popup-storage-key="{{ popup_storage_key }}"
   data-popup-show-once="{{ popup_show_once }}"
+  data-popup-autoshow-disable="{{ popup_autoshow_disable }}"
   style="--rdc-hero-overlay-rgb: {{ overlay_r }}, {{ overlay_g }}, {{ overlay_b }}; --rdc-hero-overlay-strength: {{ overlay_strength }}; --rdc-hero-overlay-blur: {{ overlay_blur }}px; --rdc-hero-backdrop-rgb: {{ backdrop_r }}, {{ backdrop_g }}, {{ backdrop_b }}; --rdc-hero-backdrop-strength: {{ backdrop_strength }}; --rdc-hero-backdrop-blur: {{ backdrop_blur }}px; --rdc-hero-modal-max-width: {{ modal_max_width }}px; --rdc-hero-modal-padding-block: {{ modal_padding_block }}px; --rdc-hero-modal-padding-inline: {{ modal_padding_inline }}px; --rdc-hero-text-rgb: {{ text_r }}, {{ text_g }}, {{ text_b }}; --rdc-hero-text-color: rgb({{ text_r }}, {{ text_g }}, {{ text_b }}); --rdc-hero-title-color: rgb({{ title_r }}, {{ title_g }}, {{ title_b }}); --rdc-hero-cta-primary-rgb: {{ cta_primary_r }}, {{ cta_primary_g }}, {{ cta_primary_b }}; --rdc-hero-cta-primary-color: rgb({{ cta_primary_r }}, {{ cta_primary_g }}, {{ cta_primary_b }}); --rdc-hero-taglines-max-width: {{ taglines_max_width }}px;"
 >
   <div class="rdc-hero__backdrop" data-rdc-hero-close></div>
@@ -969,6 +971,7 @@
     var delay = parseFloat(modal.getAttribute('data-popup-delay')) || 0;
     var storageKey = modal.getAttribute('data-popup-storage-key') || 'rdc_hero_seen';
     var showOnce = modal.getAttribute('data-popup-show-once') === 'true';
+    var autoshowDisabled = modal.getAttribute('data-popup-autoshow-disable') === 'true';
 
     var savedScrollY = 0;
 
@@ -1070,6 +1073,10 @@
       return;
     }
 
+    // Apparition auto désactivée : on ne s'ouvre pas au chargement.
+    // Le macaron flottant reste le seul moyen d'ouvrir la popup.
+    if (autoshowDisabled) return;
+
     if (showOnce) {
       try {
         if (localStorage.getItem(storageKey)) return;
@@ -1120,6 +1127,13 @@
       "default": 3,
       "unit": "s",
       "info": "Secondes avant que la popup apparaisse au chargement de la page."
+    },
+    {
+      "type": "checkbox",
+      "id": "popup_autoshow_disable",
+      "label": "Désactiver l'apparition auto",
+      "default": false,
+      "info": "Si coché : la popup ne s'ouvre pas toute seule au chargement. Seul le macaron flottant permet de l'ouvrir."
     },
     {
       "type": "checkbox",
