@@ -69,18 +69,18 @@
     overflow: hidden;
     -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
     mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+    cursor: grab; touch-action: pan-y; /* drag horizontal capturé, scroll vertical de la page conservé */
   }
+  #{{ uid }} .rdc-mv__row.is-grabbing { cursor: grabbing; }
   #{{ uid }} .rdc-mv__row + .rdc-mv__row { margin-top: 14px; }
   #{{ uid }} .rdc-mv__track { display: flex; gap: 14px; width: max-content; will-change: transform; }
-  #{{ uid }} .rdc-mv__row:hover .rdc-mv__track { animation-play-state: paused; }
-  @keyframes rdcMvScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
   #{{ uid }} .rdc-mv__ph {
     flex: 0 0 auto; width: var(--mv-card-w); aspect-ratio: 2/3;
     border-radius: 14px; overflow: hidden; position: relative; background: #221a12;
     cursor: pointer; box-shadow: 0 8px 22px rgb(var(--color-foreground-rgb) / .14);
   }
-  #{{ uid }} .rdc-mv__ph img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.75); transition: transform .5s ease, filter .4s ease; }
+  #{{ uid }} .rdc-mv__ph img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.75); transition: transform .5s ease, filter .4s ease; -webkit-user-drag: none; user-select: none; }
   #{{ uid }} .rdc-mv__ph:hover img { transform: scale(1.06); filter: saturate(1); }
   #{{ uid }} .rdc-mv__name {
     position: absolute; left: 0; right: 0; bottom: 0; padding: 26px 12px 10px;
@@ -159,8 +159,8 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    #{{ uid }} .rdc-mv__track { animation: none !important; transform: none !important; }
-    #{{ uid }} .rdc-mv__row { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    /* Le défilement auto est piloté en JS (désactivé si réduction du mouvement) ;
+       le drag/scrub manuel reste possible. */
   }
 </style>
 
@@ -261,6 +261,7 @@
     }
 
     var photos = [];
+    var suppressClick = false; /* passe à true pendant un drag pour ne pas ouvrir la lightbox */
 
     /* --- Lightbox (style galerie produit : overlay infos sur la photo + navigation) --- */
     var current = 0;
@@ -349,8 +350,62 @@
       for (var r = 0; r < repeats; r++) {
         for (var i = 0; i < list.length; i++) { half += cardHtml(list[i], list[i]._idx); }
       }
-      var style = 'animation: rdcMvScroll ' + duration + 's linear infinite;' + (reverse ? 'animation-direction:reverse;' : '');
-      return '<div class="rdc-mv__row"><div class="rdc-mv__track" style="' + style + '">' + half + half + '</div></div>';
+      return '<div class="rdc-mv__row" data-duration="' + duration + '" data-reverse="' + (reverse ? '1' : '0') + '">' +
+        '<div class="rdc-mv__track">' + half + half + '</div></div>';
+    }
+
+    /* Défilement auto (rAF) + scrub manuel (drag souris / tactile). Une boucle par rangée. */
+    var REDUCE = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    function setupScrub() {
+      var rows = wall.querySelectorAll('.rdc-mv__row');
+      for (var k = 0; k < rows.length; k++) {
+        (function(row) {
+          var track = row.querySelector('.rdc-mv__track');
+          if (!track) return;
+          var dir = row.getAttribute('data-reverse') === '1' ? -1 : 1;
+          var duration = parseFloat(row.getAttribute('data-duration')) || 40;
+          var pos = 0, half = 0, pxPerSec = 0, lastT = 0;
+          var dragging = false, hoverPause = false, startX = 0, startPos = 0, pid = null;
+
+          function measure() { half = track.scrollWidth / 2; pxPerSec = half > 0 ? half / duration : 0; }
+          measure();
+
+          function frame(t) {
+            if (half <= 0) measure();
+            if (!lastT) lastT = t;
+            var dt = (t - lastT) / 1000; lastT = t;
+            if (dt > 0.1) dt = 0.1; /* évite un saut au retour d'onglet */
+            if (!dragging && !hoverPause && !REDUCE && half > 0) pos += pxPerSec * dt * dir;
+            if (half > 0) { pos = ((pos % half) + half) % half; track.style.transform = 'translateX(' + (-pos) + 'px)'; }
+            requestAnimationFrame(frame);
+          }
+          requestAnimationFrame(frame);
+
+          row.addEventListener('pointerdown', function(e) {
+            suppressClick = false; dragging = true; startX = e.clientX; startPos = pos; pid = e.pointerId;
+            try { row.setPointerCapture(pid); } catch (_) {}
+            row.classList.add('is-grabbing');
+          });
+          row.addEventListener('pointermove', function(e) {
+            if (!dragging || half <= 0) return;
+            var dx = e.clientX - startX;
+            if (Math.abs(dx) > 5) suppressClick = true; /* devient un drag : on neutralise le clic */
+            pos = ((startPos - dx) % half + half) % half;
+            track.style.transform = 'translateX(' + (-pos) + 'px)';
+          });
+          function endDrag() {
+            if (!dragging) return;
+            dragging = false; lastT = 0;
+            if (pid != null) { try { row.releasePointerCapture(pid); } catch (_) {} pid = null; }
+            row.classList.remove('is-grabbing');
+          }
+          row.addEventListener('pointerup', endDrag);
+          row.addEventListener('pointercancel', endDrag);
+          row.addEventListener('dragstart', function(e) { e.preventDefault(); });
+          row.addEventListener('mouseenter', function() { hoverPause = true; });
+          row.addEventListener('mouseleave', function() { hoverPause = false; });
+        })(rows[k]);
+      }
     }
 
     function render() {
@@ -365,11 +420,13 @@
       }
       wall.innerHTML = html;
       wall.addEventListener('click', function(e) {
+        if (suppressClick) { suppressClick = false; return; } /* c'était un drag, pas un clic */
         var c = e.target.closest('.rdc-mv__ph');
         if (!c) return;
         var idx = parseInt(c.getAttribute('data-idx'), 10);
         if (photos[idx]) openModal(idx);
       });
+      setupScrub();
     }
 
     /* --- Stats live (comptes Hub + lieux appli) --- */
