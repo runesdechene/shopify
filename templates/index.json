@@ -1865,6 +1865,21 @@
         "condition_liquid": "",
         "condition_invert": false
       }
+    },
+    "rdc_cta_final_z9Kq2": {
+      "type": "rdc_cta-final",
+      "settings": {
+        "overline": "Prêt à commencer ?",
+        "title": "Porte ton Fragment d'Histoire.",
+        "subtitle": "<p>Des créations originales, à porter et à explorer. Trouve le Fragment qui te ressemble.</p>",
+        "button_label": "Explorer la boutique",
+        "button_url": "shopify://pages/boutique",
+        "alignment": "center",
+        "color_scheme": "scheme-1",
+        "accent_color": "#962B21",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
     }
   },
   "order": [
@@ -1881,6 +1896,7 @@
     "section_GbDEgR",
     "section_YjqMVK",
     "double_carres_V4Px4V",
-    "section_im7EFF"
+    "section_im7EFF",
+    "rdc_cta_final_z9Kq2"
   ]
 }

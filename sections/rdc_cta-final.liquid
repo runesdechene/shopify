@@ -1,0 +1,132 @@
+{%- comment -%}
+  rdc_cta-final.liquid — Bande CTA de clôture de la home (ou autre page).
+
+  Referme le parcours sur l'achat : sur-titre + titre + sous-titre + 1 ou 2 boutons.
+  Image de fond optionnelle (desktop + mobile dédié) avec voile réglable.
+  Destination du bouton = sélecteur natif (page OU collection), pour pouvoir
+  pointer vers la Page Boutique aujourd'hui, une Collection demain.
+  Radius des boutons aligné sur le standard de la home (12px).
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = 'RdcCta-' | append: section.id
+  assign s = section.settings
+  assign ov_alpha = s.bg_overlay_opacity | default: 45 | divided_by: 100.0
+  assign overlay  = s.bg_overlay_color | default: '#000000' | color_modify: 'alpha', ov_alpha
+-%}
+
+<style>
+  #{{ uid }} { padding-block: {{ s.padding_top }}px {{ s.padding_bottom }}px; --rdc-cta-accent: {{ s.accent_color }}; }
+  #{{ uid }} .rdc-cta__inner { max-width: {{ s.content_max_width }}px; margin-inline: auto;
+    box-sizing: border-box; padding-inline: clamp(20px, 5vw, 40px); text-align: {{ s.alignment }};
+    {% if s.alignment == 'center' %}display: flex; flex-direction: column; align-items: center;{% endif %} }
+  #{{ uid }} .rdc-cta__over { font-family: var(--font-body--family); font-weight: 700; font-size: .76rem;
+    letter-spacing: .28em; text-transform: uppercase; color: var(--rdc-cta-accent); margin-bottom: 14px; }
+  #{{ uid }} .rdc-cta__title { font-family: var(--font-heading--family, sans-serif);
+    font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.05; letter-spacing: .02em;
+    color: var(--color-foreground-heading, var(--color-foreground)); margin: 0 0 14px; max-width: 22ch; }
+  #{{ uid }} .rdc-cta__sub { font-family: var(--font-body--family); font-size: 1.08rem; line-height: 1.55;
+    color: var(--color-foreground); opacity: .88; margin: 0 0 28px; max-width: 52ch; }
+  #{{ uid }} .rdc-cta__sub p { margin: 0; }
+  #{{ uid }} .rdc-cta__actions { display: flex; flex-wrap: wrap; gap: 14px;
+    {% if s.alignment == 'center' %}justify-content: center;{% endif %} }
+
+  #{{ uid }} .rdc-cta__btn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+    font-family: var(--font-accent--family, var(--font-body--family)); font-weight: 700; letter-spacing: .04em;
+    text-transform: uppercase; font-size: .92rem; padding: 15px 30px; border-radius: 12px; transition: .2s ease; }
+  #{{ uid }} .rdc-cta__btn--primary { background: var(--rdc-cta-accent); color: #fff; border: 1.5px solid var(--rdc-cta-accent); }
+  #{{ uid }} .rdc-cta__btn--primary:hover { filter: brightness(.9); transform: translateY(-2px); }
+  #{{ uid }} .rdc-cta__btn--secondary { background: transparent; color: var(--color-foreground);
+    border: 1.5px solid rgb(var(--color-foreground-rgb) / .4); }
+  #{{ uid }} .rdc-cta__btn--secondary:hover { border-color: var(--color-foreground); transform: translateY(-2px); }
+
+  {% if s.light_text %}
+  #{{ uid }} .rdc-cta__title, #{{ uid }} .rdc-cta__sub { color: #fff; }
+  #{{ uid }} .rdc-cta__btn--secondary { color: #fff; border-color: rgba(255,255,255,.65); }
+  #{{ uid }} .rdc-cta__btn--secondary:hover { border-color: #fff; }
+  {% endif %}
+
+  {% if s.bg_image != blank %}
+  .rdc-cta-bg-{{ section.id }} {
+    background-image: linear-gradient({{ overlay }}, {{ overlay }}), url('{{ s.bg_image | image_url: width: 2400 }}');
+    background-size: cover; background-position: center; background-repeat: no-repeat;
+  }
+    {% if s.bg_image_mobile != blank %}
+    @media (max-width: 749px) {
+      .rdc-cta-bg-{{ section.id }} {
+        background-image: linear-gradient({{ overlay }}, {{ overlay }}), url('{{ s.bg_image_mobile | image_url: width: 1200 }}');
+      }
+    }
+    {% endif %}
+  {% endif %}
+
+  @media (max-width: 749px) {
+    #{{ uid }} .rdc-cta__btn { width: 100%; justify-content: center; }
+  }
+</style>
+
+{%- if s.anchor_id != blank -%}<span id="{{ s.anchor_id }}" aria-hidden="true" style="display:block;scroll-margin-top:var(--header-group-height,90px)"></span>{%- endif -%}
+<div class="section-background color-{{ s.color_scheme }} rdc-cta-bg-{{ section.id }}"></div>
+<div id="{{ uid }}" class="section section--full-width color-{{ s.color_scheme }} rdc-cta">
+  <div class="rdc-cta__inner">
+    {%- if s.overline != blank -%}<div class="rdc-cta__over">{{ s.overline }}</div>{%- endif -%}
+    {%- if s.title != blank -%}<h2 class="rdc-cta__title">{{ s.title }}</h2>{%- endif -%}
+    {%- if s.subtitle != blank -%}<div class="rdc-cta__sub">{{ s.subtitle }}</div>{%- endif -%}
+
+    {%- if s.button_label != blank or s.button2_label != blank -%}
+      <div class="rdc-cta__actions">
+        {%- if s.button_label != blank -%}
+          <a class="rdc-cta__btn rdc-cta__btn--primary" href="{{ s.button_url | default: '#' }}">{{ s.button_label }} →</a>
+        {%- endif -%}
+        {%- if s.button2_label != blank -%}
+          <a class="rdc-cta__btn rdc-cta__btn--secondary" href="{{ s.button2_url | default: '#' }}">{{ s.button2_label }}</a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "RDC — CTA final",
+  "tag": "section",
+  "class": "rdc-cta-final-section",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "header", "content": "Contenu" },
+    { "type": "inline_richtext", "id": "overline", "label": "Sur-titre", "default": "Prêt à commencer ?" },
+    { "type": "inline_richtext", "id": "title", "label": "Titre", "default": "Porte ton Fragment d'Histoire." },
+    { "type": "richtext", "id": "subtitle", "label": "Sous-titre", "default": "<p>Des créations originales, à porter et à explorer. Trouve le Fragment qui te ressemble.</p>" },
+
+    { "type": "header", "content": "Bouton principal" },
+    { "type": "text", "id": "button_label", "label": "Libellé", "default": "Explorer la boutique" },
+    { "type": "url", "id": "button_url", "label": "Lien", "info": "Choisis la Page Boutique ou une Collection (ex. « Tous les Fragments »)." },
+
+    { "type": "header", "content": "Bouton secondaire (optionnel)" },
+    { "type": "text", "id": "button2_label", "label": "Libellé", "default": "" },
+    { "type": "url", "id": "button2_url", "label": "Lien" },
+
+    { "type": "header", "content": "Image de fond (optionnel)" },
+    { "type": "image_picker", "id": "bg_image", "label": "Image de fond (bureau)" },
+    { "type": "image_picker", "id": "bg_image_mobile", "label": "Image de fond (mobile)", "info": "Si vide, l'image bureau est utilisée aussi sur mobile." },
+    { "type": "color", "id": "bg_overlay_color", "label": "Couleur du voile", "default": "#000000" },
+    { "type": "range", "id": "bg_overlay_opacity", "label": "Opacité du voile", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 45 },
+    { "type": "checkbox", "id": "light_text", "label": "Texte clair (sur image sombre)", "default": false },
+
+    { "type": "header", "content": "Style" },
+    { "type": "select", "id": "alignment", "label": "Alignement", "options": [
+      { "value": "left", "label": "Gauche" }, { "value": "center", "label": "Centre" } ], "default": "center" },
+    { "type": "range", "id": "content_max_width", "label": "Largeur max du contenu", "unit": "px", "min": 500, "max": 1200, "step": 20, "default": 760 },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Schéma de couleur", "default": "scheme-1" },
+    { "type": "color", "id": "accent_color", "label": "Couleur d'accent (bouton)", "default": "#962B21" },
+    { "type": "range", "id": "padding_top", "label": "Marge haut", "unit": "px", "min": 0, "max": 200, "step": 4, "default": 96 },
+    { "type": "range", "id": "padding_bottom", "label": "Marge bas", "unit": "px", "min": 0, "max": 200, "step": 4, "default": 96 },
+
+    { "type": "header", "content": "Ancre" },
+    { "type": "text", "id": "anchor_id", "label": "Ancre (ID)", "info": "Sans espace ni accent.", "default": "" }
+  ],
+  "presets": [
+    { "name": "RDC — CTA final" }
+  ]
+}
+{% endschema %}
