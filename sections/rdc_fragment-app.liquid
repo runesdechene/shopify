@@ -72,7 +72,7 @@
   .rdc-fa-{{ section.id }} .rdc-fa__ut { font-family: var(--font-accent--family); font-weight: 600; color: var(--color-foreground-heading, #403434); display: block; line-height: 1.1; }
   .rdc-fa-{{ section.id }} .rdc-fa__ud { font-family: var(--font-paragraph--family); color: var(--color-foreground, #594848); font-size: .86rem; }
 
-  .rdc-fa-{{ section.id }} .rdc-fa__actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 1rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__actions { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 1rem; }
   .rdc-fa-{{ section.id }} .rdc-fa__free { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-accent--family); font-weight: 700; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--color-foreground-heading, #403434); background: var(--color-background, #fff); border: 1px solid rgb(var(--color-foreground-rgb) / .15); padding: 7px 13px; border-radius: 30px; }
   .rdc-fa-{{ section.id }} .rdc-fa__free .dot { width: 7px; height: 7px; border-radius: 50%; background: #39b35a; box-shadow: 0 0 0 4px rgba(57,179,90,.18); }
 
@@ -133,6 +133,7 @@
 
         <div class="rdc-fa__actions">
           {% if s.free_text != blank %}<span class="rdc-fa__free"><span class="dot"></span>{{ s.free_text }}</span>{% endif %}
+          {% if s.account_text != blank %}<span class="rdc-fa__free"><span class="dot"></span>{{ s.account_text }}</span>{% endif %}
         </div>
       </div>
 
@@ -233,7 +234,8 @@
     { "type": "text", "id": "unlock3_title", "label": "Déblocage 3 — titre", "default": "Sur ton profil de Porteur" },
     { "type": "text", "id": "unlock3_desc", "label": "Déblocage 3 — texte", "default": "le Fragment rejoint ta collection" },
     { "type": "header", "content": "Badge" },
-    { "type": "text", "id": "free_text", "label": "Badge gratuit", "default": "Gratuit · un clic · sur mobile et sur PC" },
+    { "type": "text", "id": "free_text", "label": "Badge gratuit", "default": "Gratuit · un clic · sur PC et mobile" },
+    { "type": "text", "id": "account_text", "label": "Badge compte unifié", "default": "Un seul compte boutique & jeu — ton email de commande suffit" },
     { "type": "header", "content": "Téléphone (vidéo de l'app)" },
     { "type": "video", "id": "app_video", "label": "Vidéo (recommandé — Shopify l'optimise)" },
     { "type": "text", "id": "video_external_url", "label": "OU URL vidéo externe (mp4/webm)", "info": "Utilisé si aucune vidéo ci-dessus", "default": "https://cdn.shopify.com/videos/c/o/v/f6c638bf0b134d7397ba964e6acf4417.mp4" },
