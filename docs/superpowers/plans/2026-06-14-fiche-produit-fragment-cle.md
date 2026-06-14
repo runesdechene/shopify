@@ -138,7 +138,7 @@ Créer `sections/rdc_fragment-app.liquid` avec exactement :
         {% if s.cta_url != blank %}<a class="rdc-fa__cta button" href="{{ s.cta_url }}">{{ s.cta_label }}</a>{% endif %}
         {% if s.note != blank %}<p class="rdc-fa__note">{{ s.note }}</p>{% endif %}
       </div>
-      {% if s.app_image %}<div class="rdc-fa__media"><img src="{{ s.app_image | image_url: width: 800 }}" alt="{{ s.title | escape }}" loading="lazy"></div>{% endif %}
+      {% if s.app_image %}<div class="rdc-fa__media">{{ s.app_image | image_url: width: 800 | image_tag: loading: 'lazy', alt: s.title }}</div>{% endif %}
     </div>
   </div>
 </div>

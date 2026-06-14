@@ -1,0 +1,119 @@
+{% comment %}
+  RDC — Fragment & App (fiche produit).
+  Bloc app-unlock : le Fragment acheté s'active dans l'application La Carte.
+  Déblocages live : Titre lié au personnage + énigmes bi-journalières + affichage profil.
+  Données dynamiques via RPC Supabase anon get_fragment_unlocks_by_product (fallback générique si absente).
+  Calqué sur rdc_ils-nous-portent-produit.
+{% endcomment %}
+
+{%- liquid
+  assign s = section.settings
+  assign perso = product.metafields.custom.illustration_produit.value.nom
+-%}
+
+<style>
+  .rdc-fa-{{ section.id }} { max-width: var(--page-content-width, 120rem); margin-inline: auto; padding: 1.5rem 0 3rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__card {
+    background-color: #f5f1e8;
+    {% if s.background_image %}background-image: url('{{ s.background_image | image_url: width: 1600 }}'); background-size: cover; background-position: center;{% endif %}
+    border: 2px solid #ac9c89; border-radius: 20px; padding: 48px 56px; position: relative;
+  }
+  @media (max-width: 749px) { .rdc-fa-{{ section.id }} .rdc-fa__card { padding: 32px 22px; } }
+  .rdc-fa-{{ section.id }} .rdc-fa__layout { display: flex; gap: 2rem; align-items: center; }
+  @media (max-width: 749px) { .rdc-fa-{{ section.id }} .rdc-fa__layout { flex-direction: column-reverse; } }
+  .rdc-fa-{{ section.id }} .rdc-fa__col { flex: 1; }
+  .rdc-fa-{{ section.id }} .rdc-fa__media { flex: 0 0 38%; }
+  .rdc-fa-{{ section.id }} .rdc-fa__media img { width: 100%; border-radius: 12px; display: block; }
+  .rdc-fa-{{ section.id }} .rdc-fa__pretitle { font-family: var(--font-accent--family); text-transform: uppercase; letter-spacing: .14em; font-size: .8rem; font-weight: 700; color: var(--color-primary, #833434); margin: 0 0 .4rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__title { font-family: var(--font-heading--family); font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1; color: var(--color-foreground-heading, #403434); margin: 0 0 .6rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__intro { font-family: var(--font-paragraph--family); color: var(--color-foreground, #594848); margin: 0 0 1.4rem; max-width: 46ch; }
+  .rdc-fa-{{ section.id }} .rdc-fa__unlock { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid #e6d8bd; }
+  .rdc-fa-{{ section.id }} .rdc-fa__unlock:last-of-type { border-bottom: none; }
+  .rdc-fa-{{ section.id }} .rdc-fa__ic { font-size: 1.5rem; line-height: 1; }
+  .rdc-fa-{{ section.id }} .rdc-fa__ut { font-family: var(--font-accent--family); font-weight: 700; color: var(--color-foreground-heading, #403434); display: block; }
+  .rdc-fa-{{ section.id }} .rdc-fa__ud { font-family: var(--font-paragraph--family); color: var(--color-foreground, #594848); font-size: .92rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__cta { margin-top: 1.2rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__note { font-size: .85rem; opacity: .8; margin-top: .5rem; }
+</style>
+
+<div class="rdc-fa-{{ section.id }}" id="rdc-fa-{{ section.id }}" {{ section.shopify_attributes }}>
+  <div class="rdc-fa__card">
+    <div class="rdc-fa__layout">
+      <div class="rdc-fa__col">
+        {% if s.pretitle != blank %}<p class="rdc-fa__pretitle">{{ s.pretitle }}</p>{% endif %}
+        <h2 class="rdc-fa__title">{{ s.title }}</h2>
+        {% if s.intro != blank %}<p class="rdc-fa__intro">{{ s.intro }}</p>{% endif %}
+
+        <div class="rdc-fa__unlock">
+          <span class="rdc-fa__ic">🏷️</span>
+          <span><span class="rdc-fa__ut">{{ s.unlock1_title }}</span>
+          <span class="rdc-fa__ud" id="rdc-fa-titre-{{ section.id }}">{% if perso != blank %}un titre unique, lié à {{ perso }}, que tu portes en jeu{% else %}{{ s.unlock1_desc }}{% endif %}</span></span>
+        </div>
+        <div class="rdc-fa__unlock">
+          <span class="rdc-fa__ic">🧩</span>
+          <span><span class="rdc-fa__ut">{{ s.unlock2_title }}</span>
+          <span class="rdc-fa__ud">{{ s.unlock2_desc }}</span></span>
+        </div>
+        <div class="rdc-fa__unlock">
+          <span class="rdc-fa__ic">🗺️</span>
+          <span><span class="rdc-fa__ut">{{ s.unlock3_title }}</span>
+          <span class="rdc-fa__ud">{{ s.unlock3_desc }}</span></span>
+        </div>
+
+        {% if s.cta_url != blank %}<a class="rdc-fa__cta button" href="{{ s.cta_url }}">{{ s.cta_label }}</a>{% endif %}
+        {% if s.note != blank %}<p class="rdc-fa__note">{{ s.note }}</p>{% endif %}
+      </div>
+      {% if s.app_image %}<div class="rdc-fa__media">{{ s.app_image | image_url: width: 800 | image_tag: loading: 'lazy', alt: s.title }}</div>{% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var SUPABASE_URL = {{ section.settings.supabase_url | json }};
+    var SUPABASE_KEY = {{ section.settings.supabase_anon_key | json }};
+    var HANDLE = {{ product.handle | json }};
+    var SID = {{ section.id | json }};
+    if (!SUPABASE_URL || !SUPABASE_KEY || !HANDLE) return; // le fallback générique reste affiché
+    fetch(SUPABASE_URL + '/rest/v1/rpc/get_fragment_unlocks_by_product', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY },
+      body: JSON.stringify({ p_handle: HANDLE })
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        var row = Array.isArray(data) ? data[0] : data;
+        if (!row || !row.titre) return;
+        var el = document.getElementById('rdc-fa-titre-' + SID);
+        if (el) el.textContent = 'le titre « ' + row.titre + ' », que tu portes en jeu';
+      })
+      .catch(function (e) { console.error('RDC fragment-app:', e); }); // le fallback reste affiché
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "RDC — Fragment & App",
+  "tag": "section",
+  "class": "section-rdc-fragment-app",
+  "settings": [
+    { "type": "text", "id": "pretitle", "label": "Pré-titre", "default": "Ton Fragment ne s'arrête pas au tissu" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Il s'éveille dans La Carte" },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "En le possédant, tu l'actives dans l'application — il rejoint ton héritage de Porteur." },
+    { "type": "text", "id": "unlock1_title", "label": "Déblocage 1 — titre", "default": "Le Titre du Fragment" },
+    { "type": "text", "id": "unlock1_desc", "label": "Déblocage 1 — fallback", "default": "un titre unique, lié à ton personnage, que tu portes en jeu" },
+    { "type": "text", "id": "unlock2_title", "label": "Déblocage 2 — titre", "default": "Les énigmes de sa légende" },
+    { "type": "text", "id": "unlock2_desc", "label": "Déblocage 2 — texte", "default": "deux par jour sur son thème — elles rapportent des Couronnes" },
+    { "type": "text", "id": "unlock3_title", "label": "Déblocage 3 — titre", "default": "Sur ton profil de Porteur" },
+    { "type": "text", "id": "unlock3_desc", "label": "Déblocage 3 — texte", "default": "le Fragment rejoint ta collection" },
+    { "type": "text", "id": "cta_label", "label": "Bouton — texte", "default": "Découvrir dans l'application" },
+    { "type": "text", "id": "cta_url", "label": "Bouton — URL (externe : type texte, pas url)", "info": "https://… accepté ici (type url refuse un default externe)" },
+    { "type": "text", "id": "note", "label": "Note sous le bouton", "default": "Connecte-toi avec ton email de commande." },
+    { "type": "image_picker", "id": "app_image", "label": "Capture app (profil + titre)" },
+    { "type": "image_picker", "id": "background_image", "label": "Fond parchemin (optionnel)" },
+    { "type": "text", "id": "supabase_url", "label": "URL Supabase", "info": "Ex: https://xxxxx.supabase.co" },
+    { "type": "text", "id": "supabase_anon_key", "label": "Clé Supabase (anon)" }
+  ],
+  "presets": [ { "name": "RDC — Fragment & App" } ]
+}
+{% endschema %}
