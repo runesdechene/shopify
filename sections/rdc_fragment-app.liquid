@@ -1,10 +1,9 @@
 {% comment %}
   RDC — Fragment & App (fiche produit).
   Bloc app-unlock : le Fragment acheté s'active dans l'application La Carte.
-  Colonne droite = « Carte de Porteur » : illustration du Fragment (métaobjet) + Titre débloqué (trophée).
-  Déblocages live : Titre lié au personnage + énigmes bi-journalières + affichage profil.
+  Colonne droite = téléphone (vidéo de l'app, repris de rdc_app) + « Carte de Porteur » flottante
+  (illustration du Fragment + Titre débloqué). Montre que c'est une app mobile ET ce qu'on gagne.
   Titre dynamique via RPC Supabase anon get_fragment_unlocks_by_product (fallback générique si absente).
-  Calqué sur rdc_ils-nous-portent-produit.
 {% endcomment %}
 
 {%- liquid
@@ -17,6 +16,12 @@
   if illu == blank
     assign illu = product.featured_image
   endif
+  assign poster_url = ''
+  if s.video_poster != blank
+    assign poster_url = s.video_poster | image_url: width: 720
+  elsif s.app_video != blank and s.app_video.preview_image != blank
+    assign poster_url = s.app_video.preview_image | image_url: width: 720
+  endif
 -%}
 
 <style>
@@ -27,7 +32,7 @@
     border: 2px solid #ac9c89; border-radius: 20px; padding: 40px 44px;
   }
   @media (max-width: 749px) { .rdc-fa-{{ section.id }} .rdc-fa__card { padding: 28px 22px; } }
-  .rdc-fa-{{ section.id }} .rdc-fa__layout { display: flex; gap: 34px; align-items: stretch; }
+  .rdc-fa-{{ section.id }} .rdc-fa__layout { display: flex; gap: 34px; align-items: center; }
   @media (max-width: 749px) { .rdc-fa-{{ section.id }} .rdc-fa__layout { flex-direction: column; } }
   .rdc-fa-{{ section.id }} .rdc-fa__col { flex: 1; display: flex; flex-direction: column; }
   .rdc-fa-{{ section.id }} .rdc-fa__pretitle { font-family: var(--font-accent--family); text-transform: uppercase; letter-spacing: .16em; font-size: .78rem; font-weight: 700; color: var(--color-primary, #833434); margin: 0 0 .35rem; }
@@ -41,26 +46,36 @@
   .rdc-fa-{{ section.id }} .rdc-fa__cta { margin-top: 1.3rem; align-self: flex-start; }
   .rdc-fa-{{ section.id }} .rdc-fa__note { font-size: .83rem; opacity: .8; margin-top: .55rem; }
 
-  /* Carte de Porteur */
-  .rdc-fa-{{ section.id }} .rdc-fa__reward { flex: 0 0 40%; border-radius: 16px; padding: 14px; position: relative; display: flex; flex-direction: column;
-    background: #46493c; box-shadow: 0 12px 30px rgba(70,73,60,.35); }
-  .rdc-fa-{{ section.id }} .rdc-fa__reward--light { background: #ece2cd; box-shadow: 0 10px 26px rgba(131,52,52,.12); }
-  @media (max-width: 749px) { .rdc-fa-{{ section.id }} .rdc-fa__reward { flex: auto; } }
-  .rdc-fa-{{ section.id }} .rdc-fa__reward-label { position: absolute; top: 14px; left: 14px; z-index: 2; background: #f4d694; color: #623c3c; font-family: var(--font-accent--family); font-weight: 700; font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; padding: 4px 9px; border-radius: 20px; }
-  .rdc-fa-{{ section.id }} .rdc-fa__illu { aspect-ratio: 3 / 4; border-radius: 11px; overflow: hidden; background: #efe6d3; display: flex; align-items: center; justify-content: center; }
+  /* Scène droite : téléphone héros + carte flottante */
+  .rdc-fa-{{ section.id }} .rdc-fa__stage { flex: 0 0 46%; position: relative; display: flex; justify-content: flex-end; align-items: center; }
+  .rdc-fa-{{ section.id }} .rdc-fa__phone { position: relative; z-index: 1; width: clamp(200px, 22vw, 246px); aspect-ratio: 300 / 610;
+    background: #1a1410; border-radius: 40px; padding: 9px; box-shadow: 0 38px 76px -26px rgba(40,30,15,.5), 0 0 0 2px rgba(0,0,0,.25) inset; }
+  .rdc-fa-{{ section.id }} .rdc-fa__screen { width: 100%; height: 100%; border-radius: 31px; overflow: hidden; background: #1a1410; }
+  .rdc-fa-{{ section.id }} .rdc-fa__screen video, .rdc-fa-{{ section.id }} .rdc-fa__screen img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .rdc-fa-{{ section.id }} .rdc-fa__screen-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-align: center; color: #e9dcc4; font-family: var(--font-paragraph--family); font-size: .8rem; padding: 20px; background: linear-gradient(135deg,#55584a,#2b2d23); }
+
+  /* Carte de Porteur flottante */
+  .rdc-fa-{{ section.id }} .rdc-fa__reward { position: absolute; left: 0; bottom: 16px; z-index: 2; width: 184px; border-radius: 14px; padding: 12px;
+    background: #46493c; box-shadow: 0 16px 34px rgba(0,0,0,.32); }
+  .rdc-fa-{{ section.id }} .rdc-fa__reward--light { background: #ece2cd; box-shadow: 0 14px 30px rgba(131,52,52,.16); }
+  .rdc-fa-{{ section.id }} .rdc-fa__reward-label { display: inline-block; background: #f4d694; color: #623c3c; font-family: var(--font-accent--family); font-weight: 700; font-size: .6rem; letter-spacing: .1em; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; margin-bottom: 9px; }
+  .rdc-fa-{{ section.id }} .rdc-fa__illu { aspect-ratio: 4 / 5; border-radius: 9px; overflow: hidden; background: #efe6d3; display: flex; align-items: center; justify-content: center; }
   .rdc-fa-{{ section.id }} .rdc-fa__illu img { width: 100%; height: 100%; object-fit: contain; display: block; }
-  .rdc-fa-{{ section.id }} .rdc-fa__plaque { margin-top: 12px; border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; gap: 12px;
+  .rdc-fa-{{ section.id }} .rdc-fa__plaque { margin-top: 10px; border-radius: 9px; padding: 10px 12px; display: flex; align-items: center; gap: 10px;
     background: linear-gradient(#3c3f33,#33362b); border: 1px solid #6d6f54; }
   .rdc-fa-{{ section.id }} .rdc-fa__reward--light .rdc-fa__plaque { background: #fff8ec; border: 1px solid #d8ccb4; }
-  .rdc-fa-{{ section.id }} .rdc-fa__seal { flex: 0 0 38px; height: 38px; border-radius: 50%; background: #f4d694; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
-  .rdc-fa-{{ section.id }} .rdc-fa__plaque small { display: block; font-family: var(--font-accent--family); text-transform: uppercase; letter-spacing: .12em; font-size: .6rem; color: #c7b06a; }
+  .rdc-fa-{{ section.id }} .rdc-fa__seal { flex: 0 0 32px; height: 32px; border-radius: 50%; background: #f4d694; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__plaque small { display: block; font-family: var(--font-accent--family); text-transform: uppercase; letter-spacing: .1em; font-size: .55rem; color: #c7b06a; }
   .rdc-fa-{{ section.id }} .rdc-fa__reward--light .rdc-fa__plaque small { color: #9a6a1e; }
-  .rdc-fa-{{ section.id }} .rdc-fa__plaque b { font-family: var(--font-heading--family); font-weight: 400; font-size: 1.45rem; color: #f6eddd; line-height: 1.05; }
+  .rdc-fa-{{ section.id }} .rdc-fa__plaque b { font-family: var(--font-heading--family); font-weight: 400; font-size: 1.2rem; color: #f6eddd; line-height: 1.05; }
   .rdc-fa-{{ section.id }} .rdc-fa__reward--light .rdc-fa__plaque b { color: #403434; }
-  .rdc-fa-{{ section.id }} .rdc-fa__profil { margin-top: 10px; display: flex; align-items: center; gap: 9px; color: #cfc8b3; font-size: .78rem; }
-  .rdc-fa-{{ section.id }} .rdc-fa__reward--light .rdc-fa__profil { color: #6b5d4b; }
-  .rdc-fa-{{ section.id }} .rdc-fa__avatar { width: 26px; height: 26px; border-radius: 50%; background: #6d6f54; flex: 0 0 26px; }
-  .rdc-fa-{{ section.id }} .rdc-fa__reward--light .rdc-fa__avatar { background: #cbbfa6; }
+
+  @media (max-width: 749px) {
+    .rdc-fa-{{ section.id }} .rdc-fa__stage { flex: auto; flex-direction: column; justify-content: center; gap: 18px; width: 100%; }
+    .rdc-fa-{{ section.id }} .rdc-fa__phone { margin: 0 auto; }
+    .rdc-fa-{{ section.id }} .rdc-fa__reward { position: static; width: 230px; margin: 0 auto; }
+  }
+  @media (prefers-reduced-motion: reduce) { .rdc-fa-{{ section.id }} .rdc-fa__screen video { display: none; } }
 </style>
 
 <div class="rdc-fa-{{ section.id }}" id="rdc-fa-{{ section.id }}" {{ section.shopify_attributes }}>
@@ -91,17 +106,34 @@
         {% if s.note != blank %}<p class="rdc-fa__note">{{ s.note }}</p>{% endif %}
       </div>
 
-      <div class="rdc-fa__reward{% unless s.card_dark %} rdc-fa__reward--light{% endunless %}">
-        {% if s.reward_label != blank %}<span class="rdc-fa__reward-label">{{ s.reward_label }}</span>{% endif %}
-        <div class="rdc-fa__illu">
-          {% if illu != blank %}{{ illu | image_url: width: 700 | image_tag: loading: 'lazy', alt: s.title }}{% endif %}
+      <div class="rdc-fa__stage">
+        <div class="rdc-fa__phone">
+          <div class="rdc-fa__screen">
+            {%- if s.app_video != blank -%}
+              <video autoplay muted loop playsinline preload="auto"{% if poster_url != blank %} poster="{{ poster_url }}"{% endif %}>
+                {%- for source in s.app_video.sources -%}<source src="{{ source.url }}" type="{{ source.mime_type }}">{%- endfor -%}
+              </video>
+            {%- elsif s.video_external_url != blank -%}
+              <video src="{{ s.video_external_url }}" autoplay muted loop playsinline preload="auto"{% if poster_url != blank %} poster="{{ poster_url }}"{% endif %}></video>
+            {%- elsif poster_url != blank -%}
+              <img src="{{ poster_url }}" alt="{{ s.title | escape }}" width="300" height="610" loading="lazy">
+            {%- else -%}
+              <div class="rdc-fa__screen-ph">Ajoute la vidéo de l'app (réglage « Vidéo »).</div>
+            {%- endif -%}
+          </div>
         </div>
-        <div class="rdc-fa__plaque">
-          <span class="rdc-fa__seal">🏷️</span>
-          <div><small>{{ s.plaque_label }}</small>
-          <b id="rdc-fa-plaque-{{ section.id }}">{% if perso != blank %}{{ perso }}{% else %}{{ s.plaque_fallback }}{% endif %}</b></div>
+
+        <div class="rdc-fa__reward{% unless s.card_dark %} rdc-fa__reward--light{% endunless %}">
+          {% if s.reward_label != blank %}<span class="rdc-fa__reward-label">{{ s.reward_label }}</span>{% endif %}
+          <div class="rdc-fa__illu">
+            {% if illu != blank %}{{ illu | image_url: width: 600 | image_tag: loading: 'lazy', alt: s.title }}{% endif %}
+          </div>
+          <div class="rdc-fa__plaque">
+            <span class="rdc-fa__seal">🏷️</span>
+            <div><small>{{ s.plaque_label }}</small>
+            <b id="rdc-fa-plaque-{{ section.id }}">{% if perso != blank %}{{ perso }}{% else %}{{ s.plaque_fallback }}{% endif %}</b></div>
+          </div>
         </div>
-        {% if s.profil_text != blank %}<div class="rdc-fa__profil"><span class="rdc-fa__avatar"></span>{{ s.profil_text }}</div>{% endif %}
       </div>
     </div>
   </div>
@@ -148,16 +180,19 @@
     { "type": "text", "id": "unlock2_desc", "label": "Déblocage 2 — texte", "default": "deux par jour sur son thème — elles rapportent des Couronnes" },
     { "type": "text", "id": "unlock3_title", "label": "Déblocage 3 — titre", "default": "Sur ton profil de Porteur" },
     { "type": "text", "id": "unlock3_desc", "label": "Déblocage 3 — texte", "default": "le Fragment rejoint ta collection" },
-    { "type": "header", "content": "Carte de Porteur (colonne droite)" },
+    { "type": "header", "content": "Téléphone (vidéo de l'app)" },
+    { "type": "video", "id": "app_video", "label": "Vidéo (recommandé — Shopify l'optimise)" },
+    { "type": "text", "id": "video_external_url", "label": "OU URL vidéo externe (mp4/webm)", "info": "Utilisé si aucune vidéo ci-dessus", "default": "https://cdn.shopify.com/videos/c/o/v/f6c638bf0b134d7397ba964e6acf4417.mp4" },
+    { "type": "image_picker", "id": "video_poster", "label": "Image de repli (poster)" },
+    { "type": "header", "content": "Carte de Porteur (flottante)" },
     { "type": "checkbox", "id": "card_dark", "label": "Carte sombre", "default": true, "info": "Décoché = carte parchemin clair" },
     { "type": "text", "id": "reward_label", "label": "Étiquette", "default": "Ce que tu débloques" },
     { "type": "text", "id": "plaque_label", "label": "Plaque — sur-titre", "default": "Titre débloqué en jeu" },
     { "type": "text", "id": "plaque_fallback", "label": "Plaque — titre par défaut (sans donnée)", "default": "Ton titre de Porteur" },
-    { "type": "text", "id": "profil_text", "label": "Ligne profil", "default": "rejoint ta collection sur ton profil" },
     { "type": "image_picker", "id": "app_image", "label": "Image de carte (sinon : illustration du Fragment)" },
     { "type": "header", "content": "Bouton & note" },
     { "type": "text", "id": "cta_label", "label": "Bouton — texte", "default": "Découvrir dans l'application" },
-    { "type": "text", "id": "cta_url", "label": "Bouton — URL (externe : type texte)", "info": "https://… accepté ici (type url refuse un default externe)" },
+    { "type": "text", "id": "cta_url", "label": "Bouton — URL (externe : type texte)", "info": "https://… accepté ici (type url refuse un default externe)", "default": "https://app.runesdechene.com" },
     { "type": "text", "id": "note", "label": "Note sous le bouton", "default": "Connecte-toi avec ton email de commande." },
     { "type": "header", "content": "Fond & données" },
     { "type": "image_picker", "id": "background_image", "label": "Fond parchemin (optionnel)" },
