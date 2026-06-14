@@ -58,14 +58,15 @@
   .rdc-fa-{{ section.id }} .rdc-fa__note { font-size: .83rem; opacity: .8; margin-top: .55rem; }
 
   /* Scène droite : téléphone héros + carte flottante */
-  .rdc-fa-{{ section.id }} .rdc-fa__stage { flex: 0 0 44%; position: relative; display: flex; justify-content: flex-end; align-items: center; min-height: 380px; }
+  .rdc-fa-{{ section.id }} .rdc-fa__stage { flex: 0 0 44%; position: relative; display: flex; justify-content: center; align-items: center; min-height: 380px; }
+  .rdc-fa-{{ section.id }} .rdc-fa__phonewrap { position: relative; }
   .rdc-fa-{{ section.id }} .rdc-fa__phone { position: relative; z-index: 1; width: clamp(196px, 21vw, 240px); aspect-ratio: 300 / 610;
     background: #1a1410; border-radius: 36px; padding: 8px; box-shadow: 0 36px 72px -25px rgba(40,30,15,.5), 0 0 0 2px rgba(0,0,0,.25) inset; }
   .rdc-fa-{{ section.id }} .rdc-fa__screen { width: 100%; height: 100%; border-radius: 28px; overflow: hidden; background: #1a1410; }
   .rdc-fa-{{ section.id }} .rdc-fa__screen video, .rdc-fa-{{ section.id }} .rdc-fa__screen img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .rdc-fa-{{ section.id }} .rdc-fa__screen-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-align: center; color: #e9dcc4; font-family: var(--font-paragraph--family); font-size: .8rem; padding: 20px; background: linear-gradient(135deg,#55584a,#2b2d23); }
 
-  .rdc-fa-{{ section.id }} .rdc-fa__reward { position: absolute; left: 0; bottom: 14px; z-index: 2; width: 178px; border-radius: 13px; padding: 11px; background: #46493c; box-shadow: 0 16px 32px rgba(0,0,0,.32); }
+  .rdc-fa-{{ section.id }} .rdc-fa__reward { position: absolute; left: -56px; bottom: 26px; z-index: 2; width: 212px; border-radius: 14px; padding: 12px; background: #46493c; box-shadow: 0 18px 36px rgba(0,0,0,.34); }
   .rdc-fa-{{ section.id }} .rdc-fa__reward--light { background: #ece2cd; box-shadow: 0 14px 28px rgba(131,52,52,.16); }
   .rdc-fa-{{ section.id }} .rdc-fa__reward-label { display: inline-block; background: #f4d694; color: #623c3c; font-family: var(--font-accent--family); font-weight: 700; font-size: .58rem; letter-spacing: .09em; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; margin-bottom: 8px; }
   .rdc-fa-{{ section.id }} .rdc-fa__illu { aspect-ratio: 4 / 5; border-radius: 8px; overflow: hidden; background: #efe6d3; display: flex; align-items: center; justify-content: center; }
@@ -79,7 +80,8 @@
   .rdc-fa-{{ section.id }} .rdc-fa__reward--light .rdc-fa__plaque b { color: #403434; }
 
   @media (max-width: 749px) {
-    .rdc-fa-{{ section.id }} .rdc-fa__stage { flex: auto; flex-direction: column; justify-content: center; gap: 18px; width: 100%; min-height: 0; margin-top: 8px; }
+    .rdc-fa-{{ section.id }} .rdc-fa__stage { flex: auto; justify-content: center; width: 100%; min-height: 0; margin-top: 8px; }
+    .rdc-fa-{{ section.id }} .rdc-fa__phonewrap { display: flex; flex-direction: column; align-items: center; gap: 16px; }
     .rdc-fa-{{ section.id }} .rdc-fa__phone { margin: 0 auto; }
     .rdc-fa-{{ section.id }} .rdc-fa__reward { position: static; width: 230px; margin: 0 auto; }
   }
@@ -153,6 +155,7 @@
       </div>
 
       <div class="rdc-fa__stage">
+        <div class="rdc-fa__phonewrap">
         <div class="rdc-fa__phone">
           <div class="rdc-fa__screen">
             {%- if s.app_video != blank -%}
@@ -179,6 +182,7 @@
             <div><small>{{ s.plaque_label }}</small>
             <b id="rdc-fa-plaque-{{ section.id }}">{% if perso != blank %}{{ perso }}{% else %}{{ s.plaque_fallback }}{% endif %}</b></div>
           </div>
+        </div>
         </div>
       </div>
     </div>
