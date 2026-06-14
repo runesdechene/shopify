@@ -1,8 +1,8 @@
 {% comment %}
   RDC — Fragment & App (fiche produit).
   Bloc app-unlock : le Fragment acheté s'active dans l'application La Carte.
-  Colonne droite = téléphone (vidéo de l'app, repris de rdc_app) + « Carte de Porteur » flottante
-  (illustration du Fragment + Titre débloqué). Montre que c'est une app mobile ET ce qu'on gagne.
+  Gauche : ce que CE Fragment débloque (3 médaillons) + rappel de l'app (chips à icônes, blocs éditables, repris de rdc_app).
+  Droite : téléphone (vidéo de l'app) + « Carte de Porteur » flottante (illustration + Titre-trophée).
   Titre dynamique via RPC Supabase anon get_fragment_unlocks_by_product (fallback générique si absente).
 {% endcomment %}
 
@@ -29,49 +29,57 @@
   .rdc-fa-{{ section.id }} .rdc-fa__card {
     background-color: #f5f1e8;
     {% if s.background_image %}background-image: url('{{ s.background_image | image_url: width: 1600 }}'); background-size: cover; background-position: center;{% endif %}
-    border: 2px solid #ac9c89; border-radius: 20px; padding: 40px 44px;
+    border: 2px solid #ac9c89; border-radius: 20px; padding: 38px 42px;
   }
   @media (max-width: 749px) { .rdc-fa-{{ section.id }} .rdc-fa__card { padding: 28px 22px; } }
-  .rdc-fa-{{ section.id }} .rdc-fa__layout { display: flex; gap: 34px; align-items: center; }
+  .rdc-fa-{{ section.id }} .rdc-fa__layout { display: flex; gap: 32px; align-items: center; }
   @media (max-width: 749px) { .rdc-fa-{{ section.id }} .rdc-fa__layout { flex-direction: column; } }
-  .rdc-fa-{{ section.id }} .rdc-fa__col { flex: 1; display: flex; flex-direction: column; }
-  .rdc-fa-{{ section.id }} .rdc-fa__pretitle { font-family: var(--font-accent--family); text-transform: uppercase; letter-spacing: .16em; font-size: .78rem; font-weight: 700; color: var(--color-primary, #833434); margin: 0 0 .35rem; }
-  .rdc-fa-{{ section.id }} .rdc-fa__title { font-family: var(--font-heading--family); font-size: clamp(2rem, 4vw, 2.7rem); line-height: 1; color: var(--color-foreground-heading, #403434); margin: 0 0 .5rem; }
-  .rdc-fa-{{ section.id }} .rdc-fa__intro { font-family: var(--font-paragraph--family); color: var(--color-foreground, #594848); margin: 0 0 1.2rem; max-width: 42ch; }
-  .rdc-fa-{{ section.id }} .rdc-fa__u { display: flex; gap: 13px; align-items: center; padding: 11px 0; border-bottom: 1px solid #e6d8bd; }
+  .rdc-fa-{{ section.id }} .rdc-fa__col { flex: 1; }
+  .rdc-fa-{{ section.id }} .rdc-fa__pretitle { font-family: var(--font-accent--family); text-transform: uppercase; letter-spacing: .16em; font-size: .74rem; font-weight: 700; color: var(--color-primary, #833434); margin: 0 0 .3rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__title { font-family: var(--font-heading--family); font-size: clamp(2rem, 4vw, 2.6rem); line-height: .98; color: var(--color-foreground-heading, #403434); margin: 0 0 .45rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__bridge { font-family: var(--font-fragment--family); font-style: italic; font-size: 1.08rem; line-height: 1.4; color: var(--color-primary, #962B21); margin: 0 0 1rem; max-width: 36ch; }
+
+  .rdc-fa-{{ section.id }} .rdc-fa__lbl { font-family: var(--font-accent--family); text-transform: uppercase; letter-spacing: .12em; font-size: .72rem; font-weight: 700; color: var(--color-primary, #833434); margin: 0 0 .2rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__u { display: flex; gap: 12px; align-items: center; padding: 9px 0; border-bottom: 1px solid #e6d8bd; }
   .rdc-fa-{{ section.id }} .rdc-fa__u:last-of-type { border-bottom: none; }
-  .rdc-fa-{{ section.id }} .rdc-fa__med { flex: 0 0 42px; height: 42px; border-radius: 50%; background: #efe2c6; border: 1.5px solid #ac9c89; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-  .rdc-fa-{{ section.id }} .rdc-fa__ut { font-family: var(--font-accent--family); font-weight: 700; color: var(--color-foreground-heading, #403434); display: block; }
-  .rdc-fa-{{ section.id }} .rdc-fa__ud { font-family: var(--font-paragraph--family); color: var(--color-foreground, #594848); font-size: .9rem; }
-  .rdc-fa-{{ section.id }} .rdc-fa__cta { margin-top: 1.3rem; align-self: flex-start; }
+  .rdc-fa-{{ section.id }} .rdc-fa__med { flex: 0 0 38px; height: 38px; border-radius: 50%; background: #efe2c6; border: 1.5px solid #ac9c89; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__ut { font-family: var(--font-accent--family); font-weight: 700; color: var(--color-foreground-heading, #403434); display: block; line-height: 1.1; }
+  .rdc-fa-{{ section.id }} .rdc-fa__ud { font-family: var(--font-paragraph--family); color: var(--color-foreground, #594848); font-size: .86rem; }
+
+  .rdc-fa-{{ section.id }} .rdc-fa__sep { height: 1px; background: #e0d3b8; margin: 16px 0 12px; }
+  .rdc-fa-{{ section.id }} .rdc-fa__chips-heading { font-family: var(--font-accent--family); text-transform: uppercase; letter-spacing: .1em; font-size: .72rem; font-weight: 700; color: var(--color-foreground-heading, #403434); opacity: .7; margin: 0 0 .5rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__chips { display: flex; flex-wrap: wrap; gap: 7px; margin: 0 0 1rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__chip { display: inline-flex; align-items: center; gap: 6px; background: rgb(var(--color-foreground-rgb) / .05); border: 1px solid rgb(var(--color-foreground-rgb) / .18); border-radius: 999px; padding: 5px 11px; font-family: var(--font-accent--family); font-weight: 700; font-size: .74rem; letter-spacing: .04em; text-transform: uppercase; color: var(--color-foreground-heading, #403434); }
+  .rdc-fa-{{ section.id }} .rdc-fa__chip svg { width: 14px; height: 14px; flex: 0 0 auto; color: var(--color-primary, #962B21); }
+
+  .rdc-fa-{{ section.id }} .rdc-fa__actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 1rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__free { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-accent--family); font-weight: 700; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--color-foreground-heading, #403434); background: var(--color-background, #fff); border: 1px solid rgb(var(--color-foreground-rgb) / .15); padding: 7px 13px; border-radius: 30px; }
+  .rdc-fa-{{ section.id }} .rdc-fa__free .dot { width: 7px; height: 7px; border-radius: 50%; background: #39b35a; box-shadow: 0 0 0 4px rgba(57,179,90,.18); }
   .rdc-fa-{{ section.id }} .rdc-fa__note { font-size: .83rem; opacity: .8; margin-top: .55rem; }
 
   /* Scène droite : téléphone héros + carte flottante */
-  .rdc-fa-{{ section.id }} .rdc-fa__stage { flex: 0 0 46%; position: relative; display: flex; justify-content: flex-end; align-items: center; }
-  .rdc-fa-{{ section.id }} .rdc-fa__phone { position: relative; z-index: 1; width: clamp(200px, 22vw, 246px); aspect-ratio: 300 / 610;
-    background: #1a1410; border-radius: 40px; padding: 9px; box-shadow: 0 38px 76px -26px rgba(40,30,15,.5), 0 0 0 2px rgba(0,0,0,.25) inset; }
-  .rdc-fa-{{ section.id }} .rdc-fa__screen { width: 100%; height: 100%; border-radius: 31px; overflow: hidden; background: #1a1410; }
+  .rdc-fa-{{ section.id }} .rdc-fa__stage { flex: 0 0 44%; position: relative; display: flex; justify-content: flex-end; align-items: center; min-height: 380px; }
+  .rdc-fa-{{ section.id }} .rdc-fa__phone { position: relative; z-index: 1; width: clamp(196px, 21vw, 240px); aspect-ratio: 300 / 610;
+    background: #1a1410; border-radius: 36px; padding: 8px; box-shadow: 0 36px 72px -25px rgba(40,30,15,.5), 0 0 0 2px rgba(0,0,0,.25) inset; }
+  .rdc-fa-{{ section.id }} .rdc-fa__screen { width: 100%; height: 100%; border-radius: 28px; overflow: hidden; background: #1a1410; }
   .rdc-fa-{{ section.id }} .rdc-fa__screen video, .rdc-fa-{{ section.id }} .rdc-fa__screen img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .rdc-fa-{{ section.id }} .rdc-fa__screen-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-align: center; color: #e9dcc4; font-family: var(--font-paragraph--family); font-size: .8rem; padding: 20px; background: linear-gradient(135deg,#55584a,#2b2d23); }
 
-  /* Carte de Porteur flottante */
-  .rdc-fa-{{ section.id }} .rdc-fa__reward { position: absolute; left: 0; bottom: 16px; z-index: 2; width: 184px; border-radius: 14px; padding: 12px;
-    background: #46493c; box-shadow: 0 16px 34px rgba(0,0,0,.32); }
-  .rdc-fa-{{ section.id }} .rdc-fa__reward--light { background: #ece2cd; box-shadow: 0 14px 30px rgba(131,52,52,.16); }
-  .rdc-fa-{{ section.id }} .rdc-fa__reward-label { display: inline-block; background: #f4d694; color: #623c3c; font-family: var(--font-accent--family); font-weight: 700; font-size: .6rem; letter-spacing: .1em; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; margin-bottom: 9px; }
-  .rdc-fa-{{ section.id }} .rdc-fa__illu { aspect-ratio: 4 / 5; border-radius: 9px; overflow: hidden; background: #efe6d3; display: flex; align-items: center; justify-content: center; }
+  .rdc-fa-{{ section.id }} .rdc-fa__reward { position: absolute; left: 0; bottom: 14px; z-index: 2; width: 178px; border-radius: 13px; padding: 11px; background: #46493c; box-shadow: 0 16px 32px rgba(0,0,0,.32); }
+  .rdc-fa-{{ section.id }} .rdc-fa__reward--light { background: #ece2cd; box-shadow: 0 14px 28px rgba(131,52,52,.16); }
+  .rdc-fa-{{ section.id }} .rdc-fa__reward-label { display: inline-block; background: #f4d694; color: #623c3c; font-family: var(--font-accent--family); font-weight: 700; font-size: .58rem; letter-spacing: .09em; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; margin-bottom: 8px; }
+  .rdc-fa-{{ section.id }} .rdc-fa__illu { aspect-ratio: 4 / 5; border-radius: 8px; overflow: hidden; background: #efe6d3; display: flex; align-items: center; justify-content: center; }
   .rdc-fa-{{ section.id }} .rdc-fa__illu img { width: 100%; height: 100%; object-fit: contain; display: block; }
-  .rdc-fa-{{ section.id }} .rdc-fa__plaque { margin-top: 10px; border-radius: 9px; padding: 10px 12px; display: flex; align-items: center; gap: 10px;
-    background: linear-gradient(#3c3f33,#33362b); border: 1px solid #6d6f54; }
+  .rdc-fa-{{ section.id }} .rdc-fa__plaque { margin-top: 9px; border-radius: 8px; padding: 9px 11px; display: flex; align-items: center; gap: 9px; background: linear-gradient(#3c3f33,#33362b); border: 1px solid #6d6f54; }
   .rdc-fa-{{ section.id }} .rdc-fa__reward--light .rdc-fa__plaque { background: #fff8ec; border: 1px solid #d8ccb4; }
-  .rdc-fa-{{ section.id }} .rdc-fa__seal { flex: 0 0 32px; height: 32px; border-radius: 50%; background: #f4d694; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
-  .rdc-fa-{{ section.id }} .rdc-fa__plaque small { display: block; font-family: var(--font-accent--family); text-transform: uppercase; letter-spacing: .1em; font-size: .55rem; color: #c7b06a; }
+  .rdc-fa-{{ section.id }} .rdc-fa__seal { flex: 0 0 28px; height: 28px; border-radius: 50%; background: #f4d694; display: flex; align-items: center; justify-content: center; font-size: .9rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__plaque small { display: block; font-family: var(--font-accent--family); text-transform: uppercase; letter-spacing: .1em; font-size: .52rem; color: #c7b06a; }
   .rdc-fa-{{ section.id }} .rdc-fa__reward--light .rdc-fa__plaque small { color: #9a6a1e; }
-  .rdc-fa-{{ section.id }} .rdc-fa__plaque b { font-family: var(--font-heading--family); font-weight: 400; font-size: 1.2rem; color: #f6eddd; line-height: 1.05; }
+  .rdc-fa-{{ section.id }} .rdc-fa__plaque b { font-family: var(--font-heading--family); font-weight: 400; font-size: 1.05rem; color: #f6eddd; line-height: 1.05; }
   .rdc-fa-{{ section.id }} .rdc-fa__reward--light .rdc-fa__plaque b { color: #403434; }
 
   @media (max-width: 749px) {
-    .rdc-fa-{{ section.id }} .rdc-fa__stage { flex: auto; flex-direction: column; justify-content: center; gap: 18px; width: 100%; }
+    .rdc-fa-{{ section.id }} .rdc-fa__stage { flex: auto; flex-direction: column; justify-content: center; gap: 18px; width: 100%; min-height: 0; margin-top: 8px; }
     .rdc-fa-{{ section.id }} .rdc-fa__phone { margin: 0 auto; }
     .rdc-fa-{{ section.id }} .rdc-fa__reward { position: static; width: 230px; margin: 0 auto; }
   }
@@ -84,8 +92,9 @@
       <div class="rdc-fa__col">
         {% if s.pretitle != blank %}<p class="rdc-fa__pretitle">{{ s.pretitle }}</p>{% endif %}
         <h2 class="rdc-fa__title">{{ s.title }}</h2>
-        {% if s.intro != blank %}<p class="rdc-fa__intro">{{ s.intro }}</p>{% endif %}
+        {% if s.bridge != blank %}<p class="rdc-fa__bridge">{{ s.bridge }}</p>{% endif %}
 
+        {% if s.unlocks_label != blank %}<p class="rdc-fa__lbl">{{ s.unlocks_label }}</p>{% endif %}
         <div class="rdc-fa__u">
           <div class="rdc-fa__med">🏷️</div>
           <div><span class="rdc-fa__ut">{{ s.unlock1_title }}</span>
@@ -102,7 +111,44 @@
           <span class="rdc-fa__ud">{{ s.unlock3_desc }}</span></div>
         </div>
 
-        {% if s.cta_url != blank %}<a class="rdc-fa__cta button" href="{{ s.cta_url }}">{{ s.cta_label }}</a>{% endif %}
+        <div class="rdc-fa__sep"></div>
+        {% if s.chips_heading != blank %}<p class="rdc-fa__chips-heading">{{ s.chips_heading }}</p>{% endif %}
+        <div class="rdc-fa__chips">
+          {%- if section.blocks.size > 0 -%}
+            {%- for block in section.blocks -%}
+              <span class="rdc-fa__chip" {{ block.shopify_attributes }}>
+                {%- case block.settings.icon -%}
+                  {%- when 'key' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3 20 3"/><path d="M16 7l3 3"/><path d="M19 4l2 2"/></svg>
+                  {%- when 'target' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/></svg>
+                  {%- when 'sun' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
+                  {%- when 'group' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3.6 19.5a5.5 5.5 0 0 1 10.8 0"/><path d="M16 5.4a3 3 0 0 1 0 5.2"/><path d="M17.4 13.6a5.5 5.5 0 0 1 3 4.4"/></svg>
+                  {%- when 'calendar' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 9.5h17"/><path d="M8 3v3M16 3v3"/><circle cx="12" cy="14.5" r="1.4" fill="currentColor"/></svg>
+                  {%- when 'shield' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9.5 11l2.5 2 2.5-2"/></svg>
+                  {%- when 'trophy' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v4a4 4 0 0 1-8 0V4z"/><path d="M8 5.5H5.6A2.4 2.4 0 0 0 8 9"/><path d="M16 5.5h2.4A2.4 2.4 0 0 1 16 9"/><path d="M12 12v3.5"/><path d="M9 19.5h6"/><path d="M9.8 19.5c0-1.4 1-2 2.2-2s2.2.6 2.2 2"/></svg>
+                  {%- when 'book' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4a2 2 0 0 1 2-2h12v16H7a2 2 0 0 0-2 2z"/><path d="M5 20a2 2 0 0 1 2-2h12"/></svg>
+                  {%- when 'gem' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l3 6-9 12L3 9z"/><path d="M3 9h18"/><path d="M9 3l3 6 3-6"/></svg>
+                  {%- when 'compass' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>
+                  {%- when 'flame' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c2 3 5 4.5 5 9a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5.3 1.2 1 2 2 2.2C10.5 8 11 5.5 12 3z"/></svg>
+                  {%- when 'map' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-7-6-7-12a7 7 0 0 1 14 0c0 6-7 12-7 12z"/><circle cx="12" cy="10" r="2.6"/></svg>
+                  {%- when 'chat' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-3.9-.9L3 21l1.4-4.6A8.5 8.5 0 1 1 21 11.5z"/><path d="M8.5 11h7M8.5 14h4"/></svg>
+                {%- endcase -%}
+                {{ block.settings.label }}
+              </span>
+            {%- endfor -%}
+          {%- else -%}
+            <span class="rdc-fa__chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3 20 3"/><path d="M16 7l3 3"/><path d="M19 4l2 2"/></svg>Énigmes</span>
+            <span class="rdc-fa__chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/></svg>Missions</span>
+            <span class="rdc-fa__chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>Défis du jour</span>
+            <span class="rdc-fa__chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9.5 11l2.5 2 2.5-2"/></svg>Factions</span>
+            <span class="rdc-fa__chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v4a4 4 0 0 1-8 0V4z"/><path d="M8 5.5H5.6A2.4 2.4 0 0 0 8 9"/><path d="M16 5.5h2.4A2.4 2.4 0 0 1 16 9"/><path d="M12 12v3.5"/><path d="M9 19.5h6"/><path d="M9.8 19.5c0-1.4 1-2 2.2-2s2.2.6 2.2 2"/></svg>Coupe des Héritages</span>
+            <span class="rdc-fa__chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-3.9-.9L3 21l1.4-4.6A8.5 8.5 0 1 1 21 11.5z"/><path d="M8.5 11h7M8.5 14h4"/></svg>Chat</span>
+          {%- endif -%}
+        </div>
+
+        <div class="rdc-fa__actions">
+          {% if s.free_text != blank %}<span class="rdc-fa__free"><span class="dot"></span>{{ s.free_text }}</span>{% endif %}
+          {% if s.cta_url != blank %}<a class="rdc-fa__cta button" href="{{ s.cta_url }}">{{ s.cta_label }}</a>{% endif %}
+        </div>
         {% if s.note != blank %}<p class="rdc-fa__note">{{ s.note }}</p>{% endif %}
       </div>
 
@@ -172,14 +218,19 @@
   "settings": [
     { "type": "text", "id": "pretitle", "label": "Pré-titre", "default": "Ton Fragment ne s'arrête pas au tissu" },
     { "type": "text", "id": "title", "label": "Titre", "default": "Il s'éveille dans La Carte" },
-    { "type": "textarea", "id": "intro", "label": "Intro", "default": "En le possédant, tu l'actives dans l'application — il rejoint ton héritage de Porteur." },
-    { "type": "header", "content": "Déblocages" },
+    { "type": "textarea", "id": "bridge", "label": "Phrase-pont (italique)", "default": "« L'une te fait porter l'Histoire, l'autre te la fait vivre. »" },
+    { "type": "header", "content": "Ce que ce Fragment débloque" },
+    { "type": "text", "id": "unlocks_label", "label": "Sur-titre", "default": "Ce que ce Fragment te débloque" },
     { "type": "text", "id": "unlock1_title", "label": "Déblocage 1 — titre", "default": "Le Titre du Fragment" },
     { "type": "text", "id": "unlock1_desc", "label": "Déblocage 1 — fallback", "default": "un titre unique, lié à ton personnage, que tu portes en jeu" },
     { "type": "text", "id": "unlock2_title", "label": "Déblocage 2 — titre", "default": "Les énigmes de sa légende" },
     { "type": "text", "id": "unlock2_desc", "label": "Déblocage 2 — texte", "default": "deux par jour sur son thème — elles rapportent des Couronnes" },
     { "type": "text", "id": "unlock3_title", "label": "Déblocage 3 — titre", "default": "Sur ton profil de Porteur" },
     { "type": "text", "id": "unlock3_desc", "label": "Déblocage 3 — texte", "default": "le Fragment rejoint ta collection" },
+    { "type": "header", "content": "Rappel de l'app (chips)" },
+    { "type": "text", "id": "chips_heading", "label": "Sur-titre des chips", "default": "Et toute La Carte avec toi" },
+    { "type": "text", "id": "free_text", "label": "Badge gratuit", "default": "Gratuit · un clic · rien à installer" },
+    { "type": "paragraph", "content": "Ajoute des blocs « Atout (chip) » pour personnaliser. Sans bloc, 6 chips par défaut s'affichent." },
     { "type": "header", "content": "Téléphone (vidéo de l'app)" },
     { "type": "video", "id": "app_video", "label": "Vidéo (recommandé — Shopify l'optimise)" },
     { "type": "text", "id": "video_external_url", "label": "OU URL vidéo externe (mp4/webm)", "info": "Utilisé si aucune vidéo ci-dessus", "default": "https://cdn.shopify.com/videos/c/o/v/f6c638bf0b134d7397ba964e6acf4417.mp4" },
@@ -191,7 +242,7 @@
     { "type": "text", "id": "plaque_fallback", "label": "Plaque — titre par défaut (sans donnée)", "default": "Ton titre de Porteur" },
     { "type": "image_picker", "id": "app_image", "label": "Image de carte (sinon : illustration du Fragment)" },
     { "type": "header", "content": "Bouton & note" },
-    { "type": "text", "id": "cta_label", "label": "Bouton — texte", "default": "Découvrir dans l'application" },
+    { "type": "text", "id": "cta_label", "label": "Bouton — texte", "default": "Découvrir l'app" },
     { "type": "text", "id": "cta_url", "label": "Bouton — URL (externe : type texte)", "info": "https://… accepté ici (type url refuse un default externe)", "default": "https://app.runesdechene.com" },
     { "type": "text", "id": "note", "label": "Note sous le bouton", "default": "Connecte-toi avec ton email de commande." },
     { "type": "header", "content": "Fond & données" },
@@ -199,6 +250,43 @@
     { "type": "text", "id": "supabase_url", "label": "URL Supabase", "info": "Ex: https://xxxxx.supabase.co" },
     { "type": "text", "id": "supabase_anon_key", "label": "Clé Supabase (anon)" }
   ],
-  "presets": [ { "name": "RDC — Fragment & App" } ]
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Atout (chip)",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Texte", "default": "Énigmes" },
+        { "type": "select", "id": "icon", "label": "Icône", "default": "key", "options": [
+          { "value": "key", "label": "Clé (énigmes)" },
+          { "value": "target", "label": "Cible (missions)" },
+          { "value": "sun", "label": "Soleil (défis du jour)" },
+          { "value": "group", "label": "Groupe (collectifs)" },
+          { "value": "calendar", "label": "Calendrier (événements)" },
+          { "value": "shield", "label": "Blason (factions)" },
+          { "value": "trophy", "label": "Trophée (coupe)" },
+          { "value": "book", "label": "Carnet" },
+          { "value": "gem", "label": "Fragment (gemme)" },
+          { "value": "compass", "label": "Boussole" },
+          { "value": "flame", "label": "Flamme" },
+          { "value": "map", "label": "Lieu (pin)" },
+          { "value": "chat", "label": "Chat (bulle)" }
+        ] }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "RDC — Fragment & App",
+      "blocks": [
+        { "type": "feature", "settings": { "label": "Énigmes", "icon": "key" } },
+        { "type": "feature", "settings": { "label": "Missions", "icon": "target" } },
+        { "type": "feature", "settings": { "label": "Défis du jour", "icon": "sun" } },
+        { "type": "feature", "settings": { "label": "Factions", "icon": "shield" } },
+        { "type": "feature", "settings": { "label": "Coupe des Héritages", "icon": "trophy" } },
+        { "type": "feature", "settings": { "label": "Chat", "icon": "chat" } }
+      ]
+    }
+  ]
 }
 {% endschema %}
