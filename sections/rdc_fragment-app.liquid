@@ -49,7 +49,7 @@
 {%- if frag_tag != blank -%}
 
 <style>
-  .rdc-fa-{{ section.id }} { max-width: var(--page-content-width, 120rem); margin-inline: auto; padding: 1.5rem 0 3rem; }
+  .rdc-fa-{{ section.id }} { width: min(var(--page-content-width, 75rem), calc(100% - var(--page-margin, 32px) * 2)); margin-inline: auto; padding-block: 1.5rem 3rem; }
   .rdc-fa-{{ section.id }} .rdc-fa__card {
     background-color: #f5f1e8;
     {% if s.background_image %}background-image: url('{{ s.background_image | image_url: width: 1600 }}'); background-size: cover; background-position: center;{% endif %}
@@ -61,7 +61,7 @@
   .rdc-fa-{{ section.id }} .rdc-fa__col { flex: 1; }
   .rdc-fa-{{ section.id }} .rdc-fa__pretitle { font-family: var(--font-accent--family); text-transform: uppercase; letter-spacing: .16em; font-size: .74rem; font-weight: 700; color: var(--color-primary, #833434); margin: 0 0 .3rem; }
   .rdc-fa-{{ section.id }} .rdc-fa__title { font-family: var(--font-heading--family); font-size: clamp(2rem, 4vw, 2.6rem); line-height: .98; color: var(--color-foreground-heading, #403434); margin: 0 0 .45rem; }
-  .rdc-fa-{{ section.id }} .rdc-fa__bridge { font-family: var(--font-fragment--family); font-size: 1.2rem; line-height: 1.4; color: var(--color-primary, #962B21); margin: 0 0 1rem; max-width: 480px; }
+  .rdc-fa-{{ section.id }} .rdc-fa__bridge { font-family: var(--font-body--family); font-size: 1.2rem; line-height: 1.4; color: var(--color-primary, #962B21); margin: 0 0 1rem; max-width: 480px; }
   .rdc-fa-{{ section.id }} .rdc-fa-stat { font-style: normal; font-weight: 700; font-variant-numeric: tabular-nums; }
 
   .rdc-fa-{{ section.id }} .rdc-fa__lbl { font-family: var(--font-accent--family); text-transform: uppercase; letter-spacing: .12em; font-size: .72rem; font-weight: 700; color: var(--color-primary, #833434); margin: 0 0 .2rem; }
