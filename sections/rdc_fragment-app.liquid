@@ -34,13 +34,16 @@
   assign bridge_html = s.bridge | replace: '[joueurs]', '<span class="rdc-fa-stat" data-stat="joueurs">4 700</span>' | replace: '[lieux]', '<span class="rdc-fa-stat" data-stat="lieux">2 800</span>'
   assign frag_tag = ''
   for t in product.tags
-    assign tp = t | slice: 0, 8
-    if tp == 'fragment'
+    assign tp = t | slice: 0, 9
+    if tp == 'fragment:' or tp == 'fragment-'
       assign frag_tag = t
       break
     endif
   endfor
 -%}
+
+{%- comment -%} Pas de tag fragment:* = ce motif ne débloque rien dans l'app -> section masquée {%- endcomment -%}
+{%- if frag_tag != blank -%}
 
 <style>
   .rdc-fa-{{ section.id }} { max-width: var(--page-content-width, 120rem); margin-inline: auto; padding: 1.5rem 0 3rem; }
@@ -59,7 +62,7 @@
   .rdc-fa-{{ section.id }} .rdc-fa-stat { font-style: normal; font-weight: 700; font-variant-numeric: tabular-nums; }
 
   .rdc-fa-{{ section.id }} .rdc-fa__lbl { font-family: var(--font-accent--family); text-transform: uppercase; letter-spacing: .12em; font-size: .72rem; font-weight: 700; color: var(--color-primary, #833434); margin: 0 0 .2rem; }
-  .rdc-fa-{{ section.id }} .rdc-fa__u { display: flex; gap: 12px; align-items: center; padding: 9px 0; border-bottom: 1px solid #e6d8bd; }
+  .rdc-fa-{{ section.id }} .rdc-fa__u { display: flex; gap: 12px; align-items: center; padding: 9px 0;}
   .rdc-fa-{{ section.id }} .rdc-fa__u:last-of-type { border-bottom: none; }
   .rdc-fa-{{ section.id }} .rdc-fa__med { flex: 0 0 38px; height: 38px; border-radius: 50%; background: #efe2c6; border: 1.5px solid #ac9c89; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
   .rdc-fa-{{ section.id }} .rdc-fa__ut { font-family: var(--font-accent--family); font-weight: 700; color: var(--color-foreground-heading, #403434); display: block; line-height: 1.1; }
@@ -255,6 +258,7 @@
       .catch(function (e) { console.error('RDC fragment-app:', e); }); // le fallback reste affiché
   })();
 </script>
+{%- endif -%}
 
 {% schema %}
 {
