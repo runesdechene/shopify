@@ -56,6 +56,7 @@
     border: 2px solid #d3c2ad; border-radius: 20px; padding: 58px 62px; box-shadow: 0 0 50px -10px rgba(0,0,0,0.1);
   }
   @media (max-width: 749px) { .rdc-fa-{{ section.id }} .rdc-fa__card { padding: 28px 22px; } }
+  {% if s.background_image_mobile %}@media (max-width: 900px) { .rdc-fa-{{ section.id }} .rdc-fa__card { background-image: url('{{ s.background_image_mobile | image_url: width: 1000 }}'); background-size: cover; background-position: center; } }{% endif %}
   .rdc-fa-{{ section.id }} .rdc-fa__layout { display: flex; gap: 32px; align-items: center; }
   @media (max-width: 900px) { .rdc-fa-{{ section.id }} .rdc-fa__layout { flex-direction: column; } }
   .rdc-fa-{{ section.id }} .rdc-fa__col { flex: 1; }
@@ -109,9 +110,9 @@
 
   @media (max-width: 900px) {
     .rdc-fa-{{ section.id }} .rdc-fa__stage { flex: auto; justify-content: center; width: 100%; min-height: 0; margin-top: 8px; }
-    .rdc-fa-{{ section.id }} .rdc-fa__phonewrap { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-    .rdc-fa-{{ section.id }} .rdc-fa__phone { margin: 0 auto; }
-    .rdc-fa-{{ section.id }} .rdc-fa__reward { position: static; width: 230px; margin: 0 auto; }
+    .rdc-fa-{{ section.id }} .rdc-fa__phonewrap { display: flex; flex-direction: row-reverse; align-items: flex-end; justify-content: center; }
+    .rdc-fa-{{ section.id }} .rdc-fa__phone { width: clamp(135px, 40vw, 172px); margin: 0; }
+    .rdc-fa-{{ section.id }} .rdc-fa__reward { position: static; width: clamp(128px, 39vw, 162px); margin: 0 -26px 22px 0; z-index: 2; }
   }
   @media (prefers-reduced-motion: reduce) { .rdc-fa-{{ section.id }} .rdc-fa__screen video { display: none; } }
 </style>
@@ -280,7 +281,7 @@
     { "type": "text", "id": "unlock3_desc", "label": "Déblocage 3 — texte", "default": "le Fragment rejoint ta collection" },
     { "type": "header", "content": "Rappel de l'app (chips)" },
     { "type": "text", "id": "chips_heading", "label": "Sur-titre des chips", "default": "Et toute La Carte avec toi" },
-    { "type": "text", "id": "free_text", "label": "Badge gratuit", "default": "Gratuit · un clic · rien à installer" },
+    { "type": "text", "id": "free_text", "label": "Badge gratuit", "default": "Gratuit · un clic" },
     { "type": "paragraph", "content": "Ajoute des blocs « Atout (chip) » pour personnaliser. Sans bloc, 6 chips par défaut s'affichent." },
     { "type": "header", "content": "Téléphone (vidéo de l'app)" },
     { "type": "video", "id": "app_video", "label": "Vidéo (recommandé — Shopify l'optimise)" },
@@ -298,6 +299,7 @@
     { "type": "text", "id": "note", "label": "Note sous le bouton", "default": "Connecte-toi avec ton email de commande." },
     { "type": "header", "content": "Fond & données" },
     { "type": "image_picker", "id": "background_image", "label": "Fond parchemin (optionnel)" },
+    { "type": "image_picker", "id": "background_image_mobile", "label": "Fond parchemin — mobile (≤ 900px)", "info": "Surcharge le fond desktop sur mobile. Optionnel." },
     { "type": "text", "id": "supabase_url", "label": "URL Supabase", "info": "Ex: https://xxxxx.supabase.co" },
     { "type": "text", "id": "supabase_anon_key", "label": "Clé Supabase (anon)" }
   ],
