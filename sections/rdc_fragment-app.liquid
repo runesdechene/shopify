@@ -64,6 +64,10 @@
   .rdc-fa-{{ section.id }} .rdc-fa__actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 1rem; }
   .rdc-fa-{{ section.id }} .rdc-fa__free { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-accent--family); font-weight: 700; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--color-foreground-heading, #403434); background: var(--color-background, #fff); border: 1px solid rgb(var(--color-foreground-rgb) / .15); padding: 7px 13px; border-radius: 30px; }
   .rdc-fa-{{ section.id }} .rdc-fa__free .dot { width: 7px; height: 7px; border-radius: 50%; background: #39b35a; box-shadow: 0 0 0 4px rgba(57,179,90,.18); }
+  .rdc-fa-{{ section.id }} .rdc-fa__cta { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-accent--family); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; font-size: .82rem; color: var(--color-primary, #833434); background: transparent; border: 1.5px solid var(--color-primary, #833434); padding: 9px 17px; border-radius: 8px; text-decoration: none; transition: background .18s ease, color .18s ease; }
+  .rdc-fa-{{ section.id }} .rdc-fa__cta:hover { background: var(--color-primary, #833434); color: var(--color-background, #fff); }
+  .rdc-fa-{{ section.id }} .rdc-fa__cta .arrow { transition: transform .18s ease; }
+  .rdc-fa-{{ section.id }} .rdc-fa__cta:hover .arrow { transform: translateX(3px); }
   .rdc-fa-{{ section.id }} .rdc-fa__note { font-size: .83rem; opacity: .8; margin-top: .55rem; }
 
   /* Scène droite : téléphone héros + carte flottante */
@@ -158,7 +162,7 @@
 
         <div class="rdc-fa__actions">
           {% if s.free_text != blank %}<span class="rdc-fa__free"><span class="dot"></span>{{ s.free_text }}</span>{% endif %}
-          {% if s.cta_url != blank %}<a class="rdc-fa__cta button" href="{{ s.cta_url }}">{{ s.cta_label }}</a>{% endif %}
+          {% if s.cta_url != blank %}<a class="rdc-fa__cta" href="{{ s.cta_url }}">{{ s.cta_label }} <span class="arrow" aria-hidden="true">&rarr;</span></a>{% endif %}
         </div>
         {% if s.note != blank %}<p class="rdc-fa__note">{{ s.note }}</p>{% endif %}
       </div>
@@ -231,7 +235,7 @@
   "settings": [
     { "type": "text", "id": "pretitle", "label": "Pré-titre", "default": "Ton Fragment ne s'arrête pas au tissu" },
     { "type": "text", "id": "title", "label": "Titre", "default": "Il s'éveille dans La Carte" },
-    { "type": "textarea", "id": "bridge", "label": "Phrase-pont (italique)", "default": "« L'une te fait porter l'Histoire, l'autre te la fait vivre. »" },
+    { "type": "textarea", "id": "bridge", "label": "Phrase-pont (italique)", "default": "« Déjà +4 700 joueurs et +2 800 lieux sur La Carte — ton Fragment t'y attend. »" },
     { "type": "header", "content": "Ce que ce Fragment débloque" },
     { "type": "text", "id": "unlocks_label", "label": "Sur-titre", "default": "Ce que ce Fragment te débloque" },
     { "type": "text", "id": "unlock1_title", "label": "Déblocage 1 — titre", "default": "Le Titre du Fragment" },
