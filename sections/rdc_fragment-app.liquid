@@ -55,7 +55,7 @@
     {% if s.background_image %}background-image: url('{{ s.background_image | image_url: width: 1600 }}'); background-size: cover; background-position: center;{% endif %}
     border: 2px solid #d3c2ad; border-radius: 20px; padding: 58px 62px; box-shadow: 0 0 50px -10px rgba(0,0,0,0.1);
   }
-  @media (max-width: 749px) { .rdc-fa-{{ section.id }} .rdc-fa__card { padding: 28px 22px; } }
+  @media (max-width: 749px) { .rdc-fa-{{ section.id }} .rdc-fa__card { padding: 70px 25px; } }
   {% if s.background_image_mobile %}@media (max-width: 900px) { .rdc-fa-{{ section.id }} .rdc-fa__card { background-image: url('{{ s.background_image_mobile | image_url: width: 1000 }}'); background-size: cover; background-position: center; } }{% endif %}
   .rdc-fa-{{ section.id }} .rdc-fa__layout { display: flex; gap: 32px; align-items: center; }
   @media (max-width: 900px) { .rdc-fa-{{ section.id }} .rdc-fa__layout { flex-direction: column; } }
@@ -81,11 +81,6 @@
   .rdc-fa-{{ section.id }} .rdc-fa__actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 1rem; }
   .rdc-fa-{{ section.id }} .rdc-fa__free { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-accent--family); font-weight: 700; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--color-foreground-heading, #403434); background: var(--color-background, #fff); border: 1px solid rgb(var(--color-foreground-rgb) / .15); padding: 7px 13px; border-radius: 30px; }
   .rdc-fa-{{ section.id }} .rdc-fa__free .dot { width: 7px; height: 7px; border-radius: 50%; background: #39b35a; box-shadow: 0 0 0 4px rgba(57,179,90,.18); }
-  .rdc-fa-{{ section.id }} .rdc-fa__cta { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-accent--family); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; font-size: .82rem; color: var(--color-primary, #833434); background: transparent; border: 1.5px solid var(--color-primary, #833434); padding: 9px 17px; border-radius: 8px; text-decoration: none; transition: background .18s ease, color .18s ease; }
-  .rdc-fa-{{ section.id }} .rdc-fa__cta:hover { background: var(--color-primary, #833434); color: var(--color-background, #fff); }
-  .rdc-fa-{{ section.id }} .rdc-fa__cta .arrow { transition: transform .18s ease; }
-  .rdc-fa-{{ section.id }} .rdc-fa__cta:hover .arrow { transform: translateX(3px); }
-  .rdc-fa-{{ section.id }} .rdc-fa__note { font-size: .83rem; opacity: .8; margin-top: .55rem; }
 
   /* Scène droite : téléphone héros + carte flottante */
   .rdc-fa-{{ section.id }} .rdc-fa__stage { flex: 0 0 44%; position: relative; display: flex; justify-content: flex-end; align-items: center; min-height: 380px; }
@@ -178,9 +173,7 @@
 
         <div class="rdc-fa__actions">
           {% if s.free_text != blank %}<span class="rdc-fa__free"><span class="dot"></span>{{ s.free_text }}</span>{% endif %}
-          {% if s.cta_url != blank %}<a class="rdc-fa__cta" href="{{ s.cta_url }}">{{ s.cta_label }} <span class="arrow" aria-hidden="true">&rarr;</span></a>{% endif %}
         </div>
-        {% if s.note != blank %}<p class="rdc-fa__note">{{ s.note }}</p>{% endif %}
       </div>
 
       <div class="rdc-fa__stage">
@@ -293,10 +286,6 @@
     { "type": "text", "id": "plaque_label", "label": "Plaque — sur-titre", "default": "Titre débloqué en jeu" },
     { "type": "text", "id": "plaque_fallback", "label": "Plaque — titre par défaut (sans donnée)", "default": "Ton titre de Porteur" },
     { "type": "image_picker", "id": "app_image", "label": "Image de carte (sinon : illustration du Fragment)" },
-    { "type": "header", "content": "Bouton & note" },
-    { "type": "text", "id": "cta_label", "label": "Bouton — texte", "default": "Découvrir l'app" },
-    { "type": "text", "id": "cta_url", "label": "Bouton — URL (externe : type texte)", "info": "https://… accepté ici (type url refuse un default externe)", "default": "https://app.runesdechene.com" },
-    { "type": "text", "id": "note", "label": "Note sous le bouton", "default": "Connecte-toi avec ton email de commande." },
     { "type": "header", "content": "Fond & données" },
     { "type": "image_picker", "id": "background_image", "label": "Fond parchemin (optionnel)" },
     { "type": "image_picker", "id": "background_image_mobile", "label": "Fond parchemin — mobile (≤ 900px)", "info": "Surcharge le fond desktop sur mobile. Optionnel." },
