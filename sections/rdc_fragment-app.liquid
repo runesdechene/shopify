@@ -23,10 +23,13 @@
     assign poster_url = s.app_video.preview_image | image_url: width: 720
   endif
   assign unlock1_text = s.unlock1_desc
+  assign unlock2_text = s.unlock2_desc
   if perso != blank
     assign unlock1_text = unlock1_text | replace: '[perso]', perso
+    assign unlock2_text = unlock2_text | replace: '[perso]', perso
   else
     assign unlock1_text = unlock1_text | replace: '[perso]', 'ton personnage'
+    assign unlock2_text = unlock2_text | replace: '[perso]', 'ton personnage'
   endif
 -%}
 
@@ -111,7 +114,7 @@
         <div class="rdc-fa__u">
           <div class="rdc-fa__med">🧩</div>
           <div><span class="rdc-fa__ut">{{ s.unlock2_title }}</span>
-          <span class="rdc-fa__ud">{{ s.unlock2_desc }}</span></div>
+          <span class="rdc-fa__ud">{{ unlock2_text }}</span></div>
         </div>
         <div class="rdc-fa__u">
           <div class="rdc-fa__med">🗺️</div>
@@ -234,7 +237,7 @@
     { "type": "text", "id": "unlock1_title", "label": "Déblocage 1 — titre", "default": "Le Titre du Fragment" },
     { "type": "text", "id": "unlock1_desc", "label": "Déblocage 1 — texte", "info": "[perso] = nom du personnage du Fragment. Remplacé par le vrai Titre si la RPC répond.", "default": "un titre unique, lié à [perso], que tu portes en jeu" },
     { "type": "text", "id": "unlock2_title", "label": "Déblocage 2 — titre", "default": "Les énigmes de sa légende" },
-    { "type": "text", "id": "unlock2_desc", "label": "Déblocage 2 — texte", "default": "deux par jour sur son thème — elles rapportent des Couronnes" },
+    { "type": "text", "id": "unlock2_desc", "label": "Déblocage 2 — texte", "info": "[perso] = nom du personnage du Fragment.", "default": "deux par jour sur son thème — elles rapportent des Couronnes" },
     { "type": "text", "id": "unlock3_title", "label": "Déblocage 3 — titre", "default": "Sur ton profil de Porteur" },
     { "type": "text", "id": "unlock3_desc", "label": "Déblocage 3 — texte", "default": "le Fragment rejoint ta collection" },
     { "type": "header", "content": "Rappel de l'app (chips)" },
