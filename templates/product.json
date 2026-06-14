@@ -9,15 +9,6 @@
  */
 {
   "sections": {
-    "rdc_inp_ilnp": {
-      "type": "rdc_ils-nous-portent-produit",
-      "settings": {
-        "title": "Ils portent ce modèle",
-        "subtitle": "La communauté Runes de Chêne en parle",
-        "supabase_url": "https://ukpapqssgsxirsgmcvof.supabase.co",
-        "supabase_anon_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrcGFwcXNzZ3N4aXJzZ21jdm9mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAyOTU5OTMsImV4cCI6MjA4NTg3MTk5M30.Le1gdE3HhmZ2gzMJF9hVhlZVsILmLd5GQgk87xC_dUY"
-      }
-    },
     "similar_products_LCyQ6g": {
       "type": "similar-products",
       "name": "Produits similaires",
@@ -1228,6 +1219,16 @@
         "padding-block-end": 32
       }
     },
+    "rdc_inp_ilnp": {
+      "type": "rdc_ils-nous-portent-produit",
+      "settings": {
+        "title": "Ils portent ce modèle",
+        "subtitle": "La communauté Runes de Chêne en parle",
+        "submit_url": "https://hub.runesdechene.com/soumettre-contenu",
+        "supabase_url": "https://ukpapqssgsxirsgmcvof.supabase.co",
+        "supabase_anon_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrcGFwcXNzZ3N4aXJzZ21jdm9mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAyOTU5OTMsImV4cCI6MjA4NTg3MTk5M30.Le1gdE3HhmZ2gzMJF9hVhlZVsILmLd5GQgk87xC_dUY"
+      }
+    },
     "section_pjncCe": {
       "type": "section",
       "blocks": {
@@ -1579,6 +1580,32 @@
         "condition_invert": false
       }
     },
+    "rdc_fragment_app_xQhqP3": {
+      "type": "rdc_fragment-app",
+      "name": "RDC — Fragment & App",
+      "settings": {
+        "pretitle": "",
+        "title": "Ce fragment s'équipe dans l'application",
+        "bridge": "Là où vit la communauté Runes de Chêne. [lieux]+ lieux anciens & magiques à découvrir et protéger, pour partir à l'aventure aux côtés de [joueurs]+ joueurs.",
+        "unlocks_label": "En achetant ce produit tu obtiens...",
+        "unlock1_title": "Un titre unique dans l'application",
+        "unlock1_desc": "Inspiré par [perso], affichable sur la carte",
+        "unlock2_title": "De nouvelles énigmes",
+        "unlock2_desc": "Toutes les 48h, une énigme spéciale du fragment [perso]",
+        "unlock3_title": "Le Fragment équipé sur ton profil",
+        "unlock3_desc": "Les autres joueurs voient ton fragment sur ton profil",
+        "free_text": "Gratuit · PC & Mobile",
+        "video_external_url": "https://cdn.shopify.com/videos/c/o/v/f6c638bf0b134d7397ba964e6acf4417.mp4",
+        "card_dark": true,
+        "reward_label": "Ce que tu débloques",
+        "plaque_label": "Titre débloqué en jeu",
+        "plaque_fallback": "Ton titre de Porteur",
+        "background_image": "shopify://shop_images/Fond_section_173d7ca4-1587-465e-be60-3ce8abe92f99.jpg",
+        "background_image_mobile": "shopify://shop_images/fond_de_section_mobile.jpg",
+        "supabase_url": "",
+        "supabase_anon_key": ""
+      }
+    },
     "lecture_fragment_v2_EaANnh": {
       "type": "lecture-fragment-v2",
       "custom_css": [],
@@ -1899,6 +1926,7 @@
     "product-information",
     "rdc_inp_ilnp",
     "section_pjncCe",
+    "rdc_fragment_app_xQhqP3",
     "lecture_fragment_v2_EaANnh",
     "product_recommendations_8RVdzU",
     "section_RDbLf9"
