@@ -13,6 +13,18 @@ En parallèle, réparer la fiche actuelle : des arguments de réassurance sont *
 
 **Respecter au maximum l'existant.** On réutilise toutes les sections déjà présentes, on rallume ce qui dort, on réordonne, et on n'ajoute **qu'un seul bloc neuf** (l'app-unlock), construit sur les patterns déjà en place (section `rdc_` + données Supabase anon, comme le mur communautaire).
 
+### Garde-fou dur — NE PAS perdre le travail existant
+
+Contrainte explicite d'Uriel (2026-06-14) : on a le droit d'**améliorer l'existant** et de **créer du nouveau** — la seule règle inviolable, c'est de **ne jamais perdre le travail déjà façonné**. Les composants suivants ne doivent pas disparaître ni régresser dans leur rendu :
+
+- badges et libellés (« édition limitée », réassurance ⭐), pastilles de variantes (radius 100, couleurs scheme-1) ;
+- les 4 icônes de confiance, le bloc `product-features`, la galerie média et ses réglages ;
+- le parchemin `lecture-fragment-v2` (icône grimoire, fonds, bordure `#ac9c89`) ;
+- le mur `rdc_ils-nous-portent-produit`, les popups Tailles/Mission, le `size-guide`, le « Aussi disponible en » ;
+- les paliers de panier « récoltes » (🍎🌾🍇💖), Klarna, le bloc prix.
+
+Opérations bienvenues : **réordonner**, **(dé)activer un bloc existant**, **changer un réglage** (ex. description borne → web), **améliorer un composant** (ex. badge rareté propre), **supprimer le résidu vide**, et **ajouter** le bloc app-unlock. L'amélioration est encouragée ; ce qui est interdit, c'est de **supprimer ou écraser par inadvertance** un composant existant. Filet de sécurité : sauvegarde avant manip (§7), réordre par glisser-déposer, et en cas de doute sur une perte → on demande.
+
 ## 3. Décisions actées
 
 - Ambition = **B** (narratif, pas refonte DA complète).
@@ -88,6 +100,7 @@ Lien « Découvrir dans l'application » → URL de l'app (réglage de section, 
 ## 7. Dépendances & points durs
 
 - **RPC Supabase à exposer côté app** (`get_fragment_unlocks_by_product`) — codée par Uriel en parallèle. Tant qu'elle n'existe pas, le bloc tourne en fallback générique.
+- **Sauvegarde avant tout** : commit/`shopify theme pull` de `templates/product.json` **avant** la moindre manip, pour pouvoir revenir en arrière si un bloc saute. Le réordre se fait par **glisser-déposer** dans l'éditeur (préserve les réglages de bloc), **jamais** en recréant les blocs à la main.
 - **Piège `--theme-editor-sync`** : `product.json` est piloté par l'éditeur en ligne. Donc :
   - Le **réordre des sections + les rallumages de blocs** se font **dans l'éditeur Shopify en ligne** (éditer le JSON en local serait écrasé).
   - Le **nouveau bloc** `rdc_fragment-app.liquid` est créé **en local + `shopify theme push`**, puis **placé depuis l'éditeur**. Redémarrer un éventuel `shopify theme dev` après création du fichier (le serveur scanne `sections/` au démarrage).
@@ -105,3 +118,4 @@ Lien « Découvrir dans l'application » → URL de l'app (réglage de section, 
 - La fiche suit le nouvel ordre ; « Aussi disponible en » n'est plus en sommet ; section vide supprimée.
 - Un bloc app-unlock existe, rend toujours quelque chose (fallback ou dynamique), pointe vers l'app, et n'utilise que les polices/fonds du thème.
 - Le wording des déblocages correspond aux 3 déblocages live (Titre, énigmes, profil) — aucune promesse fausse (pas de Couronnes en perk direct, pas d'emblème).
+- **Aucun composant existant perdu ou restylé** : badges, pastilles, icônes, parchemins, paliers panier rendus exactement comme avant la refonte (garde-fou §2).
