@@ -53,22 +53,22 @@
   .rdc-fa-{{ section.id }} .rdc-fa__card {
     background-color: #f5f1e8;
     {% if s.background_image %}background-image: url('{{ s.background_image | image_url: width: 1600 }}'); background-size: cover; background-position: center;{% endif %}
-    border: 2px solid #ac9c89; border-radius: 20px; padding: 38px 42px;
+    border: 2px solid #d3c2ad; border-radius: 20px; padding: 58px 62px; box-shadow: 0 0 50px -10px rgba(0,0,0,0.1);
   }
   @media (max-width: 749px) { .rdc-fa-{{ section.id }} .rdc-fa__card { padding: 28px 22px; } }
   .rdc-fa-{{ section.id }} .rdc-fa__layout { display: flex; gap: 32px; align-items: center; }
   @media (max-width: 900px) { .rdc-fa-{{ section.id }} .rdc-fa__layout { flex-direction: column; } }
   .rdc-fa-{{ section.id }} .rdc-fa__col { flex: 1; }
   .rdc-fa-{{ section.id }} .rdc-fa__pretitle { font-family: var(--font-accent--family); text-transform: uppercase; letter-spacing: .16em; font-size: .74rem; font-weight: 700; color: var(--color-primary, #833434); margin: 0 0 .3rem; }
-  .rdc-fa-{{ section.id }} .rdc-fa__title { font-family: var(--font-heading--family); font-size: clamp(2rem, 4vw, 2.6rem); line-height: .98; color: var(--color-foreground-heading, #403434); margin: 0 0 .45rem; }
-  .rdc-fa-{{ section.id }} .rdc-fa__bridge { font-family: var(--font-body--family); font-size: 1.2rem; line-height: 1.4; color: var(--color-primary, #962B21); margin: 0 0 1rem; max-width: 480px; }
+  .rdc-fa-{{ section.id }} .rdc-fa__title { font-family: var(--font-heading--family); font-size: clamp(2rem, 4vw, 2.6rem); line-height: .98; color: var(--color-foreground-heading, #403434); margin: 0 0 .45rem; text-shadow: 0 0 20px rgb(245, 227, 204); }
+  .rdc-fa-{{ section.id }} .rdc-fa__bridge { font-family: var(--font-body--family); font-size: 1.1rem; line-height: 1.4; color: #6d5555; margin: 0 0 1rem; max-width: 480px; }
   .rdc-fa-{{ section.id }} .rdc-fa-stat { font-style: normal; font-weight: 700; font-variant-numeric: tabular-nums; }
 
-  .rdc-fa-{{ section.id }} .rdc-fa__lbl { font-family: var(--font-accent--family); text-transform: uppercase; letter-spacing: .12em; font-size: .72rem; font-weight: 700; color: var(--color-primary, #833434); margin: 0 0 .2rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__lbl { font-family: var(--font-accent--family); text-transform: uppercase; letter-spacing: .12em; font-size: .92rem; font-weight: 700; color: var(--color-primary, #833434); margin: 0 0 .2rem; }
   .rdc-fa-{{ section.id }} .rdc-fa__u { display: flex; gap: 12px; align-items: center; padding: 9px 0;}
   .rdc-fa-{{ section.id }} .rdc-fa__u:last-of-type { border-bottom: none; }
   .rdc-fa-{{ section.id }} .rdc-fa__med { flex: 0 0 38px; height: 38px; border-radius: 50%; background: #efe2c6; border: 1.5px solid #ac9c89; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
-  .rdc-fa-{{ section.id }} .rdc-fa__ut { font-family: var(--font-accent--family); font-weight: 700; color: var(--color-foreground-heading, #403434); display: block; line-height: 1.1; }
+  .rdc-fa-{{ section.id }} .rdc-fa__ut { font-family: var(--font-accent--family); font-weight: 600; color: var(--color-foreground-heading, #403434); display: block; line-height: 1.1; }
   .rdc-fa-{{ section.id }} .rdc-fa__ud { font-family: var(--font-paragraph--family); color: var(--color-foreground, #594848); font-size: .86rem; }
 
   .rdc-fa-{{ section.id }} .rdc-fa__sep { height: 1px; background: #e0d3b8; margin: 16px 0 12px; }
@@ -102,7 +102,6 @@
   .rdc-fa-{{ section.id }} .rdc-fa__illu img { width: 100%; height: 100%; object-fit: contain; display: block; }
   .rdc-fa-{{ section.id }} .rdc-fa__plaque { margin-top: 9px; border-radius: 8px; padding: 9px 11px; display: flex; align-items: center; gap: 9px; background: linear-gradient(#3c3f33,#33362b); border: 1px solid #6d6f54; }
   .rdc-fa-{{ section.id }} .rdc-fa__reward--light .rdc-fa__plaque { background: #fff8ec; border: 1px solid #d8ccb4; }
-  .rdc-fa-{{ section.id }} .rdc-fa__seal { flex: 0 0 28px; height: 28px; border-radius: 50%; background: #f4d694; display: flex; align-items: center; justify-content: center; font-size: .9rem; }
   .rdc-fa-{{ section.id }} .rdc-fa__plaque small { display: block; font-family: var(--font-accent--family); text-transform: uppercase; letter-spacing: .1em; font-size: .52rem; color: #c7b06a; }
   .rdc-fa-{{ section.id }} .rdc-fa__reward--light .rdc-fa__plaque small { color: #9a6a1e; }
   .rdc-fa-{{ section.id }} .rdc-fa__plaque b { font-family: var(--font-heading--family); font-weight: 400; font-size: 1.05rem; color: #f6eddd; line-height: 1.05; }
@@ -127,7 +126,7 @@
 
         {% if s.unlocks_label != blank %}<p class="rdc-fa__lbl">{{ s.unlocks_label }}</p>{% endif %}
         <div class="rdc-fa__u">
-          <div class="rdc-fa__med">🏷️</div>
+          <div class="rdc-fa__med">👑</div>
           <div><span class="rdc-fa__ut">{{ s.unlock1_title }}</span>
           <span class="rdc-fa__ud" id="rdc-fa-titre-{{ section.id }}">{{ unlock1_text }}</span></div>
         </div>
@@ -207,7 +206,6 @@
             {% if illu != blank %}{{ illu | image_url: width: 600 | image_tag: loading: 'lazy', alt: s.title }}{% endif %}
           </div>
           <div class="rdc-fa__plaque">
-            <span class="rdc-fa__seal">🏷️</span>
             <div><small>{{ s.plaque_label }}</small>
             <b id="rdc-fa-plaque-{{ section.id }}">{% if perso != blank %}{{ perso }}{% else %}{{ s.plaque_fallback }}{% endif %}</b></div>
           </div>
@@ -254,7 +252,7 @@
         var row = Array.isArray(data) ? data[0] : data;
         if (!row || !row.titre) return;
         var desc = document.getElementById('rdc-fa-titre-' + SID);
-        if (desc) desc.textContent = 'le titre « ' + row.titre + ' », que tu portes en jeu';
+        if (desc) desc.textContent = 'Le titre « ' + row.titre + ' », affichable sur la Carte';
         var plaque = document.getElementById('rdc-fa-plaque-' + SID);
         if (plaque) plaque.textContent = row.titre;
       })
