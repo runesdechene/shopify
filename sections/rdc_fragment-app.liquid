@@ -1,14 +1,22 @@
 {% comment %}
   RDC — Fragment & App (fiche produit).
   Bloc app-unlock : le Fragment acheté s'active dans l'application La Carte.
+  Colonne droite = « Carte de Porteur » : illustration du Fragment (métaobjet) + Titre débloqué (trophée).
   Déblocages live : Titre lié au personnage + énigmes bi-journalières + affichage profil.
-  Données dynamiques via RPC Supabase anon get_fragment_unlocks_by_product (fallback générique si absente).
+  Titre dynamique via RPC Supabase anon get_fragment_unlocks_by_product (fallback générique si absente).
   Calqué sur rdc_ils-nous-portent-produit.
 {% endcomment %}
 
 {%- liquid
   assign s = section.settings
   assign perso = product.metafields.custom.illustration_produit.value.nom
+  assign illu = s.app_image
+  if illu == blank
+    assign illu = product.metafields.custom.illustration_produit.value.image_pour_fond_clair.value
+  endif
+  if illu == blank
+    assign illu = product.featured_image
+  endif
 -%}
 
 <style>
@@ -16,24 +24,43 @@
   .rdc-fa-{{ section.id }} .rdc-fa__card {
     background-color: #f5f1e8;
     {% if s.background_image %}background-image: url('{{ s.background_image | image_url: width: 1600 }}'); background-size: cover; background-position: center;{% endif %}
-    border: 2px solid #ac9c89; border-radius: 20px; padding: 48px 56px; position: relative;
+    border: 2px solid #ac9c89; border-radius: 20px; padding: 40px 44px;
   }
-  @media (max-width: 749px) { .rdc-fa-{{ section.id }} .rdc-fa__card { padding: 32px 22px; } }
-  .rdc-fa-{{ section.id }} .rdc-fa__layout { display: flex; gap: 2rem; align-items: center; }
-  @media (max-width: 749px) { .rdc-fa-{{ section.id }} .rdc-fa__layout { flex-direction: column-reverse; } }
-  .rdc-fa-{{ section.id }} .rdc-fa__col { flex: 1; }
-  .rdc-fa-{{ section.id }} .rdc-fa__media { flex: 0 0 38%; }
-  .rdc-fa-{{ section.id }} .rdc-fa__media img { width: 100%; border-radius: 12px; display: block; }
-  .rdc-fa-{{ section.id }} .rdc-fa__pretitle { font-family: var(--font-accent--family); text-transform: uppercase; letter-spacing: .14em; font-size: .8rem; font-weight: 700; color: var(--color-primary, #833434); margin: 0 0 .4rem; }
-  .rdc-fa-{{ section.id }} .rdc-fa__title { font-family: var(--font-heading--family); font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1; color: var(--color-foreground-heading, #403434); margin: 0 0 .6rem; }
-  .rdc-fa-{{ section.id }} .rdc-fa__intro { font-family: var(--font-paragraph--family); color: var(--color-foreground, #594848); margin: 0 0 1.4rem; max-width: 46ch; }
-  .rdc-fa-{{ section.id }} .rdc-fa__unlock { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid #e6d8bd; }
-  .rdc-fa-{{ section.id }} .rdc-fa__unlock:last-of-type { border-bottom: none; }
-  .rdc-fa-{{ section.id }} .rdc-fa__ic { font-size: 1.5rem; line-height: 1; }
+  @media (max-width: 749px) { .rdc-fa-{{ section.id }} .rdc-fa__card { padding: 28px 22px; } }
+  .rdc-fa-{{ section.id }} .rdc-fa__layout { display: flex; gap: 34px; align-items: stretch; }
+  @media (max-width: 749px) { .rdc-fa-{{ section.id }} .rdc-fa__layout { flex-direction: column; } }
+  .rdc-fa-{{ section.id }} .rdc-fa__col { flex: 1; display: flex; flex-direction: column; }
+  .rdc-fa-{{ section.id }} .rdc-fa__pretitle { font-family: var(--font-accent--family); text-transform: uppercase; letter-spacing: .16em; font-size: .78rem; font-weight: 700; color: var(--color-primary, #833434); margin: 0 0 .35rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__title { font-family: var(--font-heading--family); font-size: clamp(2rem, 4vw, 2.7rem); line-height: 1; color: var(--color-foreground-heading, #403434); margin: 0 0 .5rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__intro { font-family: var(--font-paragraph--family); color: var(--color-foreground, #594848); margin: 0 0 1.2rem; max-width: 42ch; }
+  .rdc-fa-{{ section.id }} .rdc-fa__u { display: flex; gap: 13px; align-items: center; padding: 11px 0; border-bottom: 1px solid #e6d8bd; }
+  .rdc-fa-{{ section.id }} .rdc-fa__u:last-of-type { border-bottom: none; }
+  .rdc-fa-{{ section.id }} .rdc-fa__med { flex: 0 0 42px; height: 42px; border-radius: 50%; background: #efe2c6; border: 1.5px solid #ac9c89; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
   .rdc-fa-{{ section.id }} .rdc-fa__ut { font-family: var(--font-accent--family); font-weight: 700; color: var(--color-foreground-heading, #403434); display: block; }
-  .rdc-fa-{{ section.id }} .rdc-fa__ud { font-family: var(--font-paragraph--family); color: var(--color-foreground, #594848); font-size: .92rem; }
-  .rdc-fa-{{ section.id }} .rdc-fa__cta { margin-top: 1.2rem; }
-  .rdc-fa-{{ section.id }} .rdc-fa__note { font-size: .85rem; opacity: .8; margin-top: .5rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__ud { font-family: var(--font-paragraph--family); color: var(--color-foreground, #594848); font-size: .9rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__cta { margin-top: 1.3rem; align-self: flex-start; }
+  .rdc-fa-{{ section.id }} .rdc-fa__note { font-size: .83rem; opacity: .8; margin-top: .55rem; }
+
+  /* Carte de Porteur */
+  .rdc-fa-{{ section.id }} .rdc-fa__reward { flex: 0 0 40%; border-radius: 16px; padding: 14px; position: relative; display: flex; flex-direction: column;
+    background: #46493c; box-shadow: 0 12px 30px rgba(70,73,60,.35); }
+  .rdc-fa-{{ section.id }} .rdc-fa__reward--light { background: #ece2cd; box-shadow: 0 10px 26px rgba(131,52,52,.12); }
+  @media (max-width: 749px) { .rdc-fa-{{ section.id }} .rdc-fa__reward { flex: auto; } }
+  .rdc-fa-{{ section.id }} .rdc-fa__reward-label { position: absolute; top: 14px; left: 14px; z-index: 2; background: #f4d694; color: #623c3c; font-family: var(--font-accent--family); font-weight: 700; font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; padding: 4px 9px; border-radius: 20px; }
+  .rdc-fa-{{ section.id }} .rdc-fa__illu { height: 210px; border-radius: 11px; overflow: hidden; background: #5b5e4f; }
+  .rdc-fa-{{ section.id }} .rdc-fa__illu img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .rdc-fa-{{ section.id }} .rdc-fa__plaque { margin-top: 12px; border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; gap: 12px;
+    background: linear-gradient(#3c3f33,#33362b); border: 1px solid #6d6f54; }
+  .rdc-fa-{{ section.id }} .rdc-fa__reward--light .rdc-fa__plaque { background: #fff8ec; border: 1px solid #d8ccb4; }
+  .rdc-fa-{{ section.id }} .rdc-fa__seal { flex: 0 0 38px; height: 38px; border-radius: 50%; background: #f4d694; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__plaque small { display: block; font-family: var(--font-accent--family); text-transform: uppercase; letter-spacing: .12em; font-size: .6rem; color: #c7b06a; }
+  .rdc-fa-{{ section.id }} .rdc-fa__reward--light .rdc-fa__plaque small { color: #9a6a1e; }
+  .rdc-fa-{{ section.id }} .rdc-fa__plaque b { font-family: var(--font-heading--family); font-weight: 400; font-size: 1.45rem; color: #f6eddd; line-height: 1.05; }
+  .rdc-fa-{{ section.id }} .rdc-fa__reward--light .rdc-fa__plaque b { color: #403434; }
+  .rdc-fa-{{ section.id }} .rdc-fa__profil { margin-top: 10px; display: flex; align-items: center; gap: 9px; color: #cfc8b3; font-size: .78rem; }
+  .rdc-fa-{{ section.id }} .rdc-fa__reward--light .rdc-fa__profil { color: #6b5d4b; }
+  .rdc-fa-{{ section.id }} .rdc-fa__avatar { width: 26px; height: 26px; border-radius: 50%; background: #6d6f54; flex: 0 0 26px; }
+  .rdc-fa-{{ section.id }} .rdc-fa__reward--light .rdc-fa__avatar { background: #cbbfa6; }
 </style>
 
 <div class="rdc-fa-{{ section.id }}" id="rdc-fa-{{ section.id }}" {{ section.shopify_attributes }}>
@@ -44,26 +71,38 @@
         <h2 class="rdc-fa__title">{{ s.title }}</h2>
         {% if s.intro != blank %}<p class="rdc-fa__intro">{{ s.intro }}</p>{% endif %}
 
-        <div class="rdc-fa__unlock">
-          <span class="rdc-fa__ic">🏷️</span>
-          <span><span class="rdc-fa__ut">{{ s.unlock1_title }}</span>
-          <span class="rdc-fa__ud" id="rdc-fa-titre-{{ section.id }}">{% if perso != blank %}un titre unique, lié à {{ perso }}, que tu portes en jeu{% else %}{{ s.unlock1_desc }}{% endif %}</span></span>
+        <div class="rdc-fa__u">
+          <div class="rdc-fa__med">🏷️</div>
+          <div><span class="rdc-fa__ut">{{ s.unlock1_title }}</span>
+          <span class="rdc-fa__ud" id="rdc-fa-titre-{{ section.id }}">{% if perso != blank %}un titre unique, lié à {{ perso }}, que tu portes en jeu{% else %}{{ s.unlock1_desc }}{% endif %}</span></div>
         </div>
-        <div class="rdc-fa__unlock">
-          <span class="rdc-fa__ic">🧩</span>
-          <span><span class="rdc-fa__ut">{{ s.unlock2_title }}</span>
-          <span class="rdc-fa__ud">{{ s.unlock2_desc }}</span></span>
+        <div class="rdc-fa__u">
+          <div class="rdc-fa__med">🧩</div>
+          <div><span class="rdc-fa__ut">{{ s.unlock2_title }}</span>
+          <span class="rdc-fa__ud">{{ s.unlock2_desc }}</span></div>
         </div>
-        <div class="rdc-fa__unlock">
-          <span class="rdc-fa__ic">🗺️</span>
-          <span><span class="rdc-fa__ut">{{ s.unlock3_title }}</span>
-          <span class="rdc-fa__ud">{{ s.unlock3_desc }}</span></span>
+        <div class="rdc-fa__u">
+          <div class="rdc-fa__med">🗺️</div>
+          <div><span class="rdc-fa__ut">{{ s.unlock3_title }}</span>
+          <span class="rdc-fa__ud">{{ s.unlock3_desc }}</span></div>
         </div>
 
         {% if s.cta_url != blank %}<a class="rdc-fa__cta button" href="{{ s.cta_url }}">{{ s.cta_label }}</a>{% endif %}
         {% if s.note != blank %}<p class="rdc-fa__note">{{ s.note }}</p>{% endif %}
       </div>
-      {% if s.app_image %}<div class="rdc-fa__media">{{ s.app_image | image_url: width: 800 | image_tag: loading: 'lazy', alt: s.title }}</div>{% endif %}
+
+      <div class="rdc-fa__reward{% unless s.card_dark %} rdc-fa__reward--light{% endunless %}">
+        {% if s.reward_label != blank %}<span class="rdc-fa__reward-label">{{ s.reward_label }}</span>{% endif %}
+        <div class="rdc-fa__illu">
+          {% if illu != blank %}{{ illu | image_url: width: 700 | image_tag: loading: 'lazy', alt: s.title }}{% endif %}
+        </div>
+        <div class="rdc-fa__plaque">
+          <span class="rdc-fa__seal">🏷️</span>
+          <div><small>{{ s.plaque_label }}</small>
+          <b id="rdc-fa-plaque-{{ section.id }}">{% if perso != blank %}{{ perso }}{% else %}{{ s.plaque_fallback }}{% endif %}</b></div>
+        </div>
+        {% if s.profil_text != blank %}<div class="rdc-fa__profil"><span class="rdc-fa__avatar"></span>{{ s.profil_text }}</div>{% endif %}
+      </div>
     </div>
   </div>
 </div>
@@ -84,8 +123,10 @@
       .then(function (data) {
         var row = Array.isArray(data) ? data[0] : data;
         if (!row || !row.titre) return;
-        var el = document.getElementById('rdc-fa-titre-' + SID);
-        if (el) el.textContent = 'le titre « ' + row.titre + ' », que tu portes en jeu';
+        var desc = document.getElementById('rdc-fa-titre-' + SID);
+        if (desc) desc.textContent = 'le titre « ' + row.titre + ' », que tu portes en jeu';
+        var plaque = document.getElementById('rdc-fa-plaque-' + SID);
+        if (plaque) plaque.textContent = row.titre;
       })
       .catch(function (e) { console.error('RDC fragment-app:', e); }); // le fallback reste affiché
   })();
@@ -100,16 +141,25 @@
     { "type": "text", "id": "pretitle", "label": "Pré-titre", "default": "Ton Fragment ne s'arrête pas au tissu" },
     { "type": "text", "id": "title", "label": "Titre", "default": "Il s'éveille dans La Carte" },
     { "type": "textarea", "id": "intro", "label": "Intro", "default": "En le possédant, tu l'actives dans l'application — il rejoint ton héritage de Porteur." },
+    { "type": "header", "content": "Déblocages" },
     { "type": "text", "id": "unlock1_title", "label": "Déblocage 1 — titre", "default": "Le Titre du Fragment" },
     { "type": "text", "id": "unlock1_desc", "label": "Déblocage 1 — fallback", "default": "un titre unique, lié à ton personnage, que tu portes en jeu" },
     { "type": "text", "id": "unlock2_title", "label": "Déblocage 2 — titre", "default": "Les énigmes de sa légende" },
     { "type": "text", "id": "unlock2_desc", "label": "Déblocage 2 — texte", "default": "deux par jour sur son thème — elles rapportent des Couronnes" },
     { "type": "text", "id": "unlock3_title", "label": "Déblocage 3 — titre", "default": "Sur ton profil de Porteur" },
     { "type": "text", "id": "unlock3_desc", "label": "Déblocage 3 — texte", "default": "le Fragment rejoint ta collection" },
+    { "type": "header", "content": "Carte de Porteur (colonne droite)" },
+    { "type": "checkbox", "id": "card_dark", "label": "Carte sombre", "default": true, "info": "Décoché = carte parchemin clair" },
+    { "type": "text", "id": "reward_label", "label": "Étiquette", "default": "Ce que tu débloques" },
+    { "type": "text", "id": "plaque_label", "label": "Plaque — sur-titre", "default": "Titre débloqué en jeu" },
+    { "type": "text", "id": "plaque_fallback", "label": "Plaque — titre par défaut (sans donnée)", "default": "Ton titre de Porteur" },
+    { "type": "text", "id": "profil_text", "label": "Ligne profil", "default": "rejoint ta collection sur ton profil" },
+    { "type": "image_picker", "id": "app_image", "label": "Image de carte (sinon : illustration du Fragment)" },
+    { "type": "header", "content": "Bouton & note" },
     { "type": "text", "id": "cta_label", "label": "Bouton — texte", "default": "Découvrir dans l'application" },
-    { "type": "text", "id": "cta_url", "label": "Bouton — URL (externe : type texte, pas url)", "info": "https://… accepté ici (type url refuse un default externe)" },
+    { "type": "text", "id": "cta_url", "label": "Bouton — URL (externe : type texte)", "info": "https://… accepté ici (type url refuse un default externe)" },
     { "type": "text", "id": "note", "label": "Note sous le bouton", "default": "Connecte-toi avec ton email de commande." },
-    { "type": "image_picker", "id": "app_image", "label": "Capture app (profil + titre)" },
+    { "type": "header", "content": "Fond & données" },
     { "type": "image_picker", "id": "background_image", "label": "Fond parchemin (optionnel)" },
     { "type": "text", "id": "supabase_url", "label": "URL Supabase", "info": "Ex: https://xxxxx.supabase.co" },
     { "type": "text", "id": "supabase_anon_key", "label": "Clé Supabase (anon)" }
