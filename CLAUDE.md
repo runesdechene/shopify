@@ -71,6 +71,19 @@ shopify theme pull --theme=123456789
 | **`app (Runes de Chêne)`** | Monorepo apps (explore-web + hub + supabase) |
 | **Citadelle** (Obsidian) | QG mémoire partagée |
 
+### Repos voisins — accès cross-repo (PAS de fusion)
+
+Décision 2026-06-14 : le thème et le monorepo app restent **deux repos séparés** (pipelines de déploiement, Graphify et CI distincts — fusionner coûterait plus que ça ne rapporte). Mais ils sont **voisins sur le disque** sous `DEVs/`. Dès qu'un sujet touche les deux, **lire aussi le monorepo voisin** (`../app (Runes de Chêne)/`) :
+
+- `docs/db/xo-discipline.md` — méthodo / discipline XO (la source de la méthodo)
+- `docs/db/gotchas.md`, `docs/db/migrations-workflow.md` — schéma DB, noms de colonnes, workflow migrations (ne jamais deviner un nom de colonne)
+- `supabase/migrations/` + `supabase/functions/` — **les RPC anon que CE thème consomme** : ex. `get_community_photos_by_product` (mur « Ils nous portent »), `get_fragment_unlocks_by_product` (bloc app-unlock fiche produit)
+- `apps/hub/` — back-office qui **pousse** vers ce thème (avis, photos communautaires)
+- `apps/explore-web/` — l'application La Carte
+- `graphify-out/graph.json` — graphe indexé du monorepo (inventaire tables/RPC/FK)
+
+> Graphify n'indexe pas le Liquid → CE repo n'est pas indexé. Pour toute question DB / RPC / hub / app, la **source de vérité est le monorepo voisin** ci-dessus, pas la mémoire.
+
 ## Conventions générales (rappel rapide)
 
 - **Conventional Commits** (`feat:`, `fix:`, `chore:`, `docs:`)
