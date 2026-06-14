@@ -22,6 +22,12 @@
   elsif s.app_video != blank and s.app_video.preview_image != blank
     assign poster_url = s.app_video.preview_image | image_url: width: 720
   endif
+  assign unlock1_text = s.unlock1_desc
+  if perso != blank
+    assign unlock1_text = unlock1_text | replace: '[perso]', perso
+  else
+    assign unlock1_text = unlock1_text | replace: '[perso]', 'ton personnage'
+  endif
 -%}
 
 <style>
@@ -100,7 +106,7 @@
         <div class="rdc-fa__u">
           <div class="rdc-fa__med">🏷️</div>
           <div><span class="rdc-fa__ut">{{ s.unlock1_title }}</span>
-          <span class="rdc-fa__ud" id="rdc-fa-titre-{{ section.id }}">{% if perso != blank %}un titre unique, lié à {{ perso }}, que tu portes en jeu{% else %}{{ s.unlock1_desc }}{% endif %}</span></div>
+          <span class="rdc-fa__ud" id="rdc-fa-titre-{{ section.id }}">{{ unlock1_text }}</span></div>
         </div>
         <div class="rdc-fa__u">
           <div class="rdc-fa__med">🧩</div>
@@ -226,7 +232,7 @@
     { "type": "header", "content": "Ce que ce Fragment débloque" },
     { "type": "text", "id": "unlocks_label", "label": "Sur-titre", "default": "Ce que ce Fragment te débloque" },
     { "type": "text", "id": "unlock1_title", "label": "Déblocage 1 — titre", "default": "Le Titre du Fragment" },
-    { "type": "text", "id": "unlock1_desc", "label": "Déblocage 1 — fallback", "default": "un titre unique, lié à ton personnage, que tu portes en jeu" },
+    { "type": "text", "id": "unlock1_desc", "label": "Déblocage 1 — texte", "info": "[perso] = nom du personnage du Fragment. Remplacé par le vrai Titre si la RPC répond.", "default": "un titre unique, lié à [perso], que tu portes en jeu" },
     { "type": "text", "id": "unlock2_title", "label": "Déblocage 2 — titre", "default": "Les énigmes de sa légende" },
     { "type": "text", "id": "unlock2_desc", "label": "Déblocage 2 — texte", "default": "deux par jour sur son thème — elles rapportent des Couronnes" },
     { "type": "text", "id": "unlock3_title", "label": "Déblocage 3 — titre", "default": "Sur ton profil de Porteur" },
