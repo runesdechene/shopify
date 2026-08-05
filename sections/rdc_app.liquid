@@ -31,13 +31,14 @@
   #{{ uid }} .rdc-app__text { grid-area: text; align-self: center; min-width: 0; }
   #{{ uid }} .rdc-app__stage { grid-area: stage; align-self: center; position: relative; display: flex; justify-content: center; }
 
-  {%- comment -%} Sur-titre et titre alignés sur « RDC — Mouvement vivant »,
-      pour que les deux sections consécutives aient la même voix typographique.
-      Échelle du titre réduite : la colonne ici fait la moitié de la largeur. {%- endcomment -%}
+  {%- comment -%} Sur-titre et titre STRICTEMENT alignés sur « RDC — Mouvement
+      vivant » : les sur-titres portent le mantra du flyer (APPRENEZ / INCARNEZ /
+      EXPLOREZ), donc les sections doivent avoir la même voix typographique.
+      Même échelle malgré la colonne deux fois plus étroite → titre court. {%- endcomment -%}
   #{{ uid }} .rdc-app__over { font-family: var(--font-accent--family); font-weight: 600; font-size: .82rem;
     letter-spacing: .34em; text-transform: uppercase; color: var(--rdc-app-accent); margin-bottom: 12px; }
   #{{ uid }} .rdc-app__title { font-family: var(--font-heading--family); font-weight: 400;
-    font-size: clamp(2.9rem, 5.2vw, 4.6rem); line-height: .92; letter-spacing: .02em;
+    font-size: clamp(3rem, 7vw, 5.5rem); line-height: .92; letter-spacing: .02em;
     color: var(--color-foreground-heading, var(--color-foreground)); margin: 0 0 18px; }
   #{{ uid }} .rdc-app__bridge { font-family: var(--font-fragment--family); font-style: italic;
     font-size: 1.3rem; color: var(--rdc-app-accent); max-width: 32ch; margin: 0 0 16px; line-height: 1.4; }
