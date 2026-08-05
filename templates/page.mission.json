@@ -242,7 +242,7 @@
                   "type": "custom-liquid",
                   "name": "t:names.custom_liquid",
                   "settings": {
-                    "custom_liquid": "<p class=\"text\">Les Runes de Chêne fleurissent dans toutes les contrées de France et d'ailleurs, comme un cri d’amour pour <b>l’Histoire, le patrimoine et la Nature.</b> Portées par ceux qui ont gardé une flamme au creux du cœur.</p> <p class=\"text\"><b>Chaque Fragment acheté finance la redécouverte de ce que nos régions ont oublié.</b><br/>Plus de 3 000 lieux ont déjà été retrouvés par ceux qui portent nos Fragments.</p>"
+                    "custom_liquid": "<p class=\"text\">Les <span style=\"color: #833434; font-weight: bold;\">Runes de Chêne</span> fleurissent dans toutes les contrées de France et d'ailleurs, comme un cri d’amour pour <b>l’Histoire, le patrimoine et la Nature.</b> Portées par ceux qui ont gardé une flamme au creux du cœur.</p> <p class=\"text\"><b>Chaque Fragment acheté finance la redécouverte de ce que nos régions ont oublié.</b><br/>Plus de 3 000 lieux ont déjà été retrouvés par ceux qui portent nos Fragments.</p>"
                   },
                   "blocks": {}
                 },
@@ -299,7 +299,7 @@
                         "label": "Explorer nos Fragments",
                         "link": "shopify://collections/explorer-fragments",
                         "open_in_new_tab": false,
-                        "style_class": "button-secondary",
+                        "style_class": "button",
                         "width": "custom",
                         "custom_width": 52,
                         "width_mobile": "custom",
