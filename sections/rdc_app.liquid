@@ -18,7 +18,20 @@
 -%}
 
 <style>
-  #{{ uid }} { --rdc-app-accent: {{ s.accent_color }}; padding-block: {{ s.padding_top }}px {{ s.padding_bottom }}px; }
+  #{{ uid }} { --rdc-app-accent: {{ s.accent_color }}; padding-block: {{ s.padding_top }}px {{ s.padding_bottom }}px;
+    position: relative; isolation: isolate; }
+
+  {%- comment -%}
+    Fond pleine largeur. Le voile est indispensable ici, contrairement aux tuiles
+    Sagas : le texte est du HTML posé par-dessus, il ne peut pas être gravé dans
+    l'image. Couleur du voile réglable pour coller au schéma de la section.
+  {%- endcomment -%}
+  #{{ uid }} .rdc-app__bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; }
+  #{{ uid }} .rdc-app__bg img { width: 100%; height: 100%; object-fit: cover; display: block;
+    object-position: {{ s.bg_position }}; }
+  #{{ uid }} .rdc-app__veil { position: absolute; inset: 0;
+    background: {{ s.bg_overlay_color }}; opacity: {{ s.bg_overlay | divided_by: 100.0 }}; }
+  #{{ uid }} .rdc-app__inner { position: relative; z-index: 1; }
   {%- comment -%}
     Titre et corps sont réunis dans une seule zone de grille (`text`), pas deux
     rangées. Sinon le téléphone, qui s'étendait sur les deux, y répartissait son
@@ -101,6 +114,16 @@
 {%- if s.anchor_id != blank -%}<span id="{{ s.anchor_id }}" aria-hidden="true" style="display:block;scroll-margin-top:var(--header-group-height,90px)"></span>{%- endif -%}
 <div class="section-background color-{{ s.color_scheme }}"></div>
 <div id="{{ uid }}" class="section section--full-width color-{{ s.color_scheme }} rdc-app">
+  {%- if s.bg_image != blank -%}
+    <div class="rdc-app__bg" aria-hidden="true">
+      <img src="{{ s.bg_image | image_url: width: 2200 }}"
+        srcset="{{ s.bg_image | image_url: width: 900 }} 900w, {{ s.bg_image | image_url: width: 1600 }} 1600w, {{ s.bg_image | image_url: width: 2200 }} 2200w, {{ s.bg_image | image_url: width: 3000 }} 3000w"
+        sizes="100vw"
+        width="{{ s.bg_image.width }}" height="{{ s.bg_image.height }}"
+        alt="" loading="lazy" decoding="async">
+      {%- if s.bg_overlay > 0 -%}<div class="rdc-app__veil"></div>{%- endif -%}
+    </div>
+  {%- endif -%}
   <div class="rdc-app__inner">
 
     {%- comment -%} `rdc-app__text` réunit titre et corps en une seule zone de
@@ -187,6 +210,17 @@
   "tag": "section",
   "class": "section-wrapper",
   "settings": [
+    { "type": "header", "content": "Image de fond (pleine largeur)" },
+    { "type": "image_picker", "id": "bg_image", "label": "Image" },
+    { "type": "select", "id": "bg_position", "label": "Cadrage", "options": [
+      { "value": "center", "label": "Centré" },
+      { "value": "top", "label": "Haut" },
+      { "value": "bottom", "label": "Bas" },
+      { "value": "left", "label": "Gauche" },
+      { "value": "right", "label": "Droite" } ], "default": "center" },
+    { "type": "color", "id": "bg_overlay_color", "label": "Couleur du voile", "default": "#f4ede1" },
+    { "type": "range", "id": "bg_overlay", "label": "Opacité du voile", "unit": "%", "min": 0, "max": 95, "step": 5, "default": 75, "info": "Le texte est posé par-dessus l'image : sans voile suffisant, il devient illisible." },
+
     { "type": "header", "content": "Texte" },
     { "type": "text", "id": "overline", "label": "Surtitre", "default": "L'application" },
     { "type": "text", "id": "title", "label": "Titre", "default": "Ton territoire, un terrain d'aventure." },
