@@ -190,7 +190,7 @@
                   "type": "text",
                   "name": "t:names.heading",
                   "settings": {
-                    "text": "<h2>Des vêtements qui ont du sens</h2>",
+                    "text": "<h2>Des vêtements qui portent l'Histoire</h2>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -216,7 +216,7 @@
                   "type": "text",
                   "name": "t:names.heading",
                   "settings": {
-                    "text": "<h3>Une marque française<br/>pour réenchanter le monde moderne</h3>",
+                    "text": "<h3>Une marque française<br/>pour réenchanter notre époque</h3>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -242,7 +242,7 @@
                   "type": "custom-liquid",
                   "name": "t:names.custom_liquid",
                   "settings": {
-                    "custom_liquid": "<p class=\"text\">Depuis 2023, les vêtements Runes de Chêne fleurissent dans toutes les contrées de France et d'ailleurs, comme un cri d’amour pour <b>l’Histoire, le patrimoine et la Nature.</b> Portés par ceux qui ne se retrouvent pas dans la modernité froide et qui ont gardé une flamme au creux du coeur.</p>\n<p class=\"text\">Ce ne sont pas juste des t-shirts.<Br/>Ce sont des signes de <span style=\"text-decoration: underline; font-weight: bold; color: #833434;\">renaissance.</span></p>"
+                    "custom_liquid": "<p class=\"text\">Les Runes de Chêne fleurissent dans toutes les contrées de France et d'ailleurs, comme un cri d’amour pour <b>l’Histoire, le patrimoine et la Nature.</b> Portées par ceux qui ont gardé une flamme au creux du cœur.</p> <p class=\"text\"><b>Chaque Fragment acheté finance la redécouverte de ce que nos régions ont oublié.</b><br/>Plus de 3 000 lieux ont déjà été retrouvés par ceux qui portent nos Fragments.</p>"
                   },
                   "blocks": {}
                 },
@@ -296,7 +296,7 @@
                       "type": "button",
                       "name": "t:names.button",
                       "settings": {
-                        "label": "Explorer nos fragments",
+                        "label": "Explorer nos Fragments",
                         "link": "shopify://collections/explorer-fragments",
                         "open_in_new_tab": false,
                         "style_class": "button-secondary",
@@ -453,7 +453,7 @@
                       "type": "text",
                       "name": "t:names.heading",
                       "settings": {
-                        "text": "<h5>🎨 Des oeuvres d'artistes originales</h5>",
+                        "text": "<h5>Des œuvres d'artistes originales</h5>",
                         "width": "fit-content",
                         "max_width": "normal",
                         "alignment": "left",
@@ -479,7 +479,7 @@
                       "type": "text",
                       "name": "t:names.text",
                       "settings": {
-                        "text": "<p>Tous nos fragments sont réalisés sans IA. On illustre ce qu’on trouve inspirant ou génial de notre patrimoine, voyageant entre les époques. Le motif est validé lorsqu’on est sûr qu’il respecte les sources et qu’il n’entretient pas de clichés.<br/><br/></p>",
+                        "text": "<p>Pas d’IA sur nos illustrations. Jamais. Chaque motif naît de recherches bibliographiques et d’une vérification des sources — et il n’est validé que lorsqu’il ne doit rien au cliché.<br/><br/></p>",
                         "width": "fit-content",
                         "max_width": "normal",
                         "alignment": "left",
@@ -505,7 +505,7 @@
                       "type": "text",
                       "name": "t:names.heading",
                       "settings": {
-                        "text": "<h5>🌱 Des tirages à la demande<br/></h5>",
+                        "text": "<h5>Des tirages à la demande<br/></h5>",
                         "width": "fit-content",
                         "max_width": "normal",
                         "alignment": "left",
@@ -531,7 +531,7 @@
                       "type": "text",
                       "name": "t:names.text",
                       "settings": {
-                        "text": "<p>Notre atelier démarre ses machines<strong> le 1er et le 3ème lundi de chaque mois.</strong> Ainsi, pas de pertes. <strong>C’est votre achat qui fabrique la création</strong>, et cela nous permet de vous proposer plus de choix. Si vous êtes pressés, visez les ventes privées, ou venez nous voir en festival.<br/><br/></p>",
+                        "text": "<p>Notre atelier démarre ses machines<strong> le 1er et le 3e lundi de chaque mois.</strong> Ainsi, pas de pertes. <strong>C’est votre achat qui déclenche la fabrication</strong>, et cela nous permet de vous proposer plus de choix. Si vous êtes pressés, visez les ventes privées, ou venez nous voir en festival.<br/><br/></p>",
                         "width": "fit-content",
                         "max_width": "normal",
                         "alignment": "left",
@@ -624,7 +624,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<h3>Fondée par l'artiste Uriel, la marque est désormais présente sur + de 20 festivals au cours de l'année</h3>",
+                "text": "<h3>Fondée par l'artiste Uriel, la marque est désormais présente sur plus de 25 festivals par an</h3>",
                 "width": "fit-content",
                 "max_width": "none",
                 "alignment": "left",
