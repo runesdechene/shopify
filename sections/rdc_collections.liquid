@@ -76,12 +76,39 @@
     mix-blend-mode:{{ section.settings.sub_blend }};
     {% if section.settings.sub_shadow %}text-shadow:0 1px 10px rgba(0,0,0,.55){% endif %}}
 
-  {%- comment -%} Pastille « nouveau » : coin haut, hors de la zone titre/accroche. {%- endcomment -%}
-  #{{ uid }} .rdc-saga__new{position:absolute;top:14px;{{ section.settings.new_align }}:14px;z-index:2;
-    display:inline-block;padding:5px 13px;border-radius:999px;
+  {%- comment -%}
+    Pastille « nouveau » : coin haut, hors de la zone titre/accroche.
+    Quatre styles. Le lettrage très espacé et la petite taille font le premium —
+    un aplat épais avec ombre portée fait étiquette de promo.
+  {%- endcomment -%}
+  #{{ uid }} .rdc-saga__new{position:absolute;top:16px;{{ section.settings.new_align }}:16px;z-index:2;
+    display:inline-flex;align-items:center;gap:7px;
     font-family:var(--font-heading--family, sans-serif);text-transform:uppercase;
-    font-size:.78rem;letter-spacing:.10em;line-height:1.35;white-space:nowrap;
-    box-shadow:0 2px 12px rgba(0,0,0,.35)}
+    font-size:.72rem;letter-spacing:.20em;line-height:1;white-space:nowrap}
+  #{{ uid }} .rdc-saga__new-dot{font-size:.52em;opacity:.85;transform:translateY(-.5px)}
+
+  {%- case section.settings.new_style -%}
+    {%- when 'solid' -%}
+      #{{ uid }} .rdc-saga__new{padding:7px 15px;border-radius:999px;
+        background:{{ section.settings.new_bg }};color:{{ section.settings.new_color }}}
+    {%- when 'outline' -%}
+      {%- comment -%} Filet fin, fond nu : le plus éditorial. {%- endcomment -%}
+      #{{ uid }} .rdc-saga__new{padding:7px 15px;border-radius:999px;
+        background:transparent;color:{{ section.settings.new_accent }};
+        border:1px solid {{ section.settings.new_accent }};
+        text-shadow:0 1px 8px rgba(0,0,0,.5)}
+    {%- when 'glass' -%}
+      {%- comment -%} Voile sombre flouté + filet clair : tient sur n'importe quelle photo. {%- endcomment -%}
+      #{{ uid }} .rdc-saga__new{padding:7px 15px;border-radius:999px;
+        background:rgba(20,16,12,.42);color:{{ section.settings.new_accent }};
+        border:1px solid rgba(255,255,255,.22);
+        -webkit-backdrop-filter:blur(9px) saturate(130%);backdrop-filter:blur(9px) saturate(130%)}
+    {%- when 'bare' -%}
+      {%- comment -%} Aucun contenant : juste le mot. Le plus discret, le plus sûr de goût. {%- endcomment -%}
+      #{{ uid }} .rdc-saga__new{padding:0;background:none;border:0;
+        color:{{ section.settings.new_accent }};letter-spacing:.26em;
+        text-shadow:0 1px 10px rgba(0,0,0,.75)}
+  {%- endcase -%}
 
   #{{ uid }} .rdc-saga__placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
     background:linear-gradient(135deg,#55584a,#2b2d23);color:#e9e0cb;
@@ -169,7 +196,10 @@
             {%- endif -%}
 
             {%- if show_new -%}
-              <span class="rdc-saga__new" style="background:{{ section.settings.new_bg }};color:{{ section.settings.new_color }}">{{ new_label }}</span>
+              <span class="rdc-saga__new">
+                {%- if section.settings.new_marker -%}<span class="rdc-saga__new-dot" aria-hidden="true">◆</span>{%- endif -%}
+                <span>{{ new_label }}</span>
+              </span>
             {%- endif -%}
 
             <div class="rdc-saga__caption">
@@ -230,8 +260,15 @@
     { "type": "select", "id": "new_align", "label": "Coin", "options": [
       { "value": "left", "label": "Haut gauche" },
       { "value": "right", "label": "Haut droite" } ], "default": "left" },
-    { "type": "color", "id": "new_bg", "label": "Fond", "default": "#b4894f" },
-    { "type": "color", "id": "new_color", "label": "Texte", "default": "#1c1812" },
+    { "type": "select", "id": "new_style", "label": "Style", "options": [
+      { "value": "glass", "label": "Voilé — filet clair sur fond flouté" },
+      { "value": "outline", "label": "Filet seul — le plus éditorial" },
+      { "value": "bare", "label": "Sans contenant — juste le mot" },
+      { "value": "solid", "label": "Plein — le plus visible" } ], "default": "glass" },
+    { "type": "checkbox", "id": "new_marker", "label": "Losange devant le texte", "default": true },
+    { "type": "color", "id": "new_accent", "label": "Couleur du texte et du filet", "default": "#e8cd9a", "info": "Styles Voilé, Filet seul et Sans contenant." },
+    { "type": "color", "id": "new_bg", "label": "Fond (style Plein)", "default": "#b4894f" },
+    { "type": "color", "id": "new_color", "label": "Texte (style Plein)", "default": "#1c1812" },
 
     { "type": "header", "content": "Accroche" },
     { "type": "color", "id": "sub_color", "label": "Couleur", "default": "#f2e6d2" },
