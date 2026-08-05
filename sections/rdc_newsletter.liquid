@@ -1,0 +1,173 @@
+{%- comment -%}
+  rdc_newsletter.liquid — « RDC — Newsletter »
+
+  Inscription newsletter avec PRÉNOM + email. Le bloc natif du thème ne prend
+  que l'email : sans prénom, impossible d'écrire « Bonjour Marie » dans les
+  séquences de drop, et c'est ce qui fait la différence à l'ouverture.
+
+  Utilise le formulaire client Shopify (`form 'customer'`) : le contact part
+  dans les clients de la boutique avec le tag « newsletter », donc utilisable
+  directement dans les campagnes — aucune application tierce.
+
+  À poser dans le groupe Pied de page depuis l'éditeur.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = 'RdcNews-' | append: section.id
+  assign s = section.settings
+-%}
+
+<style>
+  #{{ uid }} { position: relative; isolation: isolate;
+    padding-block: {{ s.padding_top }}px {{ s.padding_bottom }}px; }
+
+  {%- if s.bg_image != blank -%}
+    #{{ uid }} .rdc-nl__bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; }
+    #{{ uid }} .rdc-nl__bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    #{{ uid }} .rdc-nl__veil { position: absolute; inset: 0;
+      background: {{ s.bg_overlay_color }}; opacity: {{ s.bg_overlay | divided_by: 100.0 }}; }
+  {%- endif -%}
+
+  #{{ uid }} .rdc-nl__inner { max-width: {{ s.max_width }}px; margin: 0 auto; padding-inline: 24px;
+    text-align: {{ s.text_align }}; }
+
+  #{{ uid }} .rdc-nl__over { font-family: var(--font-accent--family); font-weight: 600;
+    font-size: .78rem; letter-spacing: .34em; text-transform: uppercase;
+    color: {{ s.accent_color }}; margin-bottom: 12px; }
+  #{{ uid }} .rdc-nl__title { font-family: var(--font-heading--family); font-weight: 400;
+    font-size: clamp(1.9rem, 3.4vw, {{ s.title_size }}rem); line-height: .95; letter-spacing: .02em;
+    color: {{ s.title_color }}; margin: 0 0 14px; }
+  #{{ uid }} .rdc-nl__text { font-family: var(--font-body--family); font-size: 1rem; line-height: 1.55;
+    color: {{ s.text_color }}; opacity: .9; margin: 0 auto 26px; max-width: 52ch; }
+  {% if s.text_align != 'center' %}#{{ uid }} .rdc-nl__text { margin-inline: 0 }{% endif %}
+
+  {%- comment -%} Une seule ligne sur desktop, empilé sous 700px. {%- endcomment -%}
+  #{{ uid }} .rdc-nl__form { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch;
+    justify-content: {% if s.text_align == 'center' %}center{% else %}flex-start{% endif %}; }
+  #{{ uid }} .rdc-nl__field { flex: 1 1 190px; min-width: 0; }
+  #{{ uid }} .rdc-nl__field input { width: 100%; height: 100%; box-sizing: border-box;
+    padding: 14px 16px; border-radius: {{ s.radius }}px;
+    border: 1px solid {{ s.field_border }}; background: {{ s.field_bg }}; color: {{ s.text_color }};
+    font-family: var(--font-body--family); font-size: .95rem; line-height: 1.2; }
+  #{{ uid }} .rdc-nl__field input::placeholder { color: {{ s.text_color }}; opacity: .5; }
+  #{{ uid }} .rdc-nl__field input:focus { outline: 2px solid {{ s.accent_color }}; outline-offset: 1px; }
+
+  #{{ uid }} .rdc-nl__submit { flex: 0 0 auto; cursor: pointer;
+    padding: 14px 30px; border: 0; border-radius: {{ s.radius }}px;
+    background: {{ s.button_bg }}; color: {{ s.button_text }};
+    font-family: var(--font-heading--family); text-transform: uppercase;
+    font-size: 1rem; letter-spacing: .10em; line-height: 1.2;
+    transition: transform .15s ease, filter .15s ease; }
+  #{{ uid }} .rdc-nl__submit:hover { filter: brightness(1.08); transform: translateY(-1px); }
+
+  #{{ uid }} .rdc-nl__legal { font-family: var(--font-body--family); font-size: .78rem;
+    color: {{ s.text_color }}; opacity: .6; margin-top: 12px; }
+  #{{ uid }} .rdc-nl__note { font-family: var(--font-body--family); font-size: .95rem;
+    margin-top: 14px; padding: 12px 16px; border-radius: {{ s.radius }}px; }
+  #{{ uid }} .rdc-nl__note--ok { background: rgba(60,110,70,.14); color: {{ s.text_color }};
+    border: 1px solid rgba(60,110,70,.35); }
+  #{{ uid }} .rdc-nl__note--ko { background: rgba(150,50,50,.12); color: {{ s.text_color }};
+    border: 1px solid rgba(150,50,50,.35); }
+
+  @media (max-width: 699px) {
+    #{{ uid }} .rdc-nl__form { flex-direction: column; }
+    #{{ uid }} .rdc-nl__submit { width: 100%; }
+  }
+</style>
+
+<div id="{{ uid }}" class="rdc-nl color-{{ s.color_scheme }}">
+  {%- if s.bg_image != blank -%}
+    <div class="rdc-nl__bg" aria-hidden="true">
+      <img src="{{ s.bg_image | image_url: width: 2200 }}"
+        srcset="{{ s.bg_image | image_url: width: 900 }} 900w, {{ s.bg_image | image_url: width: 1600 }} 1600w, {{ s.bg_image | image_url: width: 2200 }} 2200w"
+        sizes="100vw" width="{{ s.bg_image.width }}" height="{{ s.bg_image.height }}"
+        alt="" loading="lazy" decoding="async">
+      {%- if s.bg_overlay > 0 -%}<div class="rdc-nl__veil"></div>{%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="rdc-nl__inner">
+    {%- if s.overline != blank -%}<div class="rdc-nl__over">{{ s.overline }}</div>{%- endif -%}
+    {%- if s.title != blank -%}<h2 class="rdc-nl__title">{{ s.title }}</h2>{%- endif -%}
+    {%- if s.text != blank -%}<div class="rdc-nl__text">{{ s.text }}</div>{%- endif -%}
+
+    {%- form 'customer', id: uid | append: '-form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+
+      <div class="rdc-nl__form">
+        <div class="rdc-nl__field">
+          <label class="visually-hidden" for="{{ uid }}-first">{{ s.first_name_label }}</label>
+          <input id="{{ uid }}-first" type="text" name="contact[first_name]"
+            autocomplete="given-name" placeholder="{{ s.first_name_label | escape }}"
+            value="{{ form.first_name | escape }}">
+        </div>
+
+        <div class="rdc-nl__field">
+          <label class="visually-hidden" for="{{ uid }}-email">{{ s.email_label }}</label>
+          <input id="{{ uid }}-email" type="email" name="contact[email]" required
+            autocomplete="email" autocorrect="off" autocapitalize="off" spellcheck="false"
+            placeholder="{{ s.email_label | escape }}" value="{{ form.email | escape }}">
+        </div>
+
+        <button type="submit" class="rdc-nl__submit">{{ s.button_label }}</button>
+      </div>
+
+      {%- if form.errors -%}
+        <div class="rdc-nl__note rdc-nl__note--ko">{{ form.errors | default_errors }}</div>
+      {%- elsif form.posted_successfully? -%}
+        <div class="rdc-nl__note rdc-nl__note--ok">{{ s.success_text }}</div>
+      {%- endif -%}
+
+      {%- if s.legal_text != blank -%}
+        <div class="rdc-nl__legal">{{ s.legal_text }}</div>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "RDC — Newsletter",
+  "tag": "section",
+  "class": "rdc-newsletter-section",
+  "settings": [
+    { "type": "header", "content": "Textes" },
+    { "type": "text", "id": "overline", "label": "Sur-titre", "default": "Avant tout le monde" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Les prochains Fragments" },
+    { "type": "richtext", "id": "text", "label": "Paragraphe", "default": "<p>Chaque Fragment est tiré en quantité limitée. Laissez-nous votre prénom, et vous saurez quand le prochain sort — et pourquoi il existe.</p>" },
+
+    { "type": "header", "content": "Formulaire" },
+    { "type": "text", "id": "first_name_label", "label": "Champ prénom", "default": "Votre prénom" },
+    { "type": "text", "id": "email_label", "label": "Champ e-mail", "default": "Votre e-mail" },
+    { "type": "text", "id": "button_label", "label": "Bouton", "default": "S'inscrire" },
+    { "type": "text", "id": "success_text", "label": "Message de confirmation", "default": "C'est fait. À très vite." },
+    { "type": "richtext", "id": "legal_text", "label": "Mention sous le formulaire", "default": "<p>Un message quand un Fragment sort. Jamais de spam, désinscription en un clic.</p>" },
+
+    { "type": "header", "content": "Mise en page" },
+    { "type": "select", "id": "text_align", "label": "Alignement", "options": [
+      { "value": "center", "label": "Centré" },
+      { "value": "left", "label": "Gauche" } ], "default": "center" },
+    { "type": "range", "id": "max_width", "label": "Largeur du bloc", "unit": "px", "min": 500, "max": 1100, "step": 20, "default": 760 },
+    { "type": "range", "id": "title_size", "label": "Taille du titre", "unit": "rem", "min": 1.6, "max": 4, "step": 0.1, "default": 2.6 },
+    { "type": "range", "id": "radius", "label": "Arrondi des champs", "unit": "px", "min": 0, "max": 30, "step": 1, "default": 4 },
+    { "type": "range", "id": "padding_top", "label": "Marge haut", "unit": "px", "min": 0, "max": 160, "step": 4, "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "Marge bas", "unit": "px", "min": 0, "max": 160, "step": 4, "default": 64 },
+
+    { "type": "header", "content": "Image de fond (optionnelle)" },
+    { "type": "image_picker", "id": "bg_image", "label": "Image" },
+    { "type": "color", "id": "bg_overlay_color", "label": "Couleur du voile", "default": "#f4ede1" },
+    { "type": "range", "id": "bg_overlay", "label": "Opacité du voile", "unit": "%", "min": 0, "max": 95, "step": 5, "default": 80 },
+
+    { "type": "header", "content": "Couleurs" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Schéma de couleur", "default": "scheme-1" },
+    { "type": "color", "id": "accent_color", "label": "Sur-titre", "default": "#b4894f" },
+    { "type": "color", "id": "title_color", "label": "Titre", "default": "#403434" },
+    { "type": "color", "id": "text_color", "label": "Texte", "default": "#403434" },
+    { "type": "color", "id": "field_bg", "label": "Fond des champs", "default": "#ffffff" },
+    { "type": "color", "id": "field_border", "label": "Bordure des champs", "default": "#d8c9b0" },
+    { "type": "color", "id": "button_bg", "label": "Fond du bouton", "default": "#833434" },
+    { "type": "color", "id": "button_text", "label": "Texte du bouton", "default": "#ffffff" }
+  ],
+  "presets": [ { "name": "RDC — Newsletter" } ]
+}
+{% endschema %}
