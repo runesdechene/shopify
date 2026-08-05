@@ -1,0 +1,232 @@
+{%- comment -%}
+  rdc_collections.liquid — « RDC — Sagas »
+
+  Tuiles de collections (sagas) : photo de fond + titre en PNG transparent
+  (pour conserver la fonte propre à chaque saga) + sous-titre en VRAI texte
+  HTML (Bebas Neue = police de titres du thème).
+
+  Pourquoi le titre est une image : chaque saga a sa fonte décorative, utilisée
+  une seule fois. Quatre @font-face pour quatre mots ne se justifient pas.
+  Le texte n'est pas perdu pour autant : il part dans le `alt` de l'image, à
+  l'intérieur d'un <h3> → Google et les lecteurs d'écran le lisent.
+
+  Le sous-titre, lui, reste éditable en trois secondes depuis l'éditeur.
+
+  Remplace l'usage de la section native `collection-list` sur la home.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = 'RdcSaga-' | append: section.id
+  assign ratio = '1 / 1'
+  case section.settings.tile_ratio
+    when 'portrait'
+      assign ratio = '3 / 4'
+    when 'landscape'
+      assign ratio = '4 / 3'
+    when 'wide'
+      assign ratio = '16 / 9'
+  endcase
+  assign scrim = section.settings.scrim | divided_by: 100.0
+-%}
+
+<style>
+  #{{ uid }} .rdc-saga__inner{min-width:0;
+    padding-block:{{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px}
+  #{{ uid }} .rdc-saga__head{text-align:{{ section.settings.text_align }};margin-bottom:clamp(26px,3vw,40px)}
+  #{{ uid }} .rdc-saga__overline{font-family:var(--font-body--family);font-weight:700;
+    font-size:.74rem;letter-spacing:.26em;text-transform:uppercase;
+    color:{{ section.settings.accent_color }};margin-bottom:10px}
+  #{{ uid }} .rdc-saga__heading{font-family:var(--font-heading--family, sans-serif);text-transform:uppercase;
+    font-size:clamp(1.8rem,3.2vw,2.6rem);letter-spacing:.04em;line-height:1;
+    color:var(--color-foreground-heading, #403434)}
+
+  #{{ uid }} .rdc-saga__grid{display:grid;width:100%;
+    grid-template-columns:repeat({{ section.settings.columns }},1fr);gap:{{ section.settings.gap }}px}
+  #{{ uid }} .rdc-saga__tile{position:relative;display:block;overflow:hidden;text-decoration:none;
+    border-radius:{{ section.settings.corner_radius }}px;aspect-ratio:{{ ratio }};background:#1c1812}
+  #{{ uid }} .rdc-saga__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
+    transition:transform .6s ease}
+  {% if section.settings.hover_zoom %}#{{ uid }} .rdc-saga__tile:hover .rdc-saga__img{transform:scale(1.06)}{% endif %}
+
+  {%- comment -%} Scrim : garantit la lisibilité quelle que soit la photo. {%- endcomment -%}
+  #{{ uid }} .rdc-saga__scrim{position:absolute;inset:0;transition:.3s;
+    background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,{{ scrim }}) 100%)}
+  #{{ uid }} .rdc-saga__tile:hover .rdc-saga__scrim{
+    background:linear-gradient(180deg,rgba(0,0,0,.08) 20%,rgba(0,0,0,{{ scrim | plus: 0.12 }}) 100%)}
+
+  #{{ uid }} .rdc-saga__caption{position:absolute;inset:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:{% if section.settings.title_pos == 'center' %}center{% else %}flex-end{% endif %};
+    gap:{% if section.settings.title_pos == 'center' %}0{% else %}12px{% endif %};
+    padding:22px 20px;text-align:center}
+  #{{ uid }} .rdc-saga__title-h{margin:0;display:flex;justify-content:center;width:100%}
+  #{{ uid }} .rdc-saga__title-img{display:block;height:auto;object-fit:contain;
+    filter:drop-shadow(0 2px 14px rgba(0,0,0,.45))}
+  #{{ uid }} .rdc-saga__title-txt{display:block;color:#fff;text-transform:uppercase;
+    font-family:var(--font-heading--family, sans-serif);
+    font-size:clamp(1.3rem,2vw,1.9rem);letter-spacing:.06em;line-height:1;
+    text-shadow:0 2px 14px rgba(0,0,0,.45)}
+
+  {%- comment -%} Sous-titre : Bebas Neue (police de titres du thème), vrai texte. {%- endcomment -%}
+  #{{ uid }} .rdc-saga__sub{display:block;font-family:var(--font-heading--family, sans-serif);
+    text-transform:uppercase;color:{{ section.settings.sub_color }};
+    font-size:{{ section.settings.sub_size }}rem;letter-spacing:.10em;line-height:1.25;
+    text-shadow:0 1px 10px rgba(0,0,0,.55)}
+  {%- comment -%} Titre centré → le sous-titre reste collé en bas de la tuile. {%- endcomment -%}
+  {% if section.settings.title_pos == 'center' %}
+    #{{ uid }} .rdc-saga__sub{position:absolute;left:20px;right:20px;bottom:22px}
+  {% endif %}
+
+  #{{ uid }} .rdc-saga__placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,#55584a,#2b2d23);color:#e9e0cb;
+    font-family:var(--font-body--family);font-size:.85rem;text-align:center;padding:16px}
+  #{{ uid }} .rdc-saga__sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  @media (max-width:749px){
+    #{{ uid }} .rdc-saga__grid{grid-template-columns:repeat({{ section.settings.columns_mobile }},1fr);
+      gap:{{ section.settings.gap | divided_by: 2 }}px}
+    #{{ uid }} .rdc-saga__sub{font-size:{{ section.settings.sub_size | times: 0.85 }}rem;letter-spacing:.07em}
+    #{{ uid }} .rdc-saga__caption{padding:16px 14px}
+  }
+</style>
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div id="{{ uid }}" class="section section--page-width color-{{ section.settings.color_scheme }} rdc-saga">
+  <div class="rdc-saga__inner">
+    {%- if section.settings.overline != blank or section.settings.title != blank -%}
+      <div class="rdc-saga__head">
+        {%- if section.settings.overline != blank -%}
+          <div class="rdc-saga__overline">{{ section.settings.overline }}</div>
+        {%- endif -%}
+        {%- if section.settings.title != blank -%}
+          <div class="rdc-saga__heading">{{ section.settings.title }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="rdc-saga__grid">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign coll = block.settings.collection
+            assign img = block.settings.image | default: coll.image
+            assign title_img = block.settings.title_image
+            assign title_txt = block.settings.title_text | default: coll.title
+            assign sub = block.settings.subtitle
+            assign url = block.settings.link | default: coll.url
+            if url == blank
+              assign url = '#'
+            endif
+          -%}
+          <a class="rdc-saga__tile" href="{{ url }}" {{ block.shopify_attributes }}>
+            {%- if img != blank -%}
+              <img class="rdc-saga__img"
+                src="{{ img | image_url: width: 900 }}"
+                srcset="{{ img | image_url: width: 500 }} 500w, {{ img | image_url: width: 900 }} 900w, {{ img | image_url: width: 1300 }} 1300w"
+                sizes="(min-width: 750px) {{ 100 | divided_by: section.settings.columns }}vw, 100vw"
+                width="{{ img.width }}" height="{{ img.height }}"
+                alt="" loading="lazy" decoding="async">
+            {%- else -%}
+              <div class="rdc-saga__placeholder">Choisis une collection (ou ajoute une image de fond)</div>
+            {%- endif -%}
+
+            <div class="rdc-saga__scrim"></div>
+
+            <div class="rdc-saga__caption">
+              {%- if title_img != blank -%}
+                {%- comment -%} Titre en PNG : la fonte de la saga est préservée,
+                    le texte reste lisible par Google via le alt, dans un <h3>. {%- endcomment -%}
+                <h3 class="rdc-saga__title-h">
+                  <img class="rdc-saga__title-img"
+                    src="{{ title_img | image_url: width: 900 }}"
+                    srcset="{{ title_img | image_url: width: 500 }} 500w, {{ title_img | image_url: width: 900 }} 900w"
+                    sizes="(min-width: 750px) {{ 100 | divided_by: section.settings.columns }}vw, 100vw"
+                    width="{{ title_img.width }}" height="{{ title_img.height }}"
+                    style="width:{{ block.settings.title_scale }}%;max-width:{{ block.settings.title_scale }}%"
+                    alt="{{ title_txt | escape }}" loading="lazy" decoding="async">
+                </h3>
+              {%- elsif title_txt != blank -%}
+                <h3 class="rdc-saga__title-h"><span class="rdc-saga__title-txt">{{ title_txt }}</span></h3>
+              {%- endif -%}
+
+              {%- if sub != blank -%}
+                <span class="rdc-saga__sub">{{ sub }}</span>
+              {%- endif -%}
+
+              {%- if title_img == blank and title_txt == blank and sub == blank -%}
+                <span class="rdc-saga__sr">{{ coll.title }}</span>
+              {%- endif -%}
+            </div>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "RDC — Sagas",
+  "tag": "section",
+  "class": "rdc-collections-section",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "header", "content": "Titre de section (optionnel)" },
+    { "type": "inline_richtext", "id": "overline", "label": "Sur-titre" },
+    { "type": "inline_richtext", "id": "title", "label": "Titre", "default": "Nos collections" },
+
+    { "type": "header", "content": "Grille" },
+    { "type": "range", "id": "columns", "label": "Colonnes (desktop)", "min": 2, "max": 5, "step": 1, "default": 4 },
+    { "type": "range", "id": "columns_mobile", "label": "Colonnes (mobile)", "min": 1, "max": 2, "step": 1, "default": 1 },
+    { "type": "select", "id": "tile_ratio", "label": "Format des tuiles", "options": [
+      { "value": "square", "label": "Carré" },
+      { "value": "portrait", "label": "Portrait (3:4)" },
+      { "value": "landscape", "label": "Paysage (4:3)" },
+      { "value": "wide", "label": "Large (16:9)" } ], "default": "square" },
+    { "type": "range", "id": "gap", "label": "Espacement", "unit": "px", "min": 4, "max": 40, "step": 2, "default": 20 },
+    { "type": "range", "id": "corner_radius", "label": "Arrondi des coins", "unit": "px", "min": 0, "max": 30, "step": 1, "default": 0 },
+    { "type": "checkbox", "id": "hover_zoom", "label": "Zoom au survol", "default": true },
+
+    { "type": "header", "content": "Lisibilité" },
+    { "type": "select", "id": "title_pos", "label": "Position du titre", "options": [
+      { "value": "center", "label": "Centré" },
+      { "value": "bottom", "label": "En bas" } ], "default": "center" },
+    { "type": "range", "id": "scrim", "label": "Assombrissement du bas", "unit": "%", "min": 0, "max": 90, "step": 5, "default": 55, "info": "Garantit que le texte reste lisible sur n'importe quelle photo." },
+
+    { "type": "header", "content": "Sous-titre" },
+    { "type": "color", "id": "sub_color", "label": "Couleur", "default": "#f2e6d2" },
+    { "type": "range", "id": "sub_size", "label": "Taille", "unit": "rem", "min": 0.7, "max": 1.6, "step": 0.1, "default": 1.0 },
+
+    { "type": "header", "content": "Mise en page" },
+    { "type": "select", "id": "text_align", "label": "Alignement du titre de section", "options": [
+      { "value": "left", "label": "Gauche" },
+      { "value": "center", "label": "Centre" } ], "default": "left" },
+    { "type": "range", "id": "padding_top", "label": "Marge haut", "unit": "px", "min": 0, "max": 160, "step": 4, "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Marge bas", "unit": "px", "min": 0, "max": 160, "step": 4, "default": 72 },
+
+    { "type": "header", "content": "Couleurs" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Schéma de couleur", "default": "scheme-1" },
+    { "type": "color", "id": "accent_color", "label": "Couleur du sur-titre", "default": "#b4894f" }
+  ],
+  "blocks": [
+    {
+      "type": "saga",
+      "name": "Saga",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "image", "label": "Photo de fond", "info": "Sans aucun texte gravé. Sinon, image de la collection." },
+        { "type": "image_picker", "id": "title_image", "label": "Titre (PNG transparent)", "info": "La fonte de la saga. Laisser vide pour un titre en Bebas Neue." },
+        { "type": "range", "id": "title_scale", "label": "Largeur du titre", "unit": "%", "min": 30, "max": 100, "step": 5, "default": 70 },
+        { "type": "text", "id": "title_text", "label": "Titre en toutes lettres", "info": "Lu par Google et les lecteurs d'écran. Obligatoire si le titre est un PNG." },
+        { "type": "text", "id": "subtitle", "label": "Accroche (une phrase)" },
+        { "type": "url", "id": "link", "label": "Lien (sinon la collection)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RDC — Sagas",
+      "blocks": [ { "type": "saga" }, { "type": "saga" }, { "type": "saga" }, { "type": "saga" } ]
+    }
+  ]
+}
+{% endschema %}
