@@ -20,23 +20,24 @@
 <style>
   #{{ uid }} { --rdc-app-accent: {{ s.accent_color }}; padding-block: {{ s.padding_top }}px {{ s.padding_bottom }}px; }
   {%- comment -%}
-    `stage` (le téléphone) s'étend sur les deux rangées et il est bien plus haut
-    que le texte. Sans hauteurs explicites, son surplus se répartit entre les
-    deux rangées : celle du titre gonfle et creuse un trou sous le titre.
-    → rangée 1 au contenu, rangée 2 prend tout le reste, corps calé en haut.
+    Titre et corps sont réunis dans une seule zone de grille (`text`), pas deux
+    rangées. Sinon le téléphone, qui s'étendait sur les deux, y répartissait son
+    surplus de hauteur : la rangée du titre gonflait et creusait un trou.
+    Une seule zone → le bloc reste compact et se centre proprement en hauteur.
   {%- endcomment -%}
   #{{ uid }} .rdc-app__inner { max-width: 1180px; margin: 0 auto; padding-inline: 32px;
     display: grid; grid-template-columns: 1.05fr .95fr;
-    grid-template-areas: "head stage" "body stage";
-    grid-template-rows: auto 1fr; column-gap: 56px; align-content: center; }
-  #{{ uid }} .rdc-app__head { grid-area: head; }
-  #{{ uid }} .rdc-app__body { grid-area: body; align-self: start; }
+    grid-template-areas: "text stage"; column-gap: 56px; align-items: center; }
+  #{{ uid }} .rdc-app__text { grid-area: text; align-self: center; min-width: 0; }
   #{{ uid }} .rdc-app__stage { grid-area: stage; align-self: center; position: relative; display: flex; justify-content: center; }
 
-  #{{ uid }} .rdc-app__over { font-family: var(--font-body--family); font-weight: 700; font-size: .8rem;
-    letter-spacing: .3em; text-transform: uppercase; color: var(--rdc-app-accent); margin-bottom: 14px; }
+  {%- comment -%} Sur-titre et titre alignés sur « RDC — Mouvement vivant »,
+      pour que les deux sections consécutives aient la même voix typographique.
+      Échelle du titre réduite : la colonne ici fait la moitié de la largeur. {%- endcomment -%}
+  #{{ uid }} .rdc-app__over { font-family: var(--font-accent--family); font-weight: 600; font-size: .82rem;
+    letter-spacing: .34em; text-transform: uppercase; color: var(--rdc-app-accent); margin-bottom: 12px; }
   #{{ uid }} .rdc-app__title { font-family: var(--font-heading--family); font-weight: 400;
-    font-size: clamp(2.6rem, 4.4vw, 4rem); line-height: .93; letter-spacing: .02em;
+    font-size: clamp(2.9rem, 5.2vw, 4.6rem); line-height: .92; letter-spacing: .02em;
     color: var(--color-foreground-heading, var(--color-foreground)); margin: 0 0 18px; }
   #{{ uid }} .rdc-app__bridge { font-family: var(--font-fragment--family); font-style: italic;
     font-size: 1.3rem; color: var(--rdc-app-accent); max-width: 32ch; margin: 0 0 16px; line-height: 1.4; }
@@ -75,6 +76,11 @@
 
   @media (max-width: 820px) {
     #{{ uid }} { padding-block: {{ s.padding_top | times: 0.7 | round }}px {{ s.padding_bottom | times: 0.7 | round }}px; }
+    {%- comment -%} `display:contents` : head et body redeviennent des enfants
+        directs de la grille, donc les trois zones s'appliquent à nouveau. {%- endcomment -%}
+    #{{ uid }} .rdc-app__text { display: contents; }
+    #{{ uid }} .rdc-app__head { grid-area: head; }
+    #{{ uid }} .rdc-app__body { grid-area: body; }
     #{{ uid }} .rdc-app__inner { grid-template-columns: 1fr; grid-template-areas: "head" "stage" "body";
       grid-template-rows: auto auto auto; column-gap: 0; text-align: center; }
     #{{ uid }} .rdc-app__stage { margin: 22px 0 26px; }
@@ -93,28 +99,13 @@
 <div id="{{ uid }}" class="section section--full-width color-{{ s.color_scheme }} rdc-app">
   <div class="rdc-app__inner">
 
+    {%- comment -%} `rdc-app__text` réunit titre et corps en une seule zone de
+        grille sur desktop. En mobile il repasse en `display:contents` pour que
+        head / téléphone / corps redeviennent trois blocs indépendants. {%- endcomment -%}
+    <div class="rdc-app__text">
     <div class="rdc-app__head">
       {%- if s.overline != blank -%}<div class="rdc-app__over">{{ s.overline }}</div>{%- endif -%}
       {%- if s.title != blank -%}<h2 class="rdc-app__title">{{ s.title }}</h2>{%- endif -%}
-    </div>
-
-    <div class="rdc-app__stage">
-      <div class="rdc-app__glow"></div>
-      <div class="rdc-app__phone"><div class="rdc-app__screen">
-        {%- if s.app_video != blank -%}
-          <video autoplay muted loop playsinline preload="auto"{% if poster_url != blank %} poster="{{ poster_url }}"{% endif %}>
-            {%- for source in s.app_video.sources -%}
-              <source src="{{ source.url }}" type="{{ source.mime_type }}">
-            {%- endfor -%}
-          </video>
-        {%- elsif s.video_external_url != blank -%}
-          <video src="{{ s.video_external_url }}" autoplay muted loop playsinline preload="auto"{% if poster_url != blank %} poster="{{ poster_url }}"{% endif %}></video>
-        {%- elsif poster_url != blank -%}
-          <img src="{{ poster_url }}" alt="{{ s.title | escape }}" loading="lazy">
-        {%- else -%}
-          <div class="rdc-app__ph">Ajoute une vidéo de l'app (réglage « Vidéo ») ou une image.</div>
-        {%- endif -%}
-      </div></div>
     </div>
 
     <div class="rdc-app__body">
@@ -158,6 +149,29 @@
       {%- if s.cta_label != blank and s.cta_url != blank -%}
         <div><a class="rdc-app__cta" href="{{ s.cta_url }}">{{ s.cta_label }} →</a></div>
       {%- endif -%}
+    </div>
+    </div>{%- comment -%} /rdc-app__text {%- endcomment -%}
+
+    {%- comment -%} Le téléphone est hors du bloc texte : c'est ce qui l'empêche
+        d'étirer la rangée du titre. En mobile, les zones de grille le replacent
+        entre le titre et le corps — l'ordre voulu ne dépend pas du DOM. {%- endcomment -%}
+    <div class="rdc-app__stage">
+      <div class="rdc-app__glow"></div>
+      <div class="rdc-app__phone"><div class="rdc-app__screen">
+        {%- if s.app_video != blank -%}
+          <video autoplay muted loop playsinline preload="auto"{% if poster_url != blank %} poster="{{ poster_url }}"{% endif %}>
+            {%- for source in s.app_video.sources -%}
+              <source src="{{ source.url }}" type="{{ source.mime_type }}">
+            {%- endfor -%}
+          </video>
+        {%- elsif s.video_external_url != blank -%}
+          <video src="{{ s.video_external_url }}" autoplay muted loop playsinline preload="auto"{% if poster_url != blank %} poster="{{ poster_url }}"{% endif %}></video>
+        {%- elsif poster_url != blank -%}
+          <img src="{{ poster_url }}" alt="{{ s.title | escape }}" loading="lazy">
+        {%- else -%}
+          <div class="rdc-app__ph">Ajoute une vidéo de l'app (réglage « Vidéo ») ou une image.</div>
+        {%- endif -%}
+      </div></div>
     </div>
 
   </div>
