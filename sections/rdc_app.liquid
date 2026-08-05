@@ -37,8 +37,11 @@
       Même échelle malgré la colonne deux fois plus étroite → titre court. {%- endcomment -%}
   #{{ uid }} .rdc-app__over { font-family: var(--font-accent--family); font-weight: 600; font-size: .82rem;
     letter-spacing: .34em; text-transform: uppercase; color: var(--rdc-app-accent); margin-bottom: 12px; }
+  {%- comment -%} Taille réglable : la colonne fait la moitié de la largeur, donc
+      le bon corps dépend de la longueur du titre. Repère : 5.5rem = exactement
+      « Un mouvement s'éveille » ; en dessous, le titre respire. {%- endcomment -%}
   #{{ uid }} .rdc-app__title { font-family: var(--font-heading--family); font-weight: 400;
-    font-size: clamp(3rem, 7vw, 5.5rem); line-height: .92; letter-spacing: .02em;
+    font-size: clamp(2.4rem, 6.4vw, {{ s.title_size }}rem); line-height: .92; letter-spacing: .02em;
     color: var(--color-foreground-heading, var(--color-foreground)); margin: 0 0 18px; }
   #{{ uid }} .rdc-app__bridge { font-family: var(--font-fragment--family); font-style: italic;
     font-size: 1.3rem; color: var(--rdc-app-accent); max-width: 32ch; margin: 0 0 16px; line-height: 1.4; }
@@ -187,6 +190,7 @@
     { "type": "header", "content": "Texte" },
     { "type": "text", "id": "overline", "label": "Surtitre", "default": "L'application" },
     { "type": "text", "id": "title", "label": "Titre", "default": "Ton territoire, un terrain d'aventure." },
+    { "type": "range", "id": "title_size", "label": "Taille du titre", "unit": "rem", "min": 2.5, "max": 6, "step": 0.1, "default": 4.2, "info": "5,5 = même corps que « Un mouvement s'éveille ». Plus le titre est long, plus il faut descendre." },
     { "type": "textarea", "id": "bridge", "label": "Phrase-pont", "default": "« Une marque. Une application. L'une vous fait porter l'Histoire. La seconde vous la fait vivre. »" },
     { "type": "textarea", "id": "lead", "label": "Paragraphe", "default": "La plus grosse communauté francophone jamais fédérée autour de l'Histoire, l'Aventure & la Nature — dans ta poche." },
     { "type": "text", "id": "play_heading", "label": "Accroche features", "default": "Une carte. Mille façons de jouer." },
