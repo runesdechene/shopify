@@ -430,7 +430,16 @@
       setupScrub(); /* défilement auto + drag/scrub + tap->lightbox, géré par rangée */
     }
 
-    /* --- Stats live (comptes Hub + lieux appli) --- */
+    /* --- Stats live (comptes Hub + lieux appli) ---
+       `clients` = comptes créés sur l'appli, PAS le nombre d'acheteurs : une
+       partie des acheteurs ne crée jamais de compte. Le coefficient corrige ce
+       sous-comptage. Il produit une ESTIMATION : on arrondit toujours vers le
+       BAS et on préfixe d'un « + », pour ne jamais annoncer plus que le réel
+       ni faire passer une extrapolation pour un décompte exact. */
+    var USERS_FACTOR = {{ s.stat_users_factor | default: 1 }};
+    var USERS_ROUND  = {{ s.stat_users_round | default: 0 }};
+    var USERS_PLUS   = {% if s.stat_users_plus == false %}false{% else %}true{% endif %};
+
     (function loadStats() {
       if (!root.querySelector('[data-source]')) return;
       fetch(URL_BASE.replace(/\/$/, '') + '/rest/v1/movement_stats?select=users_count,places_count', { headers: { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY } })
@@ -440,8 +449,17 @@
           var map = { clients: st.users_count, lieux: st.places_count };
           var els = root.querySelectorAll('[data-source]');
           for (var i = 0; i < els.length; i++) {
-            var v = map[els[i].getAttribute('data-source')];
-            if (v != null) els[i].textContent = Number(v).toLocaleString('fr-FR');
+            var src = els[i].getAttribute('data-source');
+            var v = map[src];
+            if (v == null) continue;
+            v = Number(v);
+            var estimated = false;
+            if (src === 'clients') {
+              if (USERS_FACTOR && USERS_FACTOR !== 1) { v = v * USERS_FACTOR; estimated = true; }
+              if (USERS_ROUND > 1) { v = Math.floor(v / USERS_ROUND) * USERS_ROUND; estimated = true; }
+              v = Math.floor(v);
+            }
+            els[i].textContent = (estimated && USERS_PLUS ? '+' : '') + v.toLocaleString('fr-FR');
           }
         })
         .catch(function(e) { console.error('[rdc-mur-vivant] stats', e); });
@@ -485,6 +503,16 @@
     { "type": "header", "content": "Barre de stats" },
     { "type": "checkbox", "id": "show_stats", "label": "Afficher les stats", "default": true },
     { "type": "checkbox", "id": "show_stars", "label": "Afficher les étoiles (note)", "default": true },
+    { "type": "header", "content": "Porteurs — correction du sous-comptage" },
+    { "type": "paragraph", "content": "La valeur live « Comptes Hub » ne compte que les acheteurs qui ont créé un compte sur l'application. Le coefficient corrige ce manque. Le résultat est une estimation : arrondie vers le bas et préfixée d'un « + »." },
+    { "type": "range", "id": "stat_users_factor", "label": "Coefficient", "min": 1, "max": 3, "step": 0.1, "default": 1, "info": "1 = le chiffre brut. 2 = un acheteur sur deux crée un compte." },
+    { "type": "select", "id": "stat_users_round", "label": "Arrondi (vers le bas)", "options": [
+      { "value": "0", "label": "Aucun — chiffre exact" },
+      { "value": "100", "label": "À la centaine" },
+      { "value": "500", "label": "Aux 500" },
+      { "value": "1000", "label": "Au millier" } ], "default": "0" },
+    { "type": "checkbox", "id": "stat_users_plus", "label": "Préfixer d'un « + » quand c'est une estimation", "default": true },
+
     { "type": "text", "id": "stat_rating_label", "label": "Stat 1 — texte note", "default": "4,6/5 de moyenne" },
     { "type": "text", "id": "stat2_value", "label": "Stat 2 — chiffre", "default": "+5 000" },
     { "type": "text", "id": "stat2_label", "label": "Stat 2 — légende", "default": "clients conquis" },
