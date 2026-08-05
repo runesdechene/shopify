@@ -28,7 +28,6 @@
     when 'wide'
       assign ratio = '16 / 9'
   endcase
-  assign scrim = section.settings.scrim | divided_by: 100.0
 -%}
 
 <style>
@@ -50,11 +49,10 @@
     transition:transform .6s ease}
   {% if section.settings.hover_zoom %}#{{ uid }} .rdc-saga__tile:hover .rdc-saga__img{transform:scale(1.06)}{% endif %}
 
-  {%- comment -%} Scrim : garantit la lisibilité quelle que soit la photo. {%- endcomment -%}
-  #{{ uid }} .rdc-saga__scrim{position:absolute;inset:0;transition:.3s;
-    background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,{{ scrim }}) 100%)}
-  #{{ uid }} .rdc-saga__tile:hover .rdc-saga__scrim{
-    background:linear-gradient(180deg,rgba(0,0,0,.08) 20%,rgba(0,0,0,{{ scrim | plus: 0.12 }}) 100%)}
+  {%- comment -%}
+    Pas d'overlay ici : l'assombrissement est traité DANS la photo, pour ne pas
+    ternir le titre qui y est gravé. Décision d'Uriel, 2026-08-05.
+  {%- endcomment -%}
 
   #{{ uid }} .rdc-saga__caption{position:absolute;inset:0;display:flex;flex-direction:column;
     align-items:center;justify-content:center;gap:12px;padding:22px 20px;text-align:center}
@@ -64,12 +62,19 @@
     font-size:clamp(1.3rem,2vw,1.9rem);letter-spacing:.06em;line-height:1;
     text-shadow:0 2px 14px rgba(0,0,0,.45)}
 
-  {%- comment -%} Sous-titre : Bebas Neue (police de titres du thème), vrai texte. {%- endcomment -%}
-  #{{ uid }} .rdc-saga__sub{display:block;font-family:var(--font-heading--family, sans-serif);
+  {%- comment -%}
+    Accroche : vrai texte HTML (Bebas Neue), pas gravée dans la photo — c'est le
+    texte qui bouge, et gravé il devient illisible sur mobile.
+    `mix-blend-mode` lui fait prendre les couleurs du fond : l'intégration
+    visuelle du gravé, sans en payer le prix.
+  {%- endcomment -%}
+  #{{ uid }} .rdc-saga__sub{position:absolute;left:20px;right:20px;bottom:22px;
+    display:block;font-family:var(--font-heading--family, sans-serif);
     text-transform:uppercase;color:{{ section.settings.sub_color }};
     font-size:{{ section.settings.sub_size }}rem;letter-spacing:.10em;line-height:1.25;
-    text-shadow:0 1px 10px rgba(0,0,0,.55)}
-  #{{ uid }} .rdc-saga__sub{position:absolute;left:20px;right:20px;bottom:22px}
+    opacity:{{ section.settings.sub_opacity | divided_by: 100.0 }};
+    mix-blend-mode:{{ section.settings.sub_blend }};
+    {% if section.settings.sub_shadow %}text-shadow:0 1px 10px rgba(0,0,0,.55){% endif %}}
 
   {%- comment -%} Pastille « nouveau » : coin haut, hors de la zone titre/accroche. {%- endcomment -%}
   #{{ uid }} .rdc-saga__new{position:absolute;top:14px;{{ section.settings.new_align }}:14px;z-index:2;
@@ -163,8 +168,6 @@
               <div class="rdc-saga__placeholder">Choisis une collection (ou ajoute une image de fond)</div>
             {%- endif -%}
 
-            <div class="rdc-saga__scrim"></div>
-
             {%- if show_new -%}
               <span class="rdc-saga__new" style="background:{{ section.settings.new_bg }};color:{{ section.settings.new_color }}">{{ new_label }}</span>
             {%- endif -%}
@@ -220,9 +223,6 @@
     { "type": "range", "id": "corner_radius", "label": "Arrondi des coins", "unit": "px", "min": 0, "max": 30, "step": 1, "default": 0 },
     { "type": "checkbox", "id": "hover_zoom", "label": "Zoom au survol", "default": true },
 
-    { "type": "header", "content": "Lisibilité" },
-    { "type": "range", "id": "scrim", "label": "Assombrissement du bas", "unit": "%", "min": 0, "max": 90, "step": 5, "default": 55, "info": "Garantit que le texte reste lisible sur n'importe quelle photo." },
-
     { "type": "header", "content": "Pastille « nouveau »" },
     { "type": "checkbox", "id": "show_new", "label": "Afficher automatiquement", "default": true, "info": "S'allume quand la collection a reçu un Fragment récemment, et s'éteint toute seule après." },
     { "type": "range", "id": "new_days", "label": "Pendant combien de jours", "unit": "j", "min": 5, "max": 90, "step": 5, "default": 30 },
@@ -233,9 +233,17 @@
     { "type": "color", "id": "new_bg", "label": "Fond", "default": "#b4894f" },
     { "type": "color", "id": "new_color", "label": "Texte", "default": "#1c1812" },
 
-    { "type": "header", "content": "Sous-titre" },
+    { "type": "header", "content": "Accroche" },
     { "type": "color", "id": "sub_color", "label": "Couleur", "default": "#f2e6d2" },
     { "type": "range", "id": "sub_size", "label": "Taille", "unit": "rem", "min": 0.7, "max": 1.6, "step": 0.1, "default": 1.0 },
+    { "type": "select", "id": "sub_blend", "label": "Fusion avec la photo", "options": [
+      { "value": "normal", "label": "Aucune (texte posé dessus)" },
+      { "value": "soft-light", "label": "Lumière douce — la plus subtile" },
+      { "value": "overlay", "label": "Incrustation — prend les couleurs du fond" },
+      { "value": "screen", "label": "Superposition claire" },
+      { "value": "luminosity", "label": "Luminosité" } ], "default": "normal", "info": "Fond le texte dans le grain et les couleurs de la photo, comme s'il y était gravé." },
+    { "type": "range", "id": "sub_opacity", "label": "Opacité", "unit": "%", "min": 20, "max": 100, "step": 5, "default": 100 },
+    { "type": "checkbox", "id": "sub_shadow", "label": "Ombre portée", "default": true, "info": "À décocher si tu utilises une fusion." },
 
     { "type": "header", "content": "Mise en page" },
     { "type": "select", "id": "text_align", "label": "Alignement du titre de section", "options": [
