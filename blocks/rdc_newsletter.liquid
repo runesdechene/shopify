@@ -83,11 +83,32 @@
   #{{ uid }} .rdc-nl__legal { font-family: var(--font-body--family); font-size: .78rem;
     color: {{ s.text_color }}; opacity: .6; margin-top: 12px; }
   #{{ uid }} .rdc-nl__note { font-family: var(--font-body--family); font-size: .95rem;
-    margin-top: 14px; padding: 12px 16px; border-radius: {{ s.radius }}px; }
-  #{{ uid }} .rdc-nl__note--ok { background: rgba(60,110,70,.14); color: {{ s.text_color }};
-    border: 1px solid rgba(60,110,70,.35); }
-  #{{ uid }} .rdc-nl__note--ko { background: rgba(150,50,50,.12); color: {{ s.text_color }};
-    border: 1px solid rgba(150,50,50,.35); }
+    margin-top: 14px; padding: 12px 16px; border-radius: {{ s.radius }}px;
+    background: rgba(150,50,50,.10); color: {{ s.text_color }};
+    border: 1px solid rgba(150,50,50,.32); }
+
+  {%- comment -%}
+    Confirmation : elle REMPLACE le formulaire au lieu de s'ajouter dessous —
+    une fois inscrit, les champs ne servent plus et mangeaient de la hauteur.
+    Pastille ronde + coche dessinée, pas d'emoji.
+  {%- endcomment -%}
+  #{{ uid }} .rdc-nl__done { display: inline-flex; align-items: center; gap: 12px;
+    padding: 13px 24px 13px 15px; border-radius: 999px;
+    background: {{ s.success_bg }}; border: 1px solid {{ s.success_color }};
+    font-family: var(--font-body--family); font-size: 1rem; line-height: 1.35;
+    color: {{ s.text_color }}; text-align: left;
+    animation: {{ uid }}-pop .34s cubic-bezier(.2,.8,.3,1.2) both; }
+  #{{ uid }} .rdc-nl__check { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: {{ s.success_color }}; color: #fff; }
+  #{{ uid }} .rdc-nl__check svg { width: 13px; height: 13px; display: block; }
+  @keyframes {{ uid }}-pop {
+    from { opacity: 0; transform: translateY(6px) scale(.97); }
+    to   { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #{{ uid }} .rdc-nl__done { animation: none; }
+  }
   #{{ uid }} .rdc-nl__sr { position: absolute; width: 1px; height: 1px; overflow: hidden;
     clip: rect(0 0 0 0); white-space: nowrap; }
 
@@ -116,31 +137,39 @@
     {%- form 'customer', id: form_id -%}
       <input type="hidden" name="contact[tags]" value="newsletter">
 
-      <div class="rdc-nl__form">
-        <div class="rdc-nl__field rdc-nl__field--first">
-          <label class="rdc-nl__sr" for="{{ uid }}-first">{{ s.first_name_label }}</label>
-          <input id="{{ uid }}-first" type="text" name="contact[first_name]"
-            autocomplete="given-name" placeholder="{{ s.first_name_label | escape }}"
-            value="{{ form.first_name | escape }}">
+      {%- if form.posted_successfully? -%}
+        <div class="rdc-nl__done" role="status">
+          <span class="rdc-nl__check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2"
+              stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.6l5.2 5.2L20 7"/></svg>
+          </span>
+          <span>{{ s.success_text }}</span>
+        </div>
+      {%- else -%}
+        <div class="rdc-nl__form">
+          <div class="rdc-nl__field rdc-nl__field--first">
+            <label class="rdc-nl__sr" for="{{ uid }}-first">{{ s.first_name_label }}</label>
+            <input id="{{ uid }}-first" type="text" name="contact[first_name]"
+              autocomplete="given-name" placeholder="{{ s.first_name_label | escape }}"
+              value="{{ form.first_name | escape }}">
+          </div>
+
+          <div class="rdc-nl__field rdc-nl__field--email">
+            <label class="rdc-nl__sr" for="{{ uid }}-email">{{ s.email_label }}</label>
+            <input id="{{ uid }}-email" type="email" name="contact[email]" required
+              autocomplete="email" autocorrect="off" autocapitalize="off" spellcheck="false"
+              placeholder="{{ s.email_label | escape }}" value="{{ form.email | escape }}">
+          </div>
+
+          <button type="submit" class="rdc-nl__submit">{{ s.button_label }}</button>
         </div>
 
-        <div class="rdc-nl__field rdc-nl__field--email">
-          <label class="rdc-nl__sr" for="{{ uid }}-email">{{ s.email_label }}</label>
-          <input id="{{ uid }}-email" type="email" name="contact[email]" required
-            autocomplete="email" autocorrect="off" autocapitalize="off" spellcheck="false"
-            placeholder="{{ s.email_label | escape }}" value="{{ form.email | escape }}">
-        </div>
-
-        <button type="submit" class="rdc-nl__submit">{{ s.button_label }}</button>
-      </div>
-
-      {%- if form.errors -%}
-        <div class="rdc-nl__note rdc-nl__note--ko">{{ form.errors | default_errors }}</div>
-      {%- elsif form.posted_successfully? -%}
-        <div class="rdc-nl__note rdc-nl__note--ok">{{ s.success_text }}</div>
+        {%- if form.errors -%}
+          <div class="rdc-nl__note">{{ form.errors | default_errors }}</div>
+        {%- endif -%}
       {%- endif -%}
 
-      {%- if s.legal_text != blank -%}
+      {%- if s.legal_text != blank and form.posted_successfully? != true -%}
         <div class="rdc-nl__legal">{{ s.legal_text }}</div>
       {%- endif -%}
     {%- endform -%}
@@ -162,6 +191,8 @@
     { "type": "text", "id": "email_label", "label": "Champ e-mail", "default": "Votre e-mail" },
     { "type": "text", "id": "button_label", "label": "Bouton", "default": "S'inscrire" },
     { "type": "text", "id": "success_text", "label": "Message de confirmation", "default": "C'est fait. À très vite." },
+    { "type": "color", "id": "success_color", "label": "Couleur de la confirmation", "default": "#3f6b4a" },
+    { "type": "color", "id": "success_bg", "label": "Fond de la confirmation", "default": "#eef4ec" },
     { "type": "richtext", "id": "legal_text", "label": "Mention sous le formulaire", "default": "<p>Un message quand un Fragment sort. Jamais de spam, désinscription en un clic.</p>" },
 
     { "type": "header", "content": "Mise en page" },
