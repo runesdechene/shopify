@@ -49,7 +49,13 @@
   {%- comment -%} Une seule ligne sur desktop, empilé sous 700px. {%- endcomment -%}
   #{{ uid }} .rdc-nl__form { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch;
     justify-content: {% if s.text_align == 'center' %}center{% else %}flex-start{% endif %}; }
-  #{{ uid }} .rdc-nl__field { flex: 1 1 180px; min-width: 0; }
+  {%- comment -%}
+    Le prénom prend une part réglable de la ligne, l'e-mail occupe le reste.
+    `flex-basis: 0` pour que le rapport dépende du poids et non du contenu.
+  {%- endcomment -%}
+  #{{ uid }} .rdc-nl__field { min-width: 0; flex-grow: 1; flex-basis: 0; }
+  #{{ uid }} .rdc-nl__field--first { flex-grow: {{ s.first_name_width }}; }
+  #{{ uid }} .rdc-nl__field--email { flex-grow: {{ 100 | minus: s.first_name_width }}; }
   #{{ uid }} .rdc-nl__field input { width: 100%; box-sizing: border-box;
     padding: 14px 16px; border-radius: {{ s.radius }}px;
     border: 1px solid {{ s.field_border }}; background: {{ s.field_bg }}; color: {{ s.text_color }};
@@ -58,7 +64,7 @@
   #{{ uid }} .rdc-nl__field input:focus { outline: 2px solid {{ s.accent_color }}; outline-offset: 1px; }
 
   #{{ uid }} .rdc-nl__submit { flex: 0 0 auto; cursor: pointer;
-    padding: 14px 30px; border: 0; border-radius: {{ s.radius }}px;
+    padding: 14px 30px; border: 0; border-radius: {{ s.radius_button }}px;
     background: {{ s.button_bg }}; color: {{ s.button_text }};
     font-family: var(--font-heading--family); text-transform: uppercase;
     font-size: 1rem; letter-spacing: .10em; line-height: 1.2;
@@ -102,14 +108,14 @@
       <input type="hidden" name="contact[tags]" value="newsletter">
 
       <div class="rdc-nl__form">
-        <div class="rdc-nl__field">
+        <div class="rdc-nl__field rdc-nl__field--first">
           <label class="rdc-nl__sr" for="{{ uid }}-first">{{ s.first_name_label }}</label>
           <input id="{{ uid }}-first" type="text" name="contact[first_name]"
             autocomplete="given-name" placeholder="{{ s.first_name_label | escape }}"
             value="{{ form.first_name | escape }}">
         </div>
 
-        <div class="rdc-nl__field">
+        <div class="rdc-nl__field rdc-nl__field--email">
           <label class="rdc-nl__sr" for="{{ uid }}-email">{{ s.email_label }}</label>
           <input id="{{ uid }}-email" type="email" name="contact[email]" required
             autocomplete="email" autocorrect="off" autocapitalize="off" spellcheck="false"
@@ -155,7 +161,9 @@
       { "value": "left", "label": "Gauche" } ], "default": "center" },
     { "type": "range", "id": "max_width", "label": "Largeur du bloc", "unit": "px", "min": 400, "max": 1100, "step": 20, "default": 720 },
     { "type": "range", "id": "title_size", "label": "Taille du titre", "unit": "rem", "min": 1.5, "max": 4, "step": 0.1, "default": 2.4 },
-    { "type": "range", "id": "radius", "label": "Arrondi des champs", "unit": "px", "min": 0, "max": 30, "step": 1, "default": 4 },
+    { "type": "range", "id": "radius", "label": "Arrondi des champs", "unit": "px", "min": 0, "max": 40, "step": 1, "default": 4 },
+    { "type": "range", "id": "radius_button", "label": "Arrondi du bouton", "unit": "px", "min": 0, "max": 40, "step": 1, "default": 4 },
+    { "type": "range", "id": "first_name_width", "label": "Largeur du prénom", "unit": "%", "min": 20, "max": 60, "step": 5, "default": 35, "info": "Part de la ligne prise par le prénom ; l'e-mail occupe le reste." },
     { "type": "range", "id": "padding_top", "label": "Marge haut", "unit": "px", "min": 0, "max": 140, "step": 4, "default": 40 },
     { "type": "range", "id": "padding_bottom", "label": "Marge bas", "unit": "px", "min": 0, "max": 140, "step": 4, "default": 40 },
 
