@@ -46,9 +46,18 @@
     color: {{ s.text_color }}; opacity: .9; margin: 0 auto 24px; max-width: 52ch; }
   {% if s.text_align != 'center' %}#{{ uid }} .rdc-nl__text { margin-inline: 0 }{% endif %}
 
-  {%- comment -%} Une seule ligne sur desktop, empilé sous 700px. {%- endcomment -%}
-  #{{ uid }} .rdc-nl__form { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch;
+  {%- comment -%}
+    Disposition : « inline » garde les trois éléments sur une ligne (nowrap, pour
+    que le bouton ne parte jamais à la ligne tout seul) ; « stacked » met les
+    deux champs sur une ligne et le bouton pleine largeur en dessous.
+    Sous 700px on empile toujours : trois contrôles côte à côte y sont illisibles.
+  {%- endcomment -%}
+  #{{ uid }} .rdc-nl__form { display: flex; gap: 10px; align-items: stretch;
+    flex-wrap: {% if s.form_layout == 'stacked' %}wrap{% else %}nowrap{% endif %};
     justify-content: {% if s.text_align == 'center' %}center{% else %}flex-start{% endif %}; }
+  {%- if s.form_layout == 'stacked' -%}
+    #{{ uid }} .rdc-nl__submit { flex: 1 0 100%; }
+  {%- endif -%}
   {%- comment -%}
     Le prénom prend une part réglable de la ligne, l'e-mail occupe le reste.
     `flex-basis: 0` pour que le rapport dépende du poids et non du contenu.
@@ -156,6 +165,9 @@
     { "type": "richtext", "id": "legal_text", "label": "Mention sous le formulaire", "default": "<p>Un message quand un Fragment sort. Jamais de spam, désinscription en un clic.</p>" },
 
     { "type": "header", "content": "Mise en page" },
+    { "type": "select", "id": "form_layout", "label": "Disposition du formulaire", "options": [
+      { "value": "inline", "label": "Tout sur une ligne" },
+      { "value": "stacked", "label": "Bouton en dessous, pleine largeur" } ], "default": "inline", "info": "Sur mobile, tout s'empile dans les deux cas." },
     { "type": "select", "id": "text_align", "label": "Alignement", "options": [
       { "value": "center", "label": "Centré" },
       { "value": "left", "label": "Gauche" } ], "default": "center" },
