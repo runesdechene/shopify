@@ -4,83 +4,126 @@
   @param {string} [accelerated_checkout_buttons_layout] - { 'vertical' } Forced layout of the additional checkout buttons, instead of relying on platform's layout.
 {%- enddoc -%}
 
-{%- comment -%} Promotion dégressive - Affichée en haut du panier {%- endcomment -%}
-{%- if settings.cart_progressive_discount_enabled and cart.item_count >= 2 -%}
+{%- comment -%}
+  Promotion dégressive — en tête du panier.
+
+  La remise porte sur l'ARTICLE LE MOINS CHER, pas sur le panier : le badge
+  « -10% » seul faisait croire à une remise globale (deux pièces à 34,90 €
+  laissaient attendre 7 € et rapportaient 2,99 €). La règle est donc écrite
+  en toutes lettres sous le badge, et une barre montre ce qui reste à ajouter.
+{%- endcomment -%}
+{%- if settings.cart_progressive_discount_enabled and cart.item_count >= 1 -%}
   {%- liquid
     assign item_count = cart.item_count
+
+    assign pct2 = settings.cart_discount_2_items | default: 15
+    assign pct3 = settings.cart_discount_3_items | default: 25
+    assign pct4 = settings.cart_discount_4_items | default: 40
+    assign pct5 = settings.cart_discount_5_items | default: 50
+
+    assign name2 = settings.cart_discount_2_name | default: 'Duo'
+    assign name3 = settings.cart_discount_3_name | default: 'Trio'
+    assign name4 = settings.cart_discount_4_name | default: 'Collection'
+    assign name5 = settings.cart_discount_5_name | default: 'Saga'
+
+    comment
+      Palier atteint (0 = aucun) + palier suivant, s'il existe.
+    endcomment
     assign discount_percent = 0
     assign tier_name = ''
     assign tier_message = ''
+    assign next_at = 0
+    assign next_percent = 0
 
     if item_count >= 5
-      assign discount_percent = settings.cart_discount_5_items | default: 50
-      assign tier_name = settings.cart_discount_5_name | default: 'Saga épique'
-      assign tier_message = settings.cart_discount_5_message | default: "Votre légende s'écrit avec chaque pièce..."
+      assign discount_percent = pct5
+      assign tier_name = name5
+      assign tier_message = settings.cart_discount_5_message
     elsif item_count == 4
-      assign discount_percent = settings.cart_discount_4_items | default: 40
-      assign tier_name = settings.cart_discount_4_name | default: 'Collection légendaire'
-      assign tier_message = settings.cart_discount_4_message | default: 'Une collection digne des plus grands récits...'
+      assign discount_percent = pct4
+      assign tier_name = name4
+      assign tier_message = settings.cart_discount_4_message
+      assign next_at = 5
+      assign next_percent = pct5
     elsif item_count == 3
-      assign discount_percent = settings.cart_discount_3_items | default: 25
-      assign tier_name = settings.cart_discount_3_name | default: 'Trilogie enchantée'
-      assign tier_message = settings.cart_discount_3_message | default: 'Trois fragments réunis, la magie opère...'
+      assign discount_percent = pct3
+      assign tier_name = name3
+      assign tier_message = settings.cart_discount_3_message
+      assign next_at = 4
+      assign next_percent = pct4
     elsif item_count == 2
-      assign discount_percent = settings.cart_discount_2_items | default: 15
-      assign tier_name = settings.cart_discount_2_name | default: 'Duo complice'
-      assign tier_message = settings.cart_discount_2_message | default: 'Deux pièces, une histoire qui commence à se dessiner...'
+      assign discount_percent = pct2
+      assign tier_name = name2
+      assign tier_message = settings.cart_discount_2_message
+      assign next_at = 3
+      assign next_percent = pct3
+    else
+      assign next_at = 2
+      assign next_percent = pct2
     endif
 
-    assign cheapest_price = 999999999
-    assign cheapest_item_title = ''
-    for item in cart.items
-      if item.original_price < cheapest_price
-        assign cheapest_price = item.original_price
-        assign cheapest_item_title = item.product.title
-      endif
-    endfor
+    if next_percent <= discount_percent
+      assign next_at = 0
+    endif
 
+    comment
+      L'économie affichée doit correspondre à la règle réelle : un pourcentage
+      du prix de l'article le moins cher du panier.
+    endcomment
+    assign cheapest_price = 0
+    if item_count >= 2
+      assign cheapest_price = 999999999
+      for line in cart.items
+        if line.original_price < cheapest_price
+          assign cheapest_price = line.original_price
+        endif
+      endfor
+    endif
     assign discount_amount = cheapest_price | times: discount_percent | divided_by: 100
+
+    assign missing = 0
+    if next_at > 0
+      assign missing = next_at | minus: item_count
+    endif
+    assign progress = 0
+    if next_at > 0
+      assign progress = item_count | times: 100 | divided_by: next_at
+    endif
   -%}
-  <div class="cart-progressive-discount">
-    <div class="cart-progressive-discount__header">
-      <span class="cart-progressive-discount__tier-name">{{ tier_name }}</span>
-      <span class="cart-progressive-discount__badge">-{{ discount_percent }}%</span>
-    </div>
-    <p class="cart-progressive-discount__narrative">{{ tier_message }}</p>
-    <p class="cart-progressive-discount__details">
-      <strong>{{ discount_amount | money }}</strong> d'économie sur "{{ cheapest_item_title | truncate: 25 }}"
-    </p>
-    {%- if item_count == 2 and settings.cart_discount_3_items > settings.cart_discount_2_items -%}
-      <p class="cart-progressive-discount__hint">
-        +1 article → <strong>{{ settings.cart_discount_3_name | default: 'Trilogie enchantée' }}</strong> (-
-        {{- settings.cart_discount_3_items -}}
-        %)
-      </p>
-    {%- elsif item_count == 3 and settings.cart_discount_4_items > settings.cart_discount_3_items -%}
-      <p class="cart-progressive-discount__hint">
-        +1 article → <strong>{{ settings.cart_discount_4_name | default: 'Collection légendaire' }}</strong> (-
-        {{- settings.cart_discount_4_items -}}
-        %)
-      </p>
-    {%- elsif item_count == 4 and settings.cart_discount_5_items > settings.cart_discount_4_items -%}
-      <p class="cart-progressive-discount__hint">
-        +1 article → <strong>{{ settings.cart_discount_5_name | default: 'Saga épique' }}</strong> (-
-        {{- settings.cart_discount_5_items -}}
-        %)
-      </p>
+
+
+  <div class="rdc-tier">
+    {%- if discount_percent > 0 -%}
+      <div class="rdc-tier__head">
+        <span class="rdc-tier__name">{{ tier_name }}</span>
+        <span class="rdc-tier__badge">&minus;{{ discount_percent }}&nbsp;%</span>
+      </div>
+      <p class="rdc-tier__rule">Remise appliquée sur votre article le moins cher.</p>
+      {%- if discount_amount > 0 -%}
+        <p class="rdc-tier__save"><b>{{ discount_amount | money }}</b> économisés</p>
+      {%- endif -%}
+      {%- if tier_message != blank -%}
+        <p class="rdc-tier__lore">{{ tier_message }}</p>
+      {%- endif -%}
+    {%- else -%}
+      <div class="rdc-tier__head">
+        <span class="rdc-tier__name">Remise dégressive</span>
+      </div>
+      <p class="rdc-tier__rule">À partir de deux articles, le moins cher est remisé.</p>
     {%- endif -%}
-  </div>
-{%- elsif settings.cart_progressive_discount_enabled and cart.item_count == 1 -%}
-  <div class="cart-progressive-discount cart-progressive-discount--teaser">
-    <p class="cart-progressive-discount__teaser">
-      <strong>{{ settings.cart_discount_2_name | default: 'Duo complice' }}</strong> : Ajoutez un article pour profiter
-      de
-      <b
-        >-
-        {{- settings.cart_discount_2_items | default: 15 }}%</b
-      >
-      sur l'un d'eux.
-    </p>
+
+    {%- if next_at > 0 -%}
+      <div class="rdc-tier__next">
+        <div class="rdc-tier__bar"><span style="width: {{ progress }}%"></span></div>
+        <div class="rdc-tier__togo">
+          <span>
+            {%- if missing == 1 -%}Encore 1 article{%- else -%}Encore {{ missing }} articles{%- endif -%}
+            &nbsp;pour <b>&minus;{{ next_percent }}&nbsp;%</b>
+          </span>
+          <span class="rdc-tier__count">{{ item_count }}/{{ next_at }}</span>
+        </div>
+      </div>
+    {%- endif -%}
   </div>
 {%- endif -%}
 
@@ -403,74 +446,30 @@
 
 {% stylesheet %}
   /* Promotion dégressive */
-  .cart-progressive-discount {
-    background: linear-gradient(135deg, #f8f5f0 0%, #ece7d9 100%);
-    border-radius: 12px;
-    padding: var(--padding-md) var(--padding-lg);
-    border: 1px solid rgba(131, 52, 52, 0.15);
-    width: 100%;
-  }
+    .rdc-tier { border: 1px solid var(--color-border, #e2d9c8); border-radius: 10px;
+      padding: 14px 16px; margin-bottom: 14px; background: var(--color-background, #fff); }
+    .rdc-tier__head { display: flex; align-items: center; gap: 10px; justify-content: space-between; }
+    .rdc-tier__name { font-family: var(--font-heading--family, sans-serif); text-transform: uppercase;
+      font-size: 1.05rem; letter-spacing: .04em; line-height: 1.1; color: var(--color-foreground); }
+    .rdc-tier__badge { flex: 0 0 auto; padding: 3px 11px; border-radius: 999px;
+      background: #833434; color: #fff; font-family: var(--font-heading--family, sans-serif);
+      font-size: .88rem; letter-spacing: .04em; line-height: 1.5; white-space: nowrap; }
+    .rdc-tier__rule { font-family: var(--font-body--family); font-size: .88rem; line-height: 1.4;
+      color: var(--color-foreground); opacity: .75; margin: 6px 0 0; }
+    .rdc-tier__save { font-family: var(--font-body--family); font-size: .92rem; margin: 4px 0 0;
+      color: var(--color-foreground); }
+    .rdc-tier__lore { font-family: var(--font-body--family); font-style: italic; font-size: .82rem;
+      opacity: .55; margin: 8px 0 0; }
 
-  .cart-progressive-discount__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--gap-sm);
-    margin-block-end: var(--margin-2xs);
-  }
-
-  .cart-progressive-discount__tier-name {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #833434;
-    font-family: var(--font-heading--family);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .cart-progressive-discount__badge {
-    background: #833434;
-    color: #fff;
-    font-size: var(--cart-font-size--2xs);
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 10px;
-  }
-
-  .cart-progressive-discount__narrative {
-    font-size: var(--cart-font-size--xs);
-    color: var(--color-foreground);
-    margin: 0 0 var(--margin-2xs);
-    font-style: italic;
-    opacity: 0.85;
-  }
-
-  .cart-progressive-discount__details {
-    font-size: var(--cart-font-size--2xs);
-    color: var(--color-foreground);
-    margin: 0;
-    opacity: 0.7;
-  }
-
-  .cart-progressive-discount__hint {
-    font-size: var(--cart-font-size--2xs);
-    color: #833434;
-    margin: var(--margin-2xs) 0 0;
-    padding-top: var(--padding-2xs);
-    border-top: 1px dashed rgba(131, 52, 52, 0.2);
-  }
-
-  .cart-progressive-discount--teaser {
-    background: rgba(131, 52, 52, 0.05);
-    border: 1px dashed rgba(131, 52, 52, 0.2);
-  }
-
-  .cart-progressive-discount__teaser {
-    font-size: 0.9rem;
-    color: var(--color-foreground);
-    margin: 0;
-    text-align: center;
-  }
+    .rdc-tier__next { margin-top: 12px; }
+    .rdc-tier__bar { height: 5px; border-radius: 999px; background: rgba(0,0,0,.09); overflow: hidden; }
+    .rdc-tier__bar span { display: block; height: 100%; border-radius: 999px; background: #833434;
+      transition: width .4s ease; }
+    .rdc-tier__togo { display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+      font-family: var(--font-body--family); font-size: .88rem; margin-top: 7px;
+      color: var(--color-foreground); }
+    .rdc-tier__togo b { font-weight: 600; }
+    .rdc-tier__count { opacity: .55; white-space: nowrap; }
 
   /* Frais de port offerts */
   .cart-free-shipping {
