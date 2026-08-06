@@ -55,9 +55,6 @@
   #{{ uid }} .rdc-nl__form { display: flex; gap: 10px; align-items: stretch;
     flex-wrap: {% if s.form_layout == 'stacked' %}wrap{% else %}nowrap{% endif %};
     justify-content: {% if s.text_align == 'center' %}center{% else %}flex-start{% endif %}; }
-  {%- if s.form_layout == 'stacked' -%}
-    #{{ uid }} .rdc-nl__submit { flex: 1 0 100%; }
-  {%- endif -%}
   {%- comment -%}
     Le prénom prend une part réglable de la ligne, l'e-mail occupe le reste.
     `flex-basis: 0` pour que le rapport dépende du poids et non du contenu.
@@ -72,7 +69,10 @@
   #{{ uid }} .rdc-nl__field input::placeholder { color: {{ s.text_color }}; opacity: .5; }
   #{{ uid }} .rdc-nl__field input:focus { outline: 2px solid {{ s.accent_color }}; outline-offset: 1px; }
 
-  #{{ uid }} .rdc-nl__submit { flex: 0 0 auto; cursor: pointer;
+  {%- comment -%} La largeur du bouton se decide ICI, dans sa regle de base :
+      un override ecrit plus haut serait ecrase par celle-ci. {%- endcomment -%}
+  #{{ uid }} .rdc-nl__submit { cursor: pointer;
+    flex: {% if s.form_layout == 'stacked' %}1 0 100%{% else %}0 0 auto{% endif %};
     padding: 14px 30px; border: 0; border-radius: {{ s.radius_button }}px;
     background: {{ s.button_bg }}; color: {{ s.button_text }};
     font-family: var(--font-heading--family); text-transform: uppercase;
