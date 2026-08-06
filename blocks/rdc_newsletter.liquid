@@ -14,6 +14,12 @@
 {%- liquid
   assign uid = 'RdcNews-' | append: block.id
   assign s = block.settings
+  comment
+    L'identifiant du formulaire doit être précalculé : un filtre écrit
+    directement dans le tag `form` est avalé comme argument et Shopify croit
+    que le type de formulaire est le résultat du filtre.
+  endcomment
+  assign form_id = uid | append: '-form'
 -%}
 
 <style>
@@ -92,7 +98,7 @@
     {%- if s.title != blank -%}<h2 class="rdc-nl__title">{{ s.title }}</h2>{%- endif -%}
     {%- if s.text != blank -%}<div class="rdc-nl__text">{{ s.text }}</div>{%- endif -%}
 
-    {%- form 'customer', id: uid | append: '-form' -%}
+    {%- form 'customer', id: form_id -%}
       <input type="hidden" name="contact[tags]" value="newsletter">
 
       <div class="rdc-nl__form">
