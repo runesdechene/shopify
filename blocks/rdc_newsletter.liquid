@@ -1,24 +1,23 @@
 {%- comment -%}
-  rdc_newsletter.liquid — « RDC — Newsletter »
+  blocks/rdc_newsletter.liquid — « RDC — Newsletter »
 
-  Inscription newsletter avec PRÉNOM + email. Le bloc natif du thème ne prend
-  que l'email : sans prénom, impossible d'écrire « Bonjour Marie » dans les
-  séquences de drop, et c'est ce qui fait la différence à l'ouverture.
+  Bloc de thème (posable dans n'importe quel groupe, notamment le pied de page).
+  Inscription newsletter avec PRÉNOM + e-mail : le bloc natif `email-signup` ne
+  prend que l'e-mail, or sans prénom impossible d'écrire « Bonjour Marie » dans
+  les séquences de drop — et c'est ce qui fait la différence à l'ouverture.
 
-  Utilise le formulaire client Shopify (`form 'customer'`) : le contact part
+  Utilise le formulaire client Shopify (`form 'customer'`) : le contact atterrit
   dans les clients de la boutique avec le tag « newsletter », donc utilisable
-  directement dans les campagnes — aucune application tierce.
-
-  À poser dans le groupe Pied de page depuis l'éditeur.
+  directement en campagne — aucune application tierce.
 {%- endcomment -%}
 
 {%- liquid
-  assign uid = 'RdcNews-' | append: section.id
-  assign s = section.settings
+  assign uid = 'RdcNews-' | append: block.id
+  assign s = block.settings
 -%}
 
 <style>
-  #{{ uid }} { position: relative; isolation: isolate;
+  #{{ uid }} { position: relative; isolation: isolate; width: 100%;
     padding-block: {{ s.padding_top }}px {{ s.padding_bottom }}px; }
 
   {%- if s.bg_image != blank -%}
@@ -28,24 +27,24 @@
       background: {{ s.bg_overlay_color }}; opacity: {{ s.bg_overlay | divided_by: 100.0 }}; }
   {%- endif -%}
 
-  #{{ uid }} .rdc-nl__inner { max-width: {{ s.max_width }}px; margin: 0 auto; padding-inline: 24px;
+  #{{ uid }} .rdc-nl__inner { max-width: {{ s.max_width }}px; margin: 0 auto;
     text-align: {{ s.text_align }}; }
 
   #{{ uid }} .rdc-nl__over { font-family: var(--font-accent--family); font-weight: 600;
     font-size: .78rem; letter-spacing: .34em; text-transform: uppercase;
     color: {{ s.accent_color }}; margin-bottom: 12px; }
   #{{ uid }} .rdc-nl__title { font-family: var(--font-heading--family); font-weight: 400;
-    font-size: clamp(1.9rem, 3.4vw, {{ s.title_size }}rem); line-height: .95; letter-spacing: .02em;
+    font-size: clamp(1.7rem, 3.2vw, {{ s.title_size }}rem); line-height: .95; letter-spacing: .02em;
     color: {{ s.title_color }}; margin: 0 0 14px; }
   #{{ uid }} .rdc-nl__text { font-family: var(--font-body--family); font-size: 1rem; line-height: 1.55;
-    color: {{ s.text_color }}; opacity: .9; margin: 0 auto 26px; max-width: 52ch; }
+    color: {{ s.text_color }}; opacity: .9; margin: 0 auto 24px; max-width: 52ch; }
   {% if s.text_align != 'center' %}#{{ uid }} .rdc-nl__text { margin-inline: 0 }{% endif %}
 
   {%- comment -%} Une seule ligne sur desktop, empilé sous 700px. {%- endcomment -%}
   #{{ uid }} .rdc-nl__form { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch;
     justify-content: {% if s.text_align == 'center' %}center{% else %}flex-start{% endif %}; }
-  #{{ uid }} .rdc-nl__field { flex: 1 1 190px; min-width: 0; }
-  #{{ uid }} .rdc-nl__field input { width: 100%; height: 100%; box-sizing: border-box;
+  #{{ uid }} .rdc-nl__field { flex: 1 1 180px; min-width: 0; }
+  #{{ uid }} .rdc-nl__field input { width: 100%; box-sizing: border-box;
     padding: 14px 16px; border-radius: {{ s.radius }}px;
     border: 1px solid {{ s.field_border }}; background: {{ s.field_bg }}; color: {{ s.text_color }};
     font-family: var(--font-body--family); font-size: .95rem; line-height: 1.2; }
@@ -68,6 +67,8 @@
     border: 1px solid rgba(60,110,70,.35); }
   #{{ uid }} .rdc-nl__note--ko { background: rgba(150,50,50,.12); color: {{ s.text_color }};
     border: 1px solid rgba(150,50,50,.35); }
+  #{{ uid }} .rdc-nl__sr { position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap; }
 
   @media (max-width: 699px) {
     #{{ uid }} .rdc-nl__form { flex-direction: column; }
@@ -75,7 +76,7 @@
   }
 </style>
 
-<div id="{{ uid }}" class="rdc-nl color-{{ s.color_scheme }}">
+<div id="{{ uid }}" class="rdc-nl" {{ block.shopify_attributes }}>
   {%- if s.bg_image != blank -%}
     <div class="rdc-nl__bg" aria-hidden="true">
       <img src="{{ s.bg_image | image_url: width: 2200 }}"
@@ -96,14 +97,14 @@
 
       <div class="rdc-nl__form">
         <div class="rdc-nl__field">
-          <label class="visually-hidden" for="{{ uid }}-first">{{ s.first_name_label }}</label>
+          <label class="rdc-nl__sr" for="{{ uid }}-first">{{ s.first_name_label }}</label>
           <input id="{{ uid }}-first" type="text" name="contact[first_name]"
             autocomplete="given-name" placeholder="{{ s.first_name_label | escape }}"
             value="{{ form.first_name | escape }}">
         </div>
 
         <div class="rdc-nl__field">
-          <label class="visually-hidden" for="{{ uid }}-email">{{ s.email_label }}</label>
+          <label class="rdc-nl__sr" for="{{ uid }}-email">{{ s.email_label }}</label>
           <input id="{{ uid }}-email" type="email" name="contact[email]" required
             autocomplete="email" autocorrect="off" autocapitalize="off" spellcheck="false"
             placeholder="{{ s.email_label | escape }}" value="{{ form.email | escape }}">
@@ -128,8 +129,7 @@
 {% schema %}
 {
   "name": "RDC — Newsletter",
-  "tag": "section",
-  "class": "rdc-newsletter-section",
+  "tag": null,
   "settings": [
     { "type": "header", "content": "Textes" },
     { "type": "text", "id": "overline", "label": "Sur-titre", "default": "Avant tout le monde" },
@@ -147,11 +147,11 @@
     { "type": "select", "id": "text_align", "label": "Alignement", "options": [
       { "value": "center", "label": "Centré" },
       { "value": "left", "label": "Gauche" } ], "default": "center" },
-    { "type": "range", "id": "max_width", "label": "Largeur du bloc", "unit": "px", "min": 500, "max": 1100, "step": 20, "default": 760 },
-    { "type": "range", "id": "title_size", "label": "Taille du titre", "unit": "rem", "min": 1.6, "max": 4, "step": 0.1, "default": 2.6 },
+    { "type": "range", "id": "max_width", "label": "Largeur du bloc", "unit": "px", "min": 400, "max": 1100, "step": 20, "default": 720 },
+    { "type": "range", "id": "title_size", "label": "Taille du titre", "unit": "rem", "min": 1.5, "max": 4, "step": 0.1, "default": 2.4 },
     { "type": "range", "id": "radius", "label": "Arrondi des champs", "unit": "px", "min": 0, "max": 30, "step": 1, "default": 4 },
-    { "type": "range", "id": "padding_top", "label": "Marge haut", "unit": "px", "min": 0, "max": 160, "step": 4, "default": 64 },
-    { "type": "range", "id": "padding_bottom", "label": "Marge bas", "unit": "px", "min": 0, "max": 160, "step": 4, "default": 64 },
+    { "type": "range", "id": "padding_top", "label": "Marge haut", "unit": "px", "min": 0, "max": 140, "step": 4, "default": 40 },
+    { "type": "range", "id": "padding_bottom", "label": "Marge bas", "unit": "px", "min": 0, "max": 140, "step": 4, "default": 40 },
 
     { "type": "header", "content": "Image de fond (optionnelle)" },
     { "type": "image_picker", "id": "bg_image", "label": "Image" },
@@ -159,7 +159,6 @@
     { "type": "range", "id": "bg_overlay", "label": "Opacité du voile", "unit": "%", "min": 0, "max": 95, "step": 5, "default": 80 },
 
     { "type": "header", "content": "Couleurs" },
-    { "type": "color_scheme", "id": "color_scheme", "label": "Schéma de couleur", "default": "scheme-1" },
     { "type": "color", "id": "accent_color", "label": "Sur-titre", "default": "#b4894f" },
     { "type": "color", "id": "title_color", "label": "Titre", "default": "#403434" },
     { "type": "color", "id": "text_color", "label": "Texte", "default": "#403434" },
