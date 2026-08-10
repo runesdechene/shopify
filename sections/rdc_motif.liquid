@@ -251,7 +251,7 @@
     },
     { "type": "range", "id": "ghost_opacity", "label": "Intensité du filigrane", "unit": "%", "min": 0, "max": 40, "step": 1, "default": 13 },
     { "type": "range", "id": "ghost_scale", "label": "Hauteur du filigrane (desktop)", "unit": "%", "min": 30, "max": 100, "step": 5, "default": 85, "info": "En pourcentage de la hauteur de la section. Plafonné à 100 % : au-delà, le dessin serait coupé en haut et en bas." },
-    { "type": "range", "id": "ghost_max_width", "label": "Largeur max du filigrane (desktop)", "unit": "%", "min": 20, "max": 90, "step": 5, "default": 45, "info": "En pourcentage de la largeur de la page. Évite que le dessin ne passe sous le texte." },
+    { "type": "range", "id": "ghost_max_width", "label": "Largeur max du filigrane (desktop)", "unit": "%", "min": 20, "max": 100, "step": 5, "default": 70, "info": "En pourcentage de la largeur de la page. À combiner avec le décalage : c'est la différence des deux qui reste visible." },
     { "type": "range", "id": "ghost_scale_mobile", "label": "Hauteur du filigrane (mobile)", "unit": "%", "min": 20, "max": 100, "step": 5, "default": 45 },
     { "type": "range", "id": "ghost_max_width_mobile", "label": "Largeur max du filigrane (mobile)", "unit": "%", "min": 30, "max": 100, "step": 5, "default": 80 },
     {
@@ -268,7 +268,7 @@
     },
     { "type": "range", "id": "ghost_offset_mobile", "label": "Décalage vers la droite (mobile)", "unit": "%", "min": -80, "max": 30, "step": 2, "default": -8 },
     { "type": "range", "id": "ghost_opacity_mobile", "label": "Intensité du filigrane (mobile)", "unit": "%", "min": 0, "max": 40, "step": 1, "default": 18, "info": "En haut de page il ne concurrence que du texte : il peut être plus présent qu'en desktop." },
-    { "type": "range", "id": "ghost_offset", "label": "Décalage vers la droite (desktop)", "unit": "%", "min": -80, "max": 30, "step": 2, "default": -50, "info": "Plus la valeur est négative, plus le dessin sort par la droite. Au-delà de -60, il n'en reste qu'un fragment." },
+    { "type": "range", "id": "ghost_offset", "label": "Décalage vers la droite (desktop)", "unit": "%", "min": -80, "max": 30, "step": 2, "default": -24, "info": "Ce qui reste visible = largeur max moins ce décalage. Avec 70 % de largeur et -24 %, il en reste 46 %. Un décalage égal à la largeur max le fait disparaître entièrement." },
     { "type": "checkbox", "id": "prefer_background_image", "label": "Utiliser l'image de fond du Fragment si elle existe", "default": true, "info": "Sinon, le dessin du motif sert de filigrane. Une seule illustration sur 22 possède cette image aujourd'hui." },
     { "type": "header", "content": "Textes" },
     { "type": "text", "id": "overline", "label": "Surtitre", "default": "Motif" },
