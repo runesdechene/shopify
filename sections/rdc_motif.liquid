@@ -35,7 +35,18 @@
 
   assign motif_nom = ill.nom | default: collection.title
   assign motif_resume = ill.resume | metafield_text | replace: '&amp;', '&' | strip
-  assign motif_recit = ill.description_borne | metafield_text | replace: '&amp;', '&' | strip
+  comment
+    Le recit vient de `son_histoire` — un texte long, entre 1100 et 2000
+    caracteres selon les motifs, mesure le 2026-08-11. `description_borne`
+    ne sert que de repli : c'est une phrase de vente de 200 caracteres,
+    ecrite pour la borne du stand.
+    On ne passe PAS par strip_html : ce champ est du texte riche, ses
+    paragraphes doivent survivre.
+  endcomment
+  assign motif_recit = ill.son_histoire | metafield_text | replace: '&amp;', '&' | strip | newline_to_br
+  if motif_recit == ''
+    assign motif_recit = ill.description_borne | metafield_text | replace: '&amp;', '&' | strip
+  endif
   assign motif_artiste = ill.artiste.value.nom.value | default: ill.artiste
 
   assign ghost = ill.image_pour_fond_clair | default: ill.image_pour_fond_sombre
@@ -149,8 +160,11 @@
     margin-top:clamp(28px,3.4vw,46px);padding-top:clamp(22px,2.6vw,34px);max-width:62ch}
   #{{ uid }} .rdcm__story h2{font-family:var(--font-body--family);font-weight:700;font-size:.68rem;
     letter-spacing:.26em;text-transform:uppercase;color:{{ s.accent_color }};margin:0 0 12px}
-  #{{ uid }} .rdcm__story p{font-family:var(--font-body--family);font-size:1.02rem;line-height:1.7;
-    color:#5a4a42;margin:0}
+  #{{ uid }} .rdcm__story-body{font-family:var(--font-body--family);font-size:1.02rem;line-height:1.7;
+    color:#5a4a42}
+  #{{ uid }} .rdcm__story-body > *:first-child{margin-top:0}
+  #{{ uid }} .rdcm__story-body > *:last-child{margin-bottom:0}
+  #{{ uid }} .rdcm__story-body p{margin:0 0 1em}
 
   {%- comment -%} Les cartes de coupe reprennent le style de la page de saga. {%- endcomment -%}
   {%- comment -%}
@@ -220,7 +234,11 @@
     {%- if motif_recit != '' -%}
       <div class="rdcm__story">
         <h2>{{ s.story_title }}</h2>
-        <p>{{ motif_recit }}</p>
+        {%- comment -%}
+          Texte riche : on le rend tel quel, dans un div. L'envelopper dans un
+          <p> casserait sa mise en paragraphes.
+        {%- endcomment -%}
+        <div class="rdcm__story-body">{{ motif_recit }}</div>
       </div>
     {%- endif -%}
   </div>
