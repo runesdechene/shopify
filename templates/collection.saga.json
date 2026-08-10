@@ -3,11 +3,22 @@
     "saga_hero": {
       "type": "rdc_saga-hero",
       "settings": {
+        "mf_namespace": "custom",
+        "mf_key": "hero_images",
+        "autoplay_seconds": 6,
+        "ken_burns_duration": 18,
+        "overline": "Saga",
         "min_height": 84,
         "min_height_mobile": 80
       }
+    },
+    "saga_motifs": {
+      "type": "rdc_saga-motifs",
+      "settings": {
+        "label_recent": "Le plus récent",
+        "label_motif": "Motif"
+      }
     }
   },
-  "order": ["saga_hero"]
+  "order": ["saga_hero", "saga_motifs"]
 }
-
