@@ -1,0 +1,32 @@
+{%- comment -%}
+  rdc_saga-hero.liquid
+
+  Hero plein cadre d'une page de saga. Reprend la grammaire de rdc_hero.liquid :
+  voile degrade, Ken Burns, texte en surimpression, points de navigation.
+  Ne connait rien des motifs — il ne parle que de la collection.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = 'RdcSagaHero-' | append: section.id
+  assign s = section.settings
+-%}
+
+<style>
+  #{{ uid }}{position:relative;min-height:{{ s.min_height }}vh;display:flex;align-items:flex-end;
+    overflow:hidden;background:#1c1812}
+  @media (max-width:749px){#{{ uid }}{min-height:{{ s.min_height_mobile }}vh}}
+</style>
+
+<section id="{{ uid }}" data-rdc-saga-hero></section>
+
+{% schema %}
+{
+  "name": "RDC — Saga : hero",
+  "tag": "section",
+  "settings": [
+    { "type": "range", "id": "min_height", "label": "Hauteur (desktop)", "unit": "vh", "min": 40, "max": 100, "step": 2, "default": 84 },
+    { "type": "range", "id": "min_height_mobile", "label": "Hauteur (mobile)", "unit": "vh", "min": 40, "max": 100, "step": 2, "default": 80 }
+  ],
+  "presets": [{ "name": "RDC — Saga : hero" }]
+}
+{% endschema %}

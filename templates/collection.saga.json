@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "saga_hero": {
+      "type": "rdc_saga-hero",
+      "settings": {
+        "min_height": 84,
+        "min_height_mobile": 80
+      }
+    }
+  },
+  "order": ["saga_hero"]
+}
