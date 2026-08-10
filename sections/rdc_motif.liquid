@@ -66,7 +66,12 @@
     qui evite l'effet « image collee ».
   {%- endcomment -%}
   #{{ uid }} .rdcm__ghost{position:absolute;pointer-events:none;user-select:none;
-    right:{{ s.ghost_offset }}%;top:50%;transform:translateY(-50%);
+    right:{{ s.ghost_offset }}%;
+    {%- case s.ghost_valign -%}
+      {%- when 'top' -%}top:0;bottom:auto;transform:none;
+      {%- when 'bottom' -%}top:auto;bottom:0;transform:none;
+      {%- else -%}top:50%;bottom:auto;transform:translateY(-50%);
+    {%- endcase -%}
     height:{{ s.ghost_scale }}%;max-height:100%;max-width:{{ s.ghost_max_width }}%;
     opacity:{{ s.ghost_opacity | divided_by: 100.0 }};mix-blend-mode:multiply}
   #{{ uid }} .rdcm__ghost img{height:100%;width:100%;object-fit:contain;
@@ -90,9 +95,24 @@
     }
   }
 
+  {%- comment -%}
+    L'air au-dessus du titre n'est pas decoratif : c'est lui qui laisse voir le
+    filigrane quand celui-ci est cale en haut. Reduire cette marge revient a
+    masquer le dessin derriere le texte.
+  {%- endcomment -%}
   #{{ uid }} .rdcm__in{position:relative;margin:0 auto;
     max-width:calc(var(--page-width, 1400px) - (var(--page-margin, 40px) * 2));
-    padding:clamp(28px,4vw,54px) clamp(20px,3vw,40px)}
+    padding:{{ s.padding_top }}px clamp(20px,3vw,40px) {{ s.padding_bottom }}px}
+  @media (max-width:749px){
+    #{{ uid }} .rdcm__in{padding-top:{{ s.padding_top_mobile }}px}
+    {%- comment -%}
+      Sur mobile, brider la largeur du titre et de la phrase degage la colonne
+      de droite : sans ca, le texte court sur toute la largeur et recouvre le
+      filigrane, qui redevient invisible.
+    {%- endcomment -%}
+    #{{ uid }} .rdcm__name,
+    #{{ uid }} .rdcm__line{max-width:{{ s.text_width_mobile }}%}
+  }
 
   #{{ uid }} .rdcm__over{font-family:var(--font-body--family);font-weight:700;font-size:.62rem;
     letter-spacing:.22em;text-transform:uppercase;color:{{ s.accent_color }}}
@@ -212,7 +232,23 @@
   "name": "RDC — Motif",
   "tag": "section",
   "settings": [
+    { "type": "header", "content": "Espacements" },
+    { "type": "range", "id": "padding_top", "label": "Air au-dessus du titre (desktop)", "unit": "px", "min": 0, "max": 240, "step": 4, "default": 104, "info": "C'est cet espace qui laisse voir le filigrane quand il est calé en haut." },
+    { "type": "range", "id": "padding_top_mobile", "label": "Air au-dessus du titre (mobile)", "unit": "px", "min": 0, "max": 200, "step": 4, "default": 76 },
+    { "type": "range", "id": "padding_bottom", "label": "Air en dessous", "unit": "px", "min": 0, "max": 160, "step": 4, "default": 56 },
+    { "type": "range", "id": "text_width_mobile", "label": "Largeur du titre et de la phrase (mobile)", "unit": "%", "min": 40, "max": 100, "step": 5, "default": 70, "info": "Brider le texte dégage la colonne de droite pour le filigrane." },
     { "type": "header", "content": "Filigrane" },
+    {
+      "type": "select",
+      "id": "ghost_valign",
+      "label": "Position du filigrane (desktop)",
+      "options": [
+        { "value": "top", "label": "En haut — derrière le titre" },
+        { "value": "center", "label": "Au centre — derrière les produits" },
+        { "value": "bottom", "label": "En bas — derrière le récit" }
+      ],
+      "default": "top"
+    },
     { "type": "range", "id": "ghost_opacity", "label": "Intensité du filigrane", "unit": "%", "min": 0, "max": 40, "step": 1, "default": 13 },
     { "type": "range", "id": "ghost_scale", "label": "Hauteur du filigrane (desktop)", "unit": "%", "min": 30, "max": 100, "step": 5, "default": 85, "info": "En pourcentage de la hauteur de la section. Plafonné à 100 % : au-delà, le dessin serait coupé en haut et en bas." },
     { "type": "range", "id": "ghost_max_width", "label": "Largeur max du filigrane (desktop)", "unit": "%", "min": 20, "max": 90, "step": 5, "default": 45, "info": "En pourcentage de la largeur de la page. Évite que le dessin ne passe sous le texte." },

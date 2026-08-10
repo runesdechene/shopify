@@ -3,6 +3,11 @@
     "motif": {
       "type": "rdc_motif",
       "settings": {
+        "padding_top": 104,
+        "padding_top_mobile": 76,
+        "padding_bottom": 56,
+        "text_width_mobile": 70,
+        "ghost_valign": "top",
         "ghost_opacity": 13,
         "ghost_scale": 85,
         "ghost_max_width": 45,
