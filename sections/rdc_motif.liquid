@@ -141,7 +141,12 @@
     doigt, avec accroche par carte. C'est la regle mobile-first de la spec —
     les coupes doivent etre atteignables en un demi-ecran.
   {%- endcomment -%}
-  #{{ uid }} .rdcm__rail{display:grid;margin-top:clamp(24px,3vw,38px);
+  {%- comment -%}
+    `scroll-margin-top` empeche l'en-tete collant de recouvrir le rail quand
+    le bouton du bas y ramene.
+  {%- endcomment -%}
+  #{{ uid }} .rdcm__rail{scroll-margin-top:{{ s.cta_scroll_offset }}px;
+    display:grid;margin-top:clamp(24px,3vw,38px);
     grid-template-columns:repeat({{ s.columns }},minmax(0,1fr));
     column-gap:{{ s.columns_gap }}px;row-gap:{{ s.rows_gap }}px}
   @media (max-width:749px){
@@ -181,6 +186,15 @@
   #{{ uid }} .rdcm__story-body > *:first-child{margin-top:0}
   #{{ uid }} .rdcm__story-body > *:last-child{margin-bottom:0}
   #{{ uid }} .rdcm__story-body p{margin:0 0 1em}
+
+  #{{ uid }} .rdcm__cta{position:relative;margin-top:clamp(26px,3vw,42px);
+    text-align:{{ s.cta_align }}}
+  #{{ uid }} .rdcm__btn{display:inline-flex;align-items:center;
+    font-family:var(--font-body--family);font-weight:700;font-size:.82rem;
+    letter-spacing:.06em;text-transform:uppercase;padding:15px 32px;border-radius:12px;
+    background:{{ s.cta_bg }};color:{{ s.cta_text }};border:1px solid {{ s.cta_bg }};
+    text-decoration:none;transition:.2s}
+  #{{ uid }} .rdcm__btn:hover{filter:brightness(1.06);transform:translateY(-2px)}
 
   {%- comment -%} Les cartes de coupe reprennent le style de la page de saga. {%- endcomment -%}
   {%- comment -%}
@@ -235,10 +249,10 @@
     <div class="rdcm__meta">
       <span>{{ cuts }} {% if cuts > 1 %}coupes{% else %}coupe{% endif %}</span>
       {%- if collection.price_min > 0 -%}<span>dès {{ price_from }}</span>{%- endif -%}
-      {%- if motif_artiste != blank -%}<span>Illustration par {{ motif_artiste }}</span>{%- endif -%}
+      {%- if motif_artiste != blank -%}<span>Illustration par <strong>{{ motif_artiste }}</strong></span>{%- endif -%}
     </div>
 
-    <div class="rdcm__rail">
+    <div class="rdcm__rail" id="{{ uid }}-coupes">
       {%- for product in collection.products -%}
         {%- render 'rdc_saga-cut-card', product: product -%}
       {%- endfor -%}
@@ -269,6 +283,17 @@
             {%- if p != '' -%}<p>{{ p }}</p>{%- endif -%}
           {%- endfor -%}
         </div>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%}
+      Rappel a l'achat en bas de page : apres le recit, le visiteur est au
+      plus loin des produits. Le lien remonte au rail plutot que de le
+      renvoyer ailleurs — il reste sur le motif qui vient de le convaincre.
+    {%- endcomment -%}
+    {%- if s.cta_enabled -%}
+      <div class="rdcm__cta">
+        <a class="rdcm__btn" href="#{{ uid }}-coupes">{{ s.cta_label }}</a>
       </div>
     {%- endif -%}
   </div>
@@ -335,6 +360,22 @@
     { "type": "color", "id": "story_title_color", "label": "Couleur du titre (style plein)", "default": "#403434", "visible_if": "{{ section.settings.story_title_style == 'solid' }}" },
     { "type": "range", "id": "story_title_stroke", "label": "Épaisseur du contour", "unit": "px", "min": 1, "max": 4, "step": 1, "default": 2, "visible_if": "{{ section.settings.story_title_style == 'outline' }}" },
     { "type": "checkbox", "id": "story_rule", "label": "Filet doré au-dessus du titre", "default": true },
+    { "type": "header", "content": "Bouton de rappel (bas de page)" },
+    { "type": "checkbox", "id": "cta_enabled", "label": "Afficher le bouton", "default": true, "info": "Placé sous le récit, il remonte au rail des coupes plus haut dans la page." },
+    { "type": "text", "id": "cta_label", "label": "Libellé", "default": "Acheter ce motif" },
+    {
+      "type": "select",
+      "id": "cta_align",
+      "label": "Alignement",
+      "options": [
+        { "value": "left", "label": "À gauche" },
+        { "value": "center", "label": "Centré" }
+      ],
+      "default": "left"
+    },
+    { "type": "color", "id": "cta_bg", "label": "Fond du bouton", "default": "#f4d694" },
+    { "type": "color", "id": "cta_text", "label": "Texte du bouton", "default": "#623c3c" },
+    { "type": "range", "id": "cta_scroll_offset", "label": "Décalage sous l'en-tête", "unit": "px", "min": 0, "max": 200, "step": 4, "default": 96, "info": "Évite que l'en-tête ne recouvre les produits une fois remonté." },
     { "type": "header", "content": "Grille des coupes" },
     { "type": "range", "id": "columns", "label": "Articles par ligne (desktop)", "min": 2, "max": 8, "step": 1, "default": 4 },
     { "type": "range", "id": "mobile_card_width", "label": "Largeur d'une carte (mobile)", "unit": "%", "min": 30, "max": 90, "step": 2, "default": 42, "info": "42 % laisse voir deux cartes et demie : assez pour comprendre qu'on peut glisser." },
