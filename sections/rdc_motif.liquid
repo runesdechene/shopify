@@ -54,6 +54,23 @@
   endif
   assign motif_artiste = ill.artiste.value.nom.value | default: ill.artiste
 
+  comment
+    Voix off du Fragment. Deux chemins volontairement, parce qu'on ne sait pas
+    encore si les Fichiers Shopify acceptent le .mp3 :
+      - `voix_off`     : champ fichier (a privilegier) ;
+      - `voix_off_url` : champ URL, repli vers un hebergement externe.
+    Tant qu'aucun des deux n'est rempli, le lecteur ne s'affiche pas.
+    Le nom du narrateur vient de `voix_off_nom`.
+  endcomment
+  assign audio_url = ''
+  if ill.voix_off != blank
+    assign audio_url = ill.voix_off.value.url | default: ill.voix_off.url
+  endif
+  if audio_url == blank and ill.voix_off_url != blank
+    assign audio_url = ill.voix_off_url | metafield_text | strip
+  endif
+  assign voix_nom = ill.voix_off_nom | metafield_text | strip
+
   assign ghost = ill.image_pour_fond_clair | default: ill.image_pour_fond_sombre
   if s.prefer_background_image and ill.image_fond_de_fragment != blank
     assign ghost = ill.image_fond_de_fragment
@@ -186,6 +203,13 @@
   #{{ uid }} .rdcm__story h2::before{content:'';display:block;width:64px;height:2px;
     background:{{ s.accent_color }};margin-bottom:20px}
   {%- endif -%}
+  #{{ uid }} .rdcm__audio{margin:0 0 26px}
+  #{{ uid }} .rdcm__audio-label{font-family:var(--font-body--family);font-size:.68rem;
+    font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+    color:{{ s.accent_color }};margin-bottom:10px}
+  #{{ uid }} .rdcm__audio-label strong{font-weight:700;color:#403434}
+  #{{ uid }} .rdcm__audio audio{width:100%;max-width:420px;height:40px;display:block}
+
   #{{ uid }} .rdcm__story-body{font-family:var(--font-body--family);font-size:1.02rem;line-height:1.7;
     color:#5a4a42}
   #{{ uid }} .rdcm__story-body > *:first-child{margin-top:0}
@@ -289,6 +313,23 @@
           NL capture un saut de ligne : c'est le seul moyen propre d'en
           obtenir un comme separateur de `split`.
         {%- endcomment -%}
+        {%- if s.audio_enabled and audio_url != blank -%}
+          {%- comment -%}
+            Pas d'autoplay : la voix demarre sur decision du visiteur. Et le
+            lecteur natif du navigateur plutot qu'un composant maison — il est
+            accessible au clavier et connu de tous.
+          {%- endcomment -%}
+          <div class="rdcm__audio">
+            <div class="rdcm__audio-label">
+              {{ s.audio_label }}{% if voix_nom != blank %}, avec <strong>{{ voix_nom }}</strong>{% endif %}
+            </div>
+            <audio controls preload="none" src="{{ audio_url }}">
+              Votre navigateur ne peut pas lire cet extrait.
+              <a href="{{ audio_url }}">Télécharger la voix off</a>.
+            </audio>
+          </div>
+        {%- endif -%}
+
         <div class="rdcm__story-body">
           {%- if recit_est_html -%}
             {%- comment -%}
@@ -387,6 +428,9 @@
     { "type": "color", "id": "story_title_color", "label": "Couleur du titre (style plein)", "default": "#403434", "visible_if": "{{ section.settings.story_title_style == 'solid' }}" },
     { "type": "range", "id": "story_title_stroke", "label": "Épaisseur du contour", "unit": "px", "min": 1, "max": 4, "step": 1, "default": 2, "visible_if": "{{ section.settings.story_title_style == 'outline' }}" },
     { "type": "checkbox", "id": "story_rule", "label": "Filet doré au-dessus du titre", "default": true },
+    { "type": "header", "content": "Voix off du Fragment" },
+    { "type": "checkbox", "id": "audio_enabled", "label": "Afficher le lecteur audio", "default": true, "info": "Il ne s'affiche que si le métaobjet Illustration porte un fichier « voix_off » ou une URL « voix_off_url ». Le nom du narrateur vient de « voix_off_nom »." },
+    { "type": "text", "id": "audio_label", "label": "Libellé du lecteur", "default": "Écouter ce Fragment" },
     { "type": "header", "content": "Bouton de rappel (bas de page)" },
     { "type": "checkbox", "id": "cta_enabled", "label": "Afficher le bouton", "default": true, "info": "Placé sous le récit, il remonte au rail des coupes plus haut dans la page." },
     { "type": "text", "id": "cta_label", "label": "Libellé", "default": "Acheter ce motif" },

@@ -34,6 +34,8 @@
         "story_title_color": "#403434",
         "story_title_stroke": 2,
         "story_rule": true,
+        "audio_enabled": true,
+        "audio_label": "Écouter ce Fragment",
         "cta_enabled": true,
         "cta_label": "Acheter ce motif",
         "cta_align": "left",
