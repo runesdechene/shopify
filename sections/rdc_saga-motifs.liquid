@@ -149,8 +149,21 @@
      - les variables d'alignement que le composant lit lui-meme ;
      - `::part(list)`, seul moyen de franchir la frontiere du shadow DOM.
   {%- endcomment -%}
-  #{{ uid }} .rdcsm__cut{text-decoration:none;color:inherit;display:block;
-    text-align:{{ s.card_align }}}
+  {%- comment -%}
+    Colonne flex plutot que des marges empilees : un seul `gap` espace l'image,
+    le nom, le prix et les pastilles de la meme valeur. `align-items` reste sur
+    `stretch` pour que l'image garde toute la largeur de la carte.
+
+    La taille des pastilles est surchargee LOCALEMENT
+    (`--variant-picker-swatch-*`) : le reglage global du theme vaut 30px et
+    sert aux fiches produit, ou de grandes pastilles ont du sens. Ici les
+    cartes sont petites.
+  {%- endcomment -%}
+  #{{ uid }} .rdcsm__cut{text-decoration:none;color:inherit;
+    display:flex;flex-direction:column;gap:{{ s.card_gap }}px;
+    text-align:{{ s.card_align }};
+    --variant-picker-swatch-width:{{ s.swatch_size }}px;
+    --variant-picker-swatch-height:{{ s.swatch_size }}px}
   {%- if s.card_align == 'center' -%}
   #{{ uid }} .rdcsm__cut{--overflow-list-alignment:center;--overflow-list-alignment-mobile:center;
     --product-swatches-alignment:center;--product-swatches-alignment-mobile:center}
@@ -162,10 +175,10 @@
     transition:transform .5s ease;filter:drop-shadow(0 10px 18px rgba(64,52,52,.18))}
   #{{ uid }} .rdcsm__cut:hover .rdcsm__cshot img{transform:scale(1.06) translateY(-3px)}
   #{{ uid }} .rdcsm__cname{font-family:var(--font-body--family);font-size:.7rem;font-weight:600;
-    letter-spacing:.06em;text-transform:uppercase;margin-top:9px;line-height:1.25;
+    letter-spacing:.06em;text-transform:uppercase;line-height:1.25;
     color:#5a4a42;display:block}
   #{{ uid }} .rdcsm__cprice{font-family:var(--font-heading--family, sans-serif);font-size:1.14rem;
-    letter-spacing:.03em;margin-top:1px;color:#962B21;display:block}
+    letter-spacing:.03em;color:#962B21;display:block;line-height:1}
 </style>
 
 <section id="{{ uid }}">
@@ -316,6 +329,27 @@
       ],
       "default": "center",
       "info": "Nom de la coupe, prix et pastilles de couleur."
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Espace entre image, nom, prix et pastilles",
+      "unit": "px",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "swatch_size",
+      "label": "Taille des pastilles de couleur",
+      "unit": "px",
+      "min": 12,
+      "max": 40,
+      "step": 1,
+      "default": 22,
+      "info": "Ne concerne que cette section. La taille générale du site (30 px) se règle dans Paramètres du thème → Variantes."
     },
     { "type": "range", "id": "columns_gap", "label": "Espace horizontal", "unit": "px", "min": 0, "max": 60, "step": 2, "default": 10 },
     { "type": "range", "id": "rows_gap", "label": "Espace vertical entre les rangées", "unit": "px", "min": 0, "max": 80, "step": 2, "default": 28 },
