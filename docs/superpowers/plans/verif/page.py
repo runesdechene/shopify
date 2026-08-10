@@ -1,34 +1,32 @@
-"""Banc d'essai commun : recuperer une page rendue par le theme de DEV.
+"""Banc d'essai commun : lire une page servie par `shopify theme dev`.
 
-Pourquoi pas `shopify theme dev` (localhost:9292) : verifie le 2026-08-10,
-son surveillant de fichiers ne televerse pas les fichiers NEUFS. La page
-servie restait donc celle d'avant, et toutes les assertions echouaient a
-tort. L'apercu distant du theme de developpement, lui, dit la verite.
+PREREQUIS : `shopify theme dev --store runes-de-chene.myshopify.com` doit
+tourner dans un VRAI terminal, lance par un humain.
 
-Le theme de dev est [unpublished] : aucun client ne le voit. Le theme LIVE
-n'est jamais touche.
+⚠ Pourquoi cette precision (appris a la dure le 2026-08-10) : lance depuis un
+shell non interactif, la CLI Shopify **ne televerse jamais un fichier neuf**.
+Elle affiche « success » et ne fait rien. Consequence : toute section ou tout
+template cree par l'agent reste invisible cote Shopify tant qu'un `theme dev`
+interactif ne l'a pas synchronise.
 
-Avant de verifier, synchroniser :
-    python docs/superpowers/plans/verif/sync.py
+⚠ NE JAMAIS lancer `shopify theme push` pendant ce chantier : son etape
+« Cleaning your remote theme » SUPPRIME du thème distant les fichiers que son
+scanner ne voit pas — c'est-a-dire precisement les fichiers neufs.
+
+Le template alterne se lit via `?view=saga`, sans qu'aucune collection n'ait
+ete reassignee : la boutique live n'est pas affectee.
 """
-import http.cookiejar
-import os
 import urllib.request
 
-BOUTIQUE = "https://runes-de-chene.myshopify.com"
-THEME_DEV = os.environ.get("RDC_THEME_DEV", "181696168203")
-
-_jar = http.cookiejar.CookieJar()
-_opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(_jar))
-_opener.addheaders = [("User-Agent", "rdc-verif/1.0")]
+BASE = "http://127.0.0.1:9292"
 
 
 def get(handle, view="saga"):
     """Rend /collections/<handle> avec le template alterne <view>."""
-    url = "%s/collections/%s?preview_theme_id=%s" % (BOUTIQUE, handle, THEME_DEV)
+    url = "%s/collections/%s" % (BASE, handle)
     if view:
-        url += "&view=%s" % view
-    with _opener.open(url, timeout=45) as r:
+        url += "?view=%s" % view
+    with urllib.request.urlopen(url, timeout=90) as r:
         return r.read().decode("utf-8", "replace")
 
 
