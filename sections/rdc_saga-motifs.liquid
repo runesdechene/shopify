@@ -117,8 +117,19 @@
   #{{ uid }} .rdcsm__warn{background:#962B21;color:#fff;font-family:var(--font-body--family);
     font-size:.8rem;padding:12px 18px}
 
-  #{{ uid }} .rdcsm__rail{position:relative;display:grid;gap:10px;
-    grid-template-columns:repeat(auto-fit,minmax(110px,1fr))}
+  {%- comment -%}
+    Nombre de colonnes FIXE, pas `auto-fit` : c'est ce qui permet de forcer le
+    passage a la ligne. A 4 colonnes, un motif de 7 coupes s'etale sur deux
+    rangees. Effet de bord voulu : les cartes gardent la meme taille d'une
+    bande a l'autre, meme quand les motifs n'ont pas le meme nombre de coupes.
+  {%- endcomment -%}
+  #{{ uid }} .rdcsm__rail{position:relative;display:grid;
+    grid-template-columns:repeat({{ s.columns }},minmax(0,1fr));
+    column-gap:{{ s.columns_gap }}px;row-gap:{{ s.rows_gap }}px}
+  @media (max-width:749px){
+    #{{ uid }} .rdcsm__rail{grid-template-columns:repeat({{ s.mobile_columns }},minmax(0,1fr));
+      column-gap:{{ s.columns_gap | divided_by: 2 }}px}
+  }
   #{{ uid }} .rdcsm__cut{text-decoration:none;color:inherit;display:block}
   #{{ uid }} .rdcsm__cshot{aspect-ratio:3/4;background:transparent;display:block}
   #{{ uid }} .rdcsm__cshot img{width:100%;height:100%;object-fit:contain;display:block;
@@ -247,6 +258,30 @@
       "unit": "px",
       "default": 1400
     },
+    { "type": "header", "content": "Grille des coupes" },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Articles par ligne (desktop)",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 7,
+      "info": "Nombre fixe : au-delà, les coupes passent à la ligne suivante. Un motif de 7 coupes réglé sur 4 s'affiche donc sur deux rangées."
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "Articles par ligne (mobile)",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" }
+      ],
+      "default": "2"
+    },
+    { "type": "range", "id": "columns_gap", "label": "Espace horizontal", "unit": "px", "min": 0, "max": 60, "step": 2, "default": 10 },
+    { "type": "range", "id": "rows_gap", "label": "Espace vertical entre les rangées", "unit": "px", "min": 0, "max": 80, "step": 2, "default": 28 },
     { "type": "header", "content": "Textes" },
     { "type": "text", "id": "label_recent", "label": "Surtitre du premier motif", "default": "Le plus récent" },
     { "type": "text", "id": "label_motif", "label": "Surtitre des autres motifs", "default": "Motif" }
