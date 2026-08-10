@@ -16,19 +16,34 @@
         "mf_key": "hero_images",
         "autoplay_seconds": 6,
         "ken_burns_duration": 18,
+        "hero_width": "full",
+        "hero_max_width": 1400,
+        "hero_side_gap": 50,
+        "hero_margin_top": 12,
+        "hero_margin_bottom": 0,
+        "hero_radius": 14,
+        "bottom_fade": false,
+        "bottom_fade_height": 140,
+        "bottom_fade_color": "#f4eee1",
         "overline": "Saga",
         "title": "",
         "btn1_label": "",
         "btn1_link": "",
         "btn2_label": "",
         "btn2_link": "",
-        "min_height": 62,
+        "min_height": 46,
         "min_height_mobile": 80
       }
     },
     "saga_motifs": {
       "type": "rdc_saga-motifs",
       "settings": {
+        "section_width": "page",
+        "section_max_width": 1400,
+        "columns": 4,
+        "mobile_columns": "2",
+        "columns_gap": 10,
+        "rows_gap": 28,
         "label_recent": "Le plus récent",
         "label_motif": "Motif"
       }
