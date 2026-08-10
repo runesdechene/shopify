@@ -16,8 +16,9 @@
         "mf_key": "hero_images",
         "autoplay_seconds": 6,
         "ken_burns_duration": 18,
-        "hero_width": "full",
+        "hero_width": "page",
         "hero_max_width": 1400,
+        "hero_overhang": 50,
         "hero_side_gap": 50,
         "hero_margin_top": 12,
         "hero_margin_bottom": 0,
@@ -25,7 +26,7 @@
         "bottom_fade": false,
         "bottom_fade_height": 140,
         "bottom_fade_color": "#f4eee1",
-        "overline": "Saga",
+        "overline": "Collection à thème",
         "title": "",
         "btn1_label": "",
         "btn1_link": "",
@@ -47,10 +48,100 @@
         "label_recent": "Le plus récent",
         "label_motif": "Motif"
       }
+    },
+    "rdc_collections_3yKGEt": {
+      "type": "rdc_collections",
+      "blocks": {
+        "saga_GPcfj4": {
+          "type": "saga",
+          "settings": {
+            "collection": "lombre-et-lairain",
+            "title_text": "D'OMBRE ET D'AIRAIN",
+            "title_visible": false,
+            "subtitle": "LA MÉMOIRE HELLÉNIQUE RAVIVÉE",
+            "link": "",
+            "new_mode": "auto",
+            "new_text": ""
+          }
+        },
+        "saga_efJKh8": {
+          "type": "saga",
+          "settings": {
+            "collection": "les-mysteres-celtes",
+            "title_text": "Les Mystères Celtes",
+            "title_visible": false,
+            "subtitle": "AVANT ROME, LA PREMIÈRE EUROPE",
+            "link": "",
+            "new_mode": "auto",
+            "new_text": ""
+          }
+        },
+        "saga_AiKfd8": {
+          "type": "saga",
+          "settings": {
+            "collection": "garde-d-acier",
+            "title_text": "LA GARDE D'ACIER",
+            "title_visible": false,
+            "subtitle": "FIDÈLES À UNE SEULE PAROLE : LA LEUR",
+            "link": "",
+            "new_mode": "auto",
+            "new_text": ""
+          }
+        },
+        "saga_RaQdmX": {
+          "type": "saga",
+          "settings": {
+            "collection": "le-pacte-sauvage",
+            "title_text": "",
+            "title_visible": false,
+            "subtitle": "TROUVEZ L'ESPRIT QUI VOUS RESSEMBLE",
+            "link": "",
+            "new_mode": "auto",
+            "new_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "saga_GPcfj4",
+        "saga_efJKh8",
+        "saga_AiKfd8",
+        "saga_RaQdmX"
+      ],
+      "name": "RDC — Sagas",
+      "settings": {
+        "overline": "",
+        "title": "Voir d'autres collections",
+        "columns": 4,
+        "columns_mobile": 1,
+        "tile_ratio": "square",
+        "gap": 20,
+        "corner_radius": 0,
+        "hover_zoom": true,
+        "show_new": true,
+        "new_days": 35,
+        "new_text": "Nouveau Fragment",
+        "new_align": "left",
+        "new_style": "glass",
+        "new_marker": true,
+        "new_accent": "#e8cd9a",
+        "new_bg": "#b4894f",
+        "new_color": "#1c1812",
+        "sub_color": "#f2e6d2",
+        "sub_size": 1,
+        "sub_blend": "normal",
+        "sub_opacity": 100,
+        "sub_shadow": true,
+        "text_align": "left",
+        "padding_top": 72,
+        "padding_bottom": 72,
+        "color_scheme": "",
+        "accent_color": "#b4894f"
+      }
     }
   },
   "order": [
     "saga_hero",
-    "saga_motifs"
+    "saga_motifs",
+    "rdc_collections_3yKGEt"
   ]
 }
