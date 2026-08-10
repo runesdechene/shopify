@@ -20,8 +20,15 @@
   assign raw = collection.metafields[s.mf_namespace][s.mf_key]
   assign imgs = raw.value | default: raw
 
+  comment
+    ⚠ Ne PAS tester `imgs.first != blank` : sur un metachamp
+    `list.file_reference`, `.size` fonctionne mais `.first` renvoie vide.
+    Le garde-fou echouait donc toujours et la section retombait sur
+    collection.image alors que la liste contenait bien des images
+    (constate le 2026-08-10 sur « Les mysteres celtes »).
+  endcomment
   assign has_list = false
-  if imgs != blank and imgs.size > 0 and imgs.first != blank
+  if imgs != blank and imgs.size > 0
     assign has_list = true
   endif
 
