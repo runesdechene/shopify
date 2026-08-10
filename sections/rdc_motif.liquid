@@ -45,6 +45,13 @@
 
   assign cuts = collection.products_count
   assign price_from = collection.price_min | money_without_trailing_zeros
+
+  comment
+    Fond des cartes. L'alpha se calcule avant, puis `color_modify` : un
+    `divided_by` glisse en fin de chaine s'appliquerait au texte accumule.
+  endcomment
+  assign card_alpha = s.card_bg_opacity | divided_by: 100.0
+  assign card_bg = s.card_bg_color | color_modify: 'alpha', card_alpha
 -%}
 
 {%- if cuts > 0 -%}
@@ -111,8 +118,14 @@
     color:#5a4a42;margin:0}
 
   {%- comment -%} Les cartes de coupe reprennent le style de la page de saga. {%- endcomment -%}
+  {%- comment -%}
+    Fond sous la carte : il detache le produit du filigrane, qui passe
+    derriere. A 0 % d'opacite, aucun fond n'est peint.
+  {%- endcomment -%}
   #{{ uid }} .rdcsm__cut{text-decoration:none;color:inherit;display:flex;flex-direction:column;
     gap:{{ s.card_gap }}px;text-align:center;
+    {% if s.card_bg_opacity > 0 %}background:{{ card_bg }};{% endif %}
+    border-radius:{{ s.card_radius }}px;padding:{{ s.card_padding }}px;
     --overflow-list-alignment:center;--overflow-list-alignment-mobile:center;
     --product-swatches-alignment:center;--product-swatches-alignment-mobile:center}
   #{{ uid }} .rdcsm__cut overflow-list::part(list){justify-content:center}
@@ -202,6 +215,10 @@
     { "type": "range", "id": "columns_gap", "label": "Espace horizontal", "unit": "px", "min": 0, "max": 60, "step": 2, "default": 12 },
     { "type": "range", "id": "rows_gap", "label": "Espace vertical entre les rangées", "unit": "px", "min": 0, "max": 80, "step": 2, "default": 28 },
     { "type": "range", "id": "card_gap", "label": "Espace dans la carte", "unit": "px", "min": 0, "max": 24, "step": 1, "default": 8 },
+    { "type": "color", "id": "card_bg_color", "label": "Fond des cartes", "default": "#ffffff" },
+    { "type": "range", "id": "card_bg_opacity", "label": "Opacité du fond", "unit": "%", "min": 0, "max": 100, "step": 5, "default": 50, "info": "À 0 %, aucun fond n'est peint." },
+    { "type": "range", "id": "card_radius", "label": "Arrondi des cartes", "unit": "px", "min": 0, "max": 30, "step": 1, "default": 10 },
+    { "type": "range", "id": "card_padding", "label": "Marge intérieure des cartes", "unit": "px", "min": 0, "max": 24, "step": 1, "default": 10 },
     { "type": "range", "id": "swatch_size", "label": "Taille des pastilles de couleur", "unit": "px", "min": 12, "max": 40, "step": 1, "default": 22 },
     { "type": "header", "content": "Couleurs" },
     { "type": "color", "id": "bg_color", "label": "Fond", "default": "#f4eee1" },
