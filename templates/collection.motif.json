@@ -1,17 +1,26 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "motif": {
       "type": "rdc_motif",
       "settings": {
         "padding_top": 104,
-        "padding_top_mobile": 76,
+        "padding_top_mobile": 36,
         "padding_bottom": 56,
         "text_width_mobile": 70,
         "ghost_valign": "top",
         "ghost_opacity": 13,
         "ghost_scale": 85,
         "ghost_max_width": 70,
-        "ghost_scale_mobile": 45,
+        "ghost_scale_mobile": 30,
         "ghost_max_width_mobile": 100,
         "ghost_valign_mobile": "top",
         "ghost_offset_mobile": -50,
@@ -19,12 +28,12 @@
         "ghost_offset": -24,
         "prefer_background_image": true,
         "overline": "Motif",
+        "story_title": "L'histoire de ce Fragment",
         "story_title_size": 56,
         "story_title_style": "solid",
         "story_title_color": "#403434",
         "story_title_stroke": 2,
         "story_rule": true,
-        "story_title": "L'histoire de ce Fragment",
         "cta_enabled": true,
         "cta_label": "Acheter ce motif",
         "cta_align": "left",
@@ -37,12 +46,17 @@
         "columns_gap": 12,
         "rows_gap": 28,
         "card_gap": 8,
-        "swatch_size": 22,
+        "card_bg_color": "#F4EEE1",
+        "card_bg_opacity": 75,
+        "card_radius": 10,
+        "card_padding": 10,
+        "swatch_size": 12,
         "bg_color": "#f4eee1",
         "accent_color": "#b4894f"
       }
     }
   },
-  "order": ["motif"]
+  "order": [
+    "motif"
+  ]
 }
-
