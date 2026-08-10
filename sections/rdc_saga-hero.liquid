@@ -108,6 +108,15 @@
   #{{ uid }} .rdcsh__slide.is-active img{animation:rdcshKen {{ s.ken_burns_duration }}s ease-in-out infinite alternate;will-change:transform}
   @keyframes rdcshKen{from{transform:scale(1.03) translate3d(0,0,0)}to{transform:scale(1.10) translate3d(-1.8%,-1.2%,0)}}
   @media (prefers-reduced-motion: reduce){#{{ uid }} .rdcsh__slide.is-active img{animation:none}}
+  {%- comment -%}
+    Teinte posee sur l'image, SOUS le voile degrade : le voile sert la
+    lisibilite du texte, la teinte sert l'ambiance. Les empiler dans cet ordre
+    permet de teinter sans jamais compromettre la lisibilite.
+    A 0 % la couche n'est pas rendue du tout.
+  {%- endcomment -%}
+  #{{ uid }} .rdcsh__overlay{position:absolute;inset:0;pointer-events:none;
+    background:{{ s.overlay_color }};opacity:{{ s.overlay_opacity | divided_by: 100.0 }};
+    mix-blend-mode:{{ s.overlay_blend }}}
   #{{ uid }} .rdcsh__scrim{position:absolute;inset:0;pointer-events:none;
     background:linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,0) 38%, rgba(0,0,0,.62) 100%)}
   {%- if s.bottom_fade -%}
@@ -180,6 +189,7 @@
     {%- endif -%}
   </div>
 
+  {%- if s.overlay_opacity > 0 -%}<div class="rdcsh__overlay"></div>{%- endif -%}
   <div class="rdcsh__scrim"></div>
   {%- if s.bottom_fade -%}<div class="rdcsh__fade"></div>{%- endif -%}
 
@@ -284,6 +294,38 @@
     { "type": "range", "id": "hero_margin_top", "label": "Espace au-dessus", "unit": "px", "min": 0, "max": 120, "step": 4, "default": 24 },
     { "type": "range", "id": "hero_margin_bottom", "label": "Espace en dessous", "unit": "px", "min": 0, "max": 120, "step": 4, "default": 0 },
     { "type": "range", "id": "hero_radius", "label": "Arrondi des coins", "unit": "px", "min": 0, "max": 32, "step": 2, "default": 0 },
+    { "type": "header", "content": "Teinte sur l'image" },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Couleur de la teinte",
+      "default": "#1c1812"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Intensité",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0,
+      "info": "À 0 %, aucune teinte n'est appliquée. La teinte se pose sous le voile qui assure la lisibilité du texte."
+    },
+    {
+      "type": "select",
+      "id": "overlay_blend",
+      "label": "Mode de fusion",
+      "options": [
+        { "value": "normal", "label": "Normal — teinte à plat" },
+        { "value": "multiply", "label": "Produit — assombrit, garde la matière" },
+        { "value": "soft-light", "label": "Lumière douce — teinte subtile" },
+        { "value": "color", "label": "Couleur — vire l'image en monochrome" }
+      ],
+      "default": "normal",
+      "info": "« Produit » et « Lumière douce » conservent le grain de la photo, contrairement au mode normal.",
+      "visible_if": "{{ section.settings.overlay_opacity > 0 }}"
+    },
     { "type": "header", "content": "Raccord avec la page" },
     {
       "type": "checkbox",
