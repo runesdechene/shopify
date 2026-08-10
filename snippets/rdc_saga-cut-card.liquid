@@ -1,5 +1,6 @@
 {%- doc -%}
-  Une carte de coupe dans le rail d'un motif.
+  Une carte de coupe : image detouree, nom, prix, pastilles de couleur.
+  Partagee par les pages de saga et les pages de motif.
 
   Le packshot porte un canal alpha (33 a 63 % de pixels transparents mesures
   le 2026-08-10) : fond transparent et object-fit:contain, pour que la coupe
@@ -7,6 +8,14 @@
 
   ⚠ image_url ne doit JAMAIS recevoir format:'jpg' — le JPEG detruit l'alpha
   et ramene un fond blanc.
+
+  ⚠ Les pastilles sont dessinees ICI, et non par le composant
+  `variant-swatches` du theme. Raison, constatee le 2026-08-11 : ce composant
+  encapsule sa liste dans un shadow DOM, calcule ses tailles par une formule
+  a plusieurs variables, et REPLIE automatiquement ce qui depasse en « +3 »,
+  « +6 ». Sur des cartes etroites il masquait donc la plupart des couleurs.
+  Nos pastilles s'affichent toutes, se dimensionnent par une seule variable
+  `--rdc-swatch-size`, et passent a la ligne au lieu de disparaitre.
 
   @param {object} product - Le produit a rendre. Requis.
 {%- enddoc -%}
@@ -16,6 +25,14 @@
   if cut_name == blank or cut_name == product.title
     assign cut_name = product.type | default: product.title
   endif
+
+  assign opt_couleur = nil
+  for o in product.options_with_values
+    assign n = o.name | downcase
+    if n contains 'couleur' or n contains 'color'
+      assign opt_couleur = o
+    endif
+  endfor
 -%}
 
 <a class="rdcsm__cut" href="{{ product.url }}">
@@ -32,5 +49,16 @@
   </span>
   <span class="rdcsm__cname">{{ cut_name }}</span>
   <span class="rdcsm__cprice">{{ product.price | money }}</span>
-  {%- render 'variant-swatches', product_resource: product -%}
+
+  {%- if opt_couleur != nil -%}
+    <span class="rdcsm__sw">
+      {%- for v in opt_couleur.values -%}
+        {%- if v.swatch.image != blank -%}
+          <i style="background-image:url({{ v.swatch.image | image_url: width: 48 }})" title="{{ v.name | escape }}"></i>
+        {%- elsif v.swatch.color != blank -%}
+          <i style="background:{{ v.swatch.color }}" title="{{ v.name | escape }}"></i>
+        {%- endif -%}
+      {%- endfor -%}
+    </span>
+  {%- endif -%}
 </a>

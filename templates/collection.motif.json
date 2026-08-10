@@ -38,6 +38,8 @@
         "audio_label": "Écouter ce Fragment",
         "audio_field_key": "fragment_audio",
         "narrator_field_key": "narrateur_audio",
+        "audio_avatar": true,
+        "audio_avatar_size": 34,
         "cta_enabled": true,
         "cta_label": "Acheter ce motif",
         "cta_align": "left",

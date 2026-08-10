@@ -83,6 +83,8 @@
   if voix_nom == blank
     assign voix_nom = ref_narrateur | metafield_text | strip
   endif
+  # Le metaobjet Artistes porte un champ `image` : l'avatar du narrateur.
+  assign voix_avatar = ref_narrateur.value.image | default: ref_narrateur.image
 
   assign ghost = ill.image_pour_fond_clair | default: ill.image_pour_fond_sombre
   if s.prefer_background_image and ill.image_fond_de_fragment != blank
@@ -217,9 +219,13 @@
     background:{{ s.accent_color }};margin-bottom:20px}
   {%- endif -%}
   #{{ uid }} .rdcm__audio{margin:0 0 26px}
-  #{{ uid }} .rdcm__audio-label{font-family:var(--font-body--family);font-size:.68rem;
+  #{{ uid }} .rdcm__audio-label{display:flex;align-items:center;gap:10px;
+    font-family:var(--font-body--family);font-size:.68rem;
     font-weight:600;letter-spacing:.18em;text-transform:uppercase;
     color:{{ s.accent_color }};margin-bottom:10px}
+  #{{ uid }} .rdcm__audio-avatar{width:{{ s.audio_avatar_size }}px;height:{{ s.audio_avatar_size }}px;
+    border-radius:999px;object-fit:cover;flex:0 0 auto;
+    box-shadow:0 0 0 2px {{ s.accent_color }}55}
   #{{ uid }} .rdcm__audio-label strong{font-weight:700;color:#403434}
   #{{ uid }} .rdcm__audio audio{width:100%;max-width:420px;height:40px;display:block}
 
@@ -257,10 +263,7 @@
     gap:{{ s.card_gap }}px;text-align:center;
     {% if s.card_bg_opacity > 0 %}background:{{ card_bg }};{% endif %}
     border-radius:{{ s.card_radius }}px;padding:{{ s.card_padding }}px;
-    --overflow-list-alignment:center;--overflow-list-alignment-mobile:center;
-    --product-swatches-alignment:center;--product-swatches-alignment-mobile:center}
-  #{{ uid }} .rdcsm__cut overflow-list::part(list){justify-content:center}
-  #{{ uid }} .rdcsm__cut .variant-option{justify-content:center}
+    --rdc-swatch-size:{{ s.swatch_size }}px}
   #{{ uid }} .rdcsm__cshot{aspect-ratio:3/4;background:transparent;display:block}
   #{{ uid }} .rdcsm__cshot img{width:100%;height:100%;object-fit:contain;display:block;
     transition:transform .5s ease;filter:drop-shadow(0 10px 18px rgba(64,52,52,.18))}
@@ -269,16 +272,14 @@
     letter-spacing:.06em;text-transform:uppercase;line-height:1.25;color:#5a4a42;display:block}
   #{{ uid }} .rdcsm__cprice{font-family:var(--font-heading--family, sans-serif);font-size:1.14rem;
     letter-spacing:.03em;color:#962B21;display:block;line-height:1}
-  #{{ uid }} .rdcsm__cut .swatch{
-    --swatch-width:{{ s.swatch_size }}px;--swatch-height:{{ s.swatch_size }}px;
-    --min-width:{{ s.swatch_size }}px;--min-height:{{ s.swatch_size }}px;
-    width:{{ s.swatch_size }}px;height:{{ s.swatch_size }}px;
-    min-width:{{ s.swatch_size }}px;min-height:{{ s.swatch_size }}px;
-    background-size:{{ s.swatch_size }}px {{ s.swatch_size }}px}
-  #{{ uid }} .rdcsm__cut .variant-option__swatch,
-  #{{ uid }} .rdcsm__cut .variant-option__button-label--has-swatch{
-    width:{{ s.swatch_size }}px;height:{{ s.swatch_size }}px;
-    min-width:{{ s.swatch_size }}px;min-height:{{ s.swatch_size }}px;padding:0}
+  {%- comment -%}
+    Pastilles maison : toutes visibles, passant a la ligne au lieu d'etre
+    repliees en « +3 ». Une seule variable pilote leur taille.
+  {%- endcomment -%}
+  #{{ uid }} .rdcsm__sw{display:flex;flex-wrap:wrap;gap:5px;justify-content:center}
+  #{{ uid }} .rdcsm__sw i{width:var(--rdc-swatch-size,18px);height:var(--rdc-swatch-size,18px);
+    border-radius:999px;display:block;background-size:cover;background-position:center;
+    box-shadow:0 0 0 1px rgba(64,52,52,.25) inset}
 </style>
 
 <section id="{{ uid }}">
@@ -334,7 +335,11 @@
           {%- endcomment -%}
           <div class="rdcm__audio">
             <div class="rdcm__audio-label">
-              {{ s.audio_label }}{% if voix_nom != blank %}, avec <strong>{{ voix_nom }}</strong>{% endif %}
+              {%- if s.audio_avatar and voix_avatar != blank -%}
+                <img class="rdcm__audio-avatar" src="{{ voix_avatar | image_url: width: 96 }}"
+                     alt="{{ voix_nom | escape }}" width="96" height="96" loading="lazy">
+              {%- endif -%}
+              <span>{{ s.audio_label }}{% if voix_nom != blank %}, avec <strong>{{ voix_nom }}</strong>{% endif %}</span>
             </div>
             <audio controls preload="none" src="{{ audio_url }}">
               Votre navigateur ne peut pas lire cet extrait.
@@ -445,7 +450,9 @@
     { "type": "checkbox", "id": "audio_enabled", "label": "Afficher le lecteur audio", "default": true, "info": "Il ne s'affiche que si l'illustration porte un fichier audio. Sinon, rien n'est rendu." },
     { "type": "text", "id": "audio_label", "label": "Libellé du lecteur", "default": "Écouter ce Fragment" },
     { "type": "text", "id": "audio_field_key", "label": "Métachamp — fichier audio", "default": "fragment_audio", "info": "Clé du champ sur le métaobjet Illustration." },
-    { "type": "text", "id": "narrator_field_key", "label": "Métachamp — narrateur", "default": "narrateur_audio", "info": "Référence vers le métaobjet Artistes. Son champ « nom » est utilisé." },
+    { "type": "text", "id": "narrator_field_key", "label": "Métachamp — narrateur", "default": "narrateur_audio", "info": "Référence vers le métaobjet Artistes. Ses champs « nom » et « image » sont utilisés." },
+    { "type": "checkbox", "id": "audio_avatar", "label": "Afficher l'avatar du narrateur", "default": true },
+    { "type": "range", "id": "audio_avatar_size", "label": "Taille de l'avatar", "unit": "px", "min": 20, "max": 72, "step": 2, "default": 34, "visible_if": "{{ section.settings.audio_avatar }}" },
     { "type": "header", "content": "Bouton de rappel (bas de page)" },
     { "type": "checkbox", "id": "cta_enabled", "label": "Afficher le bouton", "default": true, "info": "Placé sous le récit, il remonte au rail des coupes plus haut dans la page." },
     { "type": "text", "id": "cta_label", "label": "Libellé", "default": "Acheter ce motif" },

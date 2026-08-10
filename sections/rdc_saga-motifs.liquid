@@ -141,54 +141,30 @@
     #{{ uid }} .rdcsm__rail{grid-template-columns:repeat({{ s.mobile_columns }},minmax(0,1fr));
       column-gap:{{ s.columns_gap | divided_by: 2 }}px}
   }
-  {%- comment -%}
-    Alignement du bloc texte sous l'image. Les nuanciers sont rendus par le
-    composant du theme, qui encapsule sa liste dans un shadow DOM :
-    `text-align` ne l'atteint pas. Trois leviers necessaires :
-     - `text-align` pour le nom et le prix ;
-     - les variables d'alignement que le composant lit lui-meme ;
-     - `::part(list)`, seul moyen de franchir la frontiere du shadow DOM.
-  {%- endcomment -%}
-  {%- comment -%}
+    {%- comment -%}
     Colonne flex plutot que des marges empilees : un seul `gap` espace l'image,
     le nom, le prix et les pastilles de la meme valeur. `align-items` reste sur
     `stretch` pour que l'image garde toute la largeur de la carte.
 
-    La taille des pastilles est surchargee LOCALEMENT
-    (`--variant-picker-swatch-*`) : le reglage global du theme vaut 30px et
-    sert aux fiches produit, ou de grandes pastilles ont du sens. Ici les
-    cartes sont petites.
+    La taille des pastilles est pilotee par `--rdc-swatch-size`, lue par le
+    snippet de carte.
   {%- endcomment -%}
   #{{ uid }} .rdcsm__cut{text-decoration:none;color:inherit;
     display:flex;flex-direction:column;gap:{{ s.card_gap }}px;
-    text-align:{{ s.card_align }}}
+    text-align:{{ s.card_align }};
+    --rdc-swatch-size:{{ s.swatch_size }}px}
   {%- comment -%}
-    ⚠ Surcharger `--variant-picker-swatch-*` NE SUFFIT PAS : le theme ne lit
-    pas cette valeur directement, il la passe dans une formule de mise a
-    l'echelle qui s'appuie sur des variantes « unitless » et sur des plafonds
-    (`--max-swatch-size`, `--max-pill-size`). Et la variable
-    `--variant-picker-swatch-*` ne sert qu'aux pastilles `swatch--unscaled`,
-    celles des fiches produit.
-    On court-circuite donc la formule en fixant la taille finale sur la
-    pastille elle-meme. Elle vit dans le DOM normal (le shadow DOM ne contient
-    que la liste de debordement), donc elle est ciblable directement.
+    Pastilles maison, dessinees par le snippet et non par le composant du
+    theme. Celui-ci REPLIAIT automatiquement les couleurs en « +3 » sur des
+    cartes etroites, et sa taille passait par une formule a plusieurs
+    variables impossible a surcharger proprement.
+    Ici : toutes visibles, passage a la ligne, une seule variable de taille.
   {%- endcomment -%}
-  #{{ uid }} .rdcsm__cut .swatch{
-    --swatch-width:{{ s.swatch_size }}px;--swatch-height:{{ s.swatch_size }}px;
-    --min-width:{{ s.swatch_size }}px;--min-height:{{ s.swatch_size }}px;
-    width:{{ s.swatch_size }}px;height:{{ s.swatch_size }}px;
-    min-width:{{ s.swatch_size }}px;min-height:{{ s.swatch_size }}px;
-    background-size:{{ s.swatch_size }}px {{ s.swatch_size }}px}
-  #{{ uid }} .rdcsm__cut .variant-option__swatch,
-  #{{ uid }} .rdcsm__cut .variant-option__button-label--has-swatch{
-    width:{{ s.swatch_size }}px;height:{{ s.swatch_size }}px;
-    min-width:{{ s.swatch_size }}px;min-height:{{ s.swatch_size }}px;padding:0}
-  {%- if s.card_align == 'center' -%}
-  #{{ uid }} .rdcsm__cut{--overflow-list-alignment:center;--overflow-list-alignment-mobile:center;
-    --product-swatches-alignment:center;--product-swatches-alignment-mobile:center}
-  #{{ uid }} .rdcsm__cut overflow-list::part(list){justify-content:center}
-  #{{ uid }} .rdcsm__cut .variant-option{justify-content:center}
-  {%- endif -%}
+  #{{ uid }} .rdcsm__sw{display:flex;flex-wrap:wrap;gap:5px;
+    justify-content:{% if s.card_align == 'center' %}center{% else %}flex-start{% endif %}}
+  #{{ uid }} .rdcsm__sw i{width:var(--rdc-swatch-size,18px);height:var(--rdc-swatch-size,18px);
+    border-radius:999px;display:block;background-size:cover;background-position:center;
+    box-shadow:0 0 0 1px rgba(64,52,52,.25) inset}
   #{{ uid }} .rdcsm__cshot{aspect-ratio:3/4;background:transparent;display:block}
   #{{ uid }} .rdcsm__cshot img{width:100%;height:100%;object-fit:contain;display:block;
     transition:transform .5s ease;filter:drop-shadow(0 10px 18px rgba(64,52,52,.18))}
