@@ -30,9 +30,14 @@
       Reglage distinct de `enable_transparent_header_collection`, qui lui
       s'appliquerait a TOUTES les collections — y compris celles qui ouvrent
       sur une grille claire, ou l'en-tete transparent devient illisible.
+
+      Le schema de couleur a son propre reglage, par defaut `inverse` comme
+      l'accueil : le hero est une image sombre, il faut donc une navigation
+      claire. Reprendre `collection_color_scheme` (reste a `default`) donnait
+      du texte sombre sur fond sombre.
     endcomment
     assign transparent = 'always'
-    assign transparent_color_scheme = section.settings.collection_color_scheme
+    assign transparent_color_scheme = section.settings.saga_color_scheme
   endif
 
   if section.settings.enable_sticky_header == 'always'
@@ -1332,6 +1337,24 @@
       "label": "Fond transparent — pages de saga uniquement",
       "default": true,
       "info": "Les pages utilisant le modèle « saga » ouvrent sur une grande image : l'en-tête passe par-dessus, comme sur la page d'accueil. Sans effet sur les autres collections."
+    },
+    {
+      "type": "select",
+      "id": "saga_color_scheme",
+      "label": "Couleurs de l'en-tête — pages de saga",
+      "options": [
+        {
+          "value": "default",
+          "label": "t:options.default"
+        },
+        {
+          "value": "inverse",
+          "label": "t:options.inverse"
+        }
+      ],
+      "default": "inverse",
+      "info": "« Inversé » = navigation claire sur l'image sombre du hero, comme sur la page d'accueil.",
+      "visible_if": "{{ section.settings.enable_transparent_header_saga }}"
     },
     {
       "type": "select",
