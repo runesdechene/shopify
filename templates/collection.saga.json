@@ -1,0 +1,41 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "saga_hero": {
+      "type": "rdc_saga-hero",
+      "settings": {
+        "mf_namespace": "custom",
+        "mf_key": "hero_images",
+        "autoplay_seconds": 6,
+        "ken_burns_duration": 18,
+        "overline": "Saga",
+        "title": "",
+        "btn1_label": "",
+        "btn1_link": "",
+        "btn2_label": "",
+        "btn2_link": "",
+        "min_height": 62,
+        "min_height_mobile": 80
+      }
+    },
+    "saga_motifs": {
+      "type": "rdc_saga-motifs",
+      "settings": {
+        "label_recent": "Le plus récent",
+        "label_motif": "Motif"
+      }
+    }
+  },
+  "order": [
+    "saga_hero",
+    "saga_motifs"
+  ]
+}

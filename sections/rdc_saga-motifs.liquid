@@ -1,0 +1,219 @@
+{%- comment -%}
+  rdc_saga-motifs.liquid
+
+  Regroupe les produits de la collection par MOTIF (metaobjet illustration
+  pointe par product.metafields.custom.illustration_produit), trie les motifs
+  du plus recent au plus ancien, et rend une bande par motif.
+
+  Repli si un produit n'est pas relie : le nom avant la barre verticale du
+  titre (« Avalon | T-shirt unisexe »). Convention respectee sur les
+  64 produits des 4 sagas au 2026-08-10.
+
+  Liquid n'a pas de dictionnaires : on concatene des listes de chaines puis on
+  les decoupe — meme motif que rdc_illustrations_meta.liquid pour son tri.
+
+  Trois pieges traites explicitement :
+   - la detection de doublon borne la cle des DEUX cotes (|avalon|), sinon
+     « avalon » matcherait a l'interieur de « grand-avalon » ;
+   - les epoques Unix font 10 chiffres, donc comparables en tri alphabetique ;
+     une date absente vaut 0000000000 et part en fin de liste ;
+   - l'index de tri est suffixe par l'ordre de premiere apparition, ce qui rend
+     le tri stable entre deux motifs de meme date.
+
+  Plafond Liquid : sans pagination, collection.products expose 50 produits.
+  Les sagas en font 12 a 20. Au-dela, un avertissement s'affiche plutot qu'une
+  troncature silencieuse.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = 'RdcSagaMotifs-' | append: section.id
+  assign s = section.settings
+
+  assign seen = '|'
+  assign keys = ''
+  assign names = ''
+  assign sortable = ''
+  assign rank0 = 0
+
+  for product in collection.products
+    assign ill = product.metafields.custom.illustration_produit.value
+
+    if ill != blank and ill.nom != blank
+      assign mname = ill.nom
+    else
+      assign mname = product.title | split: '|' | first | strip
+    endif
+    assign mname = mname | strip
+    if mname == ''
+      assign mname = 'Motif'
+    endif
+    assign mkey = mname | handleize
+
+    assign probe = '|' | append: mkey | append: '|'
+    unless seen contains probe
+      assign seen = seen | append: mkey | append: '|'
+      assign keys = keys | append: mkey | append: '~'
+      assign names = names | append: mname | append: '~'
+
+      assign epoch = '0000000000'
+      if ill != blank and ill.date != blank
+        assign epoch = ill.date | date: '%s'
+      elsif product.published_at != blank
+        assign epoch = product.published_at | date: '%s'
+      endif
+
+      assign pad = rank0 | prepend: '000' | slice: -3, 3
+      assign sortable = sortable | append: epoch | append: '.' | append: pad | append: '~'
+      assign rank0 = rank0 | plus: 1
+    endunless
+  endfor
+
+  assign key_list = keys | split: '~'
+  assign name_list = names | split: '~'
+  assign sorted_list = sortable | split: '~' | sort | reverse
+
+  assign over_limit = false
+  if collection.all_products_count > 50
+    assign over_limit = true
+  endif
+-%}
+
+<style>
+  #{{ uid }} .rdcsm__band{position:relative;overflow:hidden;
+    padding:clamp(34px,4vw,58px) clamp(26px,5vw,64px);color:#403434}
+  #{{ uid }} .rdcsm__band--a{background:#f4eee1}
+  #{{ uid }} .rdcsm__band--b{background:#f2e6d2}
+  #{{ uid }} .rdcsm__num{position:absolute;top:clamp(12px,1.6vw,26px);right:clamp(16px,2.2vw,38px);
+    font-family:var(--font-heading--family, sans-serif);font-size:clamp(6rem,14vw,12.5rem);
+    line-height:1;letter-spacing:-.02em;pointer-events:none;color:transparent;
+    -webkit-text-stroke:1.5px #b4894f;opacity:.20}
+  #{{ uid }} .rdcsm__head{position:relative;display:flex;align-items:center;
+    gap:clamp(16px,2vw,26px);margin-bottom:clamp(22px,2.6vw,34px)}
+  #{{ uid }} .rdcsm__seal{flex:0 0 auto;width:clamp(74px,7vw,104px)}
+  #{{ uid }} .rdcsm__seal img{width:100%;display:block;height:auto}
+  #{{ uid }} .rdcsm__txt{min-width:0}
+  #{{ uid }} .rdcsm__over{font-family:var(--font-body--family);font-weight:700;font-size:.68rem;
+    letter-spacing:.26em;text-transform:uppercase;color:#b4894f}
+  #{{ uid }} .rdcsm__name{font-family:var(--font-heading--family, sans-serif);
+    font-size:clamp(2rem,4.4vw,3.4rem);line-height:.92;letter-spacing:.02em;
+    text-transform:uppercase;margin:6px 0 0}
+  #{{ uid }} .rdcsm__res{font-family:var(--font-body--family);font-size:1rem;line-height:1.6;
+    max-width:52ch;margin:8px 0 0;color:#5a4a42}
+  #{{ uid }} .rdcsm__meta{margin-left:auto;flex:0 0 auto;text-align:right;align-self:flex-end;
+    font-family:var(--font-body--family);font-size:.68rem;letter-spacing:.18em;
+    text-transform:uppercase;color:#b4894f;white-space:nowrap}
+  #{{ uid }} .rdcsm__warn{background:#962B21;color:#fff;font-family:var(--font-body--family);
+    font-size:.8rem;padding:12px 18px}
+
+  #{{ uid }} .rdcsm__rail{position:relative;display:grid;gap:10px;
+    grid-template-columns:repeat(auto-fit,minmax(110px,1fr))}
+  #{{ uid }} .rdcsm__cut{text-decoration:none;color:inherit;display:block}
+  #{{ uid }} .rdcsm__cshot{aspect-ratio:3/4;background:transparent;display:block}
+  #{{ uid }} .rdcsm__cshot img{width:100%;height:100%;object-fit:contain;display:block;
+    transition:transform .5s ease;filter:drop-shadow(0 10px 18px rgba(64,52,52,.18))}
+  #{{ uid }} .rdcsm__cut:hover .rdcsm__cshot img{transform:scale(1.06) translateY(-3px)}
+  #{{ uid }} .rdcsm__cname{font-family:var(--font-body--family);font-size:.7rem;font-weight:600;
+    letter-spacing:.06em;text-transform:uppercase;margin-top:9px;line-height:1.25;
+    color:#5a4a42;display:block}
+  #{{ uid }} .rdcsm__cprice{font-family:var(--font-heading--family, sans-serif);font-size:1.14rem;
+    letter-spacing:.03em;margin-top:1px;color:#962B21;display:block}
+</style>
+
+<section id="{{ uid }}">
+  {%- if over_limit -%}
+    <div class="rdcsm__warn">
+      Cette collection contient {{ collection.all_products_count }} produits.
+      Liquid n'en expose que 50 sans pagination : les motifs au-delà ne sont pas affichés.
+      Réduisez la collection ou découpez-la.
+    </div>
+  {%- endif -%}
+
+  {%- for entry in sorted_list -%}
+    {%- liquid
+      assign parts = entry | split: '.'
+      assign idx = parts[1] | plus: 0
+      assign mkey = key_list[idx]
+      assign mname = name_list[idx]
+      assign rank = forloop.index
+
+      assign band_mod = forloop.index0 | modulo: 2
+      assign band_class = 'rdcsm__band--a'
+      if band_mod == 1
+        assign band_class = 'rdcsm__band--b'
+      endif
+
+      assign seal = nil
+      assign resume = nil
+      assign cuts = 0
+      for product in collection.products
+        assign pill = product.metafields.custom.illustration_produit.value
+        if pill != blank and pill.nom != blank
+          assign pname = pill.nom
+        else
+          assign pname = product.title | split: '|' | first | strip
+        endif
+        assign pkey = pname | handleize
+        if pkey == mkey
+          assign cuts = cuts | plus: 1
+          if seal == nil and pill != blank
+            assign seal = pill.image_pour_fond_clair | default: pill.image_pour_fond_sombre
+            assign resume = pill.resume
+          endif
+        endif
+      endfor
+
+      assign resume_clean = resume | strip_html | strip
+    -%}
+
+    <div class="rdcsm__band {{ band_class }}" data-motif="{{ mkey }}" data-rank="{{ rank }}">
+      <div class="rdcsm__num">{{ rank | prepend: '0' | slice: -2, 2 }}</div>
+
+      <div class="rdcsm__head">
+        {%- if seal != blank -%}
+          <div class="rdcsm__seal">
+            <img src="{{ seal | image_url: width: 320 }}" alt="{{ mname | escape }}" width="320" height="454" loading="lazy">
+          </div>
+        {%- endif -%}
+        <div class="rdcsm__txt">
+          <div class="rdcsm__over">
+            {%- if rank == 1 -%}{{ s.label_recent }}{%- else -%}{{ s.label_motif }}{%- endif -%}
+          </div>
+          <h2 class="rdcsm__name">{{ mname }}</h2>
+          {%- if resume_clean != '' -%}
+            <p class="rdcsm__res">{{ resume }}</p>
+          {%- endif -%}
+        </div>
+        <div class="rdcsm__meta">{{ cuts }} coupes</div>
+      </div>
+
+      <div class="rdcsm__rail">
+        {%- for product in collection.products -%}
+          {%- liquid
+            assign pill = product.metafields.custom.illustration_produit.value
+            if pill != blank and pill.nom != blank
+              assign pname = pill.nom
+            else
+              assign pname = product.title | split: '|' | first | strip
+            endif
+            assign pkey = pname | handleize
+          -%}
+          {%- if pkey == mkey -%}
+            {%- render 'rdc_saga-cut-card', product: product -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endfor -%}
+</section>
+
+{% schema %}
+{
+  "name": "RDC — Saga : motifs",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "label_recent", "label": "Surtitre du premier motif", "default": "Le plus récent" },
+    { "type": "text", "id": "label_motif", "label": "Surtitre des autres motifs", "default": "Motif" }
+  ],
+  "presets": [{ "name": "RDC — Saga : motifs" }]
+}
+{% endschema %}

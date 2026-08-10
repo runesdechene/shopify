@@ -110,9 +110,50 @@ Toutes les coupes sur une seule ligne, sans pastille « + N autres ». Cartes sa
 
 ## 9. Critères de vérification
 
-1. Les 4 sagas rendent le bon nombre de bandes : 3, 3, 3, 2.
-2. L'ordre des motifs suit la date décroissante du métaobjet.
-3. Chaque coupe affiche son prix réel et ses pastilles réelles.
-4. Un produit volontairement délié de son illustration se range quand même dans la bonne bande.
-5. Aucun fond blanc derrière un packshot.
-6. Les autres collections rendent exactement comme avant.
+- [x] Les 4 sagas rendent le bon nombre de bandes : 3, 3, 2, 3.
+- [x] L'ordre des motifs suit la date décroissante du métaobjet — vérifié : Skjaldmö → Varègue → Valkyrie · Morrigan → Druide → Avalon · Hoplite → Hécate · Loutre → Hibou → Loup.
+- [x] Chaque coupe affiche son prix réel et ses pastilles réelles (20 cartes, 20 prix, de 29,90 € à 109,90 €).
+- [x] Un produit délié de son illustration se range quand même dans la bonne bande (repli sur le titre).
+- [x] Aucun fond blanc derrière un packshot.
+- [x] Les autres collections rendent exactement comme avant (témoin : `debardeurs`).
+
+> Recette rejouable : `python docs/superpowers/plans/verif/t6_recette.py`.
+> Dernière exécution le 2026-08-10 : tout vert.
+
+## 10. ⚠ Piège d'outillage — LA règle à retenir
+
+### Toujours passer `--path` à la CLI Shopify
+
+```bash
+R="C:/Users/uriel/Desktop/DEVS/shopify (Runes de Chêne)"
+shopify theme push --path "$R" --store runes-de-chene.myshopify.com \
+  --theme=<ID> --only "sections/mon-fichier.liquid" --allow-live
+```
+
+**Sans `--path`, la CLI ne scanne pas ce dépôt** — son répertoire de travail est `C:\Users\uriel\Desktop\DEVs\XO`, un autre thème du Bureau. Le chemin du dépôt n'est pas en cause : c'est bien celui de la table de routage (`citadelle/_system/machines.md`), et un `cd` préalable n'y change rien.
+
+Preuve, relevée le 2026-08-10 : avec `--path`, la CLI journalise le fichier lu **en relatif** — `../../DEVS/shopify (Runes de Chêne)/snippets/zzprobe.liquid`. Deux niveaux au-dessus, cela part exactement de `Desktop/DEVs/XO`. Sans `--path`, ce même fichier n'apparaît nulle part dans le journal et n'est jamais téléversé.
+
+*(À ne pas utiliser comme preuve : le nombre de fichiers lus. Sans `--path` la CLI en lit 488, ce qui correspond aussi bien à `XO` qu'à ce dépôt moins `assets/Thumbs.db`, qu'elle ignore. L'indice est ambigu.)*
+
+Cause du répertoire `XO` : **non élucidée**. Ni `.shopify`, ni `.toml`, ni variable d'environnement. `--path` rend la question sans objet.
+
+Les deux conséquences, toutes deux constatées en vrai :
+
+1. **Les fichiers neufs ne montent jamais.** La commande affiche `success`, la télémétrie sort en `ok`, et rien n'est téléversé. C'est ce qui a fait croire pendant des heures à un bug de la CLI ou à un shell non interactif — deux fausses pistes.
+2. **L'étape « Cleaning your remote theme » SUPPRIME du thème distant les fichiers absents du dossier scanné.** Comme elle comparait le thème live au contenu de `XO`, elle a effacé `sections/rdc_saga-hero.liquid` d'une page déjà vue par les clients. `--only` ne protège pas de ça : il restreint la portée du nettoyage, il ne l'annule pas.
+
+**Corollaire de sécurité** : avant tout push sur le live, vérifier dans le journal `--verbose` que le nombre de fichiers lus correspond à ce dépôt. Un compte à 488 signifie qu'on est en train de pousser le mauvais thème.
+
+### Deux erreurs de syntaxe Liquid rencontrées
+
+- **Pas de filtre dans une condition** : `if pname | handleize == mkey` ne compile pas. Assigner d'abord.
+- **Pas de comparaison dans une balise d'affichage** : `{{ x == blank }}` ne compile pas. Passer par un `if`.
+
+### Le lint global est inutilisable
+
+`shopify theme check --fail-level error` remonte 335 erreurs préexistantes sur 218 fichiers. Utiliser `docs/superpowers/plans/verif/lint.py`, qui ne juge que les fichiers de la page saga.
+
+### Métachamps liste : `.size` oui, `.first` non
+
+Sur un `list.file_reference`, `.size` fonctionne mais `.first` renvoie toujours vide. Ne jamais s'en servir comme garde-fou (voir le commentaire dans `rdc_saga-hero.liquid`).
