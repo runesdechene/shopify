@@ -130,7 +130,13 @@ shopify theme push --path "$R" --store runes-de-chene.myshopify.com \
   --theme=<ID> --only "sections/mon-fichier.liquid" --allow-live
 ```
 
-**Sans `--path`, la CLI ne scanne pas ce dépôt.** Mesuré le 2026-08-10 : elle lisait systématiquement **488 fichiers**, soit exactement le compte du thème `C:\Users\uriel\Desktop\DEVs\XO` — un autre projet. Avec `--path`, elle lit bien les 492 de ce dépôt.
+**Sans `--path`, la CLI ne scanne pas ce dépôt** — son répertoire de travail est `C:\Users\uriel\Desktop\DEVs\XO`, un autre thème du Bureau. Le chemin du dépôt n'est pas en cause : c'est bien celui de la table de routage (`citadelle/_system/machines.md`), et un `cd` préalable n'y change rien.
+
+Preuve, relevée le 2026-08-10 : avec `--path`, la CLI journalise le fichier lu **en relatif** — `../../DEVS/shopify (Runes de Chêne)/snippets/zzprobe.liquid`. Deux niveaux au-dessus, cela part exactement de `Desktop/DEVs/XO`. Sans `--path`, ce même fichier n'apparaît nulle part dans le journal et n'est jamais téléversé.
+
+*(À ne pas utiliser comme preuve : le nombre de fichiers lus. Sans `--path` la CLI en lit 488, ce qui correspond aussi bien à `XO` qu'à ce dépôt moins `assets/Thumbs.db`, qu'elle ignore. L'indice est ambigu.)*
+
+Cause du répertoire `XO` : **non élucidée**. Ni `.shopify`, ni `.toml`, ni variable d'environnement. `--path` rend la question sans objet.
 
 Les deux conséquences, toutes deux constatées en vrai :
 
