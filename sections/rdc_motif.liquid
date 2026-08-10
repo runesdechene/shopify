@@ -71,8 +71,23 @@
     opacity:{{ s.ghost_opacity | divided_by: 100.0 }};mix-blend-mode:multiply}
   #{{ uid }} .rdcm__ghost img{height:100%;width:100%;object-fit:contain;
     object-position:right center;display:block}
+  {%- comment -%}
+    Sur mobile, un filigrane centre verticalement atterrit derriere le rail de
+    produits, dont les cartes le masquent — alors que l'espace a droite du
+    titre reste vide. On le remonte donc par defaut, avec sa propre opacite :
+    en haut il n'a que du texte a concurrencer, il peut etre plus present.
+  {%- endcomment -%}
   @media (max-width:749px){
-    #{{ uid }} .rdcm__ghost{height:{{ s.ghost_scale_mobile }}%;max-width:{{ s.ghost_max_width_mobile }}%}
+    #{{ uid }} .rdcm__ghost{height:{{ s.ghost_scale_mobile }}%;
+      max-width:{{ s.ghost_max_width_mobile }}%;
+      right:{{ s.ghost_offset_mobile }}%;
+      opacity:{{ s.ghost_opacity_mobile | divided_by: 100.0 }};
+      {%- case s.ghost_valign_mobile -%}
+        {%- when 'top' -%}top:0;bottom:auto;transform:none;
+        {%- when 'bottom' -%}top:auto;bottom:0;transform:none;
+        {%- else -%}top:50%;bottom:auto;transform:translateY(-50%);
+      {%- endcase -%}
+    }
   }
 
   #{{ uid }} .rdcm__in{position:relative;margin:0 auto;
@@ -201,8 +216,22 @@
     { "type": "range", "id": "ghost_opacity", "label": "Intensité du filigrane", "unit": "%", "min": 0, "max": 40, "step": 1, "default": 13 },
     { "type": "range", "id": "ghost_scale", "label": "Hauteur du filigrane (desktop)", "unit": "%", "min": 30, "max": 100, "step": 5, "default": 85, "info": "En pourcentage de la hauteur de la section. Plafonné à 100 % : au-delà, le dessin serait coupé en haut et en bas." },
     { "type": "range", "id": "ghost_max_width", "label": "Largeur max du filigrane (desktop)", "unit": "%", "min": 20, "max": 90, "step": 5, "default": 45, "info": "En pourcentage de la largeur de la page. Évite que le dessin ne passe sous le texte." },
-    { "type": "range", "id": "ghost_scale_mobile", "label": "Hauteur du filigrane (mobile)", "unit": "%", "min": 20, "max": 100, "step": 5, "default": 60 },
-    { "type": "range", "id": "ghost_max_width_mobile", "label": "Largeur max du filigrane (mobile)", "unit": "%", "min": 30, "max": 100, "step": 5, "default": 75 },
+    { "type": "range", "id": "ghost_scale_mobile", "label": "Hauteur du filigrane (mobile)", "unit": "%", "min": 20, "max": 100, "step": 5, "default": 45 },
+    { "type": "range", "id": "ghost_max_width_mobile", "label": "Largeur max du filigrane (mobile)", "unit": "%", "min": 30, "max": 100, "step": 5, "default": 80 },
+    {
+      "type": "select",
+      "id": "ghost_valign_mobile",
+      "label": "Position du filigrane (mobile)",
+      "options": [
+        { "value": "top", "label": "En haut — derrière le titre" },
+        { "value": "center", "label": "Au centre — derrière les produits" },
+        { "value": "bottom", "label": "En bas — derrière le récit" }
+      ],
+      "default": "top",
+      "info": "Au centre, les cartes produit le recouvrent : c'est pour ça qu'on le voit peu."
+    },
+    { "type": "range", "id": "ghost_offset_mobile", "label": "Décalage vers la droite (mobile)", "unit": "%", "min": -30, "max": 30, "step": 1, "default": -8 },
+    { "type": "range", "id": "ghost_opacity_mobile", "label": "Intensité du filigrane (mobile)", "unit": "%", "min": 0, "max": 40, "step": 1, "default": 18, "info": "En haut de page il ne concurrence que du texte : il peut être plus présent qu'en desktop." },
     { "type": "range", "id": "ghost_offset", "label": "Décalage vers la droite", "unit": "%", "min": -30, "max": 30, "step": 1, "default": -2 },
     { "type": "checkbox", "id": "prefer_background_image", "label": "Utiliser l'image de fond du Fragment si elle existe", "default": true, "info": "Sinon, le dessin du motif sert de filigrane. Une seule illustration sur 22 possède cette image aujourd'hui." },
     { "type": "header", "content": "Textes" },
