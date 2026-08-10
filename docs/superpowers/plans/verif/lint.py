@@ -22,8 +22,11 @@ ATTENDUS = [
     "sections/rdc_saga-hero.liquid",
     "sections/rdc_saga-motifs.liquid",
     "snippets/rdc_saga-cut-card.liquid",
+    # Fichier du theme que le chantier saga modifie : l'en-tete transparent
+    # sur les pages de saga. Il sert sur TOUTES les pages, d'ou sa presence ici.
+    "sections/header.liquid",
 ]
-MARQUEURS = ("rdc_saga", "collection.saga.json")
+MARQUEURS = ("rdc_saga", "collection.saga.json", "header.liquid")
 
 proc = subprocess.run(
     ["shopify", "theme", "check", "-o", "json"],

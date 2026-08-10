@@ -23,6 +23,16 @@
   elsif section.settings.enable_transparent_header_collection and template.name == 'collection'
     assign transparent = 'always'
     assign transparent_color_scheme = section.settings.collection_color_scheme
+  elsif section.settings.enable_transparent_header_saga and template.suffix == 'saga'
+    comment
+      Pages de saga uniquement (modele collection.saga). Elles ouvrent sur un
+      hero plein cadre : l'en-tete passe par-dessus, comme sur l'accueil.
+      Reglage distinct de `enable_transparent_header_collection`, qui lui
+      s'appliquerait a TOUTES les collections — y compris celles qui ouvrent
+      sur une grille claire, ou l'en-tete transparent devient illisible.
+    endcomment
+    assign transparent = 'always'
+    assign transparent_color_scheme = section.settings.collection_color_scheme
   endif
 
   if section.settings.enable_sticky_header == 'always'
@@ -1250,7 +1260,7 @@
       "id": "color_scheme_transparent",
       "label": "t:settings.inverse",
       "default": "primary",
-      "visible_if": "{{ section.settings.enable_transparent_header_home or section.settings.enable_transparent_header_product or section.settings.enable_transparent_header_collection }}"
+      "visible_if": "{{ section.settings.enable_transparent_header_home or section.settings.enable_transparent_header_product or section.settings.enable_transparent_header_collection or section.settings.enable_transparent_header_saga }}"
     },
     {
       "type": "header",
@@ -1317,6 +1327,13 @@
       "default": false
     },
     {
+      "type": "checkbox",
+      "id": "enable_transparent_header_saga",
+      "label": "Fond transparent — pages de saga uniquement",
+      "default": true,
+      "info": "Les pages utilisant le modèle « saga » ouvrent sur une grande image : l'en-tête passe par-dessus, comme sur la page d'accueil. Sans effet sur les autres collections."
+    },
+    {
       "type": "select",
       "id": "collection_color_scheme",
       "label": "t:settings.color_scheme",
@@ -1331,7 +1348,7 @@
         }
       ],
       "default": "default",
-      "visible_if": "{{ section.settings.enable_transparent_header_collection }}"
+      "visible_if": "{{ section.settings.enable_transparent_header_collection or section.settings.enable_transparent_header_saga }}"
     }
   ],
   "presets": []
