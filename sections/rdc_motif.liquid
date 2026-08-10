@@ -36,16 +36,21 @@
   assign motif_nom = ill.nom | default: collection.title
   assign motif_resume = ill.resume | metafield_text | replace: '&amp;', '&' | strip
   comment
-    Le recit vient de `son_histoire` — un texte long, entre 1100 et 2000
-    caracteres selon les motifs, mesure le 2026-08-11. `description_borne`
-    ne sert que de repli : c'est une phrase de vente de 200 caracteres,
-    ecrite pour la borne du stand.
-    On ne passe PAS par strip_html : ce champ est du texte riche, ses
-    paragraphes doivent survivre.
+    Le recit vient de `son_histoire` — un texte long, 1100 a 2000 caracteres
+    selon les motifs. `description_borne` ne sert que de repli : c'est une
+    phrase de vente de 200 caracteres, ecrite pour la borne du stand.
+
+    ⚠ `son_histoire` est un `rich_text_field`. `metafield_text` l'APLATIT :
+    gras, italique et paragraphes disparaissent. Il faut `metafield_tag`, qui
+    rend le HTML — mesure le 2026-08-11 : 4 passages en gras et 3 en italique
+    sur le seul Avalon, tous perdus avec l'ancien filtre.
   endcomment
-  assign motif_recit = ill.son_histoire | metafield_text | replace: '&amp;', '&' | strip
+  assign motif_recit = ill.son_histoire | metafield_tag | replace: '&amp;', '&' | strip
+  assign recit_est_html = true
   if motif_recit == ''
+    # Repli : texte simple, sans mise en forme a preserver.
     assign motif_recit = ill.description_borne | metafield_text | replace: '&amp;', '&' | strip
+    assign recit_est_html = false
   endif
   assign motif_artiste = ill.artiste.value.nom.value | default: ill.artiste
 
@@ -186,6 +191,16 @@
   #{{ uid }} .rdcm__story-body > *:first-child{margin-top:0}
   #{{ uid }} .rdcm__story-body > *:last-child{margin-bottom:0}
   #{{ uid }} .rdcm__story-body p{margin:0 0 1em}
+  {%- comment -%} Mise en forme venue du texte riche du metaobjet. {%- endcomment -%}
+  #{{ uid }} .rdcm__story-body strong{font-weight:700;color:#403434}
+  #{{ uid }} .rdcm__story-body em{font-style:italic}
+  #{{ uid }} .rdcm__story-body a{color:{{ s.accent_color }};text-underline-offset:3px}
+  #{{ uid }} .rdcm__story-body ul,
+  #{{ uid }} .rdcm__story-body ol{margin:0 0 1em;padding-left:1.3em}
+  #{{ uid }} .rdcm__story-body li{margin:0 0 .35em}
+  #{{ uid }} .rdcm__story-body h3{font-family:var(--font-heading--family, sans-serif);
+    font-size:1.5rem;letter-spacing:.02em;text-transform:uppercase;
+    color:#403434;margin:1.4em 0 .5em}
 
   #{{ uid }} .rdcm__cta{position:relative;margin-top:clamp(26px,3vw,42px);
     text-align:{{ s.cta_align }}}
@@ -274,14 +289,26 @@
           NL capture un saut de ligne : c'est le seul moyen propre d'en
           obtenir un comme separateur de `split`.
         {%- endcomment -%}
-        {%- capture NL %}
-{% endcapture -%}
-        {%- assign paragraphes = motif_recit | split: NL -%}
         <div class="rdcm__story-body">
-          {%- for para in paragraphes -%}
-            {%- assign p = para | strip -%}
-            {%- if p != '' -%}<p>{{ p }}</p>{%- endif -%}
-          {%- endfor -%}
+          {%- if recit_est_html -%}
+            {%- comment -%}
+              Texte riche : on rend le HTML tel quel, gras et italique compris.
+            {%- endcomment -%}
+            {{ motif_recit }}
+          {%- else -%}
+            {%- comment -%}
+              Repli en texte simple : ses sauts de ligne n'ont aucune balise, on
+              les transforme en vrais paragraphes. NL capture un saut de ligne,
+              seul moyen propre d'en obtenir un comme separateur de `split`.
+            {%- endcomment -%}
+            {%- capture NL %}
+{% endcapture -%}
+            {%- assign paragraphes = motif_recit | split: NL -%}
+            {%- for para in paragraphes -%}
+              {%- assign p = para | strip -%}
+              {%- if p != '' -%}<p>{{ p }}</p>{%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
         </div>
       </div>
     {%- endif -%}
