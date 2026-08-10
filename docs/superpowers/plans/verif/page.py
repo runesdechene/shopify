@@ -3,15 +3,11 @@
 PREREQUIS : `shopify theme dev --store runes-de-chene.myshopify.com` doit
 tourner dans un VRAI terminal, lance par un humain.
 
-⚠ Pourquoi cette precision (appris a la dure le 2026-08-10) : lance depuis un
-shell non interactif, la CLI Shopify **ne televerse jamais un fichier neuf**.
-Elle affiche « success » et ne fait rien. Consequence : toute section ou tout
-template cree par l'agent reste invisible cote Shopify tant qu'un `theme dev`
-interactif ne l'a pas synchronise.
-
-⚠ NE JAMAIS lancer `shopify theme push` pendant ce chantier : son etape
-« Cleaning your remote theme » SUPPRIME du thème distant les fichiers que son
-scanner ne voit pas — c'est-a-dire precisement les fichiers neufs.
+⚠ TOUJOURS passer `--path` a la CLI Shopify (voir spec §10). Sans lui, elle
+scanne un AUTRE dossier (`Desktop/DEVs/XO`, 488 fichiers) : les fichiers neufs
+ne montent jamais, et l'etape « Cleaning your remote theme » supprime du thème
+distant tout ce qui manque au dossier scanné. C'est ainsi qu'une section a ete
+effacee d'une page en production le 2026-08-10.
 
 Le template alterne se lit via `?view=saga`, sans qu'aucune collection n'ait
 ete reassignee : la boutique live n'est pas affectee.

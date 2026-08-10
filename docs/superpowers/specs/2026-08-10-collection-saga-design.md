@@ -120,14 +120,34 @@ Toutes les coupes sur une seule ligne, sans pastille « + N autres ». Cartes sa
 > Recette rejouable : `python docs/superpowers/plans/verif/t6_recette.py`.
 > Dernière exécution le 2026-08-10 : tout vert.
 
-## 10. ⚠ Piège d'outillage — à lire avant de reprendre ce chantier
+## 10. ⚠ Piège d'outillage — LA règle à retenir
 
-Découvert à la dure le 2026-08-10, après une dizaine de tentatives :
+### Toujours passer `--path` à la CLI Shopify
 
-**Lancée depuis un shell non interactif, la CLI Shopify ne téléverse jamais un fichier NEUF.** Elle affiche `success`, son scanner ne lit tout simplement pas le fichier, et rien ne monte. Les *mises à jour* de fichiers existants passent normalement — d'où l'illusion que tout va bien. La CLI le dit elle-même sur d'autres commandes : « Failed to prompt… this usually happens when running non-interactively ».
+```bash
+R="C:/Users/uriel/Desktop/DEVS/shopify (Runes de Chêne)"
+shopify theme push --path "$R" --store runes-de-chene.myshopify.com \
+  --theme=<ID> --only "sections/mon-fichier.liquid" --allow-live
+```
 
-Conséquences pratiques :
+**Sans `--path`, la CLI ne scanne pas ce dépôt.** Mesuré le 2026-08-10 : elle lisait systématiquement **488 fichiers**, soit exactement le compte du thème `C:\Users\uriel\Desktop\DEVs\XO` — un autre projet. Avec `--path`, elle lit bien les 492 de ce dépôt.
 
-- Toute section ou tout template créé par un agent doit être synchronisé par un **`shopify theme dev` lancé par un humain dans un vrai terminal**. Son surveillant de fichiers, lui, prend les nouveautés.
-- **Ne jamais lancer `shopify theme push` pendant ce chantier** : son étape « Cleaning your remote theme » supprime du thème distant les fichiers que son scanner ne voit pas — c'est-à-dire précisément les fichiers neufs. C'est ce qui a effacé le template deux fois.
-- `shopify theme check --fail-level error` est inutilisable comme garde-fou global : le thème porte 335 erreurs préexistantes sur 218 fichiers. Utiliser `docs/superpowers/plans/verif/lint.py`, qui ne juge que les fichiers de la page saga.
+Les deux conséquences, toutes deux constatées en vrai :
+
+1. **Les fichiers neufs ne montent jamais.** La commande affiche `success`, la télémétrie sort en `ok`, et rien n'est téléversé. C'est ce qui a fait croire pendant des heures à un bug de la CLI ou à un shell non interactif — deux fausses pistes.
+2. **L'étape « Cleaning your remote theme » SUPPRIME du thème distant les fichiers absents du dossier scanné.** Comme elle comparait le thème live au contenu de `XO`, elle a effacé `sections/rdc_saga-hero.liquid` d'une page déjà vue par les clients. `--only` ne protège pas de ça : il restreint la portée du nettoyage, il ne l'annule pas.
+
+**Corollaire de sécurité** : avant tout push sur le live, vérifier dans le journal `--verbose` que le nombre de fichiers lus correspond à ce dépôt. Un compte à 488 signifie qu'on est en train de pousser le mauvais thème.
+
+### Deux erreurs de syntaxe Liquid rencontrées
+
+- **Pas de filtre dans une condition** : `if pname | handleize == mkey` ne compile pas. Assigner d'abord.
+- **Pas de comparaison dans une balise d'affichage** : `{{ x == blank }}` ne compile pas. Passer par un `if`.
+
+### Le lint global est inutilisable
+
+`shopify theme check --fail-level error` remonte 335 erreurs préexistantes sur 218 fichiers. Utiliser `docs/superpowers/plans/verif/lint.py`, qui ne juge que les fichiers de la page saga.
+
+### Métachamps liste : `.size` oui, `.first` non
+
+Sur un `list.file_reference`, `.size` fonctionne mais `.first` renvoie toujours vide. Ne jamais s'en servir comme garde-fou (voir le commentaire dans `rdc_saga-hero.liquid`).
