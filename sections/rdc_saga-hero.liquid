@@ -1,33 +1,190 @@
 {%- comment -%}
   rdc_saga-hero.liquid
 
-  Hero plein cadre d'une page de saga. Reprend la grammaire de rdc_hero.liquid :
-  voile degrade, Ken Burns, texte en surimpression, points de navigation.
-  Ne connait rien des motifs — il ne parle que de la collection.
+  Hero plein cadre d'une page de saga. Grammaire reprise de rdc_hero.liquid :
+  voile degrade, Ken Burns, texte en surimpression, points qui s'etirent.
+
+  Images : metachamp de COLLECTION lu par acces variable
+  collection.metafields[namespace][cle] — reglable dans l'editeur, donc une
+  cle renommee se corrige sans toucher au code. Repli sur collection.image.
+  Si aucune image : la section ne s'affiche pas du tout, plutot qu'un cadre vide.
+
+  image_url ne recoit JAMAIS format:'jpg' : les visuels peuvent porter un
+  canal alpha, que le JPEG detruit.
 {%- endcomment -%}
 
 {%- liquid
   assign uid = 'RdcSagaHero-' | append: section.id
   assign s = section.settings
+
+  assign raw = collection.metafields[s.mf_namespace][s.mf_key]
+  assign imgs = raw.value | default: raw
+
+  assign has_list = false
+  if imgs != blank and imgs.size > 0 and imgs.first != blank
+    assign has_list = true
+  endif
+
+  assign slide_count = 0
+  if has_list
+    assign slide_count = imgs.size
+  elsif collection.image != blank
+    assign slide_count = 1
+  endif
 -%}
 
+{%- if slide_count > 0 -%}
 <style>
   #{{ uid }}{position:relative;min-height:{{ s.min_height }}vh;display:flex;align-items:flex-end;
     overflow:hidden;background:#1c1812}
   @media (max-width:749px){#{{ uid }}{min-height:{{ s.min_height_mobile }}vh}}
+  #{{ uid }} .rdcsh__slides{position:absolute;inset:0;overflow:hidden}
+  #{{ uid }} .rdcsh__slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease-in-out}
+  #{{ uid }} .rdcsh__slide.is-active{opacity:1}
+  #{{ uid }} .rdcsh__slide img{width:100%;height:100%;object-fit:cover;display:block}
+  #{{ uid }} .rdcsh__slide.is-active img{animation:rdcshKen {{ s.ken_burns_duration }}s ease-in-out infinite alternate;will-change:transform}
+  @keyframes rdcshKen{from{transform:scale(1.03) translate3d(0,0,0)}to{transform:scale(1.10) translate3d(-1.8%,-1.2%,0)}}
+  @media (prefers-reduced-motion: reduce){#{{ uid }} .rdcsh__slide.is-active img{animation:none}}
+  #{{ uid }} .rdcsh__scrim{position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,0) 38%, rgba(0,0,0,.62) 100%)}
+  #{{ uid }} .rdcsh__content{position:relative;width:100%;padding:0 clamp(26px,5vw,64px) 68px;max-width:62ch}
+  #{{ uid }} .rdcsh__overline{font-family:var(--font-body--family);font-weight:700;font-size:.74rem;
+    letter-spacing:.26em;text-transform:uppercase;color:#f4d694;margin-bottom:16px}
+  #{{ uid }} .rdcsh__title{font-family:var(--font-heading--family, sans-serif);color:#fff;
+    text-transform:uppercase;line-height:.94;letter-spacing:.02em;
+    font-size:clamp(2.2rem,5.2vw,4.6rem);text-shadow:0 2px 24px rgba(0,0,0,.55);margin:0}
+  #{{ uid }} .rdcsh__subtitle{font-family:var(--font-body--family);color:#fff;
+    font-size:clamp(1rem,1.4vw,1.18rem);line-height:1.5;max-width:48ch;margin:18px 0 0;
+    text-shadow:0 2px 24px rgba(0,0,0,.55)}
+  #{{ uid }} .rdcsh__subtitle p{margin:0}
+  #{{ uid }} .rdcsh__actions{display:flex;flex-wrap:wrap;gap:13px;margin-top:28px}
+  #{{ uid }} .rdcsh__btn{display:inline-flex;align-items:center;font-family:var(--font-body--family);
+    font-weight:700;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;
+    padding:14px 30px;border-radius:12px;color:#fff;border:1px solid rgba(255,255,255,.6);
+    text-decoration:none;transition:.2s;background:transparent}
+  #{{ uid }} .rdcsh__btn:hover{background:#fff;color:#222;border-color:#fff}
+  #{{ uid }} .rdcsh__btn--solid{background:#f4d694;color:#623c3c;border-color:#f4d694}
+  #{{ uid }} .rdcsh__btn--solid:hover{background:#f9e6bd;color:#623c3c;border-color:#f9e6bd}
+  #{{ uid }} .rdcsh__dots{position:absolute;left:0;right:0;bottom:20px;z-index:3;
+    display:flex;gap:8px;justify-content:center;pointer-events:none}
+  #{{ uid }} .rdcsh__dot{pointer-events:auto;width:9px;height:9px;padding:0;border:0;cursor:pointer;
+    border-radius:999px;background:rgba(255,255,255,.45);transition:.25s ease}
+  #{{ uid }} .rdcsh__dot.is-active{background:#fff;width:26px;border-radius:5px}
 </style>
 
-<section id="{{ uid }}" data-rdc-saga-hero></section>
+<section id="{{ uid }}" data-rdc-saga-hero>
+  <div class="rdcsh__slides">
+    {%- if has_list -%}
+      {%- for img in imgs -%}
+        <div class="rdcsh__slide{% if forloop.first %} is-active{% endif %}">
+          <img
+            src="{{ img | image_url: width: 2200 }}"
+            alt="{{ collection.title | escape }}"
+            width="2200"
+            height="1100"
+            loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+          >
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      <div class="rdcsh__slide is-active">
+        <img
+          src="{{ collection.image | image_url: width: 2200 }}"
+          alt="{{ collection.title | escape }}"
+          width="2200"
+          height="1100"
+          loading="eager"
+        >
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="rdcsh__scrim"></div>
+
+  <div class="rdcsh__content">
+    {%- if s.overline != blank -%}
+      <div class="rdcsh__overline">{{ s.overline }}</div>
+    {%- endif -%}
+    <h1 class="rdcsh__title">{{ s.title | default: collection.title }}</h1>
+    {%- if collection.description != blank -%}
+      <div class="rdcsh__subtitle">{{ collection.description }}</div>
+    {%- endif -%}
+    {%- if s.btn1_label != blank or s.btn2_label != blank -%}
+      <div class="rdcsh__actions">
+        {%- if s.btn1_label != blank -%}
+          <a class="rdcsh__btn rdcsh__btn--solid" href="{{ s.btn1_link | default: '#' }}">{{ s.btn1_label }}</a>
+        {%- endif -%}
+        {%- if s.btn2_label != blank -%}
+          <a class="rdcsh__btn" href="{{ s.btn2_link | default: '#' }}">{{ s.btn2_label }}</a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if slide_count > 1 -%}
+    <div class="rdcsh__dots">
+      {%- for i in (1..slide_count) -%}
+        <button
+          class="rdcsh__dot{% if forloop.first %} is-active{% endif %}"
+          type="button"
+          aria-label="Diapositive {{ forloop.index }}"
+        ></button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById({{ uid | json }});
+    if (!root) return;
+    var slides = root.querySelectorAll('.rdcsh__slide');
+    var dots = root.querySelectorAll('.rdcsh__dot');
+    if (slides.length < 2) return;
+    var i = 0;
+    var timer = null;
+    var delay = {{ s.autoplay_seconds | times: 1000 }};
+    function show(n) {
+      i = (n + slides.length) % slides.length;
+      for (var k = 0; k < slides.length; k++) {
+        slides[k].classList.toggle('is-active', k === i);
+        if (dots[k]) dots[k].classList.toggle('is-active', k === i);
+      }
+    }
+    function start() { if (delay > 0) timer = setInterval(function () { show(i + 1); }, delay); }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+    for (var k = 0; k < dots.length; k++) {
+      (function (n) {
+        dots[n].addEventListener('click', function () { stop(); show(n); start(); });
+      })(k);
+    }
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) start();
+  })();
+</script>
+{%- endif -%}
 
 {% schema %}
 {
   "name": "RDC — Saga : hero",
   "tag": "section",
   "settings": [
+    { "type": "header", "content": "Images du carrousel" },
+    { "type": "text", "id": "mf_namespace", "label": "Métachamp — namespace", "default": "custom" },
+    { "type": "text", "id": "mf_key", "label": "Métachamp — clé", "default": "hero_images", "info": "Métachamp de COLLECTION, type liste de fichiers. Repli automatique sur l'image de la collection." },
+    { "type": "range", "id": "autoplay_seconds", "label": "Défilement automatique", "unit": "s", "min": 0, "max": 12, "step": 1, "default": 6, "info": "0 = pas de défilement automatique." },
+    { "type": "range", "id": "ken_burns_duration", "label": "Durée du zoom lent", "unit": "s", "min": 8, "max": 30, "step": 1, "default": 18 },
+    { "type": "header", "content": "Texte" },
+    { "type": "text", "id": "overline", "label": "Surtitre", "default": "Saga" },
+    { "type": "text", "id": "title", "label": "Titre", "info": "Vide = le titre de la collection." },
+    { "type": "header", "content": "Boutons" },
+    { "type": "text", "id": "btn1_label", "label": "Bouton principal — libellé" },
+    { "type": "url", "id": "btn1_link", "label": "Bouton principal — lien" },
+    { "type": "text", "id": "btn2_label", "label": "Bouton secondaire — libellé" },
+    { "type": "url", "id": "btn2_link", "label": "Bouton secondaire — lien" },
+    { "type": "header", "content": "Dimensions" },
     { "type": "range", "id": "min_height", "label": "Hauteur (desktop)", "unit": "vh", "min": 40, "max": 100, "step": 2, "default": 84 },
     { "type": "range", "id": "min_height_mobile", "label": "Hauteur (mobile)", "unit": "vh", "min": 40, "max": 100, "step": 2, "default": 80 }
   ],
   "presets": [{ "name": "RDC — Saga : hero" }]
 }
 {% endschema %}
-
