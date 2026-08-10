@@ -161,9 +161,28 @@
   {%- endcomment -%}
   #{{ uid }} .rdcsm__cut{text-decoration:none;color:inherit;
     display:flex;flex-direction:column;gap:{{ s.card_gap }}px;
-    text-align:{{ s.card_align }};
-    --variant-picker-swatch-width:{{ s.swatch_size }}px;
-    --variant-picker-swatch-height:{{ s.swatch_size }}px}
+    text-align:{{ s.card_align }}}
+  {%- comment -%}
+    ⚠ Surcharger `--variant-picker-swatch-*` NE SUFFIT PAS : le theme ne lit
+    pas cette valeur directement, il la passe dans une formule de mise a
+    l'echelle qui s'appuie sur des variantes « unitless » et sur des plafonds
+    (`--max-swatch-size`, `--max-pill-size`). Et la variable
+    `--variant-picker-swatch-*` ne sert qu'aux pastilles `swatch--unscaled`,
+    celles des fiches produit.
+    On court-circuite donc la formule en fixant la taille finale sur la
+    pastille elle-meme. Elle vit dans le DOM normal (le shadow DOM ne contient
+    que la liste de debordement), donc elle est ciblable directement.
+  {%- endcomment -%}
+  #{{ uid }} .rdcsm__cut .swatch{
+    --swatch-width:{{ s.swatch_size }}px;--swatch-height:{{ s.swatch_size }}px;
+    --min-width:{{ s.swatch_size }}px;--min-height:{{ s.swatch_size }}px;
+    width:{{ s.swatch_size }}px;height:{{ s.swatch_size }}px;
+    min-width:{{ s.swatch_size }}px;min-height:{{ s.swatch_size }}px;
+    background-size:{{ s.swatch_size }}px {{ s.swatch_size }}px}
+  #{{ uid }} .rdcsm__cut .variant-option__swatch,
+  #{{ uid }} .rdcsm__cut .variant-option__button-label--has-swatch{
+    width:{{ s.swatch_size }}px;height:{{ s.swatch_size }}px;
+    min-width:{{ s.swatch_size }}px;min-height:{{ s.swatch_size }}px;padding:0}
   {%- if s.card_align == 'center' -%}
   #{{ uid }} .rdcsm__cut{--overflow-list-alignment:center;--overflow-list-alignment-mobile:center;
     --product-swatches-alignment:center;--product-swatches-alignment-mobile:center}
