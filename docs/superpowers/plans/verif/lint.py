@@ -25,8 +25,9 @@ ATTENDUS = [
     # Fichier du theme que le chantier saga modifie : l'en-tete transparent
     # sur les pages de saga. Il sert sur TOUTES les pages, d'ou sa presence ici.
     "sections/header.liquid",
+    "blocks/_header-logo.liquid",
 ]
-MARQUEURS = ("rdc_saga", "collection.saga.json", "header.liquid")
+MARQUEURS = ("rdc_saga", "collection.saga.json", "header.liquid", "_header-logo.liquid")
 
 proc = subprocess.run(
     ["shopify", "theme", "check", "-o", "json"],

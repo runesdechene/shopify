@@ -10,6 +10,13 @@
     assign use_inverse_logo = true
   elsif section.settings.enable_transparent_header_collection and template.name == 'collection' and section.settings.collection_color_scheme == 'inverse'
     assign use_inverse_logo = true
+  elsif section.settings.enable_transparent_header_saga and template.suffix == 'saga' and section.settings.saga_color_scheme == 'inverse'
+    comment
+      Pages de saga : meme logique que l'accueil. L'en-tete est transparent en
+      schema inverse par-dessus un hero sombre, il faut donc la version claire
+      du logo (`settings.logo_inverse`), sinon le logo brun disparait.
+    endcomment
+    assign use_inverse_logo = true
   endif
 
   if use_inverse_logo
