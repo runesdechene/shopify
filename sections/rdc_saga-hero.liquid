@@ -73,7 +73,11 @@
   if s.hero_width == 'page'
     assign hero_max = 'min(var(--page-width, ' | append: s.hero_max_width | append: 'px), calc(100% - ' | append: side_gap_x2 | append: 'px))'
   else
-    assign hero_max = 'none'
+    comment
+      Pleine largeur ne veut pas dire bord a bord : la marge laterale
+      s'applique aussi ici. A 0 on retrouve le plein cadre integral.
+    endcomment
+    assign hero_max = 'calc(100% - ' | append: side_gap_x2 | append: 'px)'
   endif
 -%}
 
@@ -247,11 +251,11 @@
         { "value": "page", "label": "Largeur de page (tirage cadré)" },
         { "value": "full", "label": "Pleine largeur (plein cadre)" }
       ],
-      "default": "page",
-      "info": "En largeur de page, pensez à décocher « Fond transparent — pages de saga » dans les réglages de l'en-tête : la navigation doit rester au-dessus de l'image, pas par-dessus."
+      "default": "full",
+      "info": "La marge latérale s'applique dans les deux cas. « Pleine largeur » avec une marge à 0 donne le plein cadre bord à bord — pensez alors à recocher « Fond transparent — pages de saga » côté en-tête."
     },
     { "type": "range", "id": "hero_max_width", "label": "Largeur max fallback", "unit": "px", "min": 600, "max": 2000, "step": 50, "default": 1400, "visible_if": "{{ section.settings.hero_width == 'page' }}" },
-    { "type": "range", "id": "hero_side_gap", "label": "Marge latérale", "unit": "px", "min": 0, "max": 80, "step": 4, "default": 24, "visible_if": "{{ section.settings.hero_width == 'page' }}" },
+    { "type": "range", "id": "hero_side_gap", "label": "Marge latérale", "unit": "px", "min": 0, "max": 120, "step": 2, "default": 50 },
     { "type": "range", "id": "hero_margin_top", "label": "Espace au-dessus", "unit": "px", "min": 0, "max": 120, "step": 4, "default": 24 },
     { "type": "range", "id": "hero_margin_bottom", "label": "Espace en dessous", "unit": "px", "min": 0, "max": 120, "step": 4, "default": 0 },
     { "type": "range", "id": "hero_radius", "label": "Arrondi des coins", "unit": "px", "min": 0, "max": 32, "step": 2, "default": 0 },
