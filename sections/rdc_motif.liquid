@@ -1,0 +1,203 @@
+{%- comment -%}
+  rdc_motif.liquid
+
+  Page d'un MOTIF (modele collection.motif), posee sur les collections de
+  motif qui existent deja : /collections/avalon, /collections/skjaldmo, etc.
+
+  On y arrive en cliquant un motif depuis la page d'accueil. Ce visiteur a
+  flashe sur un dessin : il veut le voir en grand, puis savoir sur quoi il
+  peut l'avoir. D'ou l'ordre dessin > phrase > coupes, le recit tout en bas.
+
+  MOBILE D'ABORD. L'illustration est un FILIGRANE derriere le contenu, jamais
+  un bloc au-dessus : elle ne coute donc aucun defilement. Et les coupes
+  defilent au doigt sur une ligne, au lieu d'une grille qui pousse tout vers
+  le bas.
+
+  ⚠ Apostrophes doublement encodees dans le metaobjet (`l&amp;#39;`). Sans le
+  `replace`, la page afficherait `l&#39;` en clair. Le defaut est dans la
+  donnee, pas ici.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = 'RdcMotif-' | append: section.id
+  assign s = section.settings
+
+  comment
+    Le metaobjet illustration est lie a la COLLECTION (meme lien que lit
+    snippets/illustration-card.liquid). Double acces `.value` puis direct :
+    selon le type de metachamp, Shopify renvoie l'un ou l'autre.
+  endcomment
+  if collection.metafields.custom.illustrations.value != blank
+    assign ill = collection.metafields.custom.illustrations.value
+  elsif collection.metafields.custom.illustrations != blank
+    assign ill = collection.metafields.custom.illustrations
+  endif
+
+  assign motif_nom = ill.nom | default: collection.title
+  assign motif_resume = ill.resume | metafield_text | replace: '&amp;', '&' | strip
+  assign motif_recit = ill.description_borne | metafield_text | replace: '&amp;', '&' | strip
+  assign motif_artiste = ill.artiste.value.nom.value | default: ill.artiste
+
+  assign ghost = ill.image_pour_fond_clair | default: ill.image_pour_fond_sombre
+  if s.prefer_background_image and ill.image_fond_de_fragment != blank
+    assign ghost = ill.image_fond_de_fragment
+  endif
+
+  assign cuts = collection.products_count
+  assign price_from = collection.price_min | money_without_trailing_zeros
+-%}
+
+{%- if cuts > 0 -%}
+<style>
+  #{{ uid }}{position:relative;overflow:hidden;background:{{ s.bg_color }};color:#403434}
+
+  {%- comment -%}
+    Filigrane : deborde volontairement du cadre. `multiply` le fond dans le
+    parchemin au lieu de le poser dessus — c'est ce qui evite l'effet
+    « image collee ».
+  {%- endcomment -%}
+  #{{ uid }} .rdcm__ghost{position:absolute;pointer-events:none;user-select:none;
+    right:{{ s.ghost_offset }}%;top:50%;transform:translateY(-50%);
+    height:{{ s.ghost_scale }}%;opacity:{{ s.ghost_opacity | divided_by: 100.0 }};
+    mix-blend-mode:multiply}
+  #{{ uid }} .rdcm__ghost img{height:100%;width:auto;display:block}
+
+  #{{ uid }} .rdcm__in{position:relative;margin:0 auto;
+    max-width:calc(var(--page-width, 1400px) - (var(--page-margin, 40px) * 2));
+    padding:clamp(28px,4vw,54px) clamp(20px,3vw,40px)}
+
+  #{{ uid }} .rdcm__over{font-family:var(--font-body--family);font-weight:700;font-size:.62rem;
+    letter-spacing:.22em;text-transform:uppercase;color:{{ s.accent_color }}}
+  #{{ uid }} .rdcm__name{font-family:var(--font-heading--family, sans-serif);
+    font-size:clamp(3rem,8vw,6rem);line-height:.84;letter-spacing:.01em;
+    text-transform:uppercase;margin:8px 0 0}
+  #{{ uid }} .rdcm__line{font-family:var(--font-body--family);font-size:1.05rem;line-height:1.5;
+    color:#5a4a42;max-width:34ch;margin:14px 0 0}
+  #{{ uid }} .rdcm__meta{display:flex;flex-wrap:wrap;gap:20px;margin-top:20px;
+    font-family:var(--font-body--family);font-size:.66rem;letter-spacing:.18em;
+    text-transform:uppercase;color:{{ s.accent_color }}}
+
+  {%- comment -%}
+    Desktop : grille a colonnes fixes. Mobile : une seule ligne qui defile au
+    doigt, avec accroche par carte. C'est la regle mobile-first de la spec —
+    les coupes doivent etre atteignables en un demi-ecran.
+  {%- endcomment -%}
+  #{{ uid }} .rdcm__rail{display:grid;margin-top:clamp(24px,3vw,38px);
+    grid-template-columns:repeat({{ s.columns }},minmax(0,1fr));
+    column-gap:{{ s.columns_gap }}px;row-gap:{{ s.rows_gap }}px}
+  @media (max-width:749px){
+    #{{ uid }} .rdcm__rail{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;scrollbar-width:none;
+      margin-inline:-{{ s.mobile_bleed }}px;padding-inline:{{ s.mobile_bleed }}px}
+    #{{ uid }} .rdcm__rail::-webkit-scrollbar{display:none}
+    #{{ uid }} .rdcm__rail > *{flex:0 0 {{ s.mobile_card_width }}%;scroll-snap-align:start}
+  }
+  #{{ uid }} .rdcm__swipe{font-family:var(--font-body--family);font-size:.58rem;
+    letter-spacing:.18em;text-transform:uppercase;color:{{ s.accent_color }};
+    opacity:.75;margin-top:12px}
+  @media (min-width:750px){#{{ uid }} .rdcm__swipe{display:none}}
+
+  #{{ uid }} .rdcm__story{position:relative;border-top:1px solid {{ s.accent_color }}33;
+    margin-top:clamp(28px,3.4vw,46px);padding-top:clamp(22px,2.6vw,34px);max-width:62ch}
+  #{{ uid }} .rdcm__story h2{font-family:var(--font-body--family);font-weight:700;font-size:.68rem;
+    letter-spacing:.26em;text-transform:uppercase;color:{{ s.accent_color }};margin:0 0 12px}
+  #{{ uid }} .rdcm__story p{font-family:var(--font-body--family);font-size:1.02rem;line-height:1.7;
+    color:#5a4a42;margin:0}
+
+  {%- comment -%} Les cartes de coupe reprennent le style de la page de saga. {%- endcomment -%}
+  #{{ uid }} .rdcsm__cut{text-decoration:none;color:inherit;display:flex;flex-direction:column;
+    gap:{{ s.card_gap }}px;text-align:center;
+    --overflow-list-alignment:center;--overflow-list-alignment-mobile:center;
+    --product-swatches-alignment:center;--product-swatches-alignment-mobile:center}
+  #{{ uid }} .rdcsm__cut overflow-list::part(list){justify-content:center}
+  #{{ uid }} .rdcsm__cut .variant-option{justify-content:center}
+  #{{ uid }} .rdcsm__cshot{aspect-ratio:3/4;background:transparent;display:block}
+  #{{ uid }} .rdcsm__cshot img{width:100%;height:100%;object-fit:contain;display:block;
+    transition:transform .5s ease;filter:drop-shadow(0 10px 18px rgba(64,52,52,.18))}
+  #{{ uid }} .rdcsm__cut:hover .rdcsm__cshot img{transform:scale(1.06) translateY(-3px)}
+  #{{ uid }} .rdcsm__cname{font-family:var(--font-body--family);font-size:.7rem;font-weight:600;
+    letter-spacing:.06em;text-transform:uppercase;line-height:1.25;color:#5a4a42;display:block}
+  #{{ uid }} .rdcsm__cprice{font-family:var(--font-heading--family, sans-serif);font-size:1.14rem;
+    letter-spacing:.03em;color:#962B21;display:block;line-height:1}
+  #{{ uid }} .rdcsm__cut .swatch{
+    --swatch-width:{{ s.swatch_size }}px;--swatch-height:{{ s.swatch_size }}px;
+    --min-width:{{ s.swatch_size }}px;--min-height:{{ s.swatch_size }}px;
+    width:{{ s.swatch_size }}px;height:{{ s.swatch_size }}px;
+    min-width:{{ s.swatch_size }}px;min-height:{{ s.swatch_size }}px;
+    background-size:{{ s.swatch_size }}px {{ s.swatch_size }}px}
+  #{{ uid }} .rdcsm__cut .variant-option__swatch,
+  #{{ uid }} .rdcsm__cut .variant-option__button-label--has-swatch{
+    width:{{ s.swatch_size }}px;height:{{ s.swatch_size }}px;
+    min-width:{{ s.swatch_size }}px;min-height:{{ s.swatch_size }}px;padding:0}
+</style>
+
+<section id="{{ uid }}">
+  {%- if ghost != blank -%}
+    <div class="rdcm__ghost">
+      <img src="{{ ghost | image_url: width: 1400 }}" alt="" width="1400" height="1980" loading="lazy">
+    </div>
+  {%- endif -%}
+
+  <div class="rdcm__in">
+    {%- if s.overline != blank -%}
+      <div class="rdcm__over">{{ s.overline }}</div>
+    {%- endif -%}
+    <h1 class="rdcm__name">{{ motif_nom }}</h1>
+
+    {%- if motif_resume != '' -%}
+      <p class="rdcm__line">{{ motif_resume }}</p>
+    {%- endif -%}
+
+    <div class="rdcm__meta">
+      <span>{{ cuts }} {% if cuts > 1 %}coupes{% else %}coupe{% endif %}</span>
+      {%- if collection.price_min > 0 -%}<span>dès {{ price_from }}</span>{%- endif -%}
+      {%- if motif_artiste != blank -%}<span>Illustration {{ motif_artiste }}</span>{%- endif -%}
+    </div>
+
+    <div class="rdcm__rail">
+      {%- for product in collection.products -%}
+        {%- render 'rdc_saga-cut-card', product: product -%}
+      {%- endfor -%}
+    </div>
+    {%- if cuts > 2 -%}
+      <div class="rdcm__swipe">Glissez · {{ cuts }} coupes</div>
+    {%- endif -%}
+
+    {%- if motif_recit != '' -%}
+      <div class="rdcm__story">
+        <h2>{{ s.story_title }}</h2>
+        <p>{{ motif_recit }}</p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "RDC — Motif",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Filigrane" },
+    { "type": "range", "id": "ghost_opacity", "label": "Intensité du filigrane", "unit": "%", "min": 0, "max": 40, "step": 1, "default": 13 },
+    { "type": "range", "id": "ghost_scale", "label": "Taille du filigrane", "unit": "%", "min": 80, "max": 260, "step": 5, "default": 150, "info": "En pourcentage de la hauteur de la section. Au-delà de 100 %, le dessin déborde volontairement." },
+    { "type": "range", "id": "ghost_offset", "label": "Décalage vers la droite", "unit": "%", "min": -40, "max": 30, "step": 1, "default": -6 },
+    { "type": "checkbox", "id": "prefer_background_image", "label": "Utiliser l'image de fond du Fragment si elle existe", "default": true, "info": "Sinon, le dessin du motif sert de filigrane. Une seule illustration sur 22 possède cette image aujourd'hui." },
+    { "type": "header", "content": "Textes" },
+    { "type": "text", "id": "overline", "label": "Surtitre", "default": "Motif" },
+    { "type": "text", "id": "story_title", "label": "Titre du bloc de récit", "default": "L'histoire de ce Fragment" },
+    { "type": "header", "content": "Grille des coupes" },
+    { "type": "range", "id": "columns", "label": "Articles par ligne (desktop)", "min": 2, "max": 8, "step": 1, "default": 4 },
+    { "type": "range", "id": "mobile_card_width", "label": "Largeur d'une carte (mobile)", "unit": "%", "min": 30, "max": 90, "step": 2, "default": 42, "info": "42 % laisse voir deux cartes et demie : assez pour comprendre qu'on peut glisser." },
+    { "type": "range", "id": "mobile_bleed", "label": "Débord du rail (mobile)", "unit": "px", "min": 0, "max": 40, "step": 2, "default": 20, "info": "Laisse le rail filer jusqu'au bord de l'écran en défilant." },
+    { "type": "range", "id": "columns_gap", "label": "Espace horizontal", "unit": "px", "min": 0, "max": 60, "step": 2, "default": 12 },
+    { "type": "range", "id": "rows_gap", "label": "Espace vertical entre les rangées", "unit": "px", "min": 0, "max": 80, "step": 2, "default": 28 },
+    { "type": "range", "id": "card_gap", "label": "Espace dans la carte", "unit": "px", "min": 0, "max": 24, "step": 1, "default": 8 },
+    { "type": "range", "id": "swatch_size", "label": "Taille des pastilles de couleur", "unit": "px", "min": 12, "max": 40, "step": 1, "default": 22 },
+    { "type": "header", "content": "Couleurs" },
+    { "type": "color", "id": "bg_color", "label": "Fond", "default": "#f4eee1" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#b4894f" }
+  ],
+  "presets": [{ "name": "RDC — Motif" }]
+}
+{% endschema %}

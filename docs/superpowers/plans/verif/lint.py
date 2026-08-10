@@ -26,8 +26,11 @@ ATTENDUS = [
     # sur les pages de saga. Il sert sur TOUTES les pages, d'ou sa presence ici.
     "sections/header.liquid",
     "blocks/_header-logo.liquid",
+    "templates/collection.motif.json",
+    "sections/rdc_motif.liquid",
 ]
-MARQUEURS = ("rdc_saga", "collection.saga.json", "header.liquid", "_header-logo.liquid")
+MARQUEURS = ("rdc_saga", "collection.saga.json", "header.liquid",
+             "_header-logo.liquid", "rdc_motif", "collection.motif.json")
 
 proc = subprocess.run(
     ["shopify", "theme", "check", "-o", "json"],

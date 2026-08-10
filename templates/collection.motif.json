@@ -1,0 +1,25 @@
+{
+  "sections": {
+    "motif": {
+      "type": "rdc_motif",
+      "settings": {
+        "ghost_opacity": 13,
+        "ghost_scale": 150,
+        "ghost_offset": -6,
+        "prefer_background_image": true,
+        "overline": "Motif",
+        "story_title": "L'histoire de ce Fragment",
+        "columns": 4,
+        "mobile_card_width": 42,
+        "mobile_bleed": 20,
+        "columns_gap": 12,
+        "rows_gap": 28,
+        "card_gap": 8,
+        "swatch_size": 22,
+        "bg_color": "#f4eee1",
+        "accent_color": "#b4894f"
+      }
+    }
+  },
+  "order": ["motif"]
+}
