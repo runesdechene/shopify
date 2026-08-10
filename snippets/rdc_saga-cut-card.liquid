@@ -1,0 +1,36 @@
+{%- doc -%}
+  Une carte de coupe dans le rail d'un motif.
+
+  Le packshot porte un canal alpha (33 a 63 % de pixels transparents mesures
+  le 2026-08-10) : fond transparent et object-fit:contain, pour que la coupe
+  entiere soit visible plutot que rognee.
+
+  ⚠ image_url ne doit JAMAIS recevoir format:'jpg' — le JPEG detruit l'alpha
+  et ramene un fond blanc.
+
+  @param {object} product - Le produit a rendre. Requis.
+{%- enddoc -%}
+
+{%- liquid
+  assign cut_name = product.title | split: '|' | last | strip
+  if cut_name == blank or cut_name == product.title
+    assign cut_name = product.type | default: product.title
+  endif
+-%}
+
+<a class="rdcsm__cut" href="{{ product.url }}">
+  <span class="rdcsm__cshot">
+    {%- if product.featured_image != blank -%}
+      <img
+        src="{{ product.featured_image | image_url: width: 600 }}"
+        alt="{{ product.title | escape }}"
+        width="600"
+        height="800"
+        loading="lazy"
+      >
+    {%- endif -%}
+  </span>
+  <span class="rdcsm__cname">{{ cut_name }}</span>
+  <span class="rdcsm__cprice">{{ product.price | money }}</span>
+  {%- render 'variant-swatches', product_resource: product -%}
+</a>
