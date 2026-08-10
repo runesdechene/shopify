@@ -266,9 +266,9 @@
       "default": "top",
       "info": "Au centre, les cartes produit le recouvrent : c'est pour ça qu'on le voit peu."
     },
-    { "type": "range", "id": "ghost_offset_mobile", "label": "Décalage vers la droite (mobile)", "unit": "%", "min": -30, "max": 30, "step": 1, "default": -8 },
+    { "type": "range", "id": "ghost_offset_mobile", "label": "Décalage vers la droite (mobile)", "unit": "%", "min": -80, "max": 30, "step": 2, "default": -8 },
     { "type": "range", "id": "ghost_opacity_mobile", "label": "Intensité du filigrane (mobile)", "unit": "%", "min": 0, "max": 40, "step": 1, "default": 18, "info": "En haut de page il ne concurrence que du texte : il peut être plus présent qu'en desktop." },
-    { "type": "range", "id": "ghost_offset", "label": "Décalage vers la droite", "unit": "%", "min": -30, "max": 30, "step": 1, "default": -2 },
+    { "type": "range", "id": "ghost_offset", "label": "Décalage vers la droite (desktop)", "unit": "%", "min": -80, "max": 30, "step": 2, "default": -50, "info": "Plus la valeur est négative, plus le dessin sort par la droite. Au-delà de -60, il n'en reste qu'un fragment." },
     { "type": "checkbox", "id": "prefer_background_image", "label": "Utiliser l'image de fond du Fragment si elle existe", "default": true, "info": "Sinon, le dessin du motif sert de filigrane. Une seule illustration sur 22 possède cette image aujourd'hui." },
     { "type": "header", "content": "Textes" },
     { "type": "text", "id": "overline", "label": "Surtitre", "default": "Motif" },

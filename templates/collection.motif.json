@@ -16,7 +16,7 @@
         "ghost_valign_mobile": "top",
         "ghost_offset_mobile": -8,
         "ghost_opacity_mobile": 18,
-        "ghost_offset": -2,
+        "ghost_offset": -50,
         "prefer_background_image": true,
         "overline": "Motif",
         "story_title": "L'histoire de ce Fragment",
@@ -34,3 +34,4 @@
   },
   "order": ["motif"]
 }
+
