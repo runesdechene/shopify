@@ -55,12 +55,34 @@
   if s.bottom_fade
     assign pad_bottom = pad_bottom | plus: s.bottom_fade_height
   endif
+
+  comment
+    Largeur du hero. En « page », il devient un tirage cadre : marges de
+    chaque cote, largeur de page, et la navigation reste au-dessus au lieu de
+    passer par-dessus l'image. En « full », c'est le plein cadre d'origine.
+
+    Le calcul `min(page-width, 100% - 2 marges)` garantit les marges laterales
+    meme sur un ecran plus etroit que la largeur de page.
+  endcomment
+  comment
+    ⚠ Calculer la marge doublee AVANT de construire la chaine : un
+    `| times: 2` place en fin de chaine s'appliquerait au texte accumule,
+    pas au reglage, et rendrait `0`.
+  endcomment
+  assign side_gap_x2 = s.hero_side_gap | times: 2
+  if s.hero_width == 'page'
+    assign hero_max = 'min(var(--page-width, ' | append: s.hero_max_width | append: 'px), calc(100% - ' | append: side_gap_x2 | append: 'px))'
+  else
+    assign hero_max = 'none'
+  endif
 -%}
 
 {%- if slide_count > 0 -%}
 <style>
   #{{ uid }}{position:relative;min-height:{{ s.min_height }}vh;display:flex;align-items:flex-end;
-    overflow:hidden;background:#1c1812}
+    overflow:hidden;background:#1c1812;
+    max-width:{{ hero_max }};margin:{{ s.hero_margin_top }}px auto {{ s.hero_margin_bottom }}px;
+    border-radius:{{ s.hero_radius }}px}
   @media (max-width:749px){#{{ uid }}{min-height:{{ s.min_height_mobile }}vh}}
   #{{ uid }} .rdcsh__slides{position:absolute;inset:0;overflow:hidden}
   #{{ uid }} .rdcsh__slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease-in-out}
@@ -216,12 +238,29 @@
     { "type": "text", "id": "mf_key", "label": "Métachamp — clé", "default": "hero_images", "info": "Métachamp de COLLECTION, type liste de fichiers. Repli automatique sur l'image de la collection." },
     { "type": "range", "id": "autoplay_seconds", "label": "Défilement automatique", "unit": "s", "min": 0, "max": 12, "step": 1, "default": 6, "info": "0 = pas de défilement automatique." },
     { "type": "range", "id": "ken_burns_duration", "label": "Durée du zoom lent", "unit": "s", "min": 8, "max": 30, "step": 1, "default": 18 },
+    { "type": "header", "content": "Cadrage" },
+    {
+      "type": "select",
+      "id": "hero_width",
+      "label": "Largeur du hero",
+      "options": [
+        { "value": "page", "label": "Largeur de page (tirage cadré)" },
+        { "value": "full", "label": "Pleine largeur (plein cadre)" }
+      ],
+      "default": "page",
+      "info": "En largeur de page, pensez à décocher « Fond transparent — pages de saga » dans les réglages de l'en-tête : la navigation doit rester au-dessus de l'image, pas par-dessus."
+    },
+    { "type": "range", "id": "hero_max_width", "label": "Largeur max fallback", "unit": "px", "min": 600, "max": 2000, "step": 50, "default": 1400, "visible_if": "{{ section.settings.hero_width == 'page' }}" },
+    { "type": "range", "id": "hero_side_gap", "label": "Marge latérale", "unit": "px", "min": 0, "max": 80, "step": 4, "default": 24, "visible_if": "{{ section.settings.hero_width == 'page' }}" },
+    { "type": "range", "id": "hero_margin_top", "label": "Espace au-dessus", "unit": "px", "min": 0, "max": 120, "step": 4, "default": 24 },
+    { "type": "range", "id": "hero_margin_bottom", "label": "Espace en dessous", "unit": "px", "min": 0, "max": 120, "step": 4, "default": 0 },
+    { "type": "range", "id": "hero_radius", "label": "Arrondi des coins", "unit": "px", "min": 0, "max": 32, "step": 2, "default": 0 },
     { "type": "header", "content": "Raccord avec la page" },
     {
       "type": "checkbox",
       "id": "bottom_fade",
       "label": "Fondu vers le fond de la page",
-      "default": true,
+      "default": false,
       "info": "Supprime la coupure nette entre l'image et la première bande de motifs. Le bloc de texte remonte automatiquement au-dessus du fondu."
     },
     {
