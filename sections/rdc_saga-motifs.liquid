@@ -130,7 +130,22 @@
     #{{ uid }} .rdcsm__rail{grid-template-columns:repeat({{ s.mobile_columns }},minmax(0,1fr));
       column-gap:{{ s.columns_gap | divided_by: 2 }}px}
   }
-  #{{ uid }} .rdcsm__cut{text-decoration:none;color:inherit;display:block}
+  {%- comment -%}
+    Alignement du bloc texte sous l'image. Les nuanciers sont rendus par le
+    composant du theme, qui encapsule sa liste dans un shadow DOM :
+    `text-align` ne l'atteint pas. Trois leviers necessaires :
+     - `text-align` pour le nom et le prix ;
+     - les variables d'alignement que le composant lit lui-meme ;
+     - `::part(list)`, seul moyen de franchir la frontiere du shadow DOM.
+  {%- endcomment -%}
+  #{{ uid }} .rdcsm__cut{text-decoration:none;color:inherit;display:block;
+    text-align:{{ s.card_align }}}
+  {%- if s.card_align == 'center' -%}
+  #{{ uid }} .rdcsm__cut{--overflow-list-alignment:center;--overflow-list-alignment-mobile:center;
+    --product-swatches-alignment:center;--product-swatches-alignment-mobile:center}
+  #{{ uid }} .rdcsm__cut overflow-list::part(list){justify-content:center}
+  #{{ uid }} .rdcsm__cut .variant-option{justify-content:center}
+  {%- endif -%}
   #{{ uid }} .rdcsm__cshot{aspect-ratio:3/4;background:transparent;display:block}
   #{{ uid }} .rdcsm__cshot img{width:100%;height:100%;object-fit:contain;display:block;
     transition:transform .5s ease;filter:drop-shadow(0 10px 18px rgba(64,52,52,.18))}
@@ -279,6 +294,17 @@
         { "value": "3", "label": "3" }
       ],
       "default": "2"
+    },
+    {
+      "type": "select",
+      "id": "card_align",
+      "label": "Alignement sous l'image",
+      "options": [
+        { "value": "center", "label": "Centré" },
+        { "value": "left", "label": "À gauche" }
+      ],
+      "default": "center",
+      "info": "Nom de la coupe, prix et pastilles de couleur."
     },
     { "type": "range", "id": "columns_gap", "label": "Espace horizontal", "unit": "px", "min": 0, "max": 60, "step": 2, "default": 10 },
     { "type": "range", "id": "rows_gap", "label": "Espace vertical entre les rangées", "unit": "px", "min": 0, "max": 80, "step": 2, "default": 28 },
