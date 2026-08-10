@@ -55,21 +55,34 @@
   assign motif_artiste = ill.artiste.value.nom.value | default: ill.artiste
 
   comment
-    Voix off du Fragment. Deux chemins volontairement, parce qu'on ne sait pas
-    encore si les Fichiers Shopify acceptent le .mp3 :
-      - `voix_off`     : champ fichier (a privilegier) ;
-      - `voix_off_url` : champ URL, repli vers un hebergement externe.
-    Tant qu'aucun des deux n'est rempli, le lecteur ne s'affiche pas.
-    Le nom du narrateur vient de `voix_off_nom`.
+    Voix off du Fragment.
+
+    Les CLES sont reglables dans l'editeur : le metaobjet est edite par un
+    humain, une clé renommee ne doit pas exiger une modification de code.
+    Par defaut `fragment_audio` (fichier) et `narrateur_audio`.
+
+    ⚠ `narrateur_audio` n'est pas du texte : c'est une REFERENCE au metaobjet
+    « Artistes ». Il faut donc descendre chercher son champ `nom`, comme le
+    fait deja `artiste` dans borne.liquid. On tente les niveaux du plus
+    precis au plus large, faute de connaitre la forme exacte de la reference.
   endcomment
-  assign audio_url = ''
-  if ill.voix_off != blank
-    assign audio_url = ill.voix_off.value.url | default: ill.voix_off.url
+  assign champ_audio = ill[s.audio_field_key]
+  assign audio_url = champ_audio.value.url | default: champ_audio.url
+  if audio_url == blank
+    assign audio_url = champ_audio | metafield_text | strip
   endif
-  if audio_url == blank and ill.voix_off_url != blank
-    assign audio_url = ill.voix_off_url | metafield_text | strip
+
+  assign ref_narrateur = ill[s.narrator_field_key]
+  assign voix_nom = ref_narrateur.value.nom.value
+  if voix_nom == blank
+    assign voix_nom = ref_narrateur.value.nom
   endif
-  assign voix_nom = ill.voix_off_nom | metafield_text | strip
+  if voix_nom == blank
+    assign voix_nom = ref_narrateur.nom
+  endif
+  if voix_nom == blank
+    assign voix_nom = ref_narrateur | metafield_text | strip
+  endif
 
   assign ghost = ill.image_pour_fond_clair | default: ill.image_pour_fond_sombre
   if s.prefer_background_image and ill.image_fond_de_fragment != blank
@@ -429,8 +442,10 @@
     { "type": "range", "id": "story_title_stroke", "label": "Épaisseur du contour", "unit": "px", "min": 1, "max": 4, "step": 1, "default": 2, "visible_if": "{{ section.settings.story_title_style == 'outline' }}" },
     { "type": "checkbox", "id": "story_rule", "label": "Filet doré au-dessus du titre", "default": true },
     { "type": "header", "content": "Voix off du Fragment" },
-    { "type": "checkbox", "id": "audio_enabled", "label": "Afficher le lecteur audio", "default": true, "info": "Il ne s'affiche que si le métaobjet Illustration porte un fichier « voix_off » ou une URL « voix_off_url ». Le nom du narrateur vient de « voix_off_nom »." },
+    { "type": "checkbox", "id": "audio_enabled", "label": "Afficher le lecteur audio", "default": true, "info": "Il ne s'affiche que si l'illustration porte un fichier audio. Sinon, rien n'est rendu." },
     { "type": "text", "id": "audio_label", "label": "Libellé du lecteur", "default": "Écouter ce Fragment" },
+    { "type": "text", "id": "audio_field_key", "label": "Métachamp — fichier audio", "default": "fragment_audio", "info": "Clé du champ sur le métaobjet Illustration." },
+    { "type": "text", "id": "narrator_field_key", "label": "Métachamp — narrateur", "default": "narrateur_audio", "info": "Référence vers le métaobjet Artistes. Son champ « nom » est utilisé." },
     { "type": "header", "content": "Bouton de rappel (bas de page)" },
     { "type": "checkbox", "id": "cta_enabled", "label": "Afficher le bouton", "default": true, "info": "Placé sous le récit, il remonte au rail des coupes plus haut dans la page." },
     { "type": "text", "id": "cta_label", "label": "Libellé", "default": "Acheter ce motif" },
