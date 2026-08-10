@@ -43,7 +43,7 @@
     On ne passe PAS par strip_html : ce champ est du texte riche, ses
     paragraphes doivent survivre.
   endcomment
-  assign motif_recit = ill.son_histoire | metafield_text | replace: '&amp;', '&' | strip | newline_to_br
+  assign motif_recit = ill.son_histoire | metafield_text | replace: '&amp;', '&' | strip
   if motif_recit == ''
     assign motif_recit = ill.description_borne | metafield_text | replace: '&amp;', '&' | strip
   endif
@@ -251,10 +251,24 @@
       <div class="rdcm__story">
         <h2>{{ s.story_title }}</h2>
         {%- comment -%}
-          Texte riche : on le rend tel quel, dans un div. L'envelopper dans un
-          <p> casserait sa mise en paragraphes.
+          Le champ contient de vrais sauts de ligne, sans balise. Un simple
+          `newline_to_br` les rendait invisibles a l'oeil : dans un texte en
+          interligne 1.7, un <br> ressemble a un retour de ligne naturel.
+          On decoupe donc sur les sauts et on fabrique de VRAIS paragraphes,
+          qui heritent de l'espacement d'un `margin-bottom`.
+
+          NL capture un saut de ligne : c'est le seul moyen propre d'en
+          obtenir un comme separateur de `split`.
         {%- endcomment -%}
-        <div class="rdcm__story-body">{{ motif_recit }}</div>
+        {%- capture NL %}
+{% endcapture -%}
+        {%- assign paragraphes = motif_recit | split: NL -%}
+        <div class="rdcm__story-body">
+          {%- for para in paragraphes -%}
+            {%- assign p = para | strip -%}
+            {%- if p != '' -%}<p>{{ p }}</p>{%- endif -%}
+          {%- endfor -%}
+        </div>
       </div>
     {%- endif -%}
   </div>
