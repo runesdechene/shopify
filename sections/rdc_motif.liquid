@@ -52,15 +52,21 @@
   #{{ uid }}{position:relative;overflow:hidden;background:{{ s.bg_color }};color:#403434}
 
   {%- comment -%}
-    Filigrane : deborde volontairement du cadre. `multiply` le fond dans le
-    parchemin au lieu de le poser dessus — c'est ce qui evite l'effet
-    « image collee ».
+    Filigrane CONTENU, jamais rogne. Le dessin est place a droite, centre
+    verticalement, et sa hauteur est bornee par `max-height:100%` : la section
+    ayant `overflow:hidden`, tout depassement le couperait en haut et en bas.
+    `multiply` le fond dans le parchemin au lieu de le poser dessus — c'est ce
+    qui evite l'effet « image collee ».
   {%- endcomment -%}
   #{{ uid }} .rdcm__ghost{position:absolute;pointer-events:none;user-select:none;
     right:{{ s.ghost_offset }}%;top:50%;transform:translateY(-50%);
-    height:{{ s.ghost_scale }}%;opacity:{{ s.ghost_opacity | divided_by: 100.0 }};
-    mix-blend-mode:multiply}
-  #{{ uid }} .rdcm__ghost img{height:100%;width:auto;display:block}
+    height:{{ s.ghost_scale }}%;max-height:100%;max-width:{{ s.ghost_max_width }}%;
+    opacity:{{ s.ghost_opacity | divided_by: 100.0 }};mix-blend-mode:multiply}
+  #{{ uid }} .rdcm__ghost img{height:100%;width:100%;object-fit:contain;
+    object-position:right center;display:block}
+  @media (max-width:749px){
+    #{{ uid }} .rdcm__ghost{height:{{ s.ghost_scale_mobile }}%;max-width:{{ s.ghost_max_width_mobile }}%}
+  }
 
   #{{ uid }} .rdcm__in{position:relative;margin:0 auto;
     max-width:calc(var(--page-width, 1400px) - (var(--page-margin, 40px) * 2));
@@ -180,8 +186,11 @@
   "settings": [
     { "type": "header", "content": "Filigrane" },
     { "type": "range", "id": "ghost_opacity", "label": "Intensité du filigrane", "unit": "%", "min": 0, "max": 40, "step": 1, "default": 13 },
-    { "type": "range", "id": "ghost_scale", "label": "Taille du filigrane", "unit": "%", "min": 80, "max": 260, "step": 5, "default": 150, "info": "En pourcentage de la hauteur de la section. Au-delà de 100 %, le dessin déborde volontairement." },
-    { "type": "range", "id": "ghost_offset", "label": "Décalage vers la droite", "unit": "%", "min": -40, "max": 30, "step": 1, "default": -6 },
+    { "type": "range", "id": "ghost_scale", "label": "Hauteur du filigrane (desktop)", "unit": "%", "min": 30, "max": 100, "step": 5, "default": 85, "info": "En pourcentage de la hauteur de la section. Plafonné à 100 % : au-delà, le dessin serait coupé en haut et en bas." },
+    { "type": "range", "id": "ghost_max_width", "label": "Largeur max du filigrane (desktop)", "unit": "%", "min": 20, "max": 90, "step": 5, "default": 45, "info": "En pourcentage de la largeur de la page. Évite que le dessin ne passe sous le texte." },
+    { "type": "range", "id": "ghost_scale_mobile", "label": "Hauteur du filigrane (mobile)", "unit": "%", "min": 20, "max": 100, "step": 5, "default": 60 },
+    { "type": "range", "id": "ghost_max_width_mobile", "label": "Largeur max du filigrane (mobile)", "unit": "%", "min": 30, "max": 100, "step": 5, "default": 75 },
+    { "type": "range", "id": "ghost_offset", "label": "Décalage vers la droite", "unit": "%", "min": -30, "max": 30, "step": 1, "default": -2 },
     { "type": "checkbox", "id": "prefer_background_image", "label": "Utiliser l'image de fond du Fragment si elle existe", "default": true, "info": "Sinon, le dessin du motif sert de filigrane. Une seule illustration sur 22 possède cette image aujourd'hui." },
     { "type": "header", "content": "Textes" },
     { "type": "text", "id": "overline", "label": "Surtitre", "default": "Motif" },

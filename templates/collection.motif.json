@@ -4,8 +4,11 @@
       "type": "rdc_motif",
       "settings": {
         "ghost_opacity": 13,
-        "ghost_scale": 150,
-        "ghost_offset": -6,
+        "ghost_scale": 85,
+        "ghost_max_width": 45,
+        "ghost_scale_mobile": 60,
+        "ghost_max_width_mobile": 75,
+        "ghost_offset": -2,
         "prefer_background_image": true,
         "overline": "Motif",
         "story_title": "L'histoire de ce Fragment",
