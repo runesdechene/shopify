@@ -38,6 +38,23 @@
   elsif collection.image != blank
     assign slide_count = 1
   endif
+
+  comment
+    Fondu du bas vers la couleur des bandes de motifs, pour supprimer la
+    coupure nette entre l'image et la page.
+
+    Deux precautions :
+     - le texte est cale en bas du hero, la ou le voile est le plus sombre.
+       On remonte donc le bloc de texte de la hauteur du fondu, sinon le
+       titre blanc se noie dans le creme ;
+     - le degrade part de la MEME couleur en alpha 0, pas de `transparent` :
+       sur plusieurs navigateurs `transparent` interpole via du noir et
+       laisse une bande grise au milieu du fondu.
+  endcomment
+  assign pad_bottom = 68
+  if s.bottom_fade
+    assign pad_bottom = pad_bottom | plus: s.bottom_fade_height
+  endif
 -%}
 
 {%- if slide_count > 0 -%}
@@ -54,7 +71,25 @@
   @media (prefers-reduced-motion: reduce){#{{ uid }} .rdcsh__slide.is-active img{animation:none}}
   #{{ uid }} .rdcsh__scrim{position:absolute;inset:0;pointer-events:none;
     background:linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,0) 38%, rgba(0,0,0,.62) 100%)}
-  #{{ uid }} .rdcsh__content{position:relative;width:100%;padding:0 clamp(26px,5vw,64px) 68px;max-width:62ch}
+  {%- if s.bottom_fade -%}
+  #{{ uid }} .rdcsh__fade{position:absolute;left:0;right:0;bottom:0;z-index:1;pointer-events:none;
+    height:{{ s.bottom_fade_height }}px;
+    background:linear-gradient(to bottom,
+      {{ s.bottom_fade_color | color_modify: 'alpha', 0 }} 0%,
+      {{ s.bottom_fade_color }} 100%)}
+  {%- endif -%}
+  #{{ uid }} .rdcsh__content{position:relative;z-index:2;width:100%;
+    padding:0 clamp(26px,5vw,64px) {{ pad_bottom }}px;max-width:62ch}
+  {%- if s.bottom_fade -%}
+  {%- comment -%}
+    Sur mobile le hero est court : une marge basse de la hauteur pleine du
+    fondu comprimerait le texte. On la reduit de moitie, et le fondu avec.
+  {%- endcomment -%}
+  @media (max-width:749px){
+    #{{ uid }} .rdcsh__content{padding-bottom:{{ s.bottom_fade_height | divided_by: 2 | plus: 68 }}px}
+    #{{ uid }} .rdcsh__fade{height:{{ s.bottom_fade_height | divided_by: 2 }}px}
+  }
+  {%- endif -%}
   #{{ uid }} .rdcsh__overline{font-family:var(--font-body--family);font-weight:700;font-size:.74rem;
     letter-spacing:.26em;text-transform:uppercase;color:#f4d694;margin-bottom:16px}
   #{{ uid }} .rdcsh__title{font-family:var(--font-heading--family, sans-serif);color:#fff;
@@ -107,6 +142,7 @@
   </div>
 
   <div class="rdcsh__scrim"></div>
+  {%- if s.bottom_fade -%}<div class="rdcsh__fade"></div>{%- endif -%}
 
   <div class="rdcsh__content">
     {%- if s.overline != blank -%}
@@ -180,6 +216,33 @@
     { "type": "text", "id": "mf_key", "label": "Métachamp — clé", "default": "hero_images", "info": "Métachamp de COLLECTION, type liste de fichiers. Repli automatique sur l'image de la collection." },
     { "type": "range", "id": "autoplay_seconds", "label": "Défilement automatique", "unit": "s", "min": 0, "max": 12, "step": 1, "default": 6, "info": "0 = pas de défilement automatique." },
     { "type": "range", "id": "ken_burns_duration", "label": "Durée du zoom lent", "unit": "s", "min": 8, "max": 30, "step": 1, "default": 18 },
+    { "type": "header", "content": "Raccord avec la page" },
+    {
+      "type": "checkbox",
+      "id": "bottom_fade",
+      "label": "Fondu vers le fond de la page",
+      "default": true,
+      "info": "Supprime la coupure nette entre l'image et la première bande de motifs. Le bloc de texte remonte automatiquement au-dessus du fondu."
+    },
+    {
+      "type": "range",
+      "id": "bottom_fade_height",
+      "label": "Hauteur du fondu",
+      "unit": "px",
+      "min": 40,
+      "max": 320,
+      "step": 10,
+      "default": 140,
+      "visible_if": "{{ section.settings.bottom_fade }}"
+    },
+    {
+      "type": "color",
+      "id": "bottom_fade_color",
+      "label": "Couleur d'arrivée",
+      "default": "#f4eee1",
+      "info": "À caler sur le fond de la première bande de motifs.",
+      "visible_if": "{{ section.settings.bottom_fade }}"
+    },
     { "type": "header", "content": "Texte" },
     { "type": "text", "id": "overline", "label": "Surtitre", "default": "Saga" },
     { "type": "text", "id": "title", "label": "Titre", "info": "Vide = le titre de la collection." },
