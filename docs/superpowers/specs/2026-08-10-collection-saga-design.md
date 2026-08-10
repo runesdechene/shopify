@@ -110,9 +110,24 @@ Toutes les coupes sur une seule ligne, sans pastille « + N autres ». Cartes sa
 
 ## 9. Critères de vérification
 
-1. Les 4 sagas rendent le bon nombre de bandes : 3, 3, 3, 2.
-2. L'ordre des motifs suit la date décroissante du métaobjet.
-3. Chaque coupe affiche son prix réel et ses pastilles réelles.
-4. Un produit volontairement délié de son illustration se range quand même dans la bonne bande.
-5. Aucun fond blanc derrière un packshot.
-6. Les autres collections rendent exactement comme avant.
+- [x] Les 4 sagas rendent le bon nombre de bandes : 3, 3, 2, 3.
+- [x] L'ordre des motifs suit la date décroissante du métaobjet — vérifié : Skjaldmö → Varègue → Valkyrie · Morrigan → Druide → Avalon · Hoplite → Hécate · Loutre → Hibou → Loup.
+- [x] Chaque coupe affiche son prix réel et ses pastilles réelles (20 cartes, 20 prix, de 29,90 € à 109,90 €).
+- [x] Un produit délié de son illustration se range quand même dans la bonne bande (repli sur le titre).
+- [x] Aucun fond blanc derrière un packshot.
+- [x] Les autres collections rendent exactement comme avant (témoin : `debardeurs`).
+
+> Recette rejouable : `python docs/superpowers/plans/verif/t6_recette.py`.
+> Dernière exécution le 2026-08-10 : tout vert.
+
+## 10. ⚠ Piège d'outillage — à lire avant de reprendre ce chantier
+
+Découvert à la dure le 2026-08-10, après une dizaine de tentatives :
+
+**Lancée depuis un shell non interactif, la CLI Shopify ne téléverse jamais un fichier NEUF.** Elle affiche `success`, son scanner ne lit tout simplement pas le fichier, et rien ne monte. Les *mises à jour* de fichiers existants passent normalement — d'où l'illusion que tout va bien. La CLI le dit elle-même sur d'autres commandes : « Failed to prompt… this usually happens when running non-interactively ».
+
+Conséquences pratiques :
+
+- Toute section ou tout template créé par un agent doit être synchronisé par un **`shopify theme dev` lancé par un humain dans un vrai terminal**. Son surveillant de fichiers, lui, prend les nouveautés.
+- **Ne jamais lancer `shopify theme push` pendant ce chantier** : son étape « Cleaning your remote theme » supprime du thème distant les fichiers que son scanner ne voit pas — c'est-à-dire précisément les fichiers neufs. C'est ce qui a effacé le template deux fois.
+- `shopify theme check --fail-level error` est inutilisable comme garde-fou global : le thème porte 335 erreurs préexistantes sur 218 fichiers. Utiliser `docs/superpowers/plans/verif/lint.py`, qui ne juge que les fichiers de la page saga.
