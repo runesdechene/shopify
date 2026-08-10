@@ -76,6 +76,17 @@
   if collection.all_products_count > 50
     assign over_limit = true
   endif
+
+  comment
+    Largeur : meme convention que RDC-BENTO. Le FOND des bandes reste toujours
+    pleine largeur — c'est lui qui porte l'alternance de parchemin — et seul le
+    contenu se contraint. Sinon le rythme des bandes disparait.
+  endcomment
+  if s.section_width == 'page'
+    assign inner_max = 'var(--page-width, ' | append: s.section_max_width | append: 'px)'
+  else
+    assign inner_max = 'none'
+  endif
 -%}
 
 <style>
@@ -83,6 +94,7 @@
     padding:clamp(34px,4vw,58px) clamp(26px,5vw,64px);color:#403434}
   #{{ uid }} .rdcsm__band--a{background:#f4eee1}
   #{{ uid }} .rdcsm__band--b{background:#f2e6d2}
+  #{{ uid }} .rdcsm__inner{position:relative;margin:0 auto;max-width:{{ inner_max }}}
   #{{ uid }} .rdcsm__num{position:absolute;top:clamp(12px,1.6vw,26px);right:clamp(16px,2.2vw,38px);
     font-family:var(--font-heading--family, sans-serif);font-size:clamp(6rem,14vw,12.5rem);
     line-height:1;letter-spacing:-.02em;pointer-events:none;color:transparent;
@@ -166,6 +178,7 @@
     -%}
 
     <div class="rdcsm__band {{ band_class }}" data-motif="{{ mkey }}" data-rank="{{ rank }}">
+      <div class="rdcsm__inner">
       <div class="rdcsm__num">{{ rank | prepend: '0' | slice: -2, 2 }}</div>
 
       <div class="rdcsm__head">
@@ -202,6 +215,7 @@
           {%- endif -%}
         {%- endfor -%}
       </div>
+      </div>
     </div>
   {%- endfor -%}
 </section>
@@ -211,6 +225,29 @@
   "name": "RDC — Saga : motifs",
   "tag": "section",
   "settings": [
+    { "type": "header", "content": "📐 Section" },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Largeur de la section",
+      "options": [
+        { "value": "page", "label": "Largeur de page" },
+        { "value": "full", "label": "Pleine largeur" }
+      ],
+      "default": "full",
+      "info": "Le fond des bandes reste toujours pleine largeur : seul le contenu se contraint."
+    },
+    {
+      "type": "range",
+      "id": "section_max_width",
+      "label": "Largeur max fallback",
+      "min": 600,
+      "max": 2000,
+      "step": 50,
+      "unit": "px",
+      "default": 1400
+    },
+    { "type": "header", "content": "Textes" },
     { "type": "text", "id": "label_recent", "label": "Surtitre du premier motif", "default": "Le plus récent" },
     { "type": "text", "id": "label_motif", "label": "Surtitre des autres motifs", "default": "Motif" }
   ],
