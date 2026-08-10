@@ -82,8 +82,19 @@
     pleine largeur — c'est lui qui porte l'alternance de parchemin — et seul le
     contenu se contraint. Sinon le rythme des bandes disparait.
   endcomment
+  comment
+    ⚠ `--page-width` du theme INCLUT ses marges :
+       --page-width = --page-content-width + (--page-margin * 2)
+    Les sections natives placent leur contenu dans la colonne centrale d'une
+    grille marge/contenu/marge : leur contenu vaut donc page-width MOINS deux
+    marges. En calant sur `--page-width` tout court, notre contenu etait plus
+    large que le leur de 80px sur desktop — constate le 2026-08-10 en comparant
+    avec une section de collections ajoutee juste en dessous.
+    On retranche donc les deux marges, ce qui suit aussi leurs points de
+    rupture (16px en mobile, 40px au-dela).
+  endcomment
   if s.section_width == 'page'
-    assign inner_max = 'var(--page-width, ' | append: s.section_max_width | append: 'px)'
+    assign inner_max = 'calc(var(--page-width, ' | append: s.section_max_width | append: 'px) - (var(--page-margin, 40px) * 2))'
   else
     assign inner_max = 'none'
   endif

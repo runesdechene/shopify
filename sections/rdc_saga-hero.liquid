@@ -78,7 +78,13 @@
       marge de securite de 24px pour que le hero ne touche jamais les bords
       sur un ecran plus etroit que la largeur de page + le debord.
     endcomment
-    assign hero_max = 'min(calc(var(--page-width, ' | append: s.hero_max_width | append: 'px) + ' | append: overhang_x2 | append: 'px), calc(100% - 48px))'
+    comment
+      ⚠ `--page-width` INCLUT les marges du theme. Le contenu des sections
+      natives vaut page-width MOINS deux marges : c'est CETTE largeur que le
+      hero doit deborder, sinon il depasse de 50px + 40px de marge et ne
+      s'aligne sur rien.
+    endcomment
+    assign hero_max = 'min(calc(var(--page-width, ' | append: s.hero_max_width | append: 'px) - (var(--page-margin, 40px) * 2) + ' | append: overhang_x2 | append: 'px), calc(100% - 48px))'
   else
     comment
       Pleine largeur ne veut pas dire bord a bord : la marge laterale
