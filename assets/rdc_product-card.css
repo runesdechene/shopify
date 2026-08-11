@@ -80,35 +80,28 @@
  *     `compiled_assets/styles.css`, qui se charge APRES cette feuille.
  * ------------------------------------------------------------------------- */
 
-/* Sans ca, la deuxieme ligne serait coupee net. */
-.product-card product-swatches {
-  overflow: visible;
+/* Comment il decide, lu dans son code : il fait passer la liste en retour a la
+ * ligne, puis compare la position de chaque pastille a celle du bouton
+ * « Plus » — tout ce qui se retrouve PLUS BAS est declare en trop.
+ *
+ * Donc : si la liste ne peut jamais passer a la ligne, rien ne se retrouve
+ * plus bas, et il ne replie rien. `min-width:max-content` lui donne
+ * exactement ca — la largeur qu'il faut pour tout tenir sur une ligne.
+ *
+ * ⚠ TROIS TENTATIVES PERDUES AVANT CELLE-CI, ne pas les reprendre :
+ *   · `flex-wrap:wrap` sur la liste : AGGRAVE le repli, c'est precisement ce
+ *     que le composant provoque pour mesurer ;
+ *   · reduire l'ecart entre pastilles : deplace le seuil sans le supprimer ;
+ *   · rendre visible le conteneur des repliees : elles reapparaissaient une
+ *     ligne PLUS BAS apres le chargement, ce qui creait un saut et un vide
+ *     entre le prix et les couleurs.
+ */
+.product-card overflow-list::part(list) {
+  min-width: max-content;
+  column-gap: 5px;
 }
 
-/* ⚠ `display:contents` et non `block` : `block` gardait la BOITE du conteneur,
- * qui ajoutait une rangee a la grille du composant — presente meme quand
- * aucune pastille n'est repliee, d'ou un grand vide entre le prix et les
- * couleurs. `contents` supprime la boite sans supprimer son contenu : les
- * pastilles repliees remontent d'un niveau et ne coutent plus rien quand il
- * n'y en a pas. */
-.product-card overflow-list::part(overflow) {
-  display: contents;
-}
-
-.product-card overflow-list::part(overflow-list) {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  justify-content: center;
-}
-
-/* L'ecart entre les deux rangees se joue ici, pas en marge : une marge sur une
- * liste vide laisserait justement le vide qu'on cherche a supprimer. */
-.product-card overflow-list {
-  row-gap: 5px;
-}
-
-/* Le compteur « +4 » et son bouton « Plus » n'ont plus d'objet. */
+/* Plus rien a replier, donc plus de compteur. */
 .product-card .hidden-swatches__count,
 .product-card overflow-list::part(more) {
   display: none;
