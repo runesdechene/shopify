@@ -72,13 +72,31 @@
   gap: 5px;
   justify-content: center;
   margin: 0;
-  padding: 0;
   list-style: none;
+  /* Les pastilles sont le dernier element de la carte : sans cet air en
+   * dessous, elles touchent la carte de la rangee suivante. */
+  padding: 0 0 10px;
 }
 
 /* Le bouton de comptage n'a plus rien a compter. */
 .rdc-swatch-list [slot='more'] {
   display: none;
+}
+
+/* ---------------------------------------------------------------------------
+ * L'AIR ENTRE LES ELEMENTS DE LA CARTE
+ *
+ * Image, titre, prix et couleurs etaient a 8px les uns des autres — trop
+ * serre pour un titre en capitales espacees, qui a besoin de respirer pour ne
+ * pas se confondre avec le prix juste en dessous.
+ *
+ * ⚠ La classe est doublee dans le theme (`.product-grid__card.product-grid__card`)
+ * pour gagner en priorite : on la double aussi, sinon la regle du theme
+ * l'emporte. Et c'est `gap` qu'on redefinit, pas la variable qui l'alimente :
+ * celle-ci est ecrite en style inline, donc intouchable depuis une feuille.
+ * ------------------------------------------------------------------------- */
+.product-card .product-grid__card.product-grid__card {
+  gap: 12px;
 }
 
 /* ---------------------------------------------------------------------------
