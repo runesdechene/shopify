@@ -1,18 +1,22 @@
 /* rdc_product-card.css
  *
  * La peau des cartes produit du theme, alignee sur les cartes des pages
- * saga et motif.
+ * saga et motif. On ne change QUE l'apparence : la carte native sert a 17
+ * endroits et porte l'ajout rapide, la logique de variante et les badges.
  *
- * On ne remplace pas la carte : elle sert a 17 endroits et porte l'ajout
- * rapide, la logique de variante, les badges et les reglages d'editeur. On ne
- * change que l'apparence.
+ * ⚠ NE PAS TOUCHER AU COMPOSANT `overflow-list` DEPUIS ICI.
+ * Il replie les pastilles en « +4 » quand elles ne tiennent pas sur une ligne.
+ * Quatre tentatives pour l'en empecher ont echoue : forcer le retour a la
+ * ligne (il mesure justement ca), reduire l'ecart (deplace le seuil), rendre
+ * visible le conteneur des repliees (elles sautaient une ligne plus bas apres
+ * le chargement), lui donner une largeur intrinseque. Et masquer le compteur
+ * SANS empecher le repli fait disparaitre les pastilles pour de bon.
+ * Son comportement d'origine est laisse intact. Si le sujet revient un jour,
+ * la seule voie sure est celle de la page motif : rendre nos propres
+ * pastilles au lieu de passer par ce composant.
  *
- * ⚠ LECON DE LA PREMIERE TENTATIVE — a lire avant d'ajouter une regle ici.
- * Les valeurs du theme n'arrivent pas toutes par la feuille de style :
- * `--product-media-fit` est ecrit en style INLINE sur l'element, et aucun
- * selecteur ne bat un style inline. Et la typographie ne porte pas sur
- * `.text-block` mais sur SON ENFANT (`.text-block.h5 > *`) : viser le parent
- * ne fait rien. Avant d'ecrire une regle, lire le HTML RENDU — pas base.css.
+ * ⚠ `compiled_assets/styles.css` se charge APRES cette feuille : toute regle
+ * du theme de specificite egale gagne contre nous.
  *
  * Pour tout retirer : supprimer l'appel dans snippets/stylesheets.liquid.
  */
@@ -20,8 +24,8 @@
 /* ---------------------------------------------------------------------------
  * LE NOM DU PRODUIT
  *
- * Petites capitales espacees en police de texte, comme sur les pages motif.
- * Cible l'enfant, seul endroit ou la typographie s'applique reellement.
+ * ⚠ Cible l'ENFANT : la typographie du theme porte sur `.text-block.hX > *`,
+ * pas sur `.text-block`. Viser le parent ne fait rien.
  * ------------------------------------------------------------------------- */
 .product-card .text-block.h5 > * {
   font-family: var(--font-body--family);
@@ -34,9 +38,6 @@
 
 /* ---------------------------------------------------------------------------
  * LE PRIX
- *
- * En police de titrage : c'est le contraste avec un nom discret qui fait la
- * carte des pages motif.
  * ------------------------------------------------------------------------- */
 .product-card product-price .price {
   font-family: var(--font-heading--family, sans-serif);
@@ -46,13 +47,12 @@
 }
 
 /* ---------------------------------------------------------------------------
- * LES PASTILLES DE COULEUR
+ * LA TAILLE DES PASTILLES
  *
- * 12px, comme sur la page motif — contre 30px par defaut dans le theme.
- *
- * On repose les deux variables que le theme lit deja pour la largeur, la
- * hauteur ET la taille du fond : les ecraser toutes les trois d'un coup evite
- * une pastille dont l'image deborde du cercle.
+ * 12px comme sur la page motif, contre 30px par defaut. On repose les deux
+ * variables que le theme lit deja pour la largeur, la hauteur et la taille du
+ * fond : les ecraser ensemble evite une image de pastille qui deborderait du
+ * cercle.
  * ------------------------------------------------------------------------- */
 .product-card .swatch {
   --swatch-width: 12px;
@@ -60,71 +60,11 @@
 }
 
 /* ---------------------------------------------------------------------------
- * LE « +4 » : ON MONTRE CE QUI EST REPLIE, ON N'EMPECHE PAS LE REPLI
- *
- * Comment le composant s'y prend, verifie dans overflow-list.css : les
- * pastilles qui ne tiennent pas ne sont pas supprimees, elles sont deplacees
- * dans un second conteneur — `[part="overflow"]` — mis en `display:none`.
- *
- * D'ou la solution : on rend ce conteneur visible, en dessous. Toutes les
- * pastilles reapparaissent, sur une deuxieme ligne, et le bouton « +4 » n'a
- * plus lieu d'etre. Le composant continue de calculer ce qu'il veut : on ne
- * lui prend rien, on montre juste ce qu'il range.
- *
- * ⚠ DEUX FAUSSES PISTES, essayees et perdues — ne pas les reprendre :
- *   · forcer `flex-wrap:wrap` sur la liste AGGRAVE le repli : le composant
- *     mesure justement ce qui passe a la ligne suivante pour decider quoi
- *     replier ;
- *   · elargir la place (ecart plus petit) ne fait que deplacer le seuil, et
- *     l'ecart de 16px d'overflow-list.css est de toute facon deja ecrase par
- *     `compiled_assets/styles.css`, qui se charge APRES cette feuille.
- * ------------------------------------------------------------------------- */
-
-/* Comment il decide, lu dans son code : il fait passer la liste en retour a la
- * ligne, puis compare la position de chaque pastille a celle du bouton
- * « Plus » — tout ce qui se retrouve PLUS BAS est declare en trop.
- *
- * Donc : si la liste ne peut jamais passer a la ligne, rien ne se retrouve
- * plus bas, et il ne replie rien. `min-width:max-content` lui donne
- * exactement ca — la largeur qu'il faut pour tout tenir sur une ligne.
- *
- * ⚠ TROIS TENTATIVES PERDUES AVANT CELLE-CI, ne pas les reprendre :
- *   · `flex-wrap:wrap` sur la liste : AGGRAVE le repli, c'est precisement ce
- *     que le composant provoque pour mesurer ;
- *   · reduire l'ecart entre pastilles : deplace le seuil sans le supprimer ;
- *   · rendre visible le conteneur des repliees : elles reapparaissaient une
- *     ligne PLUS BAS apres le chargement, ce qui creait un saut et un vide
- *     entre le prix et les couleurs.
- */
-.product-card overflow-list::part(list) {
-  min-width: max-content;
-  column-gap: 5px;
-}
-
-/* Plus rien a replier, donc plus de compteur. */
-.product-card .hidden-swatches__count,
-.product-card overflow-list::part(more) {
-  display: none;
-}
-
-/* ---------------------------------------------------------------------------
  * LE FOND DERRIERE L'IMAGE
  *
- * Un voile a peine plus sombre que le parchemin, qui detache la photo du
- * fond de page.
- *
- * En teinte translucide plutot qu'en couleur fixe : la carte apparait sur du
- * parchemin, sur du blanc et sur des sections sombres. Une couleur fixe
- * jurerait sur l'une des trois ; un voile fonce ce qu'il y a derriere, quel
- * qu'il soit.
- *
- * La teinte tire vers l'ambre plutot que vers le gris : un voile neutre
- * refroidit le parchemin et le fait virer au sale.
- *
- * ⚠ Il ne se voit que la ou l'image ne remplit PAS son cadre — donc sur les
- * visuels detoures. Les photos qui occupent tout le cadre le masquent
- * entierement : le rendre visible partout supposerait de passer les images en
- * « entier », ce qui demande de battre un style inline.
+ * Voile ambre plutot que gris : un voile neutre refroidit le parchemin et le
+ * fait virer au sale. Translucide plutot que couleur fixe : la carte apparait
+ * sur parchemin, sur blanc et sur sections sombres.
  * ------------------------------------------------------------------------- */
 .product-card .card-gallery {
   background-color: rgba(150, 110, 60, 0.07);
