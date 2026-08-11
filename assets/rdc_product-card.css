@@ -60,6 +60,28 @@
 }
 
 /* ---------------------------------------------------------------------------
+ * LA LISTE DES PASTILLES
+ *
+ * Elle remplace le composant `overflow-list` du theme, retire dans
+ * snippets/variant-swatches.liquid — voir le commentaire la-bas. Toutes les
+ * pastilles sont visibles et passent a la ligne, comme sur la page motif.
+ * ------------------------------------------------------------------------- */
+.rdc-swatch-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Le bouton de comptage n'a plus rien a compter. */
+.rdc-swatch-list [slot='more'] {
+  display: none;
+}
+
+/* ---------------------------------------------------------------------------
  * LE FOND DERRIERE L'IMAGE
  *
  * Voile ambre plutot que gris : un voile neutre refroidit le parchemin et le

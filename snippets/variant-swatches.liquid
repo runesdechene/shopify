@@ -121,7 +121,27 @@
           </li>
         {% endcapture %}
 
-        {% render 'overflow-list', children: children, ref: 'overflowList' %}
+        {%- comment -%}
+          ⚠ MODIFICATION RDC — ne pas remettre `overflow-list` ici.
+
+          Ce snippet ne sert QUE sur les cartes produit (blocs `swatches` et
+          `section-rendering-product-card`). Le composant `overflow-list` y
+          repliait les pastilles qui ne tenaient pas sur une ligne derriere un
+          « +4 », et le repli est fait en JAVASCRIPT : il DEPLACE les pastilles
+          dans un conteneur cache. Aucune regle CSS ne peut l'en empecher —
+          quatre approches ont ete essayees et perdues.
+
+          On affiche donc une simple liste qui passe a la ligne, comme les
+          pastilles de la page motif, qui n'ont jamais eu ce probleme
+          precisement parce qu'elles n'utilisent pas ce composant.
+
+          Sans danger cote JS : les deux endroits de product-card.js qui
+          cherchent l'`overflow-list` sont gardes (`if (!overflowList) return`
+          et un `instanceof`). Les pastilles elles-memes sont inchangees —
+          memes `<input type="radio">`, memes gestionnaires, meme logique de
+          variante.
+        {%- endcomment -%}
+        <ul class="rdc-swatch-list">{{ children }}</ul>
       </fieldset>
     {%- endfor -%}
     <script type="application/json">
