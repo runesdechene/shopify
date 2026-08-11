@@ -543,7 +543,14 @@
                 adresse vide donnait une icone cassee, ce qui est pire que le
                 repli sur l'image de collection.
               endcomment
-              assign icon_src = menu_icon_mf | image_url: width: 400
+              comment
+                ⚠ `image_url` s'applique AU METACHAMP, pas a son `.value`.
+                Pour un champ de type « Image (Fichier) », Shopify resout
+                lui-meme la reference — passer par `.value` donne un objet que
+                les filtres d'image ne savent pas lire, d'ou l'adresse vide.
+              endcomment
+              assign icon_src = link.object.metafields.custom.icon_menu | image_url: width: 400
+              assign icon_src = icon_src | default: menu_icon_mf | image_url: width: 400
               assign icon_src = icon_src | default: menu_icon_mf.src | default: menu_icon_mf.preview_image.src | default: menu_icon_mf.url
               assign icon_src = icon_src | default: menu_icon_mf | file_url
 
@@ -663,7 +670,14 @@
                 adresse vide donnait une icone cassee, ce qui est pire que le
                 repli sur l'image de collection.
               endcomment
-              assign icon_src = menu_icon_mf | image_url: width: 400
+              comment
+                ⚠ `image_url` s'applique AU METACHAMP, pas a son `.value`.
+                Pour un champ de type « Image (Fichier) », Shopify resout
+                lui-meme la reference — passer par `.value` donne un objet que
+                les filtres d'image ne savent pas lire, d'ou l'adresse vide.
+              endcomment
+              assign icon_src = link.object.metafields.custom.icon_menu | image_url: width: 400
+              assign icon_src = icon_src | default: menu_icon_mf | image_url: width: 400
               assign icon_src = icon_src | default: menu_icon_mf.src | default: menu_icon_mf.preview_image.src | default: menu_icon_mf.url
               assign icon_src = icon_src | default: menu_icon_mf | file_url
 
