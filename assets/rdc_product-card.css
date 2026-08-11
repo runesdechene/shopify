@@ -62,8 +62,17 @@
   filter: drop-shadow(0 10px 18px rgba(64, 52, 52, 0.18));
 }
 
+/* ⚠ NE PAS remettre `overflow: visible` ici. C'est ce qui laissait passer un
+ * filet de la SECONDE image — celle qui attend sur le cote pour le survol — le
+ * long du bord gauche de la carte.
+ *
+ * `clip` rogne comme `hidden`, mais `overflow-clip-margin` autorise un
+ * debordement mesure : 22px suffisent a laisser sortir l'ombre portee (10px de
+ * decalage, 18px de flou) sans liberer la diapositive en attente, qui est bien
+ * plus loin. On garde l'ombre ET le rognage. */
 .product-card .product-grid__card.product-grid__card {
-  overflow: visible;
+  overflow: clip;
+  overflow-clip-margin: 22px;
 }
 
 .product-card .product-media-container img {
