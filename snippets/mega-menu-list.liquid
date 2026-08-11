@@ -299,13 +299,12 @@
         {%- comment -%}
           La ligne de contexte sous le nom, en mode grandes images seulement.
 
-          ⚠ Elle vient du metachamp `custom.resume` de la collection, PAS de sa
-          description : celle-ci est un texte de page, long et generique, qui
-          faisait une accroche de menu deplorable.
+          ⚠ Elle vient d'abord du metachamp `custom.resume` de la collection :
+          la description est un texte de PAGE, long et generique, qui fait une
+          accroche de menu deplorable.
 
-          Pas de repli sur la description, volontairement : une collection sans
-          resume n'affiche AUCUNE ligne. Mieux vaut un vide qu'une phrase qui
-          ne dit rien.
+          Repli sur la description quand le resume est vide — mieux vaut une
+          phrase imparfaite qu'un trou sous le nom.
 
           Double acces `.value` puis direct : selon le type du metachamp,
           Shopify renvoie l'un ou l'autre.
@@ -313,6 +312,9 @@
         {%- if menu_content_type == 'collection_images' and link.type == 'collection_link' -%}
           {%- assign resume_mf = link.object.metafields.custom.resume.value | default: link.object.metafields.custom.resume -%}
           {%- assign accroche = resume_mf | strip_html | strip -%}
+          {%- if accroche == blank -%}
+            {%- assign accroche = link.object.description | strip_html | strip -%}
+          {%- endif -%}
           {%- if accroche != blank -%}
             <span class="mega-menu__link-lede">{{ accroche | truncate: 80 }}</span>
           {%- endif -%}
