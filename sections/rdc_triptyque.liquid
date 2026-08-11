@@ -69,7 +69,17 @@
       lignes des 360px de large, et un sur-titre casse ne ressemble plus a une
       etiquette mais a une phrase ratee. Resserre, il tient sur une ligne.
     {%- endcomment -%}
-    #{{ uid }} .rdc-tri__overline{font-size:.68rem;letter-spacing:.16em}
+    {%- comment -%}
+      Le sur-titre et l'intro forment UN bloc : ils se resserrent l'un contre
+      l'autre (6px au lieu de 14) et prennent leur air au-dessus (16px de plus
+      que la marge de section). Un ecart egal des deux cotes les ferait lire
+      comme deux elements sans rapport.
+
+      Ces deux valeurs sont ecrites en dur a dessein : elles ne dependent
+      d'aucun reglage enregistre, donc elles s'appliquent quoi qu'il arrive.
+    {%- endcomment -%}
+    #{{ uid }} .rdc-tri__overline{font-size:.68rem;letter-spacing:.16em;
+      margin-top:16px;margin-bottom:6px}
 
     {%- if section.settings.mobile_row -%}
     {%- comment -%}
