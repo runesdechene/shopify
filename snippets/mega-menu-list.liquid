@@ -392,13 +392,18 @@
           <div data-link-type="{{ link.type }}">
             <a href="{{ link.url }}" class="mega-menu__link">
               {%- liquid
+                assign menu_icon_mf = nil
+                if link.object.metafields.custom.icon_menu != blank
+                  assign menu_icon_mf = link.object.metafields.custom.icon_menu.value | default: link.object.metafields.custom.icon_menu
+                endif
+
                 assign link_collection_image = nil
-                if link.type == 'collection_link' and link.object.image != blank
+                if menu_icon_mf == nil and link.type == 'collection_link' and link.object.image != blank
                   assign link_collection_image = link.object.image
                 endif
 
                 assign current_icon = ''
-                if link_collection_image == nil and icon_map != blank
+                if menu_icon_mf == nil and link_collection_image == nil and icon_map != blank
                   assign icon_entries = icon_map | split: '||'
                   for entry in icon_entries
                     if entry contains '::'
@@ -414,9 +419,15 @@
                 endif
               -%}
               <span class="mega-menu__link-title wrap-text">
-                {%- if link_collection_image -%}
+                {%- if menu_icon_mf -%}
                   <span class="mega-menu__link-icon">
-                    <img src="{{ link_collection_image | image_url: width: 64 }}" alt="{{ link.title }}" loading="lazy">
+                    <img src="{{ menu_icon_mf | image_url: width: 64 }}" alt="{{ link.title }}"
+                         width="24" height="24" loading="lazy">
+                  </span>
+                {%- elsif link_collection_image -%}
+                  <span class="mega-menu__link-icon">
+                    <img src="{{ link_collection_image | image_url: width: 64 }}" alt="{{ link.title }}"
+                         width="24" height="24" loading="lazy">
                   </span>
                 {%- elsif current_icon != blank -%}
                   <span class="mega-menu__link-icon">
@@ -444,13 +455,18 @@
           <div data-link-type="{{ link.type }}">
             <a href="{{ link.url }}" class="mega-menu__link">
               {%- liquid
+                assign menu_icon_mf = nil
+                if link.object.metafields.custom.icon_menu != blank
+                  assign menu_icon_mf = link.object.metafields.custom.icon_menu.value | default: link.object.metafields.custom.icon_menu
+                endif
+
                 assign link_collection_image = nil
-                if link.type == 'collection_link' and link.object.image != blank
+                if menu_icon_mf == nil and link.type == 'collection_link' and link.object.image != blank
                   assign link_collection_image = link.object.image
                 endif
 
                 assign current_icon = ''
-                if link_collection_image == nil and icon_map != blank
+                if menu_icon_mf == nil and link_collection_image == nil and icon_map != blank
                   assign icon_entries = icon_map | split: '||'
                   for entry in icon_entries
                     if entry contains '::'
@@ -466,9 +482,15 @@
                 endif
               -%}
               <span class="mega-menu__link-title wrap-text">
-                {%- if link_collection_image -%}
+                {%- if menu_icon_mf -%}
                   <span class="mega-menu__link-icon">
-                    <img src="{{ link_collection_image | image_url: width: 64 }}" alt="{{ link.title }}" loading="lazy">
+                    <img src="{{ menu_icon_mf | image_url: width: 64 }}" alt="{{ link.title }}"
+                         width="24" height="24" loading="lazy">
+                  </span>
+                {%- elsif link_collection_image -%}
+                  <span class="mega-menu__link-icon">
+                    <img src="{{ link_collection_image | image_url: width: 64 }}" alt="{{ link.title }}"
+                         width="24" height="24" loading="lazy">
                   </span>
                 {%- elsif current_icon != blank -%}
                   <span class="mega-menu__link-icon">
@@ -666,4 +688,72 @@
   .mega-menu__link-icon img {
     mix-blend-mode: multiply;
   }
+
+  /* ---------------------------------------------------------------------------
+   * LE SECOND RANG DU MEGA-MENU
+   *
+   * Le bloc « colonne 2 » du theme sert desormais de RANGEE SECONDAIRE : les
+   * collections listees dans son reglage passent SOUS les grandes, en
+   * pastilles. La hierarchie se lit sans avoir a l'expliquer.
+   *
+   * Comment : des qu'une colonne 2 existe, le theme met la liste en rangee
+   * flexible. On l'autorise a passer a la ligne, et on donne toute la largeur
+   * au bloc secondaire — il tombe donc de lui-meme en dessous.
+   *
+   * ⚠ Le theme dessine un rectangle gris 16/9 devant tout lien sans image (un
+   * emplacement d'illustration). Sur une pastille il n'a aucun sens : il est
+   * neutralise ici, et seulement ici.
+   * ------------------------------------------------------------------------- */
+  .mega-menu__list--has-columns { flex-wrap: wrap; }
+
+  .mega-menu__column--col2 {
+    flex: 0 0 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(64, 52, 52, .13);
+  }
+
+  .mega-menu__column--col2 .mega-menu__col2-title {
+    flex: 0 0 100%;
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    opacity: .6;
+    margin-bottom: 2px;
+  }
+
+  .mega-menu__column--col2 > div > .mega-menu__link,
+  .mega-menu__column--col2 > div > .mega-menu__link:not(:has(.mega-menu__link-image)) {
+    flex-direction: row;
+    align-items: center;
+    padding: 7px 14px 7px 9px;
+    border: 1px solid rgba(64, 52, 52, .13);
+    border-radius: 999px;
+    transition: border-color .2s ease, background-color .2s ease;
+  }
+
+  .mega-menu__column--col2 > div > .mega-menu__link:hover {
+    border-color: #b4894f;
+    background-color: rgba(180, 137, 79, .08);
+  }
+
+  .mega-menu__column--col2 > div > .mega-menu__link:not(:has(.mega-menu__link-image))::before {
+    content: none;
+  }
+
+  .mega-menu__column--col2 .mega-menu__link-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: .76rem;
+    letter-spacing: .04em;
+  }
+
+  .mega-menu__column--col2 .mega-menu__link-icon img { width: 22px; height: 22px; }
+
 {% endstylesheet %}
