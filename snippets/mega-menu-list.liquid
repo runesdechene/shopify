@@ -1013,8 +1013,7 @@
     height: auto;
     aspect-ratio: 4 / 3;
     object-fit: cover;
-    /* Aucun arrondi sur les grandes images : coins francs, comme le reste du
-     * haut de page. */
+    border-radius: 12px;
   }
 
   .mega-menu__link-lede {
@@ -1113,12 +1112,26 @@
    * l'image agrandie deborde sur le menu. `hidden` est compris partout.
    * `position: relative` et `isolation` bornent en plus le contexte de
    * peinture, pour qu'aucune couche du theme ne fasse ressortir l'image. */
+  /* ⚠ EXACTEMENT la recette du rang du bas, qui fonctionne : un simple BLOC
+   * avec `overflow: hidden`. J'y avais empile `grid`, `position: relative` et
+   * `isolation` — l'un d'eux empechait le rognage. Ne rien y rajouter. */
   .rdc-menu-shot {
-    display: grid;
-    position: relative;
-    isolation: isolate;
+    display: block;
     overflow: hidden;
     line-height: 0;
+    border-radius: 12px;
+  }
+
+  .rdc-menu-shot img {
+    transition: transform .5s ease;
+  }
+
+  .mega-menu__link:hover .rdc-menu-shot img {
+    transform: scale(1.06);
+  }
+
+  @media (hover: none) {
+    .mega-menu__link:hover .rdc-menu-shot img { transform: none; }
   }
 
   .rdc-menu-shot > img {
