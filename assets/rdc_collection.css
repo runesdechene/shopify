@@ -46,13 +46,6 @@
   }
 }
 
-/* ---------------------------------------------------------------------------
- * LES DEUX FILETS
- *
- * C'est ce qui manquait : sans eux la barre flotte au milieu de la page et ne
- * se lit pas comme une barre. Un filet au-dessus, un en dessous, et elle
- * devient une reglure entre le titre et les produits.
- * ------------------------------------------------------------------------- */
 
 /* La barre occupe TOUTE la largeur de l'ecran, bord a bord.
  *
@@ -94,8 +87,6 @@
 .facets-block-wrapper--horizontal .facets--horizontal {
   box-sizing: border-box;
   max-width: 100%;
-  border-top: 1px solid rgba(64, 52, 52, 0.13);
-  border-bottom: 1px solid rgba(64, 52, 52, 0.13);
   padding-block: 12px;
   padding-inline: 0;
 }
