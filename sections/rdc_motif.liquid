@@ -137,54 +137,18 @@
   endfor
 
   comment
-    Les AUTRES motifs de la meme saga.
-
-    Sans eux la page s'arretait net apres le recit : le visiteur le plus
-    engage du site — celui qui vient de lire 292 mots — n'avait aucune porte
-    vers le catalogue. Et pour Google, les 22 pages de motif etaient 22 iles
-    sans un lien entre elles.
-
-    Seul chemin disponible : les PRODUITS de la saga. Chacun porte son
-    metaobjet illustration, qui porte sa collection. Meme resolution que
-    similar-products.liquid — le champ `collection` d'abord, repli sur le
-    handle du metaobjet, qui est la convention du catalogue.
-
-    On accumule des handles dans une chaine plutot qu'un tableau : Liquid n'a
-    ni dictionnaire ni `push`. La sonde de doublon borne la cle des DEUX cotes
-    (|avalon|), sinon « avalon » matcherait dans « grand-avalon » — meme piege
-    que dans rdc_saga-motifs.liquid.
-  endcomment
-  assign voisins_vus = '|'
-  assign voisins = ''
-  if s.siblings_enabled and saga.title != blank
-    for produit in saga.products
-      assign ill_v = produit.metafields.custom.illustration_produit.value
-      unless ill_v == blank
-        assign col_v = ill_v.collection.value
-        if col_v == blank
-          assign col_v = collections[ill_v.system.handle]
-        endif
-        unless col_v == blank or col_v.handle == collection.handle
-          assign sonde = '|' | append: col_v.handle | append: '|'
-          unless voisins_vus contains sonde
-            assign voisins_vus = voisins_vus | append: col_v.handle | append: '|'
-            assign voisins = voisins | append: col_v.handle | append: '~'
-          endunless
-        endunless
-      endunless
-    endfor
-  endif
-  assign voisins = voisins | split: '~'
-
-  comment
-    Les titres acceptent un jeton — {motif} et {saga} — remplace par le nom.
+    Le titre du recit accepte le jeton {motif}, remplace par le nom.
 
     ⚠ Ce remplacement DOIT se faire ici, dans un bloc `liquid`, jamais dans
-    une balise de sortie : `{{ x | replace: '{saga}', y }}` fait echouer le
+    une balise de sortie : `{{ x | replace: '{motif}', y }}` fait echouer le
     parseur de Shopify (« Liquid syntax error ») et la section est refusee.
+
+    Les motifs voisins, eux, vivent dans leur PROPRE section
+    (rdc_motifs-voisins.liquid) : ici, ils allongeaient celle-ci, donc le
+    filigrane — qui se dimensionne sur la hauteur de son conteneur — devenait
+    trop grand a droite.
   endcomment
   assign story_title_rendu = s.story_title | replace: '{motif}', motif_nom
-  assign siblings_title_rendu = s.siblings_title | replace: '{saga}', saga.title
 
   assign ghost = ill.image_pour_fond_clair | default: ill.image_pour_fond_sombre
   if s.prefer_background_image and ill.image_fond_de_fragment != blank
@@ -315,31 +279,6 @@
     letter-spacing:.18em;text-transform:uppercase;color:#8a7a70}
   #{{ uid }} .rdcm__saga strong{font-family:var(--font-heading--family, sans-serif);font-weight:400;
     font-size:1.02rem;letter-spacing:.02em;line-height:1;color:{{ s.accent_color }}}
-  {%- comment -%}
-    Les motifs voisins : des dessins, pas des cartes produit. Pas de prix,
-    pas de bouton — c'est une porte, et une porte ne vend pas deux fois.
-    Le dessin est en `contain` : ces illustrations ont des formats varies et
-    un recadrage leur couperait la tete.
-  {%- endcomment -%}
-  #{{ uid }} .rdcm__voisins{border-top:1px solid {{ s.accent_color }}33;
-    margin-top:clamp(30px,3.6vw,50px);padding-top:clamp(22px,2.6vw,32px)}
-  #{{ uid }} .rdcm__voisins h2{font-family:var(--font-body--family);font-size:.68rem;
-    font-weight:700;letter-spacing:.2em;text-transform:uppercase;
-    color:{{ s.accent_color }};margin:0 0 20px}
-  #{{ uid }} .rdcm__voisins-grid{display:grid;gap:clamp(14px,2vw,26px);
-    grid-template-columns:repeat({{ s.siblings_columns }},minmax(0,1fr))}
-  @media (max-width:749px){
-    #{{ uid }} .rdcm__voisins-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  }
-  #{{ uid }} .rdcm__voisin{display:flex;flex-direction:column;align-items:center;gap:10px;
-    text-decoration:none;color:inherit}
-  #{{ uid }} .rdcm__voisin-img{display:block;width:100%;aspect-ratio:3/4}
-  #{{ uid }} .rdcm__voisin-img img{width:100%;height:100%;object-fit:contain;display:block;
-    transition:transform .45s ease}
-  #{{ uid }} .rdcm__voisin:hover .rdcm__voisin-img img{transform:scale(1.06) translateY(-3px)}
-  #{{ uid }} .rdcm__voisin-nom{font-family:var(--font-body--family);font-size:.68rem;font-weight:600;
-    letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1.3;color:#5a4a42}
-
   #{{ uid }} .rdcm__saga-diag{margin-top:16px;padding:10px 14px;border-radius:8px;max-width:60ch;
     background:#fff4d6;box-shadow:0 0 0 1px #d8b45e inset;
     font-family:var(--font-body--family);font-size:.78rem;line-height:1.5;color:#6b5a34}
@@ -573,34 +512,6 @@
       </div>
     {%- endif -%}
 
-    {%- comment -%}
-      Les motifs voisins arrivent APRES le bouton d'achat : ils sont la porte
-      de sortie de celui qui n'a pas accroche, pas une distraction offerte a
-      celui qui allait acheter.
-    {%- endcomment -%}
-    {%- if voisins.size > 0 -%}
-      <nav class="rdcm__voisins" aria-label="Les autres motifs de cette collection">
-        <h2>{{ siblings_title_rendu }}</h2>
-        <div class="rdcm__voisins-grid">
-          {%- for handle in voisins limit: s.siblings_count -%}
-            {%- assign col_voisin = collections[handle] -%}
-            {%- liquid
-              assign ill_voisin = col_voisin.metafields.custom.illustrations.value | default: col_voisin.metafields.custom.illustrations
-              assign dessin = ill_voisin.image_pour_fond_clair | default: ill_voisin.image_pour_fond_sombre
-              assign nom_voisin = ill_voisin.nom | default: col_voisin.title
-            -%}
-            <a class="rdcm__voisin" href="{{ col_voisin.url }}">
-              {%- if dessin != blank -%}
-                <span class="rdcm__voisin-img">
-                  <img src="{{ dessin | image_url: width: 320 }}" alt="" width="320" height="454" loading="lazy">
-                </span>
-              {%- endif -%}
-              <span class="rdcm__voisin-nom">{{ nom_voisin }}</span>
-            </a>
-          {%- endfor -%}
-        </div>
-      </nav>
-    {%- endif -%}
   </div>
 </section>
 
@@ -764,11 +675,6 @@
     { "type": "text", "id": "narrator_field_key", "label": "Métachamp — narrateur", "default": "narrateur_audio", "info": "Référence vers le métaobjet Artistes. Ses champs « nom » et « image » sont utilisés." },
     { "type": "checkbox", "id": "audio_avatar", "label": "Afficher l'avatar du narrateur", "default": true },
     { "type": "range", "id": "audio_avatar_size", "label": "Taille de l'avatar", "unit": "px", "min": 20, "max": 72, "step": 2, "default": 34, "visible_if": "{{ section.settings.audio_avatar }}" },
-    { "type": "header", "content": "Les autres motifs de la collection" },
-    { "type": "checkbox", "id": "siblings_enabled", "label": "Afficher les motifs voisins", "default": true, "info": "Placés tout en bas, après le bouton d'achat. Ils viennent de la collection groupée : sans elle, rien ne s'affiche." },
-    { "type": "text", "id": "siblings_title", "label": "Titre du bloc", "default": "Les autres motifs de {saga}", "info": "Écrivez {saga} pour insérer le nom de la collection." },
-    { "type": "range", "id": "siblings_count", "label": "Nombre de motifs affichés", "min": 2, "max": 8, "step": 1, "default": 4 },
-    { "type": "range", "id": "siblings_columns", "label": "Colonnes (desktop)", "min": 2, "max": 6, "step": 1, "default": 4, "info": "Sur mobile, toujours deux colonnes." },
     { "type": "header", "content": "Données structurées (Google)" },
     { "type": "checkbox", "id": "schema_enabled", "label": "Émettre le balisage produit et le fil d'Ariane", "default": true, "info": "Rend la page éligible à l'affichage du prix et du chemin de navigation dans les résultats Google. Invisible sur la page." },
     { "type": "header", "content": "Bouton de rappel (bas de page)" },

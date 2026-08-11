@@ -1,0 +1,225 @@
+{%- comment -%}
+  rdc_motifs-voisins.liquid
+
+  « Les autres motifs de cette collection », sous la page d'un motif.
+
+  Section SEPAREE, et c'est le point : le bloc a d'abord vecu dans
+  rdc_motif.liquid, ou il allongeait la section — donc le filigrane, qui se
+  dimensionne sur la hauteur de son conteneur. Le dessin de fond devenait
+  trop grand a droite. Deux sections, deux hauteurs, le filigrane reste
+  cadre sur le motif.
+
+  Elle refait donc sa propre resolution de la saga : une section ne voit pas
+  les variables d'une autre.
+
+  A quoi elle sert : la page s'arretait apres le recit, sans rien proposer au
+  visiteur le plus engage du site — celui qui vient de lire 292 mots. Et pour
+  Google, les 22 pages de motif etaient 22 iles sans un lien entre elles.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = 'RdcVoisins-' | append: section.id
+  assign s = section.settings
+
+  comment
+    Le metaobjet illustration est lie a la COLLECTION — meme lien que lit
+    rdc_motif.liquid. Double acces `.value` puis direct : selon le type de
+    metachamp, Shopify renvoie l'un ou l'autre.
+  endcomment
+  if collection.metafields.custom.illustrations.value != blank
+    assign ill = collection.metafields.custom.illustrations.value
+  elsif collection.metafields.custom.illustrations != blank
+    assign ill = collection.metafields.custom.illustrations
+  endif
+
+  comment
+    La collection groupee. Sa cle reelle est `collection_d_heritage`, mais
+    elle contient la SAGA, pas un heritage — le nom du champ ment, la donnee
+    est juste. Les autres orthographes restent essayees en repli, et la cle
+    de l'editeur passe devant : le metaobjet est edite par un humain, une cle
+    renommee ne doit pas exiger une modification de code.
+  endcomment
+  assign saga_keys = 'collection_d_heritage,collection_groupee,collection_principale,collection_saga,saga,collection'
+  if s.saga_field_key != blank
+    assign saga_keys = s.saga_field_key | append: ',' | append: saga_keys
+  endif
+  assign saga_keys = saga_keys | split: ','
+
+  assign saga = nil
+  for cle in saga_keys
+    unless saga.title != blank
+      assign saga_ref = ill[cle]
+      if saga_ref == blank
+        assign saga_ref = collection.metafields.custom[cle]
+      endif
+      assign essai = saga_ref.value | default: saga_ref
+      comment
+        ⚠ Un metachamp de reference arrive seul OU en liste selon son type.
+        Un objet Collection ne repond pas a `.first` ; une liste, si. Le test
+        porte donc sur le `title` du premier element, jamais sur `.size`.
+      endcomment
+      assign essai_premier = essai.first
+      if essai_premier.title != blank
+        assign essai = essai_premier
+      endif
+      if essai.title != blank and essai.id != collection.id
+        assign saga = essai
+      endif
+    endunless
+  endfor
+
+  comment
+    Les motifs voisins passent par les PRODUITS de la saga, seul chemin
+    disponible : chacun porte son metaobjet illustration, qui porte sa
+    collection. Meme resolution que similar-products.liquid — le champ
+    `collection` d'abord, repli sur le handle du metaobjet, qui est la
+    convention du catalogue.
+
+    On accumule des handles dans une chaine plutot qu'un tableau : Liquid n'a
+    ni dictionnaire ni `push`. La sonde de doublon borne la cle des DEUX
+    cotes (|avalon|), sinon « avalon » matcherait dans « grand-avalon » —
+    meme piege que dans rdc_saga-motifs.liquid.
+
+    ⚠ Plafond Liquid : sans pagination, `products` expose 50 produits. Les
+    sagas en font 12 a 20.
+  endcomment
+  assign voisins_vus = '|'
+  assign voisins = ''
+  if saga.title != blank
+    for produit in saga.products
+      assign ill_v = produit.metafields.custom.illustration_produit.value
+      unless ill_v == blank
+        assign col_v = ill_v.collection.value
+        if col_v == blank
+          assign col_v = collections[ill_v.system.handle]
+        endif
+        unless col_v == blank or col_v.handle == collection.handle
+          assign sonde = '|' | append: col_v.handle | append: '|'
+          unless voisins_vus contains sonde
+            assign voisins_vus = voisins_vus | append: col_v.handle | append: '|'
+            assign voisins = voisins | append: col_v.handle | append: '~'
+          endunless
+        endunless
+      endunless
+    endfor
+  endif
+  assign voisins = voisins | split: '~'
+
+  comment
+    ⚠ Le remplacement du jeton DOIT se faire ici, dans un bloc `liquid`,
+    jamais dans une balise de sortie : `{{ x | replace: '{saga}', y }}` fait
+    echouer le parseur de Shopify et la section est refusee en ligne.
+  endcomment
+  assign titre_rendu = s.title | replace: '{saga}', saga.title
+-%}
+
+{%- if voisins.size > 0 -%}
+<style>
+  #{{ uid }}{background:{{ s.bg_color }};
+    padding-top:{{ s.padding_top }}px;padding-bottom:{{ s.padding_bottom }}px}
+  #{{ uid }} .rdcv__in{max-width:{{ s.max_width }}px;margin:0 auto;
+    padding-inline:clamp(18px,4vw,40px)}
+  @media (max-width:749px){
+    #{{ uid }}{padding-top:{{ s.padding_top_mobile }}px}
+  }
+
+  {%- comment -%}
+    Un filet plutot qu'un bloc colore : la section suit la page du motif, elle
+    ne doit pas lui voler l'oeil. Le titre est un surtitre, pas un titre.
+  {%- endcomment -%}
+  {%- if s.show_rule -%}
+  #{{ uid }} .rdcv__in{border-top:1px solid {{ s.accent_color }}33;
+    padding-top:clamp(22px,2.6vw,32px)}
+  {%- endif -%}
+  #{{ uid }} h2{font-family:var(--font-body--family);font-size:.68rem;font-weight:700;
+    letter-spacing:.2em;text-transform:uppercase;color:{{ s.accent_color }};margin:0 0 22px}
+
+  {%- comment -%}
+    Des dessins, pas des cartes produit : ni prix ni bouton. C'est une porte,
+    et une porte ne vend pas deux fois. Le dessin est en `contain` — ces
+    illustrations ont des formats varies et un recadrage leur couperait la
+    tete.
+  {%- endcomment -%}
+  #{{ uid }} .rdcv__grid{display:grid;gap:clamp(14px,2vw,26px);
+    grid-template-columns:repeat({{ s.columns }},minmax(0,1fr))}
+  @media (max-width:749px){
+    #{{ uid }} .rdcv__grid{grid-template-columns:repeat({{ s.columns_mobile }},minmax(0,1fr))}
+  }
+  #{{ uid }} .rdcv__item{display:flex;flex-direction:column;align-items:center;gap:10px;
+    text-decoration:none;color:inherit}
+  #{{ uid }} .rdcv__img{display:block;width:100%;aspect-ratio:3/4}
+  #{{ uid }} .rdcv__img img{width:100%;height:100%;object-fit:contain;display:block;
+    transition:transform .45s ease}
+  #{{ uid }} .rdcv__item:hover .rdcv__img img{transform:scale(1.06) translateY(-3px)}
+  #{{ uid }} .rdcv__nom{font-family:var(--font-body--family);font-size:.68rem;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1.3;
+    color:{{ s.name_color }}}
+</style>
+
+<section id="{{ uid }}">
+  <nav class="rdcv__in" aria-label="Les autres motifs de cette collection">
+    {%- if titre_rendu != blank -%}<h2>{{ titre_rendu }}</h2>{%- endif -%}
+    <div class="rdcv__grid">
+      {%- for handle in voisins limit: s.count -%}
+        {%- assign col_voisin = collections[handle] -%}
+        {%- liquid
+          assign ill_voisin = col_voisin.metafields.custom.illustrations.value | default: col_voisin.metafields.custom.illustrations
+          assign dessin = ill_voisin.image_pour_fond_clair | default: ill_voisin.image_pour_fond_sombre
+          assign nom_voisin = ill_voisin.nom | default: col_voisin.title
+        -%}
+        <a class="rdcv__item" href="{{ col_voisin.url }}">
+          {%- if dessin != blank -%}
+            <span class="rdcv__img">
+              <img src="{{ dessin | image_url: width: 320 }}" alt="" width="320" height="454" loading="lazy">
+            </span>
+          {%- endif -%}
+          <span class="rdcv__nom">{{ nom_voisin }}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </nav>
+</section>
+{%- elsif request.design_mode -%}
+  {%- comment -%}
+    Visible UNIQUEMENT dans l'editeur. Sans ca, une section vide ne dit pas
+    si le motif n'a pas de collection groupee ou si la saga n'a qu'un motif.
+  {%- endcomment -%}
+  <div style="margin:16px auto;max-width:60ch;padding:10px 14px;border-radius:8px;
+              background:#fff4d6;box-shadow:0 0 0 1px #d8b45e inset;
+              font-family:sans-serif;font-size:.8rem;line-height:1.5;color:#6b5a34">
+    Aucun motif voisin à afficher.<br>
+    {%- if saga.title == blank -%}
+      Ce motif n'a pas de collection groupée : le champ est vide, ou sa clé diffère.
+      Clés essayées : {{ saga_keys | join: ' · ' }}
+    {%- else -%}
+      « {{ saga.title }} » ne contient que ce motif-ci. Le bloc apparaîtra dès qu'un
+      deuxième motif la rejoindra.
+    {%- endif -%}
+    <br>(Ce message n'apparaît que dans l'éditeur.)
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "RDC — Motifs voisins",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre du bloc", "default": "Les autres motifs de {saga}", "info": "Écrivez {saga} pour insérer le nom de la collection. Laisser vide pour n'afficher aucun titre." },
+    { "type": "range", "id": "count", "label": "Nombre de motifs affichés", "min": 2, "max": 12, "step": 1, "default": 4 },
+    { "type": "range", "id": "columns", "label": "Colonnes (ordinateur)", "min": 2, "max": 6, "step": 1, "default": 4 },
+    { "type": "range", "id": "columns_mobile", "label": "Colonnes (mobile)", "min": 1, "max": 3, "step": 1, "default": 2 },
+    { "type": "header", "content": "Apparence" },
+    { "type": "checkbox", "id": "show_rule", "label": "Filet de séparation au-dessus", "default": true },
+    { "type": "color", "id": "bg_color", "label": "Fond de la section", "default": "#f4eee1" },
+    { "type": "color", "id": "accent_color", "label": "Couleur du titre et du filet", "default": "#b4894f" },
+    { "type": "color", "id": "name_color", "label": "Couleur des noms de motif", "default": "#5a4a42" },
+    { "type": "range", "id": "max_width", "label": "Largeur du contenu", "unit": "px", "min": 700, "max": 1600, "step": 20, "default": 1200 },
+    { "type": "range", "id": "padding_top", "label": "Espace au-dessus", "unit": "px", "min": 0, "max": 120, "step": 4, "default": 24 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Espace au-dessus (mobile)", "unit": "px", "min": 0, "max": 80, "step": 4, "default": 16 },
+    { "type": "range", "id": "padding_bottom", "label": "Espace en dessous", "unit": "px", "min": 0, "max": 160, "step": 4, "default": 72 },
+    { "type": "header", "content": "Source des données" },
+    { "type": "text", "id": "saga_field_key", "label": "Métachamp — collection groupée", "default": "collection_d_heritage", "info": "Clé du champ sur le métaobjet Illustration. D'autres orthographes courantes sont essayées en repli." }
+  ],
+  "presets": [{ "name": "RDC — Motifs voisins" }]
+}
+{% endschema %}
