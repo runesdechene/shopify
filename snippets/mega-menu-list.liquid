@@ -729,55 +729,75 @@
    * ------------------------------------------------------------------------- */
   .mega-menu__list--has-columns { flex-wrap: wrap; }
 
-  .mega-menu__column--col2 {
-    flex: 0 0 100%;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-    margin-top: 22px;
-    padding-top: 18px;
+  /* ---------------------------------------------------------------------------
+   * LE SECOND RANG — DE PETITES CARTES, PAS DES PASTILLES
+   *
+   * Meme langage que le rang du haut, en plus petit : visuel carre, nom
+   * dessous. Une pastille a cote de grandes cartes faisait deux vocabulaires
+   * dans un meme panneau.
+   *
+   * `!important` sur le contour et l'espacement interieur : les regles du
+   * theme pour un lien de menu vivent dans la meme feuille compilee et
+   * passaient devant les notres — c'est pourquoi la premiere version n'avait
+   * aucun style.
+   * ------------------------------------------------------------------------- */
+  .rdc-menu-images > .mega-menu__column--col2,
+  .rdc-menu-images > .mega-menu__column--col3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+    gap: 18px 14px;
+    margin-top: 26px;
+    padding-top: 20px;
     border-top: 1px solid rgba(64, 52, 52, .13);
   }
 
-  .mega-menu__column--col2 .mega-menu__col2-title {
-    flex: 0 0 100%;
+  .rdc-menu-images .mega-menu__col2-title {
+    grid-column: 1 / -1;
+    font-family: var(--font-body--family);
     font-size: .62rem;
     font-weight: 700;
     letter-spacing: .2em;
     text-transform: uppercase;
     opacity: .6;
-    margin-bottom: 2px;
+    margin: 0 0 2px;
   }
 
-  .mega-menu__column--col2 > div > .mega-menu__link,
-  .mega-menu__column--col2 > div > .mega-menu__link:not(:has(.mega-menu__link-image)) {
-    flex-direction: row;
-    align-items: center;
-    padding: 7px 14px 7px 9px;
-    border: 1px solid rgba(64, 52, 52, .13);
-    border-radius: 999px;
-    transition: border-color .2s ease, background-color .2s ease;
+  .rdc-menu-images .mega-menu__column--col2 .mega-menu__link,
+  .rdc-menu-images .mega-menu__column--col3 .mega-menu__link {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch;
+    gap: 8px;
+    padding: 0 !important;
+    border: 0 !important;
+    background: none !important;
   }
 
-  .mega-menu__column--col2 > div > .mega-menu__link:hover {
-    border-color: #b4894f;
-    background-color: rgba(180, 137, 79, .08);
+  .rdc-menu-images .mega-menu__column--col2 .mega-menu__link-icon,
+  .rdc-menu-images .mega-menu__column--col3 .mega-menu__link-icon {
+    display: block;
+    width: 100%;
+    margin: 0;
   }
 
-  .mega-menu__column--col2 > div > .mega-menu__link:not(:has(.mega-menu__link-image))::before {
-    content: none;
+  .rdc-menu-images .mega-menu__column--col2 .mega-menu__link-icon img,
+  .rdc-menu-images .mega-menu__column--col3 .mega-menu__link-icon img {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
   }
 
-  .mega-menu__column--col2 .mega-menu__link-title {
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-    font-size: .76rem;
-    letter-spacing: .04em;
+  .rdc-menu-images .mega-menu__column--col2 .mega-menu__link-title,
+  .rdc-menu-images .mega-menu__column--col3 .mega-menu__link-title {
+    display: block;
+    font-family: var(--font-heading--family, sans-serif);
+    font-size: .92rem;
+    letter-spacing: .03em;
+    line-height: 1.1;
+    text-transform: uppercase;
   }
-
-  .mega-menu__column--col2 .mega-menu__link-icon img { width: 22px; height: 22px; }
 
 
   /* ---------------------------------------------------------------------------
@@ -806,7 +826,8 @@
     height: auto;
     aspect-ratio: 4 / 3;
     object-fit: cover;
-    border-radius: 8px;
+    /* Pas d'arrondi impose : c'est le reglage « Rayon des coins » du bloc de
+     * menu qui decide, comme pour le reste du theme. */
   }
 
   .mega-menu__link-lede {
