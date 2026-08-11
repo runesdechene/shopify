@@ -276,8 +276,9 @@
 
     Celui du BAS dissout l'image dans la page. Celui de la DROITE degage la
     zone du filigrane : sans lui le dessin du motif se pose sur une image
-    chargee et devient illisible. `intersect` les combine — l'image ne reste
-    opaque que la ou les DEUX masques sont opaques.
+    chargee et devient illisible. Celui du HAUT, plus court, adoucit la
+    jonction avec l'en-tete du site. `intersect` les combine — l'image ne reste
+    opaque que la ou les TROIS masques le sont.
 
     ⚠ Deux syntaxes pour la meme chose : `mask-composite:intersect` (standard)
     et `-webkit-mask-composite:source-in` (Safari). Les deux sont necessaires.
@@ -287,9 +288,11 @@
   #{{ uid }} .rdcm__backdrop img{width:100%;height:auto;display:block;
     opacity:{{ s.backdrop_opacity | divided_by: 100.0 }};
     -webkit-mask-image:linear-gradient(to top,transparent 0%,#000 {{ s.backdrop_fade }}%),
-      linear-gradient(to left,transparent 0%,#000 {{ s.backdrop_fade_right }}%);
+      linear-gradient(to left,transparent 0%,#000 {{ s.backdrop_fade_right }}%),
+      linear-gradient(to bottom,transparent 0%,#000 {{ s.backdrop_fade_top }}%);
     mask-image:linear-gradient(to top,transparent 0%,#000 {{ s.backdrop_fade }}%),
-      linear-gradient(to left,transparent 0%,#000 {{ s.backdrop_fade_right }}%);
+      linear-gradient(to left,transparent 0%,#000 {{ s.backdrop_fade_right }}%),
+      linear-gradient(to bottom,transparent 0%,#000 {{ s.backdrop_fade_top }}%);
     -webkit-mask-composite:source-in;mask-composite:intersect}
   @media (max-width:749px){
     #{{ uid }} .rdcm__backdrop img{opacity:{{ s.backdrop_opacity_mobile | divided_by: 100.0 }}}
@@ -776,6 +779,7 @@
     },
     { "type": "range", "id": "backdrop_opacity", "label": "Intensité du décor", "unit": "%", "min": 5, "max": 100, "step": 5, "default": 100 },
     { "type": "range", "id": "backdrop_opacity_mobile", "label": "Intensité du décor (mobile)", "unit": "%", "min": 5, "max": 100, "step": 5, "default": 100, "info": "Sur un petit écran, le texte couvre presque toute l'image : la baisser aide à le lire." },
+    { "type": "range", "id": "backdrop_fade_top", "label": "Hauteur du dégradé du haut", "unit": "%", "min": 0, "max": 60, "step": 5, "default": 15, "info": "Part de l'image où elle apparaît en fondu, comptée depuis son haut. À 0 %, elle démarre net." },
     { "type": "range", "id": "backdrop_fade", "label": "Hauteur du dégradé du bas", "unit": "%", "min": 10, "max": 100, "step": 5, "default": 70, "info": "Part de l'IMAGE où elle se dissout dans la couleur de fond, comptée depuis son bas. À 100 %, elle se dissout sur toute sa hauteur." },
     { "type": "range", "id": "backdrop_fade_right", "label": "Largeur du dégradé de droite", "unit": "%", "min": 0, "max": 100, "step": 5, "default": 45, "info": "Il dégage la zone où vient se poser le dessin du motif : sans lui, le dessin se pose sur une image chargée et devient illisible." },
     { "type": "header", "content": "Textes" },

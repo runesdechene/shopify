@@ -32,6 +32,7 @@
         "backdrop_align": "left",
         "backdrop_opacity": 100,
         "backdrop_opacity_mobile": 100,
+        "backdrop_fade_top": 15,
         "backdrop_fade": 70,
         "backdrop_fade_right": 45,
         "overline": "Une création originale",
