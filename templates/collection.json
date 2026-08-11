@@ -225,7 +225,7 @@
         "padding-inline-start": 0,
         "padding-inline-end": 0,
         "color_scheme": "",
-        "padding-block-start": 40,
+        "padding-block-start": 20,
         "padding-block-end": 40
       }
     },
@@ -357,10 +357,30 @@
         "condition_liquid": "",
         "condition_invert": false
       }
+    },
+    "rdc_coupes": {
+      "type": "rdc_coupes",
+      "settings": {
+        "title": "Choisir une coupe",
+        "show_count": false,
+        "item_width": 96,
+        "icon_size": 36,
+        "gap": 6,
+        "padding_top": 8,
+        "padding_bottom": 12,
+        "bg_color": "#f4eee1",
+        "icon_color": "#5a4a42",
+        "text_color": "#5a4a42",
+        "muted_color": "#8d7c6d",
+        "accent_color": "#b4894f",
+        "filter_key": "filter.p.m.custom.base",
+        "filter_label_fallback": "coupe"
+      }
     }
   },
   "order": [
     "rdc_hero",
+    "rdc_coupes",
     "main",
     "section_Uhe9Wa"
   ]
