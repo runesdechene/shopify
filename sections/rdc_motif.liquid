@@ -89,25 +89,52 @@
   comment
     Rappel de la collection principale — la saga d'ou vient ce motif.
 
-    On ne devine rien : le metaobjet Illustration porte deja un metachamp
-    « collection groupee » qui pointe la collection saga. La CLE est reglable
-    dans l'editeur, comme celles de la voix off : une cle qui ne correspond
-    pas n'affiche simplement aucune gelule.
+    Le metaobjet Illustration porte deja un metachamp « collection groupee »
+    qui pointe la collection saga.
 
     Deux raisons a ce lien, pas une : sans lui la page de motif est un
     cul-de-sac pour qui a flashe sur le dessin mais pas sur la coupe, et
     Google ne relie Avalon a aucune saga (audit du 11/08).
 
-    ⚠ Un metachamp de reference arrive seul OU en liste selon son type. Un
-    objet Collection ne repond pas a `.first` ; une liste, si. Le test porte
-    donc sur le `title` du premier element, jamais sur `.size`.
+    On ne connait pas la cle exacte depuis le code : elle vit dans la
+    definition du metaobjet, cote admin. Plutot que de parier sur une seule
+    orthographe et de rester muet quand elle rate, on essaie les variantes
+    plausibles l'une apres l'autre. La cle de l'editeur passe en premier :
+    elle reste le dernier mot si aucune supposition ne tombe juste.
+
+    Le champ peut aussi vivre sur la COLLECTION plutot que sur
+    l'illustration — les deux sont balayes.
   endcomment
-  assign saga_ref = ill[s.saga_field_key]
-  assign saga = saga_ref.value | default: saga_ref
-  assign saga_premier = saga.first
-  if saga_premier.title != blank
-    assign saga = saga_premier
+  assign saga_keys = 'collection_groupee,collection_groupees,collections_groupees,collection_principale,collection_group,collection_saga,saga,collection_parente,collection'
+  if s.saga_field_key != blank
+    assign saga_keys = s.saga_field_key | append: ',' | append: saga_keys
   endif
+  assign saga_keys = saga_keys | split: ','
+
+  assign saga = nil
+  assign saga_key_trouvee = ''
+  for cle in saga_keys
+    unless saga.title != blank
+      assign saga_ref = ill[cle]
+      if saga_ref == blank
+        assign saga_ref = collection.metafields.custom[cle]
+      endif
+      assign essai = saga_ref.value | default: saga_ref
+      comment
+        ⚠ Un metachamp de reference arrive seul OU en liste selon son type.
+        Un objet Collection ne repond pas a `.first` ; une liste, si. Le test
+        porte donc sur le `title` du premier element, jamais sur `.size`.
+      endcomment
+      assign essai_premier = essai.first
+      if essai_premier.title != blank
+        assign essai = essai_premier
+      endif
+      if essai.title != blank and essai.id != collection.id
+        assign saga = essai
+        assign saga_key_trouvee = cle
+      endif
+    endunless
+  endfor
 
   assign ghost = ill.image_pour_fond_clair | default: ill.image_pour_fond_sombre
   if s.prefer_background_image and ill.image_fond_de_fragment != blank
@@ -212,6 +239,9 @@
     letter-spacing:.18em;text-transform:uppercase;color:#8a7a70}
   #{{ uid }} .rdcm__saga strong{font-family:var(--font-heading--family, sans-serif);font-weight:400;
     font-size:1.02rem;letter-spacing:.02em;line-height:1;color:{{ s.accent_color }}}
+  #{{ uid }} .rdcm__saga-diag{margin-top:16px;padding:10px 14px;border-radius:8px;max-width:60ch;
+    background:#fff4d6;box-shadow:0 0 0 1px #d8b45e inset;
+    font-family:var(--font-body--family);font-size:.78rem;line-height:1.5;color:#6b5a34}
 
   {%- comment -%}
     Desktop : grille a colonnes fixes. Mobile : une seule ligne qui defile au
@@ -345,16 +375,23 @@
       {%- if motif_artiste != blank -%}<span>Illustration par <strong>{{ motif_artiste }}</strong></span>{%- endif -%}
     </div>
 
-    {%- comment -%}
-      `saga.id != collection.id` : garde-fou contre une auto-reference, si un
-      jour une collection se pointait elle-meme. Un lien vers sa propre page
-      est invisible a l'oeil et lu comme une erreur par Google.
-    {%- endcomment -%}
-    {%- if s.saga_enabled and saga.title != blank and saga.id != collection.id -%}
+    {%- if s.saga_enabled and saga.title != blank -%}
       <a class="rdcm__saga" href="{{ saga.url }}">
         {%- if s.saga_label != blank -%}<span>{{ s.saga_label }}</span>{%- endif -%}
         <strong>{{ saga.title }}</strong>
       </a>
+    {%- elsif s.saga_enabled and request.design_mode -%}
+      {%- comment -%}
+        Visible UNIQUEMENT dans l'editeur de theme, jamais pour un visiteur.
+        Sans ca, une cle qui ne correspond pas ne produit rien du tout — et
+        « rien » ne dit pas si le champ est vide ou mal nomme.
+      {%- endcomment -%}
+      <div class="rdcm__saga-diag">
+        Aucune collection groupée trouvée sur ce motif.<br>
+        Clés essayées : {{ saga_keys | join: ' · ' }}<br>
+        Corrigez la clé dans « Rappel de la saga » ci-contre, ou remplissez le champ
+        sur le métaobjet Illustration. (Ce message n'apparaît que dans l'éditeur.)
+      </div>
     {%- endif -%}
 
     <div class="rdcm__rail" id="{{ uid }}-coupes">
