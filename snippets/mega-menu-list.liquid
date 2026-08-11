@@ -646,3 +646,24 @@
       </ul>
     </span>
 {% endcase %}
+
+{% stylesheet %}
+  /* ---------------------------------------------------------------------------
+   * LE FOND BLANC DES ICONES DE MENU
+   *
+   * Verifie le 11/08 : les PNG d'icone n'ont PAS de canal alpha — leur fond
+   * blanc est cuit dans l'image. Le theme, lui, ne peint rien derriere.
+   *
+   * `multiply` fait disparaitre le blanc sur un fond clair : le blanc multiplie
+   * par le parchemin donne le parchemin, le trait sombre reste. C'est deja le
+   * procede utilise pour le filigrane des pages motif.
+   *
+   * ⚠ Ne tient QUE sur fond clair. Si le menu passait un jour sur fond sombre,
+   * les icones s'y noieraient — il faudrait alors de vrais PNG transparents.
+   * C'est de toute facon la solution propre : reexporter les icones avec un
+   * fond transparent rend cette regle inutile, et elle peut alors sauter.
+   * ------------------------------------------------------------------------- */
+  .mega-menu__link-icon img {
+    mix-blend-mode: multiply;
+  }
+{% endstylesheet %}
