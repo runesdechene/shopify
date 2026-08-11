@@ -23,22 +23,43 @@
         "hero_margin_top": 0,
         "hero_margin_bottom": 0,
         "hero_radius": 0,
-        "overlay_color": "#1c1812",
-        "overlay_opacity": 0,
+        "overlay_color": "#4a4135",
+        "overlay_opacity": 55,
         "overlay_blend": "normal",
         "bottom_fade": false,
         "bottom_fade_height": 140,
         "bottom_fade_color": "#f4eee1",
-        "overline": "",
+        "overline": "Impression bretonne · 100% coton bio · Haute qualité",
         "title": "",
         "btn1_label": "",
         "btn1_link": "",
         "btn2_label": "",
         "btn2_link": "",
+        "text_shadow": 0,
+        "desc_weight": "300",
         "show_without_image": true,
         "fallback_color": "#46493c",
         "min_height": 46,
         "min_height_mobile": 80
+      }
+    },
+    "rdc_coupes": {
+      "type": "rdc_coupes",
+      "settings": {
+        "title": "",
+        "show_count": false,
+        "item_width": 92,
+        "icon_size": 40,
+        "gap": 10,
+        "padding_top": 16,
+        "padding_bottom": 12,
+        "bg_color": "#f4eee1",
+        "text_color": "#5a4a42",
+        "muted_color": "#8d7c6d",
+        "accent_color": "#b4894f",
+        "filter_key": "filter.p.m.custom.base",
+        "filter_label_fallback": "coupe",
+        "metaobject_type": ""
       }
     },
     "main": {
@@ -189,7 +210,7 @@
                   "type": "swatches",
                   "settings": {
                     "product_swatches_alignment": "center",
-                    "product_swatches_alignment_mobile": "flex-start",
+                    "product_swatches_alignment_mobile": "center",
                     "hide_padding": false,
                     "product_swatches_padding_top": 4,
                     "product_swatches_padding_bottom": 0,
@@ -225,7 +246,7 @@
         "padding-inline-start": 0,
         "padding-inline-end": 0,
         "color_scheme": "",
-        "padding-block-start": 20,
+        "padding-block-start": 0,
         "padding-block-end": 40
       }
     },
@@ -356,25 +377,6 @@
         "condition_value": "",
         "condition_liquid": "",
         "condition_invert": false
-      }
-    },
-    "rdc_coupes": {
-      "type": "rdc_coupes",
-      "settings": {
-        "title": "Choisir une coupe",
-        "show_count": false,
-        "item_width": 96,
-        "icon_size": 36,
-        "gap": 6,
-        "padding_top": 8,
-        "padding_bottom": 12,
-        "bg_color": "#f4eee1",
-        "icon_color": "#5a4a42",
-        "text_color": "#5a4a42",
-        "muted_color": "#8d7c6d",
-        "accent_color": "#b4894f",
-        "filter_key": "filter.p.m.custom.base",
-        "filter_label_fallback": "coupe"
       }
     }
   },
