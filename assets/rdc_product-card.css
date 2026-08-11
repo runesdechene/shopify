@@ -1,0 +1,60 @@
+/* rdc_product-card.css
+ *
+ * La peau des cartes produit du theme, alignee sur les cartes des pages
+ * saga et motif.
+ *
+ * On ne remplace pas la carte : elle sert a 17 endroits et porte l'ajout
+ * rapide, la logique de variante, les badges et les reglages d'editeur. On ne
+ * change que l'apparence.
+ *
+ * ⚠ LECON DE LA PREMIERE TENTATIVE — a lire avant d'ajouter une regle ici.
+ * Les valeurs du theme n'arrivent pas toutes par la feuille de style :
+ * `--product-media-fit` est ecrit en style INLINE sur l'element, et aucun
+ * selecteur ne bat un style inline. Et la typographie ne porte pas sur
+ * `.text-block` mais sur SON ENFANT (`.text-block.h5 > *`) : viser le parent
+ * ne fait rien. Avant d'ecrire une regle, lire le HTML RENDU — pas base.css.
+ *
+ * Pour tout retirer : supprimer l'appel dans snippets/stylesheets.liquid.
+ */
+
+/* ---------------------------------------------------------------------------
+ * LE NOM DU PRODUIT
+ *
+ * Petites capitales espacees en police de texte, comme sur les pages motif.
+ * Cible l'enfant, seul endroit ou la typographie s'applique reellement.
+ * ------------------------------------------------------------------------- */
+.product-card .text-block.h5 > * {
+  font-family: var(--font-body--family);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------------------------
+ * LE PRIX
+ *
+ * En police de titrage : c'est le contraste avec un nom discret qui fait la
+ * carte des pages motif.
+ * ------------------------------------------------------------------------- */
+.product-card product-price .price {
+  font-family: var(--font-heading--family, sans-serif);
+  font-size: 1.14rem;
+  letter-spacing: 0.03em;
+  line-height: 1;
+}
+
+/* ---------------------------------------------------------------------------
+ * LES PASTILLES DE COULEUR
+ *
+ * 12px, comme sur la page motif — contre 30px par defaut dans le theme.
+ *
+ * On repose les deux variables que le theme lit deja pour la largeur, la
+ * hauteur ET la taille du fond : les ecraser toutes les trois d'un coup evite
+ * une pastille dont l'image deborde du cercle.
+ * ------------------------------------------------------------------------- */
+.product-card .swatch {
+  --swatch-width: 12px;
+  --swatch-height: 12px;
+}
