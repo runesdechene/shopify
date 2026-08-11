@@ -1,0 +1,103 @@
+{%- comment -%}
+  rdc_reassurance.liquid
+
+  Les trois reponses qu'attend quelqu'un qui hesite, juste sous le bouton
+  d'achat : QUAND je le recois, SI je peux le renvoyer, SI le paiement est sur.
+
+  A quoi ca sert : la fiche produit portait deja une bande sous le bouton
+  (« Entreprise francaise · Livraison sans plastique · Matiere haute-de-gamme
+  · Certifie Fair Wear & Peta ») — quatre valeurs de marque, aucune reponse a
+  ces trois questions. Le delai, surtout, n'etait annonce NULLE PART sur le
+  site : c'est la premiere question sur une marque artisanale qu'on ne connait
+  pas, et une absence de delai fait fuir plus qu'un delai long.
+
+  ⚠ Le delai affiche est un ENGAGEMENT COMMERCIAL. Il est cale sur le seuil de
+  21 jours de l'email post-commande : si l'un change, changer l'autre.
+
+  Les icones sont dessinees ici plutot qu'appelees dans le jeu du theme : ce
+  bloc ne doit dependre d'aucun nom d'icone qui pourrait disparaitre a une
+  mise a jour.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = 'RdcRea-' | append: block.id
+  assign s = block.settings
+-%}
+
+<style>
+  #{{ uid }}{display:flex;flex-direction:column;gap:{{ s.gap }}px;
+    margin-block:{{ s.margin_top }}px {{ s.margin_bottom }}px}
+  #{{ uid }} .rdcrea__l{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;
+    font-family:var(--font-body--family);font-size:{{ s.text_size }}px;line-height:1.4;
+    color:{{ s.text_color }}}
+  {%- comment -%}
+    L'icone se cale sur la premiere ligne du texte, pas au centre du bloc :
+    sur une phrase qui passe a la ligne, un centrage la ferait glisser vers le
+    bas et l'alignement de la colonne se casserait.
+  {%- endcomment -%}
+  #{{ uid }} .rdcrea__i{width:{{ s.icon_size }}px;height:{{ s.icon_size }}px;flex:0 0 auto;
+    color:{{ s.accent_color }};margin-top:.1em}
+  #{{ uid }} .rdcrea__i svg{width:100%;height:100%;display:block}
+  #{{ uid }} .rdcrea__l strong{font-weight:600;color:{{ s.strong_color }}}
+</style>
+
+<div id="{{ uid }}" {{ block.shopify_attributes }}>
+  {%- if s.line_delivery != blank -%}
+    <div class="rdcrea__l">
+      <span class="rdcrea__i" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"/><path d="M3 7.5 12 12l9-4.5"/><path d="M12 12v9"/>
+        </svg>
+      </span>
+      <span>{{ s.line_delivery }}</span>
+    </div>
+  {%- endif -%}
+
+  {%- if s.line_returns != blank -%}
+    <div class="rdcrea__l">
+      <span class="rdcrea__i" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/>
+        </svg>
+      </span>
+      <span>{{ s.line_returns }}</span>
+    </div>
+  {%- endif -%}
+
+  {%- if s.line_payment != blank -%}
+    <div class="rdcrea__l">
+      <span class="rdcrea__i" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+             stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+        </svg>
+      </span>
+      <span>{{ s.line_payment }}</span>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "RDC — Réassurance",
+  "settings": [
+    { "type": "paragraph", "content": "Les trois questions de quelqu'un qui hésite : quand je le reçois, si je peux le renvoyer, si le paiement est sûr. À placer juste sous le bouton d'achat. Laisser une ligne vide la retire." },
+    { "type": "inline_richtext", "id": "line_delivery", "label": "Ligne 1 — le délai", "default": "Imprimé à la commande dans notre atelier · <strong>chez vous sous 3 semaines</strong>", "info": "⚠️ C'est un engagement commercial. Il doit rester cohérent avec l'email envoyé après l'achat." },
+    { "type": "inline_richtext", "id": "line_returns", "label": "Ligne 2 — le retour", "default": "Échange ou remboursement <strong>sous 14 jours</strong>" },
+    { "type": "inline_richtext", "id": "line_payment", "label": "Ligne 3 — le paiement", "default": "Paiement sécurisé" },
+
+    { "type": "header", "content": "Apparence" },
+    { "type": "range", "id": "text_size", "label": "Taille du texte", "unit": "px", "min": 11, "max": 18, "step": 1, "default": 13 },
+    { "type": "range", "id": "icon_size", "label": "Taille des icônes", "unit": "px", "min": 12, "max": 28, "step": 1, "default": 17 },
+    { "type": "range", "id": "gap", "label": "Espace entre les lignes", "unit": "px", "min": 2, "max": 20, "step": 1, "default": 9 },
+    { "type": "range", "id": "margin_top", "label": "Espace au-dessus", "unit": "px", "min": 0, "max": 48, "step": 2, "default": 16 },
+    { "type": "range", "id": "margin_bottom", "label": "Espace en dessous", "unit": "px", "min": 0, "max": 48, "step": 2, "default": 8 },
+    { "type": "color", "id": "accent_color", "label": "Couleur des icônes", "default": "#b4894f" },
+    { "type": "color", "id": "text_color", "label": "Couleur du texte", "default": "#5a4a42" },
+    { "type": "color", "id": "strong_color", "label": "Couleur des mots en gras", "default": "#403434" }
+  ],
+  "presets": [{ "name": "RDC — Réassurance" }]
+}
+{% endschema %}
