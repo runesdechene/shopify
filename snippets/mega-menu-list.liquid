@@ -326,6 +326,21 @@
           {%- if accroche != blank -%}
             <span class="mega-menu__link-lede">{{ accroche | truncate: 80 }}</span>
           {%- endif -%}
+          {%- comment -%}
+            Le compte sous l'accroche.
+
+            ⚠ Il vient du metachamp `custom.nb_fragments` s'il existe, sinon du
+            nombre de PIECES de la collection. Compter les Fragments reellement
+            distincts obligerait a parcourir les produits de chaque collection
+            a chaque chargement de page, sur tout le site : trop cher pour un
+            menu. Le metachamp donne le chiffre juste sans rien couter.
+          {%- endcomment -%}
+          {%- assign nbf = link.object.metafields.custom.nb_fragments.value | default: link.object.metafields.custom.nb_fragments -%}
+          {%- if nbf != blank -%}
+            <span class="mega-menu__link-count">{{ nbf }} Fragments</span>
+          {%- elsif link.object.products_count > 0 -%}
+            <span class="mega-menu__link-count">{{ link.object.products_count }} pièces</span>
+          {%- endif -%}
         {%- endif -%}
       </a>
       {% if link.links != blank %}
@@ -802,7 +817,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
     gap: 18px 14px;
-    margin-top: 34px;
+    margin-top: 16px;
     padding: 0 !important;
     border: 0 !important;
   }
@@ -1008,10 +1023,24 @@
    * Meme geste en haut et en bas — c'est ce qui manquait : les grandes cartes
    * n'avaient aucun effet, les petites avaient le mauvais.
    * ------------------------------------------------------------------------- */
+  /* ⚠ `grid` + `overflow: clip` plutot qu'un simple `overflow: hidden` : en
+   * bloc, l'image agrandie pouvait deborder avant que le cadre ne se
+   * redimensionne. En grille, elle est enfermee dans une cellule qui ne bouge
+   * jamais. */
   .rdc-menu-shot {
-    display: block;
-    overflow: hidden;
+    display: grid;
+    overflow: clip;
     line-height: 0;
+  }
+
+  .rdc-menu-shot > img {
+    grid-area: 1 / 1;
+    width: 100%;
+  }
+
+  /* Rien ne doit agrandir le LIEN lui-meme : seul le visuel bouge. */
+  .rdc-menu-images .mega-menu__link:hover {
+    transform: none !important;
   }
 
   .rdc-menu-shot img,
@@ -1051,6 +1080,17 @@
     flex: 1;
     height: 1px;
     background: rgba(64, 52, 52, .13);
+  }
+
+
+  .rdc-menu-images .mega-menu__link-count {
+    display: block;
+    font-family: var(--font-body--family);
+    font-size: .6rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    opacity: .55;
+    margin-top: 4px;
   }
 
 {% endstylesheet %}
