@@ -1,0 +1,201 @@
+{%- comment -%}
+  rdc_coupes.liquid
+
+  Les coupes disponibles, affichees en clair avec leurs icones, au lieu d'etre
+  repliees derriere une pastille « Coupe » qu'il faut deplier.
+
+  Ce sont de VRAIS filtres : chaque coupe est un lien construit par Shopify
+  (`value.url_to_add` / `url_to_remove`), donc le tri, la pagination et les
+  autres filtres actifs sont conserves. Rien n'est reimplemente.
+
+  ⚠ La section ne rend rien si le filtre n'existe pas sur la collection —
+  aucune balise, aucune hauteur. Une collection d'une seule coupe n'affiche
+  donc pas une rangee a un seul element.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = 'RdcCoupes-' | append: section.id
+  assign s = section.settings
+
+  comment
+    On retrouve le filtre par sa cle exacte, avec un repli sur son libelle :
+    la cle est stable, mais si le champ etait recree dans Shopify elle
+    changerait — le libelle, lui, resterait « Coupe ».
+  endcomment
+  assign cible = nil
+  for f in collection.filters
+    if f.param_name == s.filter_key
+      assign cible = f
+    endif
+  endfor
+  if cible == nil
+    for f in collection.filters
+      assign l = f.label | downcase
+      if l == s.filter_label_fallback and cible == nil
+        assign cible = f
+      endif
+    endfor
+  endif
+-%}
+
+{%- if cible != nil and cible.values.size > 1 -%}
+<style>
+  #{{ uid }}{background:{{ s.bg_color }};
+    padding-top:{{ s.padding_top }}px;padding-bottom:{{ s.padding_bottom }}px}
+  #{{ uid }} .rdccp__in{margin:0 auto;box-sizing:border-box;max-width:100%;
+    padding-inline:clamp(26px,5vw,64px)}
+
+  #{{ uid }} .rdccp__title{font-family:var(--font-body--family);font-weight:700;
+    font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+    color:{{ s.accent_color }};margin:0 0 12px}
+
+  {%- comment -%}
+    Une rangee qui defile au doigt plutot qu'un retour a la ligne : sur
+    telephone, six coupes sur deux lignes prennent la moitie de l'ecran avant
+    d'avoir montre un seul produit.
+  {%- endcomment -%}
+  #{{ uid }} .rdccp__row{display:flex;gap:{{ s.gap }}px;overflow-x:auto;
+    padding-bottom:4px;scrollbar-width:thin}
+
+  #{{ uid }} .rdccp__cut{flex:0 0 auto;display:flex;flex-direction:column;
+    align-items:center;gap:7px;text-decoration:none;color:inherit;
+    width:{{ s.item_width }}px;padding:10px 6px;border-radius:8px;
+    border:1px solid transparent;transition:border-color .2s ease,background .2s ease}
+  #{{ uid }} .rdccp__cut:hover{border-color:{{ s.accent_color }}55}
+  #{{ uid }} .rdccp__cut:focus-visible{outline:2px solid {{ s.accent_color }};outline-offset:2px}
+
+  {%- comment -%}
+    L'etat actif se lit sans couleur seule : le contour ET le fond changent,
+    et le lien porte `aria-current`. Une pastille distinguee par la seule
+    teinte serait invisible pour qui distingue mal les couleurs.
+  {%- endcomment -%}
+  #{{ uid }} .rdccp__cut.is-on{border-color:{{ s.accent_color }};
+    background:{{ s.accent_color }}1a}
+
+  #{{ uid }} .rdccp__ico{width:{{ s.icon_size }}px;height:{{ s.icon_size }}px;
+    color:{{ s.icon_color }};display:block}
+  #{{ uid }} .rdccp__ico svg{width:100%;height:100%;display:block}
+  #{{ uid }} .rdccp__lbl{font-family:var(--font-body--family);font-size:.64rem;
+    font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    text-align:center;line-height:1.25;color:{{ s.text_color }}}
+  #{{ uid }} .rdccp__nb{font-family:var(--font-body--family);font-size:.58rem;
+    letter-spacing:.1em;color:{{ s.muted_color }}}
+</style>
+
+<section id="{{ uid }}">
+  <div class="rdccp__in">
+    {%- if s.title != blank -%}
+      <p class="rdccp__title">{{ s.title }}</p>
+    {%- endif -%}
+
+    <nav class="rdccp__row" aria-label="{{ cible.label | escape }}">
+      {%- for v in cible.values -%}
+        {%- liquid
+          comment
+            L'icone se choisit sur le LIBELLE, pas sur un identifiant : les
+            coupes sont saisies a la main dans Shopify et n'ont pas de cle
+            stable. Un mot suffit, et une icone par defaut evite le trou si
+            une coupe inedite apparait.
+          endcomment
+          assign l = v.label | downcase
+          assign forme = 'tshirt'
+          if l contains 'capuche' or l contains 'hoodie'
+            assign forme = 'capuche'
+          elsif l contains 'zipp' or l contains 'veste'
+            assign forme = 'veste'
+          elsif l contains 'debardeur' or l contains 'débardeur'
+            assign forme = 'debardeur'
+          elsif l contains 'oversized' or l contains 'oversize'
+            assign forme = 'oversized'
+          elsif l contains 'sweat'
+            assign forme = 'sweat'
+          endif
+
+          if v.active
+            assign lien = v.url_to_remove
+          else
+            assign lien = v.url_to_add
+          endif
+        -%}
+        <a class="rdccp__cut{% if v.active %} is-on{% endif %}"
+           href="{{ lien }}"
+           {% if v.active %}aria-current="true"{% endif %}>
+          <span class="rdccp__ico" aria-hidden="true">
+            {%- case forme -%}
+              {%- when 'capuche' -%}
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                  <path d="M18 7 9 11 4 21l7 3 3-5v25h20V19l3 5 7-3-5-10-9-4"/>
+                  <path d="M18 7c0 4 3 6 6 6s6-2 6-6"/>
+                  <path d="M20 7c-2 5-1 11 4 11s6-6 4-11"/>
+                  <path d="M21 18v22M27 18v22"/>
+                </svg>
+              {%- when 'veste' -%}
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                  <path d="M18 7 9 11 4 21l7 3 3-5v25h20V19l3 5 7-3-5-10-9-4"/>
+                  <path d="M18 7c0 4 3 6 6 6s6-2 6-6"/>
+                  <path d="M24 13v31"/>
+                </svg>
+              {%- when 'debardeur' -%}
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                  <path d="M18 7c-3 6-4 10-4 14v23h20V21c0-4-1-8-4-14"/>
+                  <path d="M18 7c0 4 3 6 6 6s6-2 6-6"/>
+                </svg>
+              {%- when 'oversized' -%}
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                  <path d="M17 7 6 12 2 23l7 3 3-5v23h24V21l3 5 7-3-4-11-11-5"/>
+                  <path d="M17 7c0 4 3 6 7 6s7-2 7-6"/>
+                </svg>
+              {%- when 'sweat' -%}
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                  <path d="M18 7 9 11 4 21l7 3 3-5v25h20V19l3 5 7-3-5-10-9-4"/>
+                  <path d="M18 7c0 4 3 6 6 6s6-2 6-6"/>
+                </svg>
+              {%- else -%}
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                  <path d="M18 8 9 12 5 21l6 3 3-4v24h20V20l3 4 6-3-4-9-9-4"/>
+                  <path d="M18 8c0 3 3 5 6 5s6-2 6-5"/>
+                </svg>
+            {%- endcase -%}
+          </span>
+          <span class="rdccp__lbl">{{ v.label }}</span>
+          {%- if s.show_count and v.count > 0 -%}
+            <span class="rdccp__nb">{{ v.count }}</span>
+          {%- endif -%}
+        </a>
+      {%- endfor -%}
+    </nav>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "RDC — Les coupes",
+  "tag": "section",
+  "enabled_on": { "templates": ["collection"] },
+  "settings": [
+    { "type": "paragraph", "content": "Affiche toutes les coupes disponibles avec leurs icônes, au lieu de les replier derrière une pastille. Ce sont de vrais filtres : le tri et les autres filtres actifs sont conservés. La section disparaît si la collection ne propose qu'une seule coupe." },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Choisir une coupe" },
+    { "type": "checkbox", "id": "show_count", "label": "Afficher le nombre de produits", "default": false },
+
+    { "type": "header", "content": "Mise en page" },
+    { "type": "range", "id": "item_width", "label": "Largeur d'une coupe", "unit": "px", "min": 64, "max": 160, "step": 4, "default": 96 },
+    { "type": "range", "id": "icon_size", "label": "Taille des icônes", "unit": "px", "min": 20, "max": 64, "step": 2, "default": 36 },
+    { "type": "range", "id": "gap", "label": "Écart entre les coupes", "unit": "px", "min": 0, "max": 40, "step": 2, "default": 6 },
+    { "type": "range", "id": "padding_top", "label": "Espace au-dessus", "unit": "px", "min": 0, "max": 80, "step": 2, "default": 8 },
+    { "type": "range", "id": "padding_bottom", "label": "Espace en dessous", "unit": "px", "min": 0, "max": 80, "step": 2, "default": 12 },
+
+    { "type": "header", "content": "Couleurs" },
+    { "type": "color", "id": "bg_color", "label": "Fond", "default": "#f4eee1" },
+    { "type": "color", "id": "icon_color", "label": "Icônes", "default": "#5a4a42" },
+    { "type": "color", "id": "text_color", "label": "Libellés", "default": "#5a4a42" },
+    { "type": "color", "id": "muted_color", "label": "Compteur", "default": "#8d7c6d" },
+    { "type": "color", "id": "accent_color", "label": "Accent (coupe active)", "default": "#b4894f" },
+
+    { "type": "header", "content": "Source" },
+    { "type": "text", "id": "filter_key", "label": "Clé du filtre", "default": "filter.p.m.custom.base", "info": "Clé Shopify du filtre de coupe. En cas d'échec, le libellé ci-dessous sert de repli." },
+    { "type": "text", "id": "filter_label_fallback", "label": "Libellé de repli", "default": "coupe", "info": "En minuscules." }
+  ],
+  "presets": [{ "name": "RDC — Les coupes" }]
+}
+{% endschema %}
