@@ -116,6 +116,28 @@
                 class="menu-list__submenu-inner"
                 style="{% render 'submenu-font-styles', settings: block_settings %}"
               >
+                {%- liquid
+                  comment
+                    ⚠ Le type d'affichage etait UN SEUL reglage pour tout le
+                    menu : passer les Fragments en grandes images y faisait
+                    passer Boutique aussi, alors qu'une liste de coupes n'a rien
+                    a montrer et se lit mieux en texte.
+
+                    Ce reglage devient donc un PAR MENU : les titres listes dans
+                    « Menus en grandes images » basculent en images de
+                    collection, les autres gardent le type par defaut du bloc.
+                  endcomment
+                  assign menu_type_for_link = menu_content_type
+                  if block_settings.image_menus != blank
+                    assign image_menu_lines = block_settings.image_menus | newline_to_br | split: '<br />'
+                    for ligne in image_menu_lines
+                      assign ligne_propre = ligne | strip
+                      if ligne_propre != '' and ligne_propre == link.title
+                        assign menu_type_for_link = 'collection_images'
+                      endif
+                    endfor
+                  endif
+                -%}
                 {% assign list_id = 'MegaMenuList-' | append: forloop.index %}
                 <div class="mega-menu section section--full-width-margin section--{{ section.settings.section_width }}">
                   <div
@@ -129,7 +151,7 @@
                       grid_columns_count: 6,
                       grid_columns_count_tablet: 4,
                       grid_columns_count_collection_images: 8,
-                      menu_content_type: menu_content_type,
+                      menu_content_type: menu_type_for_link,
                       content_aspect_ratio: ratio,
                       image_border_radius: image_border_radius,
                       menu_icons_mapping: block_settings.menu_icons_mapping,
@@ -893,6 +915,12 @@
     {
       "type": "header",
       "content": "t:content.submenu_feature"
+    },
+    {
+      "type": "textarea",
+      "id": "image_menus",
+      "label": "Menus en grandes images",
+      "info": "Titres exacts des menus qui s'afficheront en grandes images de collection (un par ligne). Les autres gardent le style choisi ci-dessous. Ex. : Les Fragments."
     },
     {
       "type": "select",
