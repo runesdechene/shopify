@@ -58,8 +58,70 @@
   {%- endif -%}
 
   @media (max-width:749px){
-    #{{ uid }} .rdc-tri__grid{grid-template-columns:1fr;gap:30px;text-align:center}
+    {%- comment -%}
+      Marges propres au mobile : celles du bureau (100/80) coutent a elles
+      seules un quart d'ecran de telephone.
+    {%- endcomment -%}
+    #{{ uid }} .rdc-tri__inner{padding-block:{{ section.settings.padding_top_mobile }}px {{ section.settings.padding_bottom_mobile }}px}
+
+    {%- comment -%}
+      Le sur-titre est long et tres interlettre : a `.26em` il casse sur deux
+      lignes des 360px de large, et un sur-titre casse ne ressemble plus a une
+      etiquette mais a une phrase ratee. Resserre, il tient sur une ligne.
+    {%- endcomment -%}
+    #{{ uid }} .rdc-tri__overline{font-size:.68rem;letter-spacing:.16em}
+
+    {%- if section.settings.mobile_row -%}
+    {%- comment -%}
+      MOBILE EN LIGNES. Chaque pilier devient une ligne : dessin a gauche,
+      mot et phrase a droite.
+
+      C'est ce qui divise la hauteur par deux et demi. Empiles, les trois
+      piliers font payer trois fois la hauteur d'une image PLUS trois fois
+      celle du texte ; cote a cote, les deux se partagent la meme ligne. La
+      bande passe d'environ 1200px a 460px et redevient ce qu'annonce l'en-tete
+      de ce fichier : « volontairement slim ».
+
+      L'en-tete s'aligne a gauche lui aussi : un sur-titre centre au-dessus de
+      lignes alignees a gauche donne deux axes de lecture pour un seul bloc.
+    {%- endcomment -%}
+    #{{ uid }} .rdc-tri__inner{text-align:left}
+    #{{ uid }} .rdc-tri__intro{margin-inline:0}
+    #{{ uid }} .rdc-tri__grid{grid-template-columns:1fr;gap:18px;text-align:left;
+      margin-top:{{ section.settings.grid_gap_top_mobile }}px}
+
+    {%- comment -%}
+      `auto 1fr` plutot qu'une largeur fixe : un pilier sans illustration ne
+      laisse pas une colonne vide. Le dessin occupe les deux rangees, donc il
+      se centre en face du mot ET de la phrase.
+    {%- endcomment -%}
+    #{{ uid }} .rdc-tri__pillar{display:grid;grid-template-columns:auto 1fr;
+      column-gap:14px;row-gap:2px;align-items:center}
+    #{{ uid }} .rdc-tri__icon{grid-column:1;grid-row:1 / span 2;margin:0;
+      width:{{ section.settings.image_size_mobile }}px;height:{{ section.settings.image_size_mobile }}px}
+
+    {%- comment -%}
+      Le trait dore change de role : au lieu de decorer chaque pilier, il
+      separe les lignes. Une liste gagne une colonne vertebrale, la ou trois
+      barres isolees ne faisaient que repeter un ornement.
+    {%- endcomment -%}
+    #{{ uid }} .rdc-tri__sep{display:none}
+    #{{ uid }} .rdc-tri__pillar + .rdc-tri__pillar{
+      border-top:1px solid {{ section.settings.accent_color }}33;padding-top:18px}
+
+    #{{ uid }} .rdc-tri__word{grid-column:2;grid-row:1;
+      font-size:{{ section.settings.word_size_mobile }}px;letter-spacing:.06em;margin-bottom:0}
+    #{{ uid }} .rdc-tri__text{grid-column:2;grid-row:2;max-width:none;margin:0;
+      font-size:1rem;line-height:1.45}
+    {%- else -%}
+    #{{ uid }} .rdc-tri__grid{grid-template-columns:1fr;gap:30px;text-align:center;
+      margin-top:{{ section.settings.grid_gap_top_mobile }}px}
     #{{ uid }} .rdc-tri__sep,#{{ uid }} .rdc-tri__text,#{{ uid }} .rdc-tri__icon{margin-inline:auto}
+    #{{ uid }} .rdc-tri__icon{width:{{ section.settings.image_size_mobile }}px;
+      height:{{ section.settings.image_size_mobile }}px}
+    #{{ uid }} .rdc-tri__word{font-size:{{ section.settings.word_size_mobile }}px}
+    {%- endif -%}
+
     {%- if bg_mobile != blank -%}
     .rdc-tri-bg-{{ section.id }}{background-image:url({{ bg_mobile_url }});background-position:center;
       {% if section.settings.background_fit == 'tile' %}background-repeat:repeat;background-size:auto{% else %}background-repeat:no-repeat;background-size:cover{% endif %}}
@@ -128,6 +190,15 @@
     { "type": "range", "id": "word_size", "label": "Taille des titres", "unit": "px", "min": 16, "max": 56, "step": 1, "default": 32 },
     { "type": "range", "id": "padding_top", "label": "Marge haut", "unit": "px", "min": 0, "max": 160, "step": 4, "default": 88 },
     { "type": "range", "id": "padding_bottom", "label": "Marge bas", "unit": "px", "min": 0, "max": 160, "step": 4, "default": 80 },
+
+    { "type": "header", "content": "Mobile" },
+    { "type": "paragraph", "content": "Sur téléphone, chaque pilier devient une ligne : le dessin à gauche, le mot et la phrase à droite. La bande tient dans un écran au lieu d'en faire deux. Décochez pour revenir à l'empilement centré." },
+    { "type": "checkbox", "id": "mobile_row", "label": "Disposition en lignes sur mobile", "default": true },
+    { "type": "range", "id": "image_size_mobile", "label": "Taille des illustrations (mobile)", "unit": "px", "min": 40, "max": 140, "step": 4, "default": 64 },
+    { "type": "range", "id": "word_size_mobile", "label": "Taille des titres (mobile)", "unit": "px", "min": 14, "max": 40, "step": 1, "default": 22 },
+    { "type": "range", "id": "grid_gap_top_mobile", "label": "Espace au-dessus du triptyque (mobile)", "unit": "px", "min": 0, "max": 60, "step": 2, "default": 24 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Marge haut (mobile)", "unit": "px", "min": 0, "max": 120, "step": 4, "default": 44 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Marge bas (mobile)", "unit": "px", "min": 0, "max": 120, "step": 4, "default": 40 },
 
     { "type": "header", "content": "Couleurs" },
     { "type": "color_scheme", "id": "color_scheme", "label": "Schéma de couleur", "default": "scheme-1" },
