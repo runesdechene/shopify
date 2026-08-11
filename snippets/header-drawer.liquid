@@ -1023,6 +1023,13 @@
     width: 24px;
     height: 24px;
     object-fit: contain;
+
+    /*
+     * Les vignettes carrees (sagas, « Tout voir », North Wanderers) tranchaient
+     * dans une liste qui n'a aucun autre angle vif. Sans effet sur les icones au
+     * trait : en `contain`, elles ne touchent pas les bords de leur boite.
+     */
+    border-radius: 6px;
   }
 
   .menu-drawer__menu-item-text {
