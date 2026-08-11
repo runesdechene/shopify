@@ -72,9 +72,8 @@
   #{{ uid }} .rdccp__cut.is-on{border-color:{{ s.accent_color }};
     background:{{ s.accent_color }}1a}
 
-  #{{ uid }} .rdccp__ico{width:{{ s.icon_size }}px;height:{{ s.icon_size }}px;
-    color:{{ s.icon_color }};display:block}
-  #{{ uid }} .rdccp__ico svg{width:100%;height:100%;display:block}
+  #{{ uid }} .rdccp__ico{width:{{ s.icon_size }}px;height:{{ s.icon_size }}px;display:block}
+  #{{ uid }} .rdccp__ico img{width:100%;height:100%;object-fit:contain;display:block}
   #{{ uid }} .rdccp__lbl{font-family:var(--font-body--family);font-size:.64rem;
     font-weight:600;letter-spacing:.08em;text-transform:uppercase;
     text-align:center;line-height:1.25;color:{{ s.text_color }}}
@@ -92,24 +91,63 @@
       {%- for v in cible.values -%}
         {%- liquid
           comment
-            L'icone se choisit sur le LIBELLE, pas sur un identifiant : les
-            coupes sont saisies a la main dans Shopify et n'ont pas de cle
-            stable. Un mot suffit, et une icone par defaut evite le trou si
-            une coupe inedite apparait.
+            ⚠ L'ICONE VIENT DU METAOBJET, pas d'un dessin invente.
+
+            Chaque coupe est un metaobjet `custom.base` qui porte deja son
+            `icone` et son `label` — ce sont eux que la fiche produit affiche
+            dans « aussi disponible ». On les reprend tels quels.
+
+            Le filtre ne donne qu'un libelle : on retrouve le metaobjet en
+            parcourant les produits de la collection jusqu'a celui dont la
+            coupe porte ce libelle. C'est le seul chemin depuis une valeur de
+            filtre vers son metaobjet, et il reste peu couteux (la boucle
+            s'arrete des qu'elle a trouve).
           endcomment
-          assign l = v.label | downcase
-          assign forme = 'tshirt'
-          if l contains 'capuche' or l contains 'hoodie'
-            assign forme = 'capuche'
-          elsif l contains 'zipp' or l contains 'veste'
-            assign forme = 'veste'
-          elsif l contains 'debardeur' or l contains 'débardeur'
-            assign forme = 'debardeur'
-          elsif l contains 'oversized' or l contains 'oversize'
-            assign forme = 'oversized'
-          elsif l contains 'sweat'
-            assign forme = 'sweat'
-          endif
+          assign ico = nil
+          assign lbl = v.label
+
+          comment
+            ⚠ D'ABORD la liste complete des metaobjets, PAS les produits de la
+            collection : des qu'un filtre est actif, `collection.products` ne
+            contient plus que les produits filtres — les autres coupes
+            perdraient donc leur icone au premier clic. La liste des
+            metaobjets, elle, ne bouge jamais.
+          endcomment
+          assign toutes = shop.metaobjects[s.metaobject_type].values
+          for b in toutes
+            unless ico
+              assign n1 = b.nom.value | default: ''
+              assign n2 = b.label | default: ''
+              assign n3 = b.system.name | default: ''
+              if n1 == v.label or n2 == v.label or n3 == v.label
+                assign ico = b.icone
+                if b.label != blank
+                  assign lbl = b.label
+                endif
+              endif
+            endunless
+          endfor
+
+          comment
+            Repli : si le type de metaobjet est mal renseigne, on retrouve
+            quand meme l'icone par les produits affichés.
+          endcomment
+          for p in collection.products
+            unless ico
+              assign b = p.metafields.custom.base.value
+              unless b == blank
+                assign n1 = b.nom.value | default: ''
+                assign n2 = b.label | default: ''
+                assign n3 = b.system.name | default: ''
+                if n1 == v.label or n2 == v.label or n3 == v.label
+                  assign ico = b.icone
+                  if b.label != blank
+                    assign lbl = b.label
+                  endif
+                endif
+              endunless
+            endunless
+          endfor
 
           if v.active
             assign lien = v.url_to_remove
@@ -120,44 +158,12 @@
         <a class="rdccp__cut{% if v.active %} is-on{% endif %}"
            href="{{ lien }}"
            {% if v.active %}aria-current="true"{% endif %}>
-          <span class="rdccp__ico" aria-hidden="true">
-            {%- case forme -%}
-              {%- when 'capuche' -%}
-                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-                  <path d="M18 7 9 11 4 21l7 3 3-5v25h20V19l3 5 7-3-5-10-9-4"/>
-                  <path d="M18 7c0 4 3 6 6 6s6-2 6-6"/>
-                  <path d="M20 7c-2 5-1 11 4 11s6-6 4-11"/>
-                  <path d="M21 18v22M27 18v22"/>
-                </svg>
-              {%- when 'veste' -%}
-                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-                  <path d="M18 7 9 11 4 21l7 3 3-5v25h20V19l3 5 7-3-5-10-9-4"/>
-                  <path d="M18 7c0 4 3 6 6 6s6-2 6-6"/>
-                  <path d="M24 13v31"/>
-                </svg>
-              {%- when 'debardeur' -%}
-                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-                  <path d="M18 7c-3 6-4 10-4 14v23h20V21c0-4-1-8-4-14"/>
-                  <path d="M18 7c0 4 3 6 6 6s6-2 6-6"/>
-                </svg>
-              {%- when 'oversized' -%}
-                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-                  <path d="M17 7 6 12 2 23l7 3 3-5v23h24V21l3 5 7-3-4-11-11-5"/>
-                  <path d="M17 7c0 4 3 6 7 6s7-2 7-6"/>
-                </svg>
-              {%- when 'sweat' -%}
-                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-                  <path d="M18 7 9 11 4 21l7 3 3-5v25h20V19l3 5 7-3-5-10-9-4"/>
-                  <path d="M18 7c0 4 3 6 6 6s6-2 6-6"/>
-                </svg>
-              {%- else -%}
-                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-                  <path d="M18 8 9 12 5 21l6 3 3-4v24h20V20l3 4 6-3-4-9-9-4"/>
-                  <path d="M18 8c0 3 3 5 6 5s6-2 6-5"/>
-                </svg>
-            {%- endcase -%}
-          </span>
-          <span class="rdccp__lbl">{{ v.label }}</span>
+          {%- if ico != blank -%}
+            <span class="rdccp__ico" aria-hidden="true">
+              {{ ico | image_url: width: 120 | image_tag: loading: 'lazy', alt: '', width: 60, height: 60 }}
+            </span>
+          {%- endif -%}
+          <span class="rdccp__lbl">{{ lbl }}</span>
           {%- if s.show_count and v.count > 0 -%}
             <span class="rdccp__nb">{{ v.count }}</span>
           {%- endif -%}
@@ -187,14 +193,14 @@
 
     { "type": "header", "content": "Couleurs" },
     { "type": "color", "id": "bg_color", "label": "Fond", "default": "#f4eee1" },
-    { "type": "color", "id": "icon_color", "label": "Icônes", "default": "#5a4a42" },
     { "type": "color", "id": "text_color", "label": "Libellés", "default": "#5a4a42" },
     { "type": "color", "id": "muted_color", "label": "Compteur", "default": "#8d7c6d" },
     { "type": "color", "id": "accent_color", "label": "Accent (coupe active)", "default": "#b4894f" },
 
     { "type": "header", "content": "Source" },
     { "type": "text", "id": "filter_key", "label": "Clé du filtre", "default": "filter.p.m.custom.base", "info": "Clé Shopify du filtre de coupe. En cas d'échec, le libellé ci-dessous sert de repli." },
-    { "type": "text", "id": "filter_label_fallback", "label": "Libellé de repli", "default": "coupe", "info": "En minuscules." }
+    { "type": "text", "id": "filter_label_fallback", "label": "Libellé de repli", "default": "coupe", "info": "En minuscules." },
+    { "type": "text", "id": "metaobject_type", "label": "Type de métaobjet des coupes", "default": "base", "info": "Sert à retrouver l'icône de chaque coupe. Sans lui, les icônes disparaîtraient dès qu'un filtre est actif. Visible dans Shopify → Contenu → Métaobjets." }
   ],
   "presets": [{ "name": "RDC — Les coupes" }]
 }
