@@ -1,0 +1,314 @@
+{%- comment -%}
+  rdc_collection-planche.liquid
+
+  L'en-tete de la page collection, traitee comme une PLANCHE DE CATALOGUE
+  ILLUSTRE : une colonne de marge a gauche (numero, compteurs, sommaire), la
+  planche a droite (titre, texte, rail des Fragments).
+
+  ⚠ Pourquoi seulement l'en-tete : la grille appartient a la section du theme,
+  avec ses filtres, son defilement infini et son ajout rapide. Une section ne
+  peut pas en encadrer une autre — la colonne de marge ne peut donc pas courir
+  le long de la grille sans reconstruire la grille, et donc perdre tout cela.
+
+  Ce qu'elle repare, releve sur la page du 11/08 :
+    · le titre etait « Explorez {nom de la collection} » sur TOUTES les
+      collections — la balise la plus lue par Google, gaspillee ;
+    · les collections generiques n'avaient aucun texte a elles ;
+    · « Explorer par fragments » apparaissait deux fois, en haut et en bas.
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = 'RdcPlanche-' | append: section.id
+  assign s = section.settings
+
+  comment
+    ⚠ Le remplacement du jeton DOIT se faire ici, dans un bloc `liquid`,
+    jamais dans une balise de sortie : `{{ x | replace: '{collection}', y }}`
+    fait echouer le parseur de Shopify et la section est refusee en ligne.
+    Piege deja paye sur rdc_motifs-voisins et rdc_saga-motifs.
+  endcomment
+  assign titre = s.title | replace: '{collection}', collection.title
+  if titre == blank
+    assign titre = collection.title
+  endif
+
+  assign nb_pieces = collection.products_count
+
+  comment
+    ⚠ Ce gabarit sert TOUTES les collections : un texte saisi dans l'editeur
+    serait le meme partout. Le premier paragraphe retombe donc sur la
+    description Shopify de la collection, qui est propre a chacune — c'est la
+    que ce texte doit vivre. Le reglage de l'editeur ne sert qu'a forcer une
+    exception.
+  endcomment
+  assign lede = s.lede
+  if lede == blank
+    assign lede = collection.description
+  endif
+
+  comment
+    Les Fragments presents dans la collection. Meme resolution que
+    rdc_motifs-voisins : chaque produit porte son metaobjet illustration, qui
+    porte sa collection de motif. On accumule des handles dans une chaine —
+    Liquid n'a ni dictionnaire ni `push` — et la sonde borne la cle des DEUX
+    cotes (|avalon|), sinon « avalon » matcherait dans « grand-avalon ».
+
+    ⚠ Sans pagination, `collection.products` s'arrete a 50 produits. Sur une
+    collection plus grande, les compteurs sont donc des minima. C'est dit dans
+    l'editeur plutot que masque.
+  endcomment
+  assign vus = '|'
+  assign frags = ''
+  assign types_vus = '|'
+  assign nb_coupes = 0
+  for produit in collection.products
+    assign ill = produit.metafields.custom.illustration_produit.value
+    unless ill == blank
+      assign col = ill.collection.value
+      if col == blank
+        assign col = collections[ill.system.handle]
+      endif
+      unless col == blank
+        assign sonde = '|' | append: col.handle | append: '|'
+        unless vus contains sonde
+          assign vus = vus | append: col.handle | append: '|'
+          assign frags = frags | append: col.handle | append: '~'
+        endunless
+      endunless
+    endunless
+
+    unless produit.type == blank
+      assign sonde_t = '|' | append: produit.type | append: '|'
+      unless types_vus contains sonde_t
+        assign types_vus = types_vus | append: produit.type | append: '|'
+        assign nb_coupes = nb_coupes | plus: 1
+      endunless
+    endunless
+  endfor
+  assign frags = frags | split: '~'
+-%}
+
+<style>
+  #{{ uid }}{background:{{ s.bg_color }};color:{{ s.ink_color }};
+    padding-top:{{ s.padding_top }}px;padding-bottom:{{ s.padding_bottom }}px}
+
+  {%- comment -%}
+    Largeur et marges laterales RECOPIEES des pages motif et saga, a
+    l'identique : ces pages se suivent dans la navigation, la moindre
+    difference se lit comme un decalage.
+  {%- endcomment -%}
+  #{{ uid }} .rdcp__in{margin:0 auto;
+    max-width:calc(var(--page-width, 1400px) - (var(--page-margin, 40px) * 2));
+    padding-inline:clamp(20px,3vw,40px)}
+
+  {%- comment -%}
+    La planche : marge a gauche, contenu a droite. La marge se replie au-dessus
+    du contenu sous 900px — a cette largeur, deux colonnes ne laissent plus
+    assez de place au titre.
+  {%- endcomment -%}
+  #{{ uid }} .rdcp__plate{display:grid;
+    grid-template-columns:minmax(0,{{ s.margin_width }}px) minmax(0,1fr);
+    gap:clamp(20px,3vw,{{ s.columns_gap }}px)}
+  @media (max-width:899px){
+    #{{ uid }} .rdcp__plate{grid-template-columns:minmax(0,1fr);gap:24px}
+  }
+
+  {%- comment -%} La marge reste au bord pendant qu'on descend dans la grille. {%- endcomment -%}
+  #{{ uid }} .rdcp__margin{position:sticky;top:clamp(16px,4vw,40px);align-self:start;
+    display:flex;flex-direction:column;gap:22px}
+  @media (max-width:899px){
+    #{{ uid }} .rdcp__margin{position:static;flex-direction:row;flex-wrap:wrap;
+      gap:18px 28px;align-items:flex-end}
+  }
+
+  #{{ uid }} .rdcp__no{font-family:var(--font-heading--family, sans-serif);
+    font-size:clamp(1.5rem,3vw,{{ s.plate_no_size }}px);line-height:.9;
+    letter-spacing:.04em;text-transform:uppercase;margin:0;
+    color:transparent;-webkit-text-stroke:1.5px {{ s.accent_color }}}
+
+  #{{ uid }} .rdcp__tallies{display:flex;flex-direction:column;gap:14px}
+  @media (max-width:899px){
+    #{{ uid }} .rdcp__tallies{flex-direction:row;gap:24px}
+  }
+  #{{ uid }} .rdcp__tally{display:flex;flex-direction:column;gap:1px;
+    padding-top:12px;border-top:1px solid {{ s.accent_color }}26}
+  #{{ uid }} .rdcp__tally b{font-family:var(--font-heading--family, sans-serif);
+    font-size:clamp(1.15rem,2vw,1.45rem);font-weight:400;letter-spacing:.03em;
+    font-variant-numeric:tabular-nums;line-height:1.1}
+  #{{ uid }} .rdcp__tally span{font-family:var(--font-body--family);font-size:.66rem;
+    letter-spacing:.14em;text-transform:uppercase;color:{{ s.muted_color }}}
+
+  #{{ uid }} .rdcp__over{font-family:var(--font-body--family);font-weight:700;
+    font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+    color:{{ s.accent_color }};margin:0}
+
+  {%- comment -%}
+    ⚠ La police de titrage du site (Bebas Neue) est tres serree : sans un peu
+    d'interlettrage elle se compacte en bloc illisible aux grandes tailles.
+  {%- endcomment -%}
+  #{{ uid }} h1{font-family:var(--font-heading--family, sans-serif);
+    font-size:clamp(2.4rem,7vw,{{ s.title_size }}px);font-weight:400;
+    line-height:.88;letter-spacing:.025em;text-transform:uppercase;
+    text-wrap:balance;margin:10px 0 0}
+  #{{ uid }} h1 .rdcp__thin{display:block;color:{{ s.accent_color }};
+    font-size:.42em;letter-spacing:.06em;margin-top:.18em}
+
+  #{{ uid }} .rdcp__lede{font-family:var(--font-body--family);max-width:46ch;
+    margin:20px 0 0;color:{{ s.muted_color }};font-size:1.08rem;line-height:1.55}
+  #{{ uid }} .rdcp__lede--b{margin-top:10px;font-size:1rem}
+
+  {%- comment -%}
+    Le rail des Fragments : on entre par le dessin. Il remplace les deux
+    boutons « Explorer par fragments » qui faisaient doublon.
+  {%- endcomment -%}
+  #{{ uid }} .rdcp__rail-head{display:flex;align-items:baseline;
+    justify-content:space-between;gap:16px;
+    border-top:1px solid {{ s.accent_color }}26;padding-top:14px;
+    margin-top:clamp(26px,3.2vw,44px)}
+  #{{ uid }} .rdcp__rail{display:flex;gap:10px;overflow-x:auto;
+    padding:16px 2px 6px;scrollbar-width:thin}
+  #{{ uid }} .rdcp__frag{flex:0 0 auto;width:{{ s.rail_item_width }}px;
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+    padding:12px 8px 10px;background:{{ s.card_color }};
+    border:1px solid transparent;border-radius:6px;
+    text-decoration:none;color:inherit;
+    transition:border-color .25s ease,transform .25s ease}
+  #{{ uid }} .rdcp__frag:hover{border-color:{{ s.accent_color }}4d;transform:translateY(-2px)}
+  #{{ uid }} .rdcp__frag img{width:100%;height:auto;display:block;
+    aspect-ratio:3/4;object-fit:contain}
+  #{{ uid }} .rdcp__frag span{font-family:var(--font-body--family);font-size:.64rem;
+    font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+    color:{{ s.muted_color }};text-align:center;line-height:1.25}
+  @media (hover:none){
+    #{{ uid }} .rdcp__frag:hover{transform:none}
+  }
+</style>
+
+<section id="{{ uid }}">
+  <div class="rdcp__in">
+    <div class="rdcp__plate">
+
+      <aside class="rdcp__margin">
+        {%- if s.plate_no != blank -%}
+          <p class="rdcp__no">{{ s.plate_no }}</p>
+        {%- endif -%}
+
+        {%- if s.show_tallies -%}
+          <div class="rdcp__tallies">
+            <div class="rdcp__tally">
+              <b>{{ nb_pieces }}</b>
+              <span>{{ s.label_pieces }}</span>
+            </div>
+            {%- if frags.size > 0 -%}
+              <div class="rdcp__tally">
+                <b>{{ frags.size }}</b>
+                <span>{{ s.label_fragments }}</span>
+              </div>
+            {%- endif -%}
+            {%- if nb_coupes > 0 -%}
+              <div class="rdcp__tally">
+                <b>{{ nb_coupes }}</b>
+                <span>{{ s.label_coupes }}</span>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </aside>
+
+      <div>
+        {%- if s.overline != blank -%}
+          <p class="rdcp__over">{{ s.overline }}</p>
+        {%- endif -%}
+
+        <h1>
+          {{ titre }}
+          {%- if s.subtitle != blank -%}
+            <span class="rdcp__thin">{{ s.subtitle }}</span>
+          {%- endif -%}
+        </h1>
+
+        {%- if lede != blank -%}
+          <p class="rdcp__lede">{{ lede }}</p>
+        {%- endif -%}
+        {%- if s.lede_b != blank -%}
+          <p class="rdcp__lede rdcp__lede--b">{{ s.lede_b }}</p>
+        {%- endif -%}
+
+        {%- if s.show_rail and frags.size > 1 -%}
+          <div class="rdcp__rail-head">
+            <p class="rdcp__over">{{ s.rail_title }}</p>
+            <p class="rdcp__over" style="color:{{ s.muted_color }}">
+              {{ frags.size }} {{ s.rail_unit }}
+            </p>
+          </div>
+          <div class="rdcp__rail">
+            {%- for handle in frags limit: s.rail_count -%}
+              {%- liquid
+                assign col_f = collections[handle]
+                assign ill_f = col_f.metafields.custom.illustrations.value | default: col_f.metafields.custom.illustrations
+                assign dessin = ill_f.image_pour_fond_clair | default: ill_f.image_pour_fond_sombre
+                assign nom_f = ill_f.nom | default: col_f.title
+              -%}
+              <a class="rdcp__frag" href="{{ col_f.url }}">
+                {%- if dessin != blank -%}
+                  <img src="{{ dessin | image_url: width: 260 }}" alt="" width="260" height="347" loading="lazy">
+                {%- endif -%}
+                <span>{{ nom_f }}</span>
+              </a>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "RDC — Planche collection",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Le titre" },
+    { "type": "text", "id": "overline", "label": "Sur-titre", "default": "Rayon permanent" },
+    { "type": "text", "id": "title", "label": "Titre", "info": "Écrivez {collection} pour insérer le nom de la collection. Laisser vide reprend ce nom seul. ⚠️ C'est la balise la plus lue par Google : préférez le vrai sujet (« Sweats & capuches ») à une formule (« Explorez … »)." },
+    { "type": "text", "id": "subtitle", "label": "Ligne dorée sous le titre", "default": "Coton biologique, imprimés à l'unité" },
+    { "type": "range", "id": "title_size", "label": "Taille du titre", "unit": "px", "min": 32, "max": 120, "step": 2, "default": 84 },
+
+    { "type": "header", "content": "Le texte de la collection" },
+    { "type": "paragraph", "content": "Deux ou trois phrases propres à cette collection. Sans elles, la page n'a aucun texte à elle et ne peut se classer sur rien." },
+    { "type": "textarea", "id": "lede", "label": "Premier paragraphe", "info": "Laisser vide reprend la description de la collection dans Shopify — c'est là que ce texte doit vivre, puisqu'il est propre à chaque collection." },
+    { "type": "textarea", "id": "lede_b", "label": "Second paragraphe" },
+
+    { "type": "header", "content": "La marge de planche" },
+    { "type": "text", "id": "plate_no", "label": "Numéro de planche", "default": "Planche I" },
+    { "type": "range", "id": "plate_no_size", "label": "Taille du numéro", "unit": "px", "min": 18, "max": 72, "step": 2, "default": 38 },
+    { "type": "checkbox", "id": "show_tallies", "label": "Afficher les compteurs", "default": true },
+    { "type": "text", "id": "label_pieces", "label": "Libellé — pièces", "default": "pièces au catalogue" },
+    { "type": "text", "id": "label_fragments", "label": "Libellé — Fragments", "default": "Fragments" },
+    { "type": "text", "id": "label_coupes", "label": "Libellé — coupes", "default": "coupes" },
+    { "type": "range", "id": "margin_width", "label": "Largeur de la marge", "unit": "px", "min": 120, "max": 320, "step": 10, "default": 240 },
+    { "type": "range", "id": "columns_gap", "label": "Écart entre marge et planche", "unit": "px", "min": 16, "max": 96, "step": 4, "default": 56 },
+
+    { "type": "header", "content": "Le rail des Fragments" },
+    { "type": "paragraph", "content": "On entre par le dessin. Il n'apparaît qu'à partir de deux Fragments dans la collection." },
+    { "type": "checkbox", "id": "show_rail", "label": "Afficher le rail", "default": true },
+    { "type": "text", "id": "rail_title", "label": "Titre du rail", "default": "Entrer par le Fragment" },
+    { "type": "text", "id": "rail_unit", "label": "Mot après le compte", "default": "dessins" },
+    { "type": "range", "id": "rail_count", "label": "Nombre de Fragments affichés", "min": 2, "max": 24, "step": 1, "default": 12 },
+    { "type": "range", "id": "rail_item_width", "label": "Largeur d'une vignette", "unit": "px", "min": 70, "max": 180, "step": 2, "default": 108 },
+
+    { "type": "header", "content": "Couleurs" },
+    { "type": "color", "id": "bg_color", "label": "Fond de la section", "default": "#f4eee1" },
+    { "type": "color", "id": "card_color", "label": "Fond des vignettes", "default": "#eae0cc" },
+    { "type": "color", "id": "ink_color", "label": "Couleur du titre", "default": "#403434" },
+    { "type": "color", "id": "muted_color", "label": "Couleur du texte", "default": "#5a4a42" },
+    { "type": "color", "id": "accent_color", "label": "Couleur d'accent", "default": "#b4894f" },
+
+    { "type": "header", "content": "Espacements" },
+    { "type": "range", "id": "padding_top", "label": "Espace au-dessus", "unit": "px", "min": 0, "max": 160, "step": 4, "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "Espace en dessous", "unit": "px", "min": 0, "max": 160, "step": 4, "default": 24 }
+  ],
+  "presets": [{ "name": "RDC — Planche collection" }]
+}
+{% endschema %}
