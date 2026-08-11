@@ -253,19 +253,7 @@
             simplifier — c'est le meme piege que sur les metaobjets
             d'illustration.
           endcomment
-          comment
-            ⚠ Shopify fabrique la CLE du metachamp a partir de son libelle :
-            « Icone du menu » donne `icone_du_menu`, pas `icon_menu`. On essaie
-            donc les orthographes courantes plutot que d'en imposer une — un
-            champ cree a la main ne doit pas obliger a toucher au code.
-          endcomment
           assign menu_icon_mf = nil
-          comment
-            ⚠ ACCES DIRECT, PAS PAR CLE VARIABLE.
-            `metafields.custom[cle]` renvoie la reference BRUTE du fichier, pas
-            l'objet — d'ou une adresse vide et une icone cassee. L'acces
-            pointe, lui, renvoie bien l'objet fichier.
-          endcomment
           if link.object.metafields.custom.icon_menu != blank
             assign menu_icon_mf = link.object.metafields.custom.icon_menu.value | default: link.object.metafields.custom.icon_menu
           endif
@@ -297,9 +285,9 @@
         <span
           class="mega-menu__link-title wrap-text"
         >
-          {%- if menu_icon_mf and icon_src != blank -%}
+          {%- if menu_icon_mf -%}
             <span class="mega-menu__link-icon">
-              <img src="{{ icon_src }}" alt="{{ link.title }}"
+              <img src="{{ menu_icon_mf | image_url: width: 400 }}" alt="{{ link.title }}"
                    width="32" height="32" loading="lazy">
             </span>
           {%- elsif current_icon != blank -%}
@@ -330,7 +318,7 @@
           Shopify renvoie l'un ou l'autre.
         {%- endcomment -%}
         {%- if menu_content_type == 'collection_images' and link.type == 'collection_link' -%}
-          {%- assign resume_mf = link.object.metafields.custom.resume.value | default: link.object.metafields.custom.resume | default: link.object.metafields.custom.resume_.value -%}
+          {%- assign resume_mf = link.object.metafields.custom.resume.value | default: link.object.metafields.custom.resume -%}
           {%- assign accroche = resume_mf | strip_html | strip -%}
           {%- if accroche == blank -%}
             {%- assign accroche = link.object.description | strip_html | strip -%}
@@ -520,39 +508,9 @@
             <a href="{{ link.url }}" class="mega-menu__link">
               {%- liquid
                 assign menu_icon_mf = nil
-                comment
-                  ⚠ ACCES DIRECT, PAS PAR CLE VARIABLE.
-                  `metafields.custom[cle]` renvoie la reference BRUTE du fichier, pas
-                  l'objet — d'ou une adresse vide et une icone cassee. L'acces
-                  pointe, lui, renvoie bien l'objet fichier.
-                endcomment
                 if link.object.metafields.custom.icon_menu != blank
                   assign menu_icon_mf = link.object.metafields.custom.icon_menu.value | default: link.object.metafields.custom.icon_menu
                 endif
-
-              comment
-                ⚠ DEUX TYPES DE METACHAMP, DEUX FACON D'OBTENIR L'ADRESSE.
-
-                Shopify expose l'adresse par des voies DIFFERENTES selon le
-                type du champ et la nature du fichier :
-                  · metachamp Image        -> `image_url`
-                  · metachamp Fichier/image -> `.src`, parfois `.preview_image.src`
-                  · metachamp Fichier/autre -> `.url`
-
-                On les essaie dans cet ordre plutot que d'en parier une : une
-                adresse vide donnait une icone cassee, ce qui est pire que le
-                repli sur l'image de collection.
-              endcomment
-              comment
-                ⚠ `image_url` s'applique AU METACHAMP, pas a son `.value`.
-                Pour un champ de type « Image (Fichier) », Shopify resout
-                lui-meme la reference — passer par `.value` donne un objet que
-                les filtres d'image ne savent pas lire, d'ou l'adresse vide.
-              endcomment
-              assign icon_src = link.object.metafields.custom.icon_menu | image_url: width: 400
-              assign icon_src = icon_src | default: menu_icon_mf | image_url: width: 400
-              assign icon_src = icon_src | default: menu_icon_mf.src | default: menu_icon_mf.preview_image.src | default: menu_icon_mf.url
-              assign icon_src = icon_src | default: menu_icon_mf | file_url
 
                 assign link_collection_image = nil
                 if menu_icon_mf == nil and link.type == 'collection_link' and link.object.image != blank
@@ -583,9 +541,9 @@
                 n'etait pas un element de la grille. Il restait empile
                 au-dessus du nom, quoi qu'on ecrive en CSS.
               {%- endcomment -%}
-              {%- if menu_icon_mf and icon_src != blank -%}
+              {%- if menu_icon_mf -%}
                 <span class="mega-menu__link-icon">
-                  <img src="{{ icon_src }}" alt="{{ link.title }}"
+                  <img src="{{ menu_icon_mf | image_url: width: 400 }}" alt="{{ link.title }}"
                        width="62" height="62" loading="lazy">
                 </span>
               {%- elsif link_collection_image -%}
@@ -605,7 +563,7 @@
                 description en repli.
               {%- endcomment -%}
               {%- if link.type == 'collection_link' -%}
-                {%- assign resume_mf = link.object.metafields.custom.resume.value | default: link.object.metafields.custom.resume | default: link.object.metafields.custom.resume_.value -%}
+                {%- assign resume_mf = link.object.metafields.custom.resume.value | default: link.object.metafields.custom.resume -%}
                 {%- assign accroche = resume_mf | strip_html | strip -%}
                 {%- if accroche == blank -%}
                   {%- assign accroche = link.object.description | strip_html | strip -%}
@@ -647,39 +605,9 @@
             <a href="{{ link.url }}" class="mega-menu__link">
               {%- liquid
                 assign menu_icon_mf = nil
-                comment
-                  ⚠ ACCES DIRECT, PAS PAR CLE VARIABLE.
-                  `metafields.custom[cle]` renvoie la reference BRUTE du fichier, pas
-                  l'objet — d'ou une adresse vide et une icone cassee. L'acces
-                  pointe, lui, renvoie bien l'objet fichier.
-                endcomment
                 if link.object.metafields.custom.icon_menu != blank
                   assign menu_icon_mf = link.object.metafields.custom.icon_menu.value | default: link.object.metafields.custom.icon_menu
                 endif
-
-              comment
-                ⚠ DEUX TYPES DE METACHAMP, DEUX FACON D'OBTENIR L'ADRESSE.
-
-                Shopify expose l'adresse par des voies DIFFERENTES selon le
-                type du champ et la nature du fichier :
-                  · metachamp Image        -> `image_url`
-                  · metachamp Fichier/image -> `.src`, parfois `.preview_image.src`
-                  · metachamp Fichier/autre -> `.url`
-
-                On les essaie dans cet ordre plutot que d'en parier une : une
-                adresse vide donnait une icone cassee, ce qui est pire que le
-                repli sur l'image de collection.
-              endcomment
-              comment
-                ⚠ `image_url` s'applique AU METACHAMP, pas a son `.value`.
-                Pour un champ de type « Image (Fichier) », Shopify resout
-                lui-meme la reference — passer par `.value` donne un objet que
-                les filtres d'image ne savent pas lire, d'ou l'adresse vide.
-              endcomment
-              assign icon_src = link.object.metafields.custom.icon_menu | image_url: width: 400
-              assign icon_src = icon_src | default: menu_icon_mf | image_url: width: 400
-              assign icon_src = icon_src | default: menu_icon_mf.src | default: menu_icon_mf.preview_image.src | default: menu_icon_mf.url
-              assign icon_src = icon_src | default: menu_icon_mf | file_url
 
                 assign link_collection_image = nil
                 if menu_icon_mf == nil and link.type == 'collection_link' and link.object.image != blank
@@ -710,9 +638,9 @@
                 n'etait pas un element de la grille. Il restait empile
                 au-dessus du nom, quoi qu'on ecrive en CSS.
               {%- endcomment -%}
-              {%- if menu_icon_mf and icon_src != blank -%}
+              {%- if menu_icon_mf -%}
                 <span class="mega-menu__link-icon">
-                  <img src="{{ icon_src }}" alt="{{ link.title }}"
+                  <img src="{{ menu_icon_mf | image_url: width: 400 }}" alt="{{ link.title }}"
                        width="62" height="62" loading="lazy">
                 </span>
               {%- elsif link_collection_image -%}
@@ -732,7 +660,7 @@
                 description en repli.
               {%- endcomment -%}
               {%- if link.type == 'collection_link' -%}
-                {%- assign resume_mf = link.object.metafields.custom.resume.value | default: link.object.metafields.custom.resume | default: link.object.metafields.custom.resume_.value -%}
+                {%- assign resume_mf = link.object.metafields.custom.resume.value | default: link.object.metafields.custom.resume -%}
                 {%- assign accroche = resume_mf | strip_html | strip -%}
                 {%- if accroche == blank -%}
                   {%- assign accroche = link.object.description | strip_html | strip -%}
@@ -1185,20 +1113,12 @@
    * l'image agrandie deborde sur le menu. `hidden` est compris partout.
    * `position: relative` et `isolation` bornent en plus le contexte de
    * peinture, pour qu'aucune couche du theme ne fasse ressortir l'image. */
-  /* ⚠ AUCUN effet de survol sur les grandes images, et c'est deliberé.
-   *
-   * Trois tentatives de zoom contenu ont echoue : le rognage du cadre ne tient
-   * pas dans ce menu — un ancetre du theme neutralise le debordement, et meme
-   * un rognage geometrique n'a pas suffi. L'image sortait du cadre et passait
-   * par-dessus le menu.
-   *
-   * Un survol qui deborde vaut moins qu'un survol absent. Le cadre reste (il
-   * porte le cadrage 4/3), l'effet part. Ne pas le remettre sans pouvoir le
-   * verifier dans un navigateur.
-   */
   .rdc-menu-shot {
-    display: block;
+    display: grid;
+    position: relative;
+    isolation: isolate;
     overflow: hidden;
+    line-height: 0;
   }
 
   .rdc-menu-shot > img {
