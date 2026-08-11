@@ -1126,9 +1126,23 @@
      * seul ajout au bloc — `grid` et `position` avaient ete essayes et ne
      * servaient a rien ici. */
     isolation: isolate;
+    /* ⚠ `contain: paint` force le confinement du RENDU dans la boite : plus
+     * rien de ce que contient le cadre ne peut etre peint en dehors, quel que
+     * soit le transform de l'enfant. C'est la garantie que `overflow` seul ne
+     * donnait pas ici — l'image sortait par le bas.
+     *
+     * Et `aspect-ratio` sur le cadre plutot que sur l'image : la hauteur du
+     * cadre ne depend alors plus de celle de l'image, donc l'image ne peut
+     * plus l'entrainer vers le bas en grandissant. */
+    contain: paint;
+    aspect-ratio: 4 / 3;
   }
 
   .rdc-menu-shot img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     transition: transform .5s ease;
   }
 
