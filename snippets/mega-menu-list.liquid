@@ -215,15 +215,27 @@
         {% endif %}
         
         {%- liquid
-          # Priority 1: Collection image
-          assign link_collection_image = nil
-          if link.type == 'collection_link' and link.object.image != blank
-            assign link_collection_image = link.object.image
-          endif
+          comment
+            ⚠ PRIORITE INVERSEE le 11/08 : la correspondance manuelle passe
+            AVANT l'image de collection, alors qu'elle n'en etait que le repli.
 
-          # Priority 2: Manual icon mapping (fallback)
+            Pourquoi : une entree de menu qui pointe vers une collection dont
+            l'image sert ailleurs — « Tout voir » vers « tous les produits »,
+            dont l'image alimente aussi le hero de sa page — ne pouvait pas
+            avoir sa propre vignette. Changer l'image de collection pour
+            arranger le menu cassait la page.
+
+            Desormais : pas de ligne dans la correspondance, l'image de
+            collection s'affiche comme avant ; une ligne `Libelle|fichier.png`,
+            elle gagne, et uniquement pour cette entree.
+
+            Format : un `Libelle exact du lien|fichier.png` par ligne, dans le
+            reglage du bloc de menu. Le fichier doit etre un ASSET DU THEME.
+          endcomment
+
+          # Priorite 1 : correspondance manuelle, si une ligne vise ce lien
           assign current_icon = ''
-          if link_collection_image == nil and icon_map != blank
+          if icon_map != blank
             assign icon_entries = icon_map | split: '||'
             for entry in icon_entries
               if entry contains '::'
@@ -237,18 +249,24 @@
               endif
             endfor
           endif
+
+          # Priorite 2 : image de la collection liee
+          assign link_collection_image = nil
+          if current_icon == blank and link.type == 'collection_link' and link.object.image != blank
+            assign link_collection_image = link.object.image
+          endif
         -%}
         
         <span
           class="mega-menu__link-title wrap-text"
         >
-          {%- if link_collection_image -%}
-            <span class="mega-menu__link-icon">
-              <img src="{{ link_collection_image | image_url: width: 64 }}" alt="{{ link.title }}" loading="lazy">
-            </span>
-          {%- elsif current_icon != blank -%}
+          {%- if current_icon != blank -%}
             <span class="mega-menu__link-icon">
               <img src="{{ current_icon | asset_url }}" alt="{{ link.title }}" loading="lazy">
+            </span>
+          {%- elsif link_collection_image -%}
+            <span class="mega-menu__link-icon">
+              <img src="{{ link_collection_image | image_url: width: 64 }}" alt="{{ link.title }}" loading="lazy">
             </span>
           {%- endif -%}
           {{- link.title -}}
