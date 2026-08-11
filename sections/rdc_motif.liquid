@@ -105,7 +105,7 @@
     Le champ peut aussi vivre sur la COLLECTION plutot que sur
     l'illustration — les deux sont balayes.
   endcomment
-  assign saga_keys = 'collection_groupee,collection_groupees,collections_groupees,collection_principale,collection_group,collection_saga,saga,collection_parente,collection'
+  assign saga_keys = 'collection_d_heritage,collection_groupee,collection_groupees,collections_groupees,collection_principale,collection_group,collection_saga,saga,collection_parente,collection'
   if s.saga_field_key != blank
     assign saga_keys = s.saga_field_key | append: ',' | append: saga_keys
   endif
@@ -535,10 +535,10 @@
     { "type": "color", "id": "story_title_color", "label": "Couleur du titre (style plein)", "default": "#403434", "visible_if": "{{ section.settings.story_title_style == 'solid' }}" },
     { "type": "range", "id": "story_title_stroke", "label": "Épaisseur du contour", "unit": "px", "min": 1, "max": 4, "step": 1, "default": 2, "visible_if": "{{ section.settings.story_title_style == 'outline' }}" },
     { "type": "checkbox", "id": "story_rule", "label": "Filet doré au-dessus du titre", "default": true },
-    { "type": "header", "content": "Rappel de la saga" },
-    { "type": "checkbox", "id": "saga_enabled", "label": "Afficher la gélule de saga", "default": true, "info": "Elle ne s'affiche que si l'illustration porte une collection groupée. Sinon, rien n'est rendu." },
-    { "type": "text", "id": "saga_label", "label": "Libellé avant le nom", "default": "Fait partie de", "info": "Laisser vide pour n'afficher que le nom de la saga." },
-    { "type": "text", "id": "saga_field_key", "label": "Métachamp — collection groupée", "default": "collection_groupee", "info": "Clé du champ sur le métaobjet Illustration. Si la gélule n'apparaît pas, c'est ici qu'il faut corriger : la clé exacte se lit dans Contenu → Métaobjets → Illustrations → Modifier la définition." },
+    { "type": "header", "content": "Rappel de la collection" },
+    { "type": "checkbox", "id": "saga_enabled", "label": "Afficher la gélule", "default": true, "info": "Elle ne s'affiche que si l'illustration pointe une collection. Sinon, rien n'est rendu — et dans l'éditeur, un encart jaune explique pourquoi." },
+    { "type": "text", "id": "saga_label", "label": "Libellé avant le nom", "default": "Fait partie de", "info": "Laisser vide pour n'afficher que le nom de la collection." },
+    { "type": "text", "id": "saga_field_key", "label": "Métachamp — collection d'héritage", "default": "collection_d_heritage", "info": "Clé du champ sur le métaobjet Illustration. D'autres orthographes courantes sont essayées en repli. La clé exacte se lit dans Contenu → Métaobjets → Illustrations → Modifier la définition." },
     { "type": "header", "content": "Voix off du Fragment" },
     { "type": "checkbox", "id": "audio_enabled", "label": "Afficher le lecteur audio", "default": true, "info": "Il ne s'affiche que si l'illustration porte un fichier audio. Sinon, rien n'est rendu." },
     { "type": "text", "id": "audio_label", "label": "Libellé du lecteur", "default": "Écouter ce Fragment" },
