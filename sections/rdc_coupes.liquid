@@ -36,6 +36,33 @@
       endif
     endfor
   endif
+
+  comment
+    ⚠ LE TYPE DE METAOBJET SE DECOUVRE, il ne se devine pas.
+
+    Il faut la liste COMPLETE des coupes pour garder toutes les icones quand un
+    filtre est actif : `collection.products` ne contient alors plus que les
+    produits filtres. Or cette liste s'obtient par `shop.metaobjects[type]`, et
+    j'avais suppose le type — a tort, d'ou les icones qui disparaissaient au
+    premier clic.
+
+    N'importe quel produit affiche porte sa coupe, et un metaobjet sait dire
+    son propre type : on le lui demande. Le reglage de l'editeur ne sert plus
+    que de forcage.
+  endcomment
+  assign type_coupe = s.metaobject_type
+  for p in collection.products
+    unless type_coupe != blank
+      assign b0 = p.metafields.custom.base.value
+      unless b0 == blank
+        assign type_coupe = b0.system.type
+      endunless
+    endunless
+  endfor
+  assign toutes_coupes = nil
+  if type_coupe != blank
+    assign toutes_coupes = shop.metaobjects[type_coupe].values
+  endif
 -%}
 
 {%- if cible != nil and cible.values.size > 1 -%}
@@ -113,8 +140,7 @@
             perdraient donc leur icone au premier clic. La liste des
             metaobjets, elle, ne bouge jamais.
           endcomment
-          assign toutes = shop.metaobjects[s.metaobject_type].values
-          for b in toutes
+          for b in toutes_coupes
             unless ico
               assign n1 = b.nom.value | default: ''
               assign n2 = b.label | default: ''
@@ -200,7 +226,7 @@
     { "type": "header", "content": "Source" },
     { "type": "text", "id": "filter_key", "label": "Clé du filtre", "default": "filter.p.m.custom.base", "info": "Clé Shopify du filtre de coupe. En cas d'échec, le libellé ci-dessous sert de repli." },
     { "type": "text", "id": "filter_label_fallback", "label": "Libellé de repli", "default": "coupe", "info": "En minuscules." },
-    { "type": "text", "id": "metaobject_type", "label": "Type de métaobjet des coupes", "default": "base", "info": "Sert à retrouver l'icône de chaque coupe. Sans lui, les icônes disparaîtraient dès qu'un filtre est actif. Visible dans Shopify → Contenu → Métaobjets." }
+    { "type": "text", "id": "metaobject_type", "label": "Type de métaobjet des coupes", "default": "", "info": "À laisser VIDE : le type est détecté tout seul à partir des produits. À ne remplir que si la détection échouait." }
   ],
   "presets": [{ "name": "RDC — Les coupes" }]
 }
