@@ -136,13 +136,89 @@
     endunless
   endfor
 
+  comment
+    Les AUTRES motifs de la meme saga.
+
+    Sans eux la page s'arretait net apres le recit : le visiteur le plus
+    engage du site — celui qui vient de lire 292 mots — n'avait aucune porte
+    vers le catalogue. Et pour Google, les 22 pages de motif etaient 22 iles
+    sans un lien entre elles.
+
+    Seul chemin disponible : les PRODUITS de la saga. Chacun porte son
+    metaobjet illustration, qui porte sa collection. Meme resolution que
+    similar-products.liquid — le champ `collection` d'abord, repli sur le
+    handle du metaobjet, qui est la convention du catalogue.
+
+    On accumule des handles dans une chaine plutot qu'un tableau : Liquid n'a
+    ni dictionnaire ni `push`. La sonde de doublon borne la cle des DEUX cotes
+    (|avalon|), sinon « avalon » matcherait dans « grand-avalon » — meme piege
+    que dans rdc_saga-motifs.liquid.
+  endcomment
+  assign voisins_vus = '|'
+  assign voisins = ''
+  if s.siblings_enabled and saga.title != blank
+    for produit in saga.products
+      assign ill_v = produit.metafields.custom.illustration_produit.value
+      unless ill_v == blank
+        assign col_v = ill_v.collection.value
+        if col_v == blank
+          assign col_v = collections[ill_v.system.handle]
+        endif
+        unless col_v == blank or col_v.handle == collection.handle
+          assign sonde = '|' | append: col_v.handle | append: '|'
+          unless voisins_vus contains sonde
+            assign voisins_vus = voisins_vus | append: col_v.handle | append: '|'
+            assign voisins = voisins | append: col_v.handle | append: '~'
+          endunless
+        endunless
+      endunless
+    endfor
+  endif
+  assign voisins = voisins | split: '~'
+
+  comment
+    Les titres acceptent un jeton — {motif} et {saga} — remplace par le nom.
+
+    ⚠ Ce remplacement DOIT se faire ici, dans un bloc `liquid`, jamais dans
+    une balise de sortie : `{{ x | replace: '{saga}', y }}` fait echouer le
+    parseur de Shopify (« Liquid syntax error ») et la section est refusee.
+  endcomment
+  assign story_title_rendu = s.story_title | replace: '{motif}', motif_nom
+  assign siblings_title_rendu = s.siblings_title | replace: '{saga}', saga.title
+
   assign ghost = ill.image_pour_fond_clair | default: ill.image_pour_fond_sombre
   if s.prefer_background_image and ill.image_fond_de_fragment != blank
     assign ghost = ill.image_fond_de_fragment
   endif
 
   assign cuts = collection.products_count
-  assign price_from = collection.price_min | money_without_trailing_zeros
+
+  comment
+    Prix plancher et plafond.
+
+    ⚠ `collection.price_min` renvoie 0 sur ces collections — verifie en ligne
+    le 2026-08-11 : ni la ligne « des X », ni le balisage ne s'affichaient.
+    On boucle donc sur les produits, seule source fiable.
+
+    `prix_min` demarre a 0 et sert aussi de drapeau « rien trouve » : d'ou le
+    test `prix_min == 0` avant la comparaison, sinon aucun prix ne pourrait
+    jamais passer sous le plancher initial.
+  endcomment
+  assign prix_min = 0
+  assign prix_max = 0
+  for produit in collection.products
+    assign p_bas = produit.price_min
+    if p_bas > 0
+      if prix_min == 0 or p_bas < prix_min
+        assign prix_min = p_bas
+      endif
+    endif
+    assign p_haut = produit.price_max
+    if p_haut > prix_max
+      assign prix_max = p_haut
+    endif
+  endfor
+  assign price_from = prix_min | money_without_trailing_zeros
 
   comment
     Fond des cartes. L'alpha se calcule avant, puis `color_modify` : un
@@ -239,6 +315,31 @@
     letter-spacing:.18em;text-transform:uppercase;color:#8a7a70}
   #{{ uid }} .rdcm__saga strong{font-family:var(--font-heading--family, sans-serif);font-weight:400;
     font-size:1.02rem;letter-spacing:.02em;line-height:1;color:{{ s.accent_color }}}
+  {%- comment -%}
+    Les motifs voisins : des dessins, pas des cartes produit. Pas de prix,
+    pas de bouton — c'est une porte, et une porte ne vend pas deux fois.
+    Le dessin est en `contain` : ces illustrations ont des formats varies et
+    un recadrage leur couperait la tete.
+  {%- endcomment -%}
+  #{{ uid }} .rdcm__voisins{border-top:1px solid {{ s.accent_color }}33;
+    margin-top:clamp(30px,3.6vw,50px);padding-top:clamp(22px,2.6vw,32px)}
+  #{{ uid }} .rdcm__voisins h2{font-family:var(--font-body--family);font-size:.68rem;
+    font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+    color:{{ s.accent_color }};margin:0 0 20px}
+  #{{ uid }} .rdcm__voisins-grid{display:grid;gap:clamp(14px,2vw,26px);
+    grid-template-columns:repeat({{ s.siblings_columns }},minmax(0,1fr))}
+  @media (max-width:749px){
+    #{{ uid }} .rdcm__voisins-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+  #{{ uid }} .rdcm__voisin{display:flex;flex-direction:column;align-items:center;gap:10px;
+    text-decoration:none;color:inherit}
+  #{{ uid }} .rdcm__voisin-img{display:block;width:100%;aspect-ratio:3/4}
+  #{{ uid }} .rdcm__voisin-img img{width:100%;height:100%;object-fit:contain;display:block;
+    transition:transform .45s ease}
+  #{{ uid }} .rdcm__voisin:hover .rdcm__voisin-img img{transform:scale(1.06) translateY(-3px)}
+  #{{ uid }} .rdcm__voisin-nom{font-family:var(--font-body--family);font-size:.68rem;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1.3;color:#5a4a42}
+
   #{{ uid }} .rdcm__saga-diag{margin-top:16px;padding:10px 14px;border-radius:8px;max-width:60ch;
     background:#fff4d6;box-shadow:0 0 0 1px #d8b45e inset;
     font-family:var(--font-body--family);font-size:.78rem;line-height:1.5;color:#6b5a34}
@@ -371,7 +472,7 @@
 
     <div class="rdcm__meta">
       <span>{{ cuts }} {% if cuts > 1 %}coupes{% else %}coupe{% endif %}</span>
-      {%- if collection.price_min > 0 -%}<span>dès {{ price_from }}</span>{%- endif -%}
+      {%- if prix_min > 0 -%}<span>dès {{ price_from }}</span>{%- endif -%}
       {%- if motif_artiste != blank -%}<span>Illustration par <strong>{{ motif_artiste }}</strong></span>{%- endif -%}
     </div>
 
@@ -405,7 +506,7 @@
 
     {%- if motif_recit != '' -%}
       <div class="rdcm__story">
-        <h2>{{ s.story_title }}</h2>
+        <h2>{{ story_title_rendu }}</h2>
         {%- comment -%}
           Le champ contient de vrais sauts de ligne, sans balise. Un simple
           `newline_to_br` les rendait invisibles a l'oeil : dans un texte en
@@ -471,8 +572,125 @@
         <a class="rdcm__btn" href="#{{ uid }}-coupes">{{ s.cta_label }}</a>
       </div>
     {%- endif -%}
+
+    {%- comment -%}
+      Les motifs voisins arrivent APRES le bouton d'achat : ils sont la porte
+      de sortie de celui qui n'a pas accroche, pas une distraction offerte a
+      celui qui allait acheter.
+    {%- endcomment -%}
+    {%- if voisins.size > 0 -%}
+      <nav class="rdcm__voisins" aria-label="Les autres motifs de cette collection">
+        <h2>{{ siblings_title_rendu }}</h2>
+        <div class="rdcm__voisins-grid">
+          {%- for handle in voisins limit: s.siblings_count -%}
+            {%- assign col_voisin = collections[handle] -%}
+            {%- liquid
+              assign ill_voisin = col_voisin.metafields.custom.illustrations.value | default: col_voisin.metafields.custom.illustrations
+              assign dessin = ill_voisin.image_pour_fond_clair | default: ill_voisin.image_pour_fond_sombre
+              assign nom_voisin = ill_voisin.nom | default: col_voisin.title
+            -%}
+            <a class="rdcm__voisin" href="{{ col_voisin.url }}">
+              {%- if dessin != blank -%}
+                <span class="rdcm__voisin-img">
+                  <img src="{{ dessin | image_url: width: 320 }}" alt="" width="320" height="454" loading="lazy">
+                </span>
+              {%- endif -%}
+              <span class="rdcm__voisin-nom">{{ nom_voisin }}</span>
+            </a>
+          {%- endfor -%}
+        </div>
+      </nav>
+    {%- endif -%}
   </div>
 </section>
+
+{%- comment -%}
+  Donnees structurees. Aucune page de collection du theme n'en emettait :
+  la page annonce des coupes et des prix, Google n'en savait rien.
+
+  Le motif est decrit comme UN produit a plusieurs offres — c'est ce qu'il
+  est : un dessin, plusieurs coupes. D'ou `AggregateOffer` avec le prix
+  plancher et le prix plafond, plutot qu'une liste de produits distincts.
+
+  ⚠ Pas d'`aggregateRating` ici : le systeme d'avis maison ne remonte pas
+  encore dans les metachamps standards. Baliser une note qui n'est pas
+  affichee sur la page est une infraction aux regles de Google, sanctionnee
+  a la main. On l'ajoutera quand la note sera visible.
+
+  Le fil d'Ariane n'existe que parce que la gelule relie le motif a sa saga.
+  `json` echappe guillemets et accents sans y penser.
+{%- endcomment -%}
+{%- if s.schema_enabled -%}
+  {%- liquid
+    assign seo_desc = motif_resume
+    if seo_desc == ''
+      assign seo_desc = ill.son_histoire | metafield_text | replace: '&amp;', '&' | strip | truncatewords: 40, ''
+    endif
+    assign seo_image = ill.image_pour_fond_clair | default: ill.image_pour_fond_sombre | default: collection.image
+  -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Product",
+          "@id": {{ canonical_url | append: '#motif' | json }},
+          "name": {{ motif_nom | json }},
+          "description": {{ seo_desc | json }},
+          "url": {{ canonical_url | json }}
+          {%- if seo_image != blank -%},
+          "image": {{ seo_image | image_url: width: 1200 | prepend: 'https:' | json }}
+          {%- endif -%}
+          {%- if motif_artiste != blank -%},
+          "creator": { "@type": "Person", "name": {{ motif_artiste | json }} }
+          {%- endif -%},
+          "brand": { "@type": "Brand", "name": {{ shop.name | json }} }
+          {%- if prix_min > 0 -%},
+          "offers": {
+            "@type": "AggregateOffer",
+            "offerCount": {{ cuts }},
+            "lowPrice": {{ prix_min | divided_by: 100.0 | round: 2 }},
+            "highPrice": {{ prix_max | divided_by: 100.0 | round: 2 }},
+            "priceCurrency": {{ cart.currency.iso_code | json }},
+            "availability": "https://schema.org/InStock",
+            "url": {{ canonical_url | json }}
+          }
+          {%- endif -%}
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Accueil",
+              "item": {{ shop.url | json }}
+            }
+            {%- if saga.title != blank -%},
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": {{ saga.title | json }},
+              "item": {{ shop.url | append: saga.url | json }}
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": {{ motif_nom | json }}
+            }
+            {%- else -%},
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": {{ motif_nom | json }}
+            }
+            {%- endif -%}
+          ]
+        }
+      ]
+    }
+  </script>
+{%- endif -%}
 {%- endif -%}
 
 {% schema %}
@@ -520,7 +738,7 @@
     { "type": "checkbox", "id": "prefer_background_image", "label": "Utiliser l'image de fond du Fragment si elle existe", "default": true, "info": "Sinon, le dessin du motif sert de filigrane. Une seule illustration sur 22 possède cette image aujourd'hui." },
     { "type": "header", "content": "Textes" },
     { "type": "text", "id": "overline", "label": "Surtitre", "default": "Motif" },
-    { "type": "text", "id": "story_title", "label": "Titre du bloc de récit", "default": "L'histoire de ce Fragment" },
+    { "type": "text", "id": "story_title", "label": "Titre du bloc de récit", "default": "{motif}, son histoire", "info": "Écrivez {motif} pour insérer le nom : « {motif}, son histoire » donne « Hoplite, son histoire ». C'est le seul titre de niveau 2 de la page — y mettre le nom du motif est ce qui la distingue des 21 autres aux yeux de Google." },
     { "type": "range", "id": "story_title_size", "label": "Taille du titre du récit", "unit": "px", "min": 24, "max": 96, "step": 2, "default": 56, "info": "Taille maximale en desktop. Elle se réduit toute seule sur les petits écrans." },
     {
       "type": "select",
@@ -546,6 +764,13 @@
     { "type": "text", "id": "narrator_field_key", "label": "Métachamp — narrateur", "default": "narrateur_audio", "info": "Référence vers le métaobjet Artistes. Ses champs « nom » et « image » sont utilisés." },
     { "type": "checkbox", "id": "audio_avatar", "label": "Afficher l'avatar du narrateur", "default": true },
     { "type": "range", "id": "audio_avatar_size", "label": "Taille de l'avatar", "unit": "px", "min": 20, "max": 72, "step": 2, "default": 34, "visible_if": "{{ section.settings.audio_avatar }}" },
+    { "type": "header", "content": "Les autres motifs de la collection" },
+    { "type": "checkbox", "id": "siblings_enabled", "label": "Afficher les motifs voisins", "default": true, "info": "Placés tout en bas, après le bouton d'achat. Ils viennent de la collection groupée : sans elle, rien ne s'affiche." },
+    { "type": "text", "id": "siblings_title", "label": "Titre du bloc", "default": "Les autres motifs de {saga}", "info": "Écrivez {saga} pour insérer le nom de la collection." },
+    { "type": "range", "id": "siblings_count", "label": "Nombre de motifs affichés", "min": 2, "max": 8, "step": 1, "default": 4 },
+    { "type": "range", "id": "siblings_columns", "label": "Colonnes (desktop)", "min": 2, "max": 6, "step": 1, "default": 4, "info": "Sur mobile, toujours deux colonnes." },
+    { "type": "header", "content": "Données structurées (Google)" },
+    { "type": "checkbox", "id": "schema_enabled", "label": "Émettre le balisage produit et le fil d'Ariane", "default": true, "info": "Rend la page éligible à l'affichage du prix et du chemin de navigation dans les résultats Google. Invisible sur la page." },
     { "type": "header", "content": "Bouton de rappel (bas de page)" },
     { "type": "checkbox", "id": "cta_enabled", "label": "Afficher le bouton", "default": true, "info": "Placé sous le récit, il remonte au rail des coupes plus haut dans la page." },
     { "type": "text", "id": "cta_label", "label": "Libellé", "default": "Acheter ce motif" },

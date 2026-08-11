@@ -17,10 +17,56 @@
 >
 
 {%- liquid
+  comment
+    Description Google des pages de MOTIF.
+
+    Le champ SEO de ces collections est double-encode (`&amp;` en clair dans
+    le resultat de recherche) et fait 29 caracteres la ou Google en lit 120 a
+    160 — mesure a l'audit du 2026-08-11. C'est la phrase que les gens lisent
+    AVANT de cliquer : elle decide du clic, pas du classement.
+
+    On la fabrique donc depuis le recit du motif plutot que de la ressaisir a
+    la main sur 22 collections — et ca vaut pour celles a venir.
+
+    ⚠ On n'ecrase JAMAIS une description ecrite a la main : le repli ne joue
+    que si le champ est vide ou visiblement trop court (moins de 80
+    caracteres). Sinon le travail SEO fait a la main sauterait en silence.
+  endcomment
+  assign rdc_description = page_description
+
+  if request.page_type == 'collection' and collection.template_suffix == 'motif'
+    assign desc_actuelle_taille = 0
+    if page_description != blank
+      assign desc_actuelle_taille = page_description | size
+    endif
+
+    if desc_actuelle_taille < 80
+      assign ill_seo = collection.metafields.custom.illustrations.value | default: collection.metafields.custom.illustrations
+      assign seo_resume = ill_seo.resume | metafield_text | replace: '&amp;', '&' | strip
+      assign seo_recit = ill_seo.son_histoire | metafield_text | replace: '&amp;', '&' | strip
+
+      assign seo_texte = seo_resume
+      if seo_resume != '' and seo_recit != ''
+        assign seo_texte = seo_resume | append: ' ' | append: seo_recit
+      elsif seo_resume == ''
+        assign seo_texte = seo_recit
+      endif
+
+      comment
+        Coupe en deux temps : `truncatewords` d'abord, qui ne casse jamais un
+        mot en deux ; puis un plafond dur en caracteres, au cas ou les mots
+        seraient longs. L'inverse tronquerait au milieu d'un mot.
+      endcomment
+      if seo_texte != ''
+        assign rdc_description = seo_texte | truncatewords: 26, '…' | truncate: 160, '…'
+      endif
+    endif
+  endif
+
   assign og_title = page_title | default: shop.name
   assign og_url = canonical_url | default: request.origin
   assign og_type = 'website'
-  assign og_description = page_description | default: shop.description | default: shop.name
+  assign og_description = rdc_description | default: shop.description | default: shop.name
 
   if request.page_type == 'product'
     assign og_type = 'product'
@@ -113,9 +159,9 @@
   href="{{ canonical_url }}"
 >
 
-{% if page_description %}
+{% if rdc_description %}
   <meta
     name="description"
-    content="{{ page_description | escape }}"
+    content="{{ rdc_description | escape }}"
   >
 {% endif %}
