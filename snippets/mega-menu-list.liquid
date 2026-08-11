@@ -470,13 +470,37 @@
   {% endfor %}
 
   {%- comment -%} Colonne 2 : liens configurés dans le schema {%- endcomment -%}
-  {% if has_column2 %}
+  {%- liquid
+    comment
+      Le conteneur lui-meme n'existe que si ce menu-ci a des liens a y mettre :
+      un <li> vide occupe quand meme une colonne de la grille.
+    endcomment
+    assign col2_present = false
+    for link in parent_link.links
+      assign c2 = '||' | append: link.title | append: '||'
+      if col2_list contains c2
+        assign col2_present = true
+      endif
+    endfor
+  -%}
+  {% if has_column2 and col2_present %}
     <li class="mega-menu__column mega-menu__column--col2">
       {%- comment -%}
-        Le titre s'affiche meme si le champ est vide : sans lui, le second rang
-        arrive sans annonce et se confond avec le premier.
+        ⚠ Le titre ne s'affiche QUE si la colonne contient des liens.
+
+        Le champ « Colonne 2 » est partage par TOUS les menus : le rendre
+        inconditionnel faisait apparaitre une colonne vide, titre compris, dans
+        « Boutique » — qui ne contient aucun des liens listes. On compte donc
+        d'abord les liens presents dans CE menu.
       {%- endcomment -%}
-      <span class="mega-menu__col2-title">{{ column2_title | default: 'Aussi disponibles' }}</span>
+      {%- assign col2_hits = 0 -%}
+      {%- for link in parent_link.links -%}
+        {%- assign c = '||' | append: link.title | append: '||' -%}
+        {%- if col2_list contains c -%}{%- assign col2_hits = col2_hits | plus: 1 -%}{%- endif -%}
+      {%- endfor -%}
+      {%- if col2_hits > 0 -%}
+        <span class="mega-menu__col2-title">{{ column2_title | default: 'Aussi disponibles' }}</span>
+      {%- endif -%}
       {% for link in parent_link.links %}
         {%- assign col2_check = '||' | append: link.title | append: '||' -%}
         {% if col2_list contains col2_check %}
