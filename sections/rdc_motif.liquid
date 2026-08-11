@@ -225,7 +225,14 @@
     `transparent` vaut rgba(0,0,0,0) et plusieurs navigateurs interpolent alors
     vers le noir — un voile gris apparait au milieu du degrade.
   {%- endcomment -%}
-  #{{ uid }} .rdcm__backdrop{position:absolute;inset:0;margin:0 auto;overflow:hidden;
+  {%- comment -%}
+    ⚠ `z-index:0` n'est pas decoratif : il enferme les deux degrades DANS le
+    decor. Sans lui, .rdcm__backdrop ne cree aucun contexte d'empilement, le
+    `z-index:1` de ses pseudo-elements remonte au niveau de la section, et les
+    degrades passent alors par-dessus le titre, le texte et les coupes. Ils ne
+    doivent voiler que l'image de fond.
+  {%- endcomment -%}
+  #{{ uid }} .rdcm__backdrop{position:absolute;inset:0;z-index:0;margin:0 auto;overflow:hidden;
     pointer-events:none;user-select:none;
     {%- unless s.backdrop_full_width -%}
       max-width:calc(var(--page-width, 1400px) - (var(--page-margin, 40px) * 2));
