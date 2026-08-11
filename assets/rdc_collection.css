@@ -21,10 +21,32 @@
  * se lit pas comme une barre. Un filet au-dessus, un en dessous, et elle
  * devient une reglure entre le titre et les produits.
  * ------------------------------------------------------------------------- */
+/* La barre occupe TOUTE la largeur de l'ecran, bord a bord.
+ *
+ * ⚠ Pas de `100vw` : sur une page avec ascenseur, `100vw` compte la largeur
+ * de l'ascenseur et fait apparaitre une barre de defilement horizontale. On
+ * etend plutot l'element sur toutes les colonnes de la grille du theme
+ * (`1 / -1`), puis on ramene son contenu a la largeur de page avec un
+ * padding. Aucun debordement possible.
+ */
+.collection-wrapper .facets-block-wrapper--horizontal {
+  grid-column: 1 / -1;
+}
+
 .facets-block-wrapper--horizontal .facets--horizontal {
   border-top: 1px solid rgba(64, 52, 52, 0.13);
   border-bottom: 1px solid rgba(64, 52, 52, 0.13);
-  padding-block: 10px;
+  padding-block: 12px;
+  padding-inline: max(
+    var(--page-margin, 40px),
+    calc((100% - var(--page-width, 1400px)) / 2 + var(--page-margin, 40px))
+  );
+}
+
+/* De l'air sous la barre : sans lui, la premiere rangee de produits colle au
+ * filet et la separation cesse d'en etre une. */
+.collection-wrapper .facets-block-wrapper--horizontal {
+  margin-bottom: 28px;
 }
 
 /* ---------------------------------------------------------------------------
