@@ -5,3 +5,8 @@
   La supprimer d'ici suffit a tout remettre comme avant.
 {%- endcomment -%}
 {{ 'rdc_product-card.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  La barre de filtres des pages collection. La supprimer d'ici remet le dessin
+  d'origine du theme.
+{%- endcomment -%}
+{{ 'rdc_collection.css' | asset_url | stylesheet_tag }}
