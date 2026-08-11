@@ -224,6 +224,15 @@
                       },
                       "blocks": {}
                     },
+                    "custom_liquid_HEUDXr": {
+                      "type": "custom-liquid",
+                      "name": "PROMO PAR TYPE",
+                      "disabled": true,
+                      "settings": {
+                        "custom_liquid": "{% assign type_produit = product.type | downcase %}\n{% if type_produit contains \"débardeur\" %}\n  <span style=\"\n    display: inline-block;\n    padding: 6px 16px;\n    background: linear-gradient(135deg, #f5a623 0%, #e8702a 100%);\n    color: #fff;\n    font-family: inherit;\n    font-size: 14px;\n    font-weight: 600;\n    letter-spacing: 0.3px;\n    border-radius: 999px;\n    box-shadow: 0 2px 6px rgba(232, 112, 42, 0.35);\n    white-space: nowrap;\n  \">\n    Promotion jusqu'au 21 juin☀️\n  </span>\n{% endif %}"
+                      },
+                      "blocks": {}
+                    },
                     "price_iBYhxh": {
                       "type": "price",
                       "settings": {
@@ -252,6 +261,7 @@
                   "block_order": [
                     "text_rwpyUz",
                     "text_rF3pQm",
+                    "custom_liquid_HEUDXr",
                     "price_iBYhxh"
                   ]
                 },
@@ -422,7 +432,33 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "{{ closest.product.description }}",
+                    "text": "<p>{{ closest.product.metafields.custom.illustration_produit.value.resume.value }}</p>",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "h4",
+                    "font": "var(--font-primary--family)",
+                    "font_size": "",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "text_hbqgjX": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "{{ closest.product.metafields.custom.illustration_produit.value.description_borne | metafield_tag }}{{ closest.product.description }}",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -557,7 +593,7 @@
                         "text_QfbPLQ": {
                           "type": "text",
                           "settings": {
-                            "text": "<p>Entreprise française</p>",
+                            "text": "<p>Illustration originale sans IA</p>",
                             "width": "100%",
                             "max_width": "none",
                             "alignment": "center",
@@ -753,7 +789,7 @@
                         "icon_8ci8XA": {
                           "type": "icon",
                           "settings": {
-                            "icon": "leather",
+                            "icon": "shirt",
                             "width": 32,
                             "link": "",
                             "open_in_new_tab": false
@@ -763,7 +799,7 @@
                         "text_qn3jAU": {
                           "type": "text",
                           "settings": {
-                            "text": "<p>Matière <br/>haute-de-gamme</p>",
+                            "text": "<p>Imprimé en Bretagne rurale</p>",
                             "width": "100%",
                             "max_width": "none",
                             "alignment": "center",
@@ -1114,6 +1150,10 @@
                   "block_order": [
                     "text_wdNxWE"
                   ]
+                },
+                "rdc_reassurance_buybox": {
+                  "type": "rdc_reassurance",
+                  "settings": {}
                 }
               },
               "block_order": [
@@ -1122,8 +1162,10 @@
                 "popup_link_RfaKz9",
                 "custom_liquid_Fh9YNn",
                 "buy_buttons_64taHw",
+                "rdc_reassurance_buybox",
                 "group_wNUjBe",
                 "text_XEkBy7",
+                "text_hbqgjX",
                 "group_JK8NUb",
                 "text_Kj7gTA",
                 "product_features_MTyx7p",
@@ -1256,21 +1298,22 @@
       "name": "RDC — Fragment & App",
       "settings": {
         "pretitle": "",
-        "title": "Ce fragment s'équipe dans l'application",
-        "bridge": "Là où vit la communauté Runes de Chêne. [lieux]+ lieux anciens & magiques à découvrir et protéger, pour partir à l'aventure aux côtés de [joueurs]+ joueurs.",
-        "unlocks_label": "En achetant ce produit tu obtiens...",
-        "unlock1_title": "Un titre unique dans l'application",
-        "unlock1_desc": "Inspiré par [perso], affichable sur la carte",
-        "unlock2_title": "De nouvelles énigmes",
-        "unlock2_desc": "Toutes les 48h, une énigme spéciale du fragment [perso]",
-        "unlock3_title": "Le Fragment équipé sur ton profil",
-        "unlock3_desc": "Les autres joueurs voient ton fragment sur ton profil",
-        "free_text": "Gratuit · PC & Mobile",
-        "account_text": "Un seul compte boutique & jeu — ton email de commande suffit",
-        "video_external_url": "https://cdn.shopify.com/videos/c/o/v/f6c638bf0b134d7397ba964e6acf4417.mp4",
+        "title": "Ce Fragment s'ajoute à votre compte",
+        "bridge": "",
+        "unlocks_label": "En l'achetant, vous obtenez aussi sur l'application...",
+        "unlock1_title": "Un titre unique",
+        "unlock1_desc": "Inspiré par [perso]",
+        "unlock2_title": "L'accès au Campement",
+        "unlock2_desc": "Votez pour les prochains Fragments et participez aux missions.",
+        "unlock3_title": "Le Fragment débloqué dans votre Codex",
+        "unlock3_desc": "Son histoire s'y révèle. Sa mémoire est collectée.",
+        "free_text": "Application autofinancée · Bureau & Mobile",
+        "account_text": "Un seul compte - l'email de commande suffit",
+        "video_external_url": "",
+        "video_poster": "shopify://shop_images/appli_img_site_9d3199a1-8ed4-4ccc-b109-7c4e7402c5a5.webp",
         "card_dark": true,
-        "reward_label": "Ce que tu débloques",
-        "plaque_label": "Titre débloqué en jeu",
+        "reward_label": "Nouvelle entrée du Codex",
+        "plaque_label": "Titre débloqué sur la Carte",
         "plaque_fallback": "Ton titre de Porteur",
         "background_image": "shopify://shop_images/Fond_section_173d7ca4-1587-465e-be60-3ce8abe92f99.jpg",
         "background_image_mobile": "shopify://shop_images/fond_de_section_mobile.jpg",
@@ -1280,6 +1323,7 @@
     },
     "lecture_fragment_v2_EaANnh": {
       "type": "lecture-fragment-v2",
+      "disabled": true,
       "custom_css": [],
       "name": "Lecture Fragment",
       "settings": {
