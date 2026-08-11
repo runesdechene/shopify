@@ -535,20 +535,18 @@
               comment
                 ⚠ DEUX TYPES DE METACHAMP, DEUX FACON D'OBTENIR L'ADRESSE.
 
-                Type « Image » : `image_url` fonctionne.
-                Type « Fichier » (celui utilise ici) : l'objet est un FICHIER,
-                pas une image — `image_url` ne renvoie RIEN, et l'icone
-                disparaissait au profit de l'image de collection.
+                Shopify expose l'adresse par des voies DIFFERENTES selon le
+                type du champ et la nature du fichier :
+                  · metachamp Image        -> `image_url`
+                  · metachamp Fichier/image -> `.src`, parfois `.preview_image.src`
+                  · metachamp Fichier/autre -> `.url`
 
-                On prend donc `.url` quand il existe, `image_url` sinon. Les
-                deux types marchent, sans avoir a recreer le champ.
+                On les essaie dans cet ordre plutot que d'en parier une : une
+                adresse vide donnait une icone cassee, ce qui est pire que le
+                repli sur l'image de collection.
               endcomment
-              assign icon_src = ''
-              if menu_icon_mf.url != blank
-                assign icon_src = menu_icon_mf.url
-              else
-                assign icon_src = menu_icon_mf | image_url: width: 400
-              endif
+              assign icon_src = menu_icon_mf | image_url: width: 400
+              assign icon_src = icon_src | default: menu_icon_mf.url | default: menu_icon_mf.src | default: menu_icon_mf.preview_image.src
 
                 assign link_collection_image = nil
                 if menu_icon_mf == nil and link.type == 'collection_link' and link.object.image != blank
@@ -657,20 +655,18 @@
               comment
                 ⚠ DEUX TYPES DE METACHAMP, DEUX FACON D'OBTENIR L'ADRESSE.
 
-                Type « Image » : `image_url` fonctionne.
-                Type « Fichier » (celui utilise ici) : l'objet est un FICHIER,
-                pas une image — `image_url` ne renvoie RIEN, et l'icone
-                disparaissait au profit de l'image de collection.
+                Shopify expose l'adresse par des voies DIFFERENTES selon le
+                type du champ et la nature du fichier :
+                  · metachamp Image        -> `image_url`
+                  · metachamp Fichier/image -> `.src`, parfois `.preview_image.src`
+                  · metachamp Fichier/autre -> `.url`
 
-                On prend donc `.url` quand il existe, `image_url` sinon. Les
-                deux types marchent, sans avoir a recreer le champ.
+                On les essaie dans cet ordre plutot que d'en parier une : une
+                adresse vide donnait une icone cassee, ce qui est pire que le
+                repli sur l'image de collection.
               endcomment
-              assign icon_src = ''
-              if menu_icon_mf.url != blank
-                assign icon_src = menu_icon_mf.url
-              else
-                assign icon_src = menu_icon_mf | image_url: width: 400
-              endif
+              assign icon_src = menu_icon_mf | image_url: width: 400
+              assign icon_src = icon_src | default: menu_icon_mf.url | default: menu_icon_mf.src | default: menu_icon_mf.preview_image.src
 
                 assign link_collection_image = nil
                 if menu_icon_mf == nil and link.type == 'collection_link' and link.object.image != blank
