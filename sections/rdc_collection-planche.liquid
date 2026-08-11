@@ -86,6 +86,17 @@
     endunless
   endfor
   assign frags = frags | split: '~'
+
+  comment
+    ⚠ Le plafond de 50 produits fausserait les compteurs en silence sur une
+    grande collection : « 17 Fragments » alors qu'il y en a peut-etre plus.
+    Un compteur faux est pire qu'un compteur absent — on le dit.
+    `products_count`, lui, reste exact quoi qu'il arrive.
+  endcomment
+  assign partiel = false
+  if nb_pieces > 50
+    assign partiel = true
+  endif
 -%}
 
 <style>
@@ -201,13 +212,13 @@
             </div>
             {%- if frags.size > 0 -%}
               <div class="rdcp__tally">
-                <b>{{ frags.size }}</b>
+                <b>{%- if partiel -%}{{ s.prefix_partial }} {% endif %}{{ frags.size }}</b>
                 <span>{{ s.label_fragments }}</span>
               </div>
             {%- endif -%}
             {%- if nb_coupes > 0 -%}
               <div class="rdcp__tally">
-                <b>{{ nb_coupes }}</b>
+                <b>{%- if partiel -%}{{ s.prefix_partial }} {% endif %}{{ nb_coupes }}</b>
                 <span>{{ s.label_coupes }}</span>
               </div>
             {%- endif -%}
@@ -287,6 +298,7 @@
     { "type": "text", "id": "label_pieces", "label": "Libellé — pièces", "default": "pièces au catalogue" },
     { "type": "text", "id": "label_fragments", "label": "Libellé — Fragments", "default": "Fragments" },
     { "type": "text", "id": "label_coupes", "label": "Libellé — coupes", "default": "coupes" },
+    { "type": "text", "id": "prefix_partial", "label": "Préfixe quand le compte est partiel", "default": "au moins", "info": "Shopify n'expose que 50 produits à une page : au-delà, les Fragments et les coupes sont comptés sur les 50 premiers. Ce préfixe s'ajoute alors tout seul. Le nombre de pièces, lui, reste toujours exact." },
     { "type": "range", "id": "margin_width", "label": "Largeur de la marge", "unit": "px", "min": 120, "max": 320, "step": 10, "default": 240 },
     { "type": "range", "id": "columns_gap", "label": "Écart entre marge et planche", "unit": "px", "min": 16, "max": 96, "step": 4, "default": 56 },
 
