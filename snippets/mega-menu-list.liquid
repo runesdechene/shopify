@@ -1120,6 +1120,12 @@
     overflow: hidden;
     line-height: 0;
     border-radius: 12px;
+    /* ⚠ `isolation` n'est pas decoratif : un enfant TRANSFORME s'echappe d'un
+     * rognage ARRONDI tant que son parent ne forme pas un contexte
+     * d'empilement. Sans elle, l'image zoomee ressort par les coins. C'est le
+     * seul ajout au bloc — `grid` et `position` avaient ete essayes et ne
+     * servaient a rien ici. */
+    isolation: isolate;
   }
 
   .rdc-menu-shot img {
@@ -1134,10 +1140,6 @@
     .mega-menu__link:hover .rdc-menu-shot img { transform: none; }
   }
 
-  .rdc-menu-shot > img {
-    grid-area: 1 / 1;
-    width: 100%;
-  }
 
   /* Rien ne doit agrandir le LIEN lui-meme : seul le visuel bouge. */
   .rdc-menu-images .mega-menu__link:hover {
