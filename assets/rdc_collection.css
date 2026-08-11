@@ -15,6 +15,27 @@
  */
 
 /* ---------------------------------------------------------------------------
+ * LA VERTICALE DE LA PAGE
+ *
+ * UNE seule valeur de retrait lateral pour tout ce que la page empile : le
+ * hero (regle a 50px dans l'editeur), la rangee des coupes, la barre de
+ * filtres et la grille. Sans elle, chaque bloc avait sa propre formule et
+ * rien ne s'alignait — la grille etait a 64px sur grand ecran quand la barre
+ * etait a 50.
+ *
+ * Changer cette ligne deplace toute la page d'un coup.
+ * ------------------------------------------------------------------------- */
+:root {
+  --rdc-page-inset: 50px;
+}
+
+@media (max-width: 749px) {
+  :root {
+    --rdc-page-inset: 16px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
  * LE BANDEAU DE COLLECTION
  *
  * Meme traitement que le hero des pages saga : image rognee en `cover`, coins
@@ -75,12 +96,12 @@
  */
 .collection-wrapper .facets-block-wrapper--horizontal {
   grid-column: 1 / -1;
-  margin-inline: 50px;
+  margin-inline: var(--rdc-page-inset, 50px);
 }
 
 @media (max-width: 749px) {
   .collection-wrapper .facets-block-wrapper--horizontal {
-    margin-inline: 16px;
+    margin-inline: var(--rdc-page-inset, 16px);
   }
 }
 
@@ -205,8 +226,9 @@
 /* ---------------------------------------------------------------------------
  * LES MARGES LATERALES DE LA GRILLE
  *
- * Recopiees a l'identique de la bande des pages saga :
- *   .rdcsm__band { padding: … clamp(26px, 5vw, 64px) }
+ * Alignees sur `--rdc-page-inset`, comme le hero, les coupes et la barre de
+ * filtres. La valeur des sagas (clamp 26/5vw/64) a ete abandonnee ici : elle
+ * donnait 64px sur grand ecran quand le reste de la page etait a 50.
  *
  * ⚠ `border-box` obligatoire : la grille est en pleine largeur, un padding qui
  * s'ajouterait a 100% ferait deborder la page — c'est exactement la faute qui
@@ -215,5 +237,5 @@
 .collection-wrapper .main-collection-grid {
   box-sizing: border-box;
   max-width: 100%;
-  padding-inline: clamp(26px, 5vw, 64px);
+  padding-inline: var(--rdc-page-inset, 50px);
 }
