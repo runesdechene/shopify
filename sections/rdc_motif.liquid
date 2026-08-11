@@ -234,9 +234,30 @@
   #{{ uid }} .rdcm__backdrop img{width:100%;height:100%;object-fit:contain;
     object-position:{{ s.backdrop_position }};display:block;
     opacity:{{ s.backdrop_opacity | divided_by: 100.0 }}}
+  {%- comment -%}
+    DEUX degrades, deux roles.
+
+    Celui du BAS dissout le decor dans la page : il doit monter haut, sinon la
+    photo se termine par une ligne franche au milieu de l'ecran.
+
+    Celui de la DROITE degage la zone ou vit le filigrane du motif. Sans lui,
+    le dessin se pose sur une image chargee et devient illisible ; avec lui, il
+    apparait sur du parchemin.
+
+    Ils se recouvrent dans le coin bas-droit et y arrivent tous deux a la
+    couleur de fond : le coin finit uni, sans surprise.
+  {%- endcomment -%}
+  {%- comment -%}
+    ⚠ `z-index:1` sur les deux : un `::before` se peint AVANT les enfants de
+    son element, donc sous l'image, ou il ne servirait a rien.
+  {%- endcomment -%}
   #{{ uid }} .rdcm__backdrop::after{content:'';position:absolute;left:0;right:0;bottom:0;
-    height:{{ s.backdrop_fade }}%;
+    z-index:1;height:{{ s.backdrop_fade }}%;
     background:linear-gradient(to top,{{ s.bg_color }} 0%,
+      {{ s.bg_color | color_modify: 'alpha', 0 }} 100%)}
+  #{{ uid }} .rdcm__backdrop::before{content:'';position:absolute;top:0;bottom:0;right:0;
+    z-index:1;width:{{ s.backdrop_fade_right }}%;
+    background:linear-gradient(to left,{{ s.bg_color }} 0%,
       {{ s.bg_color | color_modify: 'alpha', 0 }} 100%)}
   @media (max-width:749px){
     #{{ uid }} .rdcm__backdrop img{opacity:{{ s.backdrop_opacity_mobile | divided_by: 100.0 }}}
@@ -714,7 +735,8 @@
     { "type": "checkbox", "id": "backdrop_full_width", "label": "D'un bord à l'autre de l'écran", "default": true, "info": "Décoché, elle s'arrête à la largeur de la page, comme le contenu." },
     { "type": "range", "id": "backdrop_opacity", "label": "Intensité du décor", "unit": "%", "min": 5, "max": 100, "step": 5, "default": 100 },
     { "type": "range", "id": "backdrop_opacity_mobile", "label": "Intensité du décor (mobile)", "unit": "%", "min": 5, "max": 100, "step": 5, "default": 100, "info": "Sur un petit écran, le texte couvre presque toute l'image : la baisser aide à le lire." },
-    { "type": "range", "id": "backdrop_fade", "label": "Hauteur du dégradé du bas", "unit": "%", "min": 10, "max": 100, "step": 5, "default": 55, "info": "Part de la section où l'image se dissout dans la couleur de fond. Sans dégradé, elle se termine par une ligne franche." },
+    { "type": "range", "id": "backdrop_fade", "label": "Hauteur du dégradé du bas", "unit": "%", "min": 10, "max": 100, "step": 5, "default": 85, "info": "Part de la section où l'image se dissout dans la couleur de fond. Trop court, elle se termine par une ligne franche." },
+    { "type": "range", "id": "backdrop_fade_right", "label": "Largeur du dégradé de droite", "unit": "%", "min": 0, "max": 100, "step": 5, "default": 45, "info": "Il dégage la zone où vient se poser le dessin du motif : sans lui, le dessin se pose sur une image chargée et devient illisible." },
     {
       "type": "select", "id": "backdrop_position", "label": "Cadrage du décor", "default": "center top", "info": "L'image étant entière, il reste du vide au-dessus ou en dessous : ce réglage dit de quel côté elle se cale.",
       "options": [
