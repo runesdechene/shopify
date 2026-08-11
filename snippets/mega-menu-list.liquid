@@ -580,7 +580,20 @@
   {% endif %}
 
   {%- comment -%} Colonne 3 : liens configurés dans le schema {%- endcomment -%}
-  {% if has_column3 %}
+  {%- liquid
+    comment
+      Meme garde que pour la colonne 2 : le conteneur n'existe que si CE menu
+      contient des liens a y placer, sinon il occupe une colonne pour rien.
+    endcomment
+    assign col3_present = false
+    for link in parent_link.links
+      assign c3 = '||' | append: link.title | append: '||'
+      if col3_list contains c3
+        assign col3_present = true
+      endif
+    endfor
+  -%}
+  {% if has_column3 and col3_present %}
     <li class="mega-menu__column mega-menu__column--col2">
       {% if column3_title != blank %}
         <span class="mega-menu__col2-title">{{ column3_title }}</span>
