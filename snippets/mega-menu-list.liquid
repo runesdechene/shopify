@@ -1113,11 +1113,18 @@
    * l'image agrandie deborde sur le menu. `hidden` est compris partout.
    * `position: relative` et `isolation` bornent en plus le contexte de
    * peinture, pour qu'aucune couche du theme ne fasse ressortir l'image. */
+  /* ⚠ `clip-path: inset(0)` EN PLUS de `overflow: hidden` : le debordement
+   * peut etre neutralise par un ancetre du theme (transform, filtre, contexte
+   * de peinture), auquel cas `overflow` ne rogne plus rien. `clip-path` est un
+   * rognage geometrique : il ne depend d'aucun de ces contextes et coupe
+   * toujours. Sans lui, l'image agrandie sortait du cadre et passait par-dessus
+   * le menu. */
   .rdc-menu-shot {
     display: grid;
     position: relative;
     isolation: isolate;
     overflow: hidden;
+    clip-path: inset(0);
     line-height: 0;
   }
 
