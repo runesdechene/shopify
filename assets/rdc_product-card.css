@@ -58,3 +58,23 @@
   --swatch-width: 12px;
   --swatch-height: 12px;
 }
+
+/* ---------------------------------------------------------------------------
+ * LE FOND DERRIERE L'IMAGE
+ *
+ * Un voile a peine plus sombre que le parchemin, qui detache la photo du
+ * fond de page.
+ *
+ * En teinte translucide plutot qu'en couleur fixe : la carte apparait sur du
+ * parchemin, sur du blanc et sur des sections sombres. Une couleur fixe
+ * jurerait sur l'une des trois ; un voile fonce ce qu'il y a derriere, quel
+ * qu'il soit.
+ *
+ * ⚠ Il ne se voit que la ou l'image ne remplit PAS son cadre — donc sur les
+ * visuels detoures. Les photos qui occupent tout le cadre le masquent
+ * entierement : le rendre visible partout supposerait de passer les images en
+ * « entier », ce qui demande de battre un style inline.
+ * ------------------------------------------------------------------------- */
+.product-card .card-gallery {
+  background-color: rgba(64, 52, 52, 0.05);
+}
