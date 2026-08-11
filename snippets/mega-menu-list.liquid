@@ -253,10 +253,23 @@
             simplifier — c'est le meme piege que sur les metaobjets
             d'illustration.
           endcomment
+          comment
+            ⚠ Shopify fabrique la CLE du metachamp a partir de son libelle :
+            « Icone du menu » donne `icone_du_menu`, pas `icon_menu`. On essaie
+            donc les orthographes courantes plutot que d'en imposer une — un
+            champ cree a la main ne doit pas obliger a toucher au code.
+          endcomment
           assign menu_icon_mf = nil
-          if link.object.metafields.custom.icon_menu != blank
-            assign menu_icon_mf = link.object.metafields.custom.icon_menu.value | default: link.object.metafields.custom.icon_menu
-          endif
+          assign mf = link.object.metafields.custom
+          assign candidats = 'icone_du_menu,icon_menu,icone_menu,menu_icon,icone' | split: ','
+          for cle in candidats
+            unless menu_icon_mf
+              assign brut = mf[cle]
+              unless brut == blank
+                assign menu_icon_mf = brut.value | default: brut
+              endunless
+            endunless
+          endfor
 
           # Priorite 1 : correspondance manuelle, si une ligne vise ce lien
           assign current_icon = ''
@@ -318,7 +331,7 @@
           Shopify renvoie l'un ou l'autre.
         {%- endcomment -%}
         {%- if menu_content_type == 'collection_images' and link.type == 'collection_link' -%}
-          {%- assign resume_mf = link.object.metafields.custom.resume.value | default: link.object.metafields.custom.resume -%}
+          {%- assign resume_mf = link.object.metafields.custom.resume.value | default: link.object.metafields.custom.resume | default: link.object.metafields.custom.resume_.value -%}
           {%- assign accroche = resume_mf | strip_html | strip -%}
           {%- if accroche == blank -%}
             {%- assign accroche = link.object.description | strip_html | strip -%}
@@ -508,9 +521,16 @@
             <a href="{{ link.url }}" class="mega-menu__link">
               {%- liquid
                 assign menu_icon_mf = nil
-                if link.object.metafields.custom.icon_menu != blank
-                  assign menu_icon_mf = link.object.metafields.custom.icon_menu.value | default: link.object.metafields.custom.icon_menu
-                endif
+                assign mf = link.object.metafields.custom
+                assign candidats = 'icone_du_menu,icon_menu,icone_menu,menu_icon,icone' | split: ','
+                for cle in candidats
+                  unless menu_icon_mf
+                    assign brut = mf[cle]
+                    unless brut == blank
+                      assign menu_icon_mf = brut.value | default: brut
+                    endunless
+                  endunless
+                endfor
 
                 assign link_collection_image = nil
                 if menu_icon_mf == nil and link.type == 'collection_link' and link.object.image != blank
@@ -563,7 +583,7 @@
                 description en repli.
               {%- endcomment -%}
               {%- if link.type == 'collection_link' -%}
-                {%- assign resume_mf = link.object.metafields.custom.resume.value | default: link.object.metafields.custom.resume -%}
+                {%- assign resume_mf = link.object.metafields.custom.resume.value | default: link.object.metafields.custom.resume | default: link.object.metafields.custom.resume_.value -%}
                 {%- assign accroche = resume_mf | strip_html | strip -%}
                 {%- if accroche == blank -%}
                   {%- assign accroche = link.object.description | strip_html | strip -%}
@@ -605,9 +625,16 @@
             <a href="{{ link.url }}" class="mega-menu__link">
               {%- liquid
                 assign menu_icon_mf = nil
-                if link.object.metafields.custom.icon_menu != blank
-                  assign menu_icon_mf = link.object.metafields.custom.icon_menu.value | default: link.object.metafields.custom.icon_menu
-                endif
+                assign mf = link.object.metafields.custom
+                assign candidats = 'icone_du_menu,icon_menu,icone_menu,menu_icon,icone' | split: ','
+                for cle in candidats
+                  unless menu_icon_mf
+                    assign brut = mf[cle]
+                    unless brut == blank
+                      assign menu_icon_mf = brut.value | default: brut
+                    endunless
+                  endunless
+                endfor
 
                 assign link_collection_image = nil
                 if menu_icon_mf == nil and link.type == 'collection_link' and link.object.image != blank
@@ -660,7 +687,7 @@
                 description en repli.
               {%- endcomment -%}
               {%- if link.type == 'collection_link' -%}
-                {%- assign resume_mf = link.object.metafields.custom.resume.value | default: link.object.metafields.custom.resume -%}
+                {%- assign resume_mf = link.object.metafields.custom.resume.value | default: link.object.metafields.custom.resume | default: link.object.metafields.custom.resume_.value -%}
                 {%- assign accroche = resume_mf | strip_html | strip -%}
                 {%- if accroche == blank -%}
                   {%- assign accroche = link.object.description | strip_html | strip -%}
@@ -1113,19 +1140,20 @@
    * l'image agrandie deborde sur le menu. `hidden` est compris partout.
    * `position: relative` et `isolation` bornent en plus le contexte de
    * peinture, pour qu'aucune couche du theme ne fasse ressortir l'image. */
-  /* ⚠ `clip-path: inset(0)` EN PLUS de `overflow: hidden` : le debordement
-   * peut etre neutralise par un ancetre du theme (transform, filtre, contexte
-   * de peinture), auquel cas `overflow` ne rogne plus rien. `clip-path` est un
-   * rognage geometrique : il ne depend d'aucun de ces contextes et coupe
-   * toujours. Sans lui, l'image agrandie sortait du cadre et passait par-dessus
-   * le menu. */
+  /* ⚠ AUCUN effet de survol sur les grandes images, et c'est deliberé.
+   *
+   * Trois tentatives de zoom contenu ont echoue : le rognage du cadre ne tient
+   * pas dans ce menu — un ancetre du theme neutralise le debordement, et meme
+   * un rognage geometrique n'a pas suffi. L'image sortait du cadre et passait
+   * par-dessus le menu.
+   *
+   * Un survol qui deborde vaut moins qu'un survol absent. Le cadre reste (il
+   * porte le cadrage 4/3), l'effet part. Ne pas le remettre sans pouvoir le
+   * verifier dans un navigateur.
+   */
   .rdc-menu-shot {
-    display: grid;
-    position: relative;
-    isolation: isolate;
+    display: block;
     overflow: hidden;
-    clip-path: inset(0);
-    line-height: 0;
   }
 
   .rdc-menu-shot > img {
@@ -1138,12 +1166,10 @@
     transform: none !important;
   }
 
-  .rdc-menu-shot img,
   .rdc-menu-images .mega-menu__link-icon img {
     transition: transform .5s ease;
   }
 
-  .rdc-menu-images .mega-menu__link:hover .rdc-menu-shot img,
   .rdc-menu-images .mega-menu__column--col2 .mega-menu__link:hover .mega-menu__link-icon img,
   .rdc-menu-images .mega-menu__column--col3 .mega-menu__link:hover .mega-menu__link-icon img {
     transform: scale(1.06);
