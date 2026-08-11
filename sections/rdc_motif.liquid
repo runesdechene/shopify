@@ -233,54 +233,53 @@
     doivent voiler que l'image de fond.
   {%- endcomment -%}
   {%- comment -%}
-    ⚠ La couche prend la HAUTEUR REELLE de l'image, via son ratio — elle ne
-    couvre pas la section.
+    ⚠ La couche n'a pas de hauteur imposee : elle prend celle de l'image, qui
+    s'affiche en pleine largeur a son ratio naturel (`height:auto`).
 
-    C'est ce qui rend les degrades justes. Tant que la couche faisait toute la
-    hauteur de la section, `85%` se comptait sur la section : la partie opaque
-    du degrade se retrouvait plaquee tout en bas, sous l'image, la ou il n'y a
-    plus rien a fondre — et au niveau du bas de l'image il etait encore presque
-    transparent. D'ou l'arete franche, que monter a 100% n'aurait pas reglee.
-    Rapportes a l'image, les pourcentages veulent enfin dire quelque chose.
+    C'etait la cause de « le degrade est trop court ». Tant que la couche
+    faisait toute la hauteur de la SECTION, `85%` se comptait sur la section :
+    la partie opaque du degrade se retrouvait plaquee tout en bas, sous
+    l'image, la ou il n'y a plus rien a fondre — au niveau du bas de l'image il
+    etait encore presque transparent. Monter a 100% n'y aurait rien change,
+    l'ancrage etait faux.
+
+    ⚠ Et le ratio ne peut PAS venir de Liquid : ces images sont des FICHIERS,
+    pas des images typees. `backdrop.width`, `.height` et `.aspect_ratio`
+    reviennent vides (verifie en ligne sur Varegue). D'ou `height:auto`, qui ne
+    demande rien a personne.
   {%- endcomment -%}
   #{{ uid }} .rdcm__backdrop{position:absolute;top:0;left:0;right:0;z-index:0;
     margin:0 auto;overflow:hidden;pointer-events:none;user-select:none;
-    aspect-ratio:{{ backdrop.aspect_ratio | default: 1.777 }};
     {%- unless s.backdrop_full_width -%}
       max-width:calc(var(--page-width, 1400px) - (var(--page-margin, 40px) * 2));
     {%- endunless -%}
   }
   {%- comment -%}
-    La boite epouse deja le ratio : `cover` ne rogne donc rien, il garantit
-    juste qu'aucun demi-pixel d'arrondi ne laisse une raie claire sur un bord.
-  {%- endcomment -%}
-  #{{ uid }} .rdcm__backdrop img{width:100%;height:100%;object-fit:cover;display:block;
-    opacity:{{ s.backdrop_opacity | divided_by: 100.0 }}}
-  {%- comment -%}
-    DEUX degrades, deux roles.
+    Les deux fondus sont des MASQUES poses sur l'image, plus des rectangles de
+    couleur poses par-dessus. Deux raisons.
 
-    Celui du BAS dissout le decor dans la page : il doit monter haut, sinon la
-    photo se termine par une ligne franche au milieu de l'ecran.
+    Les pourcentages d'un masque se comptent sur l'image elle-meme : ils sont
+    justes sans connaitre son ratio. Et un masque rend l'image transparente au
+    lieu de la recouvrir : c'est le fond de la section qui apparait, donc la
+    bonne couleur par construction, meme si on la change un jour.
 
-    Celui de la DROITE degage la zone ou vit le filigrane du motif. Sans lui,
-    le dessin se pose sur une image chargee et devient illisible ; avec lui, il
-    apparait sur du parchemin.
+    Celui du BAS dissout l'image dans la page. Celui de la DROITE degage la
+    zone du filigrane : sans lui le dessin du motif se pose sur une image
+    chargee et devient illisible. `intersect` les combine — l'image ne reste
+    opaque que la ou les DEUX masques sont opaques.
 
-    Ils se recouvrent dans le coin bas-droit et y arrivent tous deux a la
-    couleur de fond : le coin finit uni, sans surprise.
+    ⚠ Deux syntaxes pour la meme chose : `mask-composite:intersect` (standard)
+    et `-webkit-mask-composite:source-in` (Safari). Les deux sont necessaires.
+    Si un navigateur ne connait ni l'un ni l'autre, l'image s'affiche pleine,
+    sans fondu — degrade, jamais casse.
   {%- endcomment -%}
-  {%- comment -%}
-    ⚠ `z-index:1` sur les deux : un `::before` se peint AVANT les enfants de
-    son element, donc sous l'image, ou il ne servirait a rien.
-  {%- endcomment -%}
-  #{{ uid }} .rdcm__backdrop::after{content:'';position:absolute;left:0;right:0;bottom:0;
-    z-index:1;height:{{ s.backdrop_fade }}%;
-    background:linear-gradient(to top,{{ s.bg_color }} 0%,
-      {{ s.bg_color | color_modify: 'alpha', 0 }} 100%)}
-  #{{ uid }} .rdcm__backdrop::before{content:'';position:absolute;top:0;bottom:0;right:0;
-    z-index:1;width:{{ s.backdrop_fade_right }}%;
-    background:linear-gradient(to left,{{ s.bg_color }} 0%,
-      {{ s.bg_color | color_modify: 'alpha', 0 }} 100%)}
+  #{{ uid }} .rdcm__backdrop img{width:100%;height:auto;display:block;
+    opacity:{{ s.backdrop_opacity | divided_by: 100.0 }};
+    -webkit-mask-image:linear-gradient(to top,transparent 0%,#000 {{ s.backdrop_fade }}%),
+      linear-gradient(to left,transparent 0%,#000 {{ s.backdrop_fade_right }}%);
+    mask-image:linear-gradient(to top,transparent 0%,#000 {{ s.backdrop_fade }}%),
+      linear-gradient(to left,transparent 0%,#000 {{ s.backdrop_fade_right }}%);
+    -webkit-mask-composite:source-in;mask-composite:intersect}
   @media (max-width:749px){
     #{{ uid }} .rdcm__backdrop img{opacity:{{ s.backdrop_opacity_mobile | divided_by: 100.0 }}}
   }
@@ -489,11 +488,11 @@
   {%- if backdrop != blank -%}
     <div class="rdcm__backdrop">
       {%- comment -%}
-        Dimensions reelles de l'image, pas un ratio suppose : en `contain`, un
-        ratio faux ferait mentir la place que le navigateur lui reserve.
+        Aucun attribut de dimension : ces images sont des FICHIERS, `.width` et
+        `.height` reviennent vides et produiraient `width=""`. La couche etant
+        hors flux, elle ne decale rien pendant le chargement.
       {%- endcomment -%}
       <img src="{{ backdrop | image_url: width: 2400 }}" alt=""
-           width="{{ backdrop.width }}" height="{{ backdrop.height }}"
            loading="eager" fetchpriority="low">
     </div>
   {%- endif -%}
