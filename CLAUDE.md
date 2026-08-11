@@ -92,6 +92,18 @@ Décision 2026-06-14 : le thème et le monorepo app restent **deux repos sépar�
 
 ### ⚠️ Pièges Shopify à NE PAS refaire
 
+- **⚠️ TOUJOURS `--path` sur `theme push` / `theme pull`.** Un `cd` dans le dossier **ne suffit pas** : sans `--path`, le CLI résout le projet ailleurs (l'autre thème Heritage de base, `~/CascadeProjects/RUNES DE CHENE (Shopify)`, qui ne contient **aucun** fichier `rdc_*`). Conséquence observée deux fois : le fichier visé par `--only` n'existe pas dans ce dossier fantôme → rien n'est envoyé, **et l'étape « Cleaning your remote theme » SUPPRIME le fichier en ligne**. Le CLI affiche quand même « pushed successfully ». Forme correcte :
+
+  ```bash
+  PROJ="/c/Users/uriel/Desktop/DEVs/shopify (Runes de Chêne)"
+  shopify theme push --path "$PROJ" --theme=181425930507 \
+    --only sections/mon-fichier.liquid --allow-live --nodelete
+  ```
+
+  - `--allow-live` : sans lui, le CLI demande une confirmation → échoue en non-interactif (« Failed to prompt »).
+  - `--nodelete` : désactive l'étape de nettoyage, celle qui a déjà effacé un fichier en ligne.
+  - **Vérifier après coup**, toujours : `theme pull --path <dossier temporaire> --only <fichier>` puis `diff`. « Theme upload complete » ne prouve rien.
+- **Une page peut rester en cache plusieurs minutes.** Un `curl` sur le site peut renvoyer l'ancienne version du HTML alors que le fichier en ligne est déjà le bon. Comparer d'abord **le fichier** (`theme pull` + `diff`), le HTML rendu ensuite, avec un paramètre d'URL bidon pour casser le cache.
 - **`name` de section (et de preset) ≤ 25 caractères.** Au-delà, Shopify **rejette** la section : elle n'apparaît **jamais** dans l'éditeur (« Ajouter une section »). Mettre le nom long dans le réglage `title`, pas dans le `name` du schema. (Ex. : schema `name: "RDC — Mouvement vivant"` mais `title: "Le mouvement est vivant"`.)
 - **Nouveau fichier de section pendant un `shopify theme dev`** : le serveur scanne `sections/` au démarrage → **redémarrer le dev** pour qu'il registre un fichier de section nouvellement créé.
 - **`git push` ≠ `shopify theme push`** : git ne pousse rien vers le store. Le rendu se voit via le `shopify theme dev` en cours (sync local) ou un push explicite.
