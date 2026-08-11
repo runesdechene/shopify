@@ -60,6 +60,29 @@
 }
 
 /* ---------------------------------------------------------------------------
+ * ET SURTOUT : L'ECART ENTRE ELLES
+ *
+ * C'est lui qui declenchait le « +4 », « +5 » au chargement. Le composant du
+ * theme laisse 16px entre deux pastilles : a 12px de pastille, chacune coute
+ * 28px de large, et six ou sept suffisent a remplir une carte — le reste part
+ * dans le repliement.
+ *
+ * A 5px d'ecart (celui de la page motif), il en rentre plus du double et le
+ * repli ne se declenche plus. C'est la bonne facon de le desamorcer : on lui
+ * donne la place, on ne se bat pas contre lui.
+ *
+ * ⚠ Ne PAS tenter de forcer le retour a la ligne (`flex-wrap:wrap` via
+ * `::part`) : le composant mesure justement ce qui passe a la ligne suivante
+ * pour decider quoi replier — le faire wrapper AGGRAVE le repli. Et son
+ * attribut `disabled` ne tient pas : ses observateurs relancent le calcul.
+ *
+ * `::part()` est la seule porte d'entree : la liste vit dans un shadow DOM.
+ * ------------------------------------------------------------------------- */
+.product-card overflow-list::part(list) {
+  column-gap: 5px;
+}
+
+/* ---------------------------------------------------------------------------
  * LE FOND DERRIERE L'IMAGE
  *
  * Un voile a peine plus sombre que le parchemin, qui detache la photo du
@@ -70,11 +93,14 @@
  * jurerait sur l'une des trois ; un voile fonce ce qu'il y a derriere, quel
  * qu'il soit.
  *
+ * La teinte tire vers l'ambre plutot que vers le gris : un voile neutre
+ * refroidit le parchemin et le fait virer au sale.
+ *
  * ⚠ Il ne se voit que la ou l'image ne remplit PAS son cadre — donc sur les
  * visuels detoures. Les photos qui occupent tout le cadre le masquent
  * entierement : le rendre visible partout supposerait de passer les images en
  * « entier », ce qui demande de battre un style inline.
  * ------------------------------------------------------------------------- */
 .product-card .card-gallery {
-  background-color: rgba(64, 52, 52, 0.05);
+  background-color: rgba(150, 110, 60, 0.07);
 }
