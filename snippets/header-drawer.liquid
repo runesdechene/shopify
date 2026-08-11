@@ -233,37 +233,7 @@
                                 %}
                               {% endif %}
                               <span class="menu-drawer__menu-item-text wrap-text">
-                                {%- liquid
-                                  assign child_collection_image = nil
-                                  if childlink.type == 'collection_link' and childlink.object.image != blank
-                                    assign child_collection_image = childlink.object.image
-                                  endif
-
-                                  assign child_icon = ''
-                                  if child_collection_image == nil and icon_map != blank
-                                    assign icon_entries = icon_map | split: '||'
-                                    for entry in icon_entries
-                                      if entry contains '::'
-                                        assign entry_parts = entry | split: '::'
-                                        assign entry_name = entry_parts[0] | strip
-                                        assign entry_icon = entry_parts[1] | strip
-                                        if entry_name == childlink.title
-                                          assign child_icon = entry_icon
-                                          break
-                                        endif
-                                      endif
-                                    endfor
-                                  endif
-                                -%}
-                                {%- if child_collection_image -%}
-                                  <span class="menu-drawer__link-icon">
-                                    <img src="{{ child_collection_image | image_url: width: 64 }}" alt="{{ childlink.title }}" loading="lazy">
-                                  </span>
-                                {%- elsif child_icon != blank -%}
-                                  <span class="menu-drawer__link-icon">
-                                    <img src="{{ child_icon | asset_url }}" alt="{{ childlink.title }}" loading="lazy">
-                                  </span>
-                                {%- endif -%}
+                                {%- render 'rdc_menu-link-icon', link: childlink, icon_map: icon_map -%}
                                 {{ childlink.title | escape }}
                               </span>
                             </a>
@@ -297,36 +267,7 @@
                                             class="menu-drawer__menu-item menu-drawer__menu-item--child focus-inset{% if childlink.current %} menu-drawer__menu-item--active{% endif %}"
                                           >
                                             <span class="menu-drawer__menu-item-text wrap-text">
-                                              {%- liquid
-                                                assign child_collection_image = nil
-                                                if childlink.type == 'collection_link' and childlink.object.image != blank
-                                                  assign child_collection_image = childlink.object.image
-                                                endif
-                                                assign child_icon = ''
-                                                if child_collection_image == nil and icon_map != blank
-                                                  assign icon_entries = icon_map | split: '||'
-                                                  for entry in icon_entries
-                                                    if entry contains '::'
-                                                      assign entry_parts = entry | split: '::'
-                                                      assign entry_name = entry_parts[0] | strip
-                                                      assign entry_icon = entry_parts[1] | strip
-                                                      if entry_name == childlink.title
-                                                        assign child_icon = entry_icon
-                                                        break
-                                                      endif
-                                                    endif
-                                                  endfor
-                                                endif
-                                              -%}
-                                              {%- if child_collection_image -%}
-                                                <span class="menu-drawer__link-icon">
-                                                  <img src="{{ child_collection_image | image_url: width: 64 }}" alt="{{ childlink.title }}" loading="lazy">
-                                                </span>
-                                              {%- elsif child_icon != blank -%}
-                                                <span class="menu-drawer__link-icon">
-                                                  <img src="{{ child_icon | asset_url }}" alt="{{ childlink.title }}" loading="lazy">
-                                                </span>
-                                              {%- endif -%}
+                                              {%- render 'rdc_menu-link-icon', link: childlink, icon_map: icon_map -%}
                                               {{ childlink.title | escape }}
                                               {%- if hot_list != blank -%}{%- assign hot_check = '||' | append: childlink.title | append: '||' -%}{%- if hot_list contains hot_check -%}<span class="mega-menu__hot-badge">🔥 HOT</span>{%- endif -%}{%- endif -%}
                                             </span>
@@ -368,36 +309,7 @@
                                             class="menu-drawer__menu-item menu-drawer__menu-item--child focus-inset{% if childlink.current %} menu-drawer__menu-item--active{% endif %}"
                                           >
                                             <span class="menu-drawer__menu-item-text wrap-text">
-                                              {%- liquid
-                                                assign child_collection_image = nil
-                                                if childlink.type == 'collection_link' and childlink.object.image != blank
-                                                  assign child_collection_image = childlink.object.image
-                                                endif
-                                                assign child_icon = ''
-                                                if child_collection_image == nil and icon_map != blank
-                                                  assign icon_entries = icon_map | split: '||'
-                                                  for entry in icon_entries
-                                                    if entry contains '::'
-                                                      assign entry_parts = entry | split: '::'
-                                                      assign entry_name = entry_parts[0] | strip
-                                                      assign entry_icon = entry_parts[1] | strip
-                                                      if entry_name == childlink.title
-                                                        assign child_icon = entry_icon
-                                                        break
-                                                      endif
-                                                    endif
-                                                  endfor
-                                                endif
-                                              -%}
-                                              {%- if child_collection_image -%}
-                                                <span class="menu-drawer__link-icon">
-                                                  <img src="{{ child_collection_image | image_url: width: 64 }}" alt="{{ childlink.title }}" loading="lazy">
-                                                </span>
-                                              {%- elsif child_icon != blank -%}
-                                                <span class="menu-drawer__link-icon">
-                                                  <img src="{{ child_icon | asset_url }}" alt="{{ childlink.title }}" loading="lazy">
-                                                </span>
-                                              {%- endif -%}
+                                              {%- render 'rdc_menu-link-icon', link: childlink, icon_map: icon_map -%}
                                               {{ childlink.title | escape }}
                                               {%- if hot_list != blank -%}{%- assign hot_check = '||' | append: childlink.title | append: '||' -%}{%- if hot_list contains hot_check -%}<span class="mega-menu__hot-badge">🔥 HOT</span>{%- endif -%}{%- endif -%}
                                             </span>
@@ -472,37 +384,7 @@
                             %}
                           {% endif %}
                           <span class="menu-drawer__menu-item-text wrap-text">
-                            {%- liquid
-                              assign child_collection_image = nil
-                              if childlink.type == 'collection_link' and childlink.object.image != blank
-                                assign child_collection_image = childlink.object.image
-                              endif
-
-                              assign child_icon = ''
-                              if child_collection_image == nil and icon_map != blank
-                                assign icon_entries = icon_map | split: '||'
-                                for entry in icon_entries
-                                  if entry contains '::'
-                                    assign entry_parts = entry | split: '::'
-                                    assign entry_name = entry_parts[0] | strip
-                                    assign entry_icon = entry_parts[1] | strip
-                                    if entry_name == childlink.title
-                                      assign child_icon = entry_icon
-                                      break
-                                    endif
-                                  endif
-                                endfor
-                              endif
-                            -%}
-                            {%- if child_collection_image -%}
-                              <span class="menu-drawer__link-icon">
-                                <img src="{{ child_collection_image | image_url: width: 64 }}" alt="{{ childlink.title }}" loading="lazy">
-                              </span>
-                            {%- elsif child_icon != blank -%}
-                              <span class="menu-drawer__link-icon">
-                                <img src="{{ child_icon | asset_url }}" alt="{{ childlink.title }}" loading="lazy">
-                              </span>
-                            {%- endif -%}
+                            {%- render 'rdc_menu-link-icon', link: childlink, icon_map: icon_map -%}
                             {{ childlink.title | escape }}
                           </span>
                         </a>
@@ -531,32 +413,7 @@
                                     <li class="menu-drawer__list-item">
                                       <a href="{{ childlink.url }}" class="menu-drawer__menu-item menu-drawer__menu-item--child focus-inset{% if childlink.current %} menu-drawer__menu-item--active{% endif %}">
                                         <span class="menu-drawer__menu-item-text wrap-text">
-                                          {%- liquid
-                                            assign child_collection_image = nil
-                                            if childlink.type == 'collection_link' and childlink.object.image != blank
-                                              assign child_collection_image = childlink.object.image
-                                            endif
-                                            assign child_icon = ''
-                                            if child_collection_image == nil and icon_map != blank
-                                              assign icon_entries = icon_map | split: '||'
-                                              for entry in icon_entries
-                                                if entry contains '::'
-                                                  assign entry_parts = entry | split: '::'
-                                                  assign entry_name = entry_parts[0] | strip
-                                                  assign entry_icon = entry_parts[1] | strip
-                                                  if entry_name == childlink.title
-                                                    assign child_icon = entry_icon
-                                                    break
-                                                  endif
-                                                endif
-                                              endfor
-                                            endif
-                                          -%}
-                                          {%- if child_collection_image -%}
-                                            <span class="menu-drawer__link-icon"><img src="{{ child_collection_image | image_url: width: 64 }}" alt="{{ childlink.title }}" loading="lazy"></span>
-                                          {%- elsif child_icon != blank -%}
-                                            <span class="menu-drawer__link-icon"><img src="{{ child_icon | asset_url }}" alt="{{ childlink.title }}" loading="lazy"></span>
-                                          {%- endif -%}
+                                          {%- render 'rdc_menu-link-icon', link: childlink, icon_map: icon_map -%}
                                           {{ childlink.title | escape }}
                                         </span>
                                       </a>
@@ -592,32 +449,7 @@
                                     <li class="menu-drawer__list-item">
                                       <a href="{{ childlink.url }}" class="menu-drawer__menu-item menu-drawer__menu-item--child focus-inset{% if childlink.current %} menu-drawer__menu-item--active{% endif %}">
                                         <span class="menu-drawer__menu-item-text wrap-text">
-                                          {%- liquid
-                                            assign child_collection_image = nil
-                                            if childlink.type == 'collection_link' and childlink.object.image != blank
-                                              assign child_collection_image = childlink.object.image
-                                            endif
-                                            assign child_icon = ''
-                                            if child_collection_image == nil and icon_map != blank
-                                              assign icon_entries = icon_map | split: '||'
-                                              for entry in icon_entries
-                                                if entry contains '::'
-                                                  assign entry_parts = entry | split: '::'
-                                                  assign entry_name = entry_parts[0] | strip
-                                                  assign entry_icon = entry_parts[1] | strip
-                                                  if entry_name == childlink.title
-                                                    assign child_icon = entry_icon
-                                                    break
-                                                  endif
-                                                endif
-                                              endfor
-                                            endif
-                                          -%}
-                                          {%- if child_collection_image -%}
-                                            <span class="menu-drawer__link-icon"><img src="{{ child_collection_image | image_url: width: 64 }}" alt="{{ childlink.title }}" loading="lazy"></span>
-                                          {%- elsif child_icon != blank -%}
-                                            <span class="menu-drawer__link-icon"><img src="{{ child_icon | asset_url }}" alt="{{ childlink.title }}" loading="lazy"></span>
-                                          {%- endif -%}
+                                          {%- render 'rdc_menu-link-icon', link: childlink, icon_map: icon_map -%}
                                           {{ childlink.title | escape }}
                                         </span>
                                       </a>
@@ -755,37 +587,7 @@
                                     %}
                                   {% endif %}
                                   <span class="menu-drawer__menu-item-text wrap-text">
-                                    {%- liquid
-                                      assign child_collection_image = nil
-                                      if childlink.type == 'collection_link' and childlink.object.image != blank
-                                        assign child_collection_image = childlink.object.image
-                                      endif
-
-                                      assign child_icon = ''
-                                      if child_collection_image == nil and icon_map != blank
-                                        assign icon_entries = icon_map | split: '||'
-                                        for entry in icon_entries
-                                          if entry contains '::'
-                                            assign entry_parts = entry | split: '::'
-                                            assign entry_name = entry_parts[0] | strip
-                                            assign entry_icon = entry_parts[1] | strip
-                                            if entry_name == childlink.title
-                                              assign child_icon = entry_icon
-                                              break
-                                            endif
-                                          endif
-                                        endfor
-                                      endif
-                                    -%}
-                                    {%- if child_collection_image -%}
-                                      <span class="menu-drawer__link-icon">
-                                        <img src="{{ child_collection_image | image_url: width: 64 }}" alt="{{ childlink.title }}" loading="lazy">
-                                      </span>
-                                    {%- elsif child_icon != blank -%}
-                                      <span class="menu-drawer__link-icon">
-                                        <img src="{{ child_icon | asset_url }}" alt="{{ childlink.title }}" loading="lazy">
-                                      </span>
-                                    {%- endif -%}
+                                    {%- render 'rdc_menu-link-icon', link: childlink, icon_map: icon_map -%}
                                     {{- childlink.title | escape -}}
                                   </span>
                                 </a>

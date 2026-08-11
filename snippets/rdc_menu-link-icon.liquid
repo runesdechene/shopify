@@ -1,0 +1,72 @@
+{%- doc -%}
+  Rend la pastille d'icone posee devant le nom d'un lien, dans le menu mobile.
+
+  Trois sources, dans CET ordre — le meme que le mega-menu de bureau, pour que
+  les deux menus ne puissent jamais se contredire :
+
+    0. le metachamp `custom.icon_menu` de la collection ;
+    1. la correspondance manuelle `Libelle|fichier.png` du reglage de menu ;
+    2. a defaut, l'image de la collection liee.
+
+  ⚠ Releve a la sonde le 12/08, sur le vrai magasin — ne pas re-deviner :
+  le metachamp est de type `file_reference`. C'est son `.value` qui porte
+  l'objet image, et `image_url` s'y applique directement. Le metachamp NU rend
+  son identifiant (`gid://shopify/MediaImage/...`), donc surtout PAS de
+  `| default:` en repli sur le metachamp : ca donnerait le gid a `image_url`.
+
+  ⚠ Un seul endroit dans le theme decide de cette icone. Le mega-menu de
+  bureau (`mega-menu-list.liquid`) porte la meme recette, verifiee en ligne.
+  Si la regle change, elle change aux deux endroits.
+
+  @param {object} link - Le lien de menu a decorer
+  @param {string} [icon_map] - Correspondance deja compilee en `Libelle::fichier.png||`
+  @param {number} [width] - Largeur demandee au CDN (defaut 64)
+
+  @example
+  {% render 'rdc_menu-link-icon', link: childlink, icon_map: icon_map %}
+{%- enddoc -%}
+
+{%- liquid
+  assign icon_width = width | default: 64
+
+  # Priorite 0 — le metachamp de la collection.
+  assign mf_icon = nil
+  if link.object.metafields.custom.icon_menu != blank
+    assign mf_icon = link.object.metafields.custom.icon_menu.value
+  endif
+
+  # Priorite 1 — la correspondance manuelle, si une ligne vise ce lien.
+  assign mapped_icon = ''
+  if mf_icon == nil and icon_map != blank
+    assign icon_entries = icon_map | split: '||'
+    for entry in icon_entries
+      if entry contains '::'
+        assign entry_parts = entry | split: '::'
+        assign entry_name = entry_parts[0] | strip
+        if entry_name == link.title
+          assign mapped_icon = entry_parts[1] | strip
+          break
+        endif
+      endif
+    endfor
+  endif
+
+  # Priorite 2 — l'image de la collection liee.
+  assign collection_image = nil
+  if mf_icon == nil and mapped_icon == blank and link.type == 'collection_link' and link.object.image != blank
+    assign collection_image = link.object.image
+  endif
+-%}
+{%- if mf_icon -%}
+  <span class="menu-drawer__link-icon">
+    <img src="{{ mf_icon | image_url: width: icon_width }}" alt="{{ link.title | escape }}" loading="lazy">
+  </span>
+{%- elsif mapped_icon != blank -%}
+  <span class="menu-drawer__link-icon">
+    <img src="{{ mapped_icon | asset_url }}" alt="{{ link.title | escape }}" loading="lazy">
+  </span>
+{%- elsif collection_image -%}
+  <span class="menu-drawer__link-icon">
+    <img src="{{ collection_image | image_url: width: icon_width }}" alt="{{ link.title | escape }}" loading="lazy">
+  </span>
+{%- endif -%}
