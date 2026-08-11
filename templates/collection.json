@@ -236,9 +236,17 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "custom_liquid_rdc_photo": {
+              "type": "custom-liquid",
+              "settings": {
+                "custom_liquid": "{%- comment -%}\n  Bandeau de collection, meme traitement que le hero des pages saga :\n  image rognee en `cover`, coins a 14px.\n\n  ⚠ OPTIONNEL PAR CONSTRUCTION : si la collection n'a pas d'image dans\n  Shopify, ce bloc ne produit RIEN — pas une balise, pas une hauteur. Les\n  collections sans photo gardent donc exactement la page d'aujourd'hui.\n  C'est aussi pour ca qu'on n'a pas reactive la colonne de droite du\n  gabarit : vide, elle aurait mange la moitie de la largeur partout.\n\n  Pour en poser une : Shopify > Produits > Collections > la collection >\n  Image. Une photo PORTEE de preference — un visuel a plat ferait doublon\n  avec la grille juste en dessous.\n{%- endcomment -%}\n{%- if collection.image != blank -%}\n  <figure class=\"rdc-coll-banner\">\n    <img src=\"{{ collection.image | image_url: width: 2000 }}\"\n         srcset=\"{{ collection.image | image_url: width: 800 }} 800w,\n                 {{ collection.image | image_url: width: 1400 }} 1400w,\n                 {{ collection.image | image_url: width: 2000 }} 2000w\"\n         sizes=\"100vw\"\n         alt=\"{{ collection.title | escape }}\"\n         width=\"{{ collection.image.width }}\" height=\"{{ collection.image.height }}\"\n         loading=\"eager\" fetchpriority=\"high\">\n  </figure>\n{%- endif -%}\n"
+              },
+              "blocks": {}
             }
           },
           "block_order": [
+            "custom_liquid_rdc_photo",
             "text_Dftjfc",
             "text_tbkKN7",
             "text_ELjgGV",

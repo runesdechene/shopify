@@ -21,6 +21,38 @@
  * se lit pas comme une barre. Un filet au-dessus, un en dessous, et elle
  * devient une reglure entre le titre et les produits.
  * ------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------
+ * LE BANDEAU DE COLLECTION
+ *
+ * Meme traitement que le hero des pages saga : image rognee en `cover`, coins
+ * a 14px. Il n'existe que si la collection a une image dans Shopify — sinon
+ * le bloc ne produit aucune balise, donc aucune hauteur.
+ *
+ * La hauteur est bornee plutot que fixee : une photo portee en paysage et une
+ * en portrait donnent le meme bandeau, sans deformer ni l'une ni l'autre.
+ * ------------------------------------------------------------------------- */
+.rdc-coll-banner {
+  display: block;
+  margin: 0 0 clamp(18px, 2.4vw, 32px);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #eae0cc;
+}
+
+.rdc-coll-banner img {
+  display: block;
+  width: 100%;
+  height: clamp(180px, 34vw, 380px);
+  object-fit: cover;
+  object-position: center;
+}
+
+@media (max-width: 749px) {
+  .rdc-coll-banner img {
+    height: clamp(160px, 44vw, 260px);
+  }
+}
+
 /* La barre occupe TOUTE la largeur de l'ecran, bord a bord.
  *
  * ⚠ Pas de `100vw` : sur une page avec ascenseur, `100vw` compte la largeur
