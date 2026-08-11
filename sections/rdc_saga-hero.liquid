@@ -94,7 +94,17 @@
   endif
 -%}
 
-{%- if slide_count > 0 -%}
+{%- comment -%}
+  ⚠ Sans image, la section ne produisait RIEN. C'est pour ca qu'elle apparait
+  dans l'editeur — qui affiche toujours un emplacement pour les sections vides,
+  sinon on ne pourrait plus les selectionner — et nulle part sur la page.
+
+  Le reglage ci-dessous permet de l'afficher quand meme, sur un aplat de
+  couleur : utile sur les collections ordinaires, qui n'ont ni metachamp
+  d'images ni image de collection. Il est DECOCHE par defaut, pour que les
+  pages saga gardent exactement le comportement d'avant.
+{%- endcomment -%}
+{%- if slide_count > 0 or s.show_without_image -%}
 <style>
   #{{ uid }}{position:relative;min-height:{{ s.min_height }}vh;display:flex;align-items:flex-end;
     overflow:hidden;background:#1c1812;
@@ -160,6 +170,7 @@
   #{{ uid }} .rdcsh__dot{pointer-events:auto;width:9px;height:9px;padding:0;border:0;cursor:pointer;
     border-radius:999px;background:rgba(255,255,255,.45);transition:.25s ease}
   #{{ uid }} .rdcsh__dot.is-active{background:#fff;width:26px;border-radius:5px}
+  #{{ uid }} .rdcsh__slide--plain{background:{{ s.fallback_color }}}
 </style>
 
 <section id="{{ uid }}" data-rdc-saga-hero>
@@ -176,7 +187,7 @@
           >
         </div>
       {%- endfor -%}
-    {%- else -%}
+    {%- elsif collection.image != blank -%}
       <div class="rdcsh__slide is-active">
         <img
           src="{{ collection.image | image_url: width: 2200 }}"
@@ -186,6 +197,13 @@
           loading="eager"
         >
       </div>
+    {%- else -%}
+      {%- comment -%}
+        Aucune image : un aplat, pour que le titre et le texte aient un fond
+        sur lequel se lire. Sans lui, du texte blanc se poserait sur le
+        parchemin de la page.
+      {%- endcomment -%}
+      <div class="rdcsh__slide is-active rdcsh__slide--plain"></div>
     {%- endif -%}
   </div>
 
@@ -362,6 +380,10 @@
     { "type": "text", "id": "btn2_label", "label": "Bouton secondaire — libellé" },
     { "type": "url", "id": "btn2_link", "label": "Bouton secondaire — lien" },
     { "type": "header", "content": "Dimensions" },
+    { "type": "header", "content": "Quand la collection n'a pas d'image" },
+    { "type": "paragraph", "content": "Par défaut la section ne s'affiche pas du tout : elle n'a rien à montrer. Cochez pour l'afficher quand même, sur un aplat de couleur — utile sur les collections ordinaires." },
+    { "type": "checkbox", "id": "show_without_image", "label": "Afficher même sans image", "default": false },
+    { "type": "color", "id": "fallback_color", "label": "Couleur de l'aplat", "default": "#46493c", "info": "Le texte du hero est clair : il lui faut un fond sombre." },
     { "type": "range", "id": "min_height", "label": "Hauteur (desktop)", "unit": "vh", "min": 40, "max": 100, "step": 2, "default": 84 },
     { "type": "range", "id": "min_height_mobile", "label": "Hauteur (mobile)", "unit": "vh", "min": 40, "max": 100, "step": 2, "default": 80 }
   ],
