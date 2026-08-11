@@ -232,14 +232,29 @@
     degrades passent alors par-dessus le titre, le texte et les coupes. Ils ne
     doivent voiler que l'image de fond.
   {%- endcomment -%}
-  #{{ uid }} .rdcm__backdrop{position:absolute;inset:0;z-index:0;margin:0 auto;overflow:hidden;
-    pointer-events:none;user-select:none;
+  {%- comment -%}
+    ⚠ La couche prend la HAUTEUR REELLE de l'image, via son ratio — elle ne
+    couvre pas la section.
+
+    C'est ce qui rend les degrades justes. Tant que la couche faisait toute la
+    hauteur de la section, `85%` se comptait sur la section : la partie opaque
+    du degrade se retrouvait plaquee tout en bas, sous l'image, la ou il n'y a
+    plus rien a fondre — et au niveau du bas de l'image il etait encore presque
+    transparent. D'ou l'arete franche, que monter a 100% n'aurait pas reglee.
+    Rapportes a l'image, les pourcentages veulent enfin dire quelque chose.
+  {%- endcomment -%}
+  #{{ uid }} .rdcm__backdrop{position:absolute;top:0;left:0;right:0;z-index:0;
+    margin:0 auto;overflow:hidden;pointer-events:none;user-select:none;
+    aspect-ratio:{{ backdrop.aspect_ratio | default: 1.777 }};
     {%- unless s.backdrop_full_width -%}
       max-width:calc(var(--page-width, 1400px) - (var(--page-margin, 40px) * 2));
     {%- endunless -%}
   }
-  #{{ uid }} .rdcm__backdrop img{width:100%;height:100%;object-fit:contain;
-    object-position:{{ s.backdrop_position }};display:block;
+  {%- comment -%}
+    La boite epouse deja le ratio : `cover` ne rogne donc rien, il garantit
+    juste qu'aucun demi-pixel d'arrondi ne laisse une raie claire sur un bord.
+  {%- endcomment -%}
+  #{{ uid }} .rdcm__backdrop img{width:100%;height:100%;object-fit:cover;display:block;
     opacity:{{ s.backdrop_opacity | divided_by: 100.0 }}}
   {%- comment -%}
     DEUX degrades, deux roles.
@@ -742,16 +757,8 @@
     { "type": "checkbox", "id": "backdrop_full_width", "label": "D'un bord à l'autre de l'écran", "default": true, "info": "Décoché, elle s'arrête à la largeur de la page, comme le contenu." },
     { "type": "range", "id": "backdrop_opacity", "label": "Intensité du décor", "unit": "%", "min": 5, "max": 100, "step": 5, "default": 100 },
     { "type": "range", "id": "backdrop_opacity_mobile", "label": "Intensité du décor (mobile)", "unit": "%", "min": 5, "max": 100, "step": 5, "default": 100, "info": "Sur un petit écran, le texte couvre presque toute l'image : la baisser aide à le lire." },
-    { "type": "range", "id": "backdrop_fade", "label": "Hauteur du dégradé du bas", "unit": "%", "min": 10, "max": 100, "step": 5, "default": 85, "info": "Part de la section où l'image se dissout dans la couleur de fond. Trop court, elle se termine par une ligne franche." },
+    { "type": "range", "id": "backdrop_fade", "label": "Hauteur du dégradé du bas", "unit": "%", "min": 10, "max": 100, "step": 5, "default": 70, "info": "Part de l'IMAGE où elle se dissout dans la couleur de fond, comptée depuis son bas. À 100 %, elle se dissout sur toute sa hauteur." },
     { "type": "range", "id": "backdrop_fade_right", "label": "Largeur du dégradé de droite", "unit": "%", "min": 0, "max": 100, "step": 5, "default": 45, "info": "Il dégage la zone où vient se poser le dessin du motif : sans lui, le dessin se pose sur une image chargée et devient illisible." },
-    {
-      "type": "select", "id": "backdrop_position", "label": "Cadrage du décor", "default": "center top", "info": "L'image étant entière, il reste du vide au-dessus ou en dessous : ce réglage dit de quel côté elle se cale.",
-      "options": [
-        { "value": "center top", "label": "Haut" },
-        { "value": "center center", "label": "Centre" },
-        { "value": "center bottom", "label": "Bas" }
-      ]
-    },
     { "type": "header", "content": "Textes" },
     { "type": "text", "id": "overline", "label": "Surtitre", "default": "Motif" },
     { "type": "text", "id": "story_title", "label": "Titre du bloc de récit", "default": "{motif}, son histoire", "info": "Écrivez {motif} pour insérer le nom : « {motif}, son histoire » donne « Hoplite, son histoire ». C'est le seul titre de niveau 2 de la page — y mettre le nom du motif est ce qui la distingue des 21 autres aux yeux de Google." },
