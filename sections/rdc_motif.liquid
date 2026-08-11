@@ -211,9 +211,11 @@
   #{{ uid }}{position:relative;overflow:hidden;background:{{ s.bg_color }};color:#403434}
 
   {%- comment -%}
-    Le decor du Fragment. Il remplit le fond de la section (`cover` : rogne
-    plutot que deforme) et s'arrete a la largeur de la page — pas de bord a
-    bord, sauf si on le demande dans l'editeur.
+    Le decor du Fragment. Bord a bord, sur toute la largeur de l'ecran, et
+    ENTIER : `contain`, jamais `cover`. C'est une illustration, pas une texture
+    — la rogner lui couperait la tete. Elle est donc mise a l'echelle jusqu'a
+    tenir en entier, quitte a laisser du vide au-dessus ou en dessous, que le
+    fond de section comble.
 
     Le degrade du bas n'est pas un effet : sans lui, le decor se termine par
     une ligne franche au milieu de la page. Il part de la couleur de la
@@ -229,7 +231,7 @@
       max-width:calc(var(--page-width, 1400px) - (var(--page-margin, 40px) * 2));
     {%- endunless -%}
   }
-  #{{ uid }} .rdcm__backdrop img{width:100%;height:100%;object-fit:cover;
+  #{{ uid }} .rdcm__backdrop img{width:100%;height:100%;object-fit:contain;
     object-position:{{ s.backdrop_position }};display:block;
     opacity:{{ s.backdrop_opacity | divided_by: 100.0 }}}
   #{{ uid }} .rdcm__backdrop::after{content:'';position:absolute;left:0;right:0;bottom:0;
@@ -443,7 +445,12 @@
   {%- endcomment -%}
   {%- if backdrop != blank -%}
     <div class="rdcm__backdrop">
-      <img src="{{ backdrop | image_url: width: 2000 }}" alt="" width="2000" height="1125"
+      {%- comment -%}
+        Dimensions reelles de l'image, pas un ratio suppose : en `contain`, un
+        ratio faux ferait mentir la place que le navigateur lui reserve.
+      {%- endcomment -%}
+      <img src="{{ backdrop | image_url: width: 2400 }}" alt=""
+           width="{{ backdrop.width }}" height="{{ backdrop.height }}"
            loading="eager" fetchpriority="low">
     </div>
   {%- endif -%}
@@ -702,14 +709,14 @@
     { "type": "range", "id": "ghost_opacity_mobile", "label": "Intensité du filigrane (mobile)", "unit": "%", "min": 0, "max": 40, "step": 1, "default": 18, "info": "En haut de page il ne concurrence que du texte : il peut être plus présent qu'en desktop." },
     { "type": "range", "id": "ghost_offset", "label": "Décalage vers la droite (desktop)", "unit": "%", "min": -80, "max": 30, "step": 2, "default": -24, "info": "Ce qui reste visible = largeur max moins ce décalage. Avec 70 % de largeur et -24 %, il en reste 46 %. Un décalage égal à la largeur max le fait disparaître entièrement." },
     { "type": "header", "content": "Décor du Fragment (image de fond)" },
-    { "type": "paragraph", "content": "L'image de fond du Fragment occupe tout l'arrière-plan de la section et se dissout vers le bas dans la couleur de fond. Le dessin du motif, lui, reste en filigrane par-dessus. Une seule illustration sur 22 possède cette image aujourd'hui." },
+    { "type": "paragraph", "content": "L'image de fond du Fragment s'étend d'un bord à l'autre de l'écran, en entier (jamais rognée), et se dissout vers le bas dans la couleur de fond. Le dessin du motif, lui, reste en filigrane par-dessus. Une seule illustration sur 22 possède cette image aujourd'hui." },
     { "type": "checkbox", "id": "show_backdrop", "label": "Afficher l'image de fond du Fragment", "default": true },
-    { "type": "checkbox", "id": "backdrop_full_width", "label": "L'étendre d'un bord à l'autre de l'écran", "default": false, "info": "Décoché, elle s'arrête à la largeur de la page, comme le contenu." },
+    { "type": "checkbox", "id": "backdrop_full_width", "label": "D'un bord à l'autre de l'écran", "default": true, "info": "Décoché, elle s'arrête à la largeur de la page, comme le contenu." },
     { "type": "range", "id": "backdrop_opacity", "label": "Intensité du décor", "unit": "%", "min": 5, "max": 100, "step": 5, "default": 100 },
     { "type": "range", "id": "backdrop_opacity_mobile", "label": "Intensité du décor (mobile)", "unit": "%", "min": 5, "max": 100, "step": 5, "default": 100, "info": "Sur un petit écran, le texte couvre presque toute l'image : la baisser aide à le lire." },
     { "type": "range", "id": "backdrop_fade", "label": "Hauteur du dégradé du bas", "unit": "%", "min": 10, "max": 100, "step": 5, "default": 55, "info": "Part de la section où l'image se dissout dans la couleur de fond. Sans dégradé, elle se termine par une ligne franche." },
     {
-      "type": "select", "id": "backdrop_position", "label": "Cadrage du décor", "default": "center center",
+      "type": "select", "id": "backdrop_position", "label": "Cadrage du décor", "default": "center top", "info": "L'image étant entière, il reste du vide au-dessus ou en dessous : ce réglage dit de quel côté elle se cale.",
       "options": [
         { "value": "center top", "label": "Haut" },
         { "value": "center center", "label": "Centre" },
