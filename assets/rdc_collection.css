@@ -15,13 +15,6 @@
  */
 
 /* ---------------------------------------------------------------------------
- * LES DEUX FILETS
- *
- * C'est ce qui manquait : sans eux la barre flotte au milieu de la page et ne
- * se lit pas comme une barre. Un filet au-dessus, un en dessous, et elle
- * devient une reglure entre le titre et les produits.
- * ------------------------------------------------------------------------- */
-/* ---------------------------------------------------------------------------
  * LE BANDEAU DE COLLECTION
  *
  * Meme traitement que le hero des pages saga : image rognee en `cover`, coins
@@ -52,6 +45,14 @@
     height: clamp(160px, 44vw, 260px);
   }
 }
+
+/* ---------------------------------------------------------------------------
+ * LES DEUX FILETS
+ *
+ * C'est ce qui manquait : sans eux la barre flotte au milieu de la page et ne
+ * se lit pas comme une barre. Un filet au-dessus, un en dessous, et elle
+ * devient une reglure entre le titre et les produits.
+ * ------------------------------------------------------------------------- */
 
 /* La barre occupe TOUTE la largeur de l'ecran, bord a bord.
  *
@@ -101,6 +102,9 @@
 }
 
 .facets--horizontal .facets__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-family: var(--font-body--family);
   font-size: 0.7rem;
   font-weight: 600;
@@ -126,4 +130,59 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #8d7c6d;
+}
+
+/* ---------------------------------------------------------------------------
+ * UNE ICONE PAR FILTRE
+ *
+ * Les libelles viennent de Shopify, pas du theme : on ne peut pas y ajouter
+ * une icone dans le balisage. On la pose donc en CSS, en ciblant chaque filtre
+ * par son identifiant reel (`data-filter-param-name`) — c'est le seul point
+ * d'accroche stable.
+ *
+ * ⚠ Si un filtre est renomme dans Shopify, l'icone suit : c'est l'identifiant
+ * qui est vise, pas le mot affiche. En revanche, changer le TYPE de champ
+ * (metachamp -> option produit) changerait l'identifiant et ferait disparaitre
+ * l'icone. Les identifiants sont ecrits en clair ci-dessous pour qu'on sache
+ * ou regarder.
+ *
+ * L'icone est un MASQUE, pas une image : elle prend donc la couleur du texte
+ * et suit le survol sans qu'on ait a la redessiner.
+ * ------------------------------------------------------------------------- */
+.facets--horizontal .facets__label::before {
+  content: "";
+  width: 15px;
+  height: 15px;
+  flex: 0 0 auto;
+  background-color: #b4894f;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* Couleur — filter-v-t-shopify-color-pattern */
+.facets--horizontal [data-filter-param-name="filter-v-t-shopify-color-pattern"] .facets__label::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%229%22%20cy%3D%229%22%20r%3D%225%22%2F%3E%3Ccircle%20cx%3D%2215%22%20cy%3D%229%22%20r%3D%225%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2215%22%20r%3D%225%22%2F%3E%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%229%22%20cy%3D%229%22%20r%3D%225%22%2F%3E%3Ccircle%20cx%3D%2215%22%20cy%3D%229%22%20r%3D%225%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2215%22%20r%3D%225%22%2F%3E%3C%2Fsvg%3E");
+}
+
+/* Impression — filter-p-m-custom-impression */
+.facets--horizontal [data-filter-param-name="filter-p-m-custom-impression"] .facets__label::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%203l7%204v6c0%204-3%206.5-7%208-4-1.5-7-4-7-8V7z%22%2F%3E%3Cpath%20d%3D%22M12%209v5%22%2F%3E%3Cpath%20d%3D%22M9.5%2011.5L12%209l2.5%202.5%22%2F%3E%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%203l7%204v6c0%204-3%206.5-7%208-4-1.5-7-4-7-8V7z%22%2F%3E%3Cpath%20d%3D%22M12%209v5%22%2F%3E%3Cpath%20d%3D%22M9.5%2011.5L12%209l2.5%202.5%22%2F%3E%3C%2Fsvg%3E");
+}
+
+/* Coupe — filter-p-m-custom-base */
+.facets--horizontal [data-filter-param-name="filter-p-m-custom-base"] .facets__label::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M9%204L4%206.5%202.5%2011l3%201.5L7%2010v10h10V10l1.5%202.5%203-1.5L20%206.5%2015%204%22%2F%3E%3Cpath%20d%3D%22M9%204c0%201.8%201.4%203%203%203s3-1.2%203-3%22%2F%3E%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M9%204L4%206.5%202.5%2011l3%201.5L7%2010v10h10V10l1.5%202.5%203-1.5L20%206.5%2015%204%22%2F%3E%3Cpath%20d%3D%22M9%204c0%201.8%201.4%203%203%203s3-1.2%203-3%22%2F%3E%3C%2Fsvg%3E");
+}
+
+/* Prix — l'identifiant contient toujours « price » */
+.facets--horizontal [data-filter-param-name*="price"] .facets__label::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M20.5%2012.5l-8%208a2%202%200%2001-2.8%200l-6.2-6.2a2%202%200%2001-.6-1.5l.3-5.6a2%202%200%20011.9-1.9l5.6-.3a2%202%200%20011.5.6l6.2%206.2a2%202%200%20010%202.7z%22%2F%3E%3Ccircle%20cx%3D%228.5%22%20cy%3D%228.5%22%20r%3D%221.3%22%2F%3E%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M20.5%2012.5l-8%208a2%202%200%2001-2.8%200l-6.2-6.2a2%202%200%2001-.6-1.5l.3-5.6a2%202%200%20011.9-1.9l5.6-.3a2%202%200%20011.5.6l6.2%206.2a2%202%200%20010%202.7z%22%2F%3E%3Ccircle%20cx%3D%228.5%22%20cy%3D%228.5%22%20r%3D%221.3%22%2F%3E%3C%2Fsvg%3E");
 }
