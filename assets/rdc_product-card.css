@@ -1,25 +1,71 @@
 /* rdc_product-card.css
  *
- * La peau des cartes produit du theme, alignee sur les cartes des pages
- * saga et motif. On ne change QUE l'apparence : la carte native sert a 17
- * endroits et porte l'ajout rapide, la logique de variante et les badges.
+ * Porte sur les cartes produit du theme le traitement EXACT des cartes de
+ * coupe des pages saga et motif (`.rdcsm__cut`), recopie regle par regle.
  *
- * ⚠ NE PAS TOUCHER AU COMPOSANT `overflow-list` DEPUIS ICI.
- * Il replie les pastilles en « +4 » quand elles ne tiennent pas sur une ligne.
- * Quatre tentatives pour l'en empecher ont echoue : forcer le retour a la
- * ligne (il mesure justement ca), reduire l'ecart (deplace le seuil), rendre
- * visible le conteneur des repliees (elles sautaient une ligne plus bas apres
- * le chargement), lui donner une largeur intrinseque. Et masquer le compteur
- * SANS empecher le repli fait disparaitre les pastilles pour de bon.
- * Son comportement d'origine est laisse intact. Si le sujet revient un jour,
- * la seule voie sure est celle de la page motif : rendre nos propres
- * pastilles au lieu de passer par ce composant.
+ * Ce qui fait leur allure, dans l'ordre d'importance :
+ *   1. le vetement ENTIER, jamais rogne ;
+ *   2. aucun fond de carte — il flotte sur le parchemin ;
+ *   3. une ombre portee sous lui, qui le decolle de la page.
+ * La troisieme est celle qu'on remarque sans savoir la nommer.
+ *
+ * ⚠ NE PAS TOUCHER AU COMPOSANT `overflow-list` DEPUIS ICI. Il replie les
+ * pastilles en « +4 » et le fait en JAVASCRIPT, en DEPLACANT les elements :
+ * aucune regle de style ne peut l'en empecher. Il a ete retire des cartes
+ * dans snippets/variant-swatches.liquid — voir le commentaire la-bas.
  *
  * ⚠ `compiled_assets/styles.css` se charge APRES cette feuille : toute regle
- * du theme de specificite egale gagne contre nous.
+ * du theme de force egale gagne contre nous.
  *
  * Pour tout retirer : supprimer l'appel dans snippets/stylesheets.liquid.
  */
+
+/* ---------------------------------------------------------------------------
+ * 1. LE VETEMENT EN ENTIER
+ *
+ * ⚠ `!important` est ici la BONNE reponse, pas un contournement : le theme
+ * ecrit `--product-media-fit: cover` en style INLINE sur l'element, et rien
+ * d'autre ne bat un style inline. C'est le seul endroit de cette feuille qui
+ * en a besoin, et c'est pour cette raison precise.
+ * ------------------------------------------------------------------------- */
+.product-card .product-media-container.media-fit {
+  --product-media-fit: contain !important;
+}
+
+/* ---------------------------------------------------------------------------
+ * 2. PAS DE FOND DE CARTE
+ *
+ * Les cartes de saga n'ont pas de rectangle teinte : le vetement se pose
+ * directement sur le parchemin de la page. Un fond derriere une image en
+ * `contain` dessine une boite autour du vide.
+ * ------------------------------------------------------------------------- */
+.product-card .card-gallery {
+  background-color: transparent;
+}
+
+/* ---------------------------------------------------------------------------
+ * 3. L'OMBRE PORTEE
+ *
+ * `drop-shadow` et non `box-shadow` : il suit la SILHOUETTE du vetement
+ * detoure, pas le rectangle de l'image. C'est toute la difference entre un
+ * vetement pose sur la page et une vignette collee dessus.
+ * ------------------------------------------------------------------------- */
+.product-card .product-media-container img {
+  filter: drop-shadow(0 10px 18px rgba(64, 52, 52, 0.18));
+  transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-media-container img {
+  transform: scale(1.06) translateY(-3px);
+}
+
+/* Un ecran tactile n'a pas de survol : l'agrandissement resterait fige apres
+ * un appui. */
+@media (hover: none) {
+  .product-card:hover .product-media-container img {
+    transform: none;
+  }
+}
 
 /* ---------------------------------------------------------------------------
  * LE NOM DU PRODUIT
@@ -34,6 +80,7 @@
   letter-spacing: 0.06em;
   line-height: 1.25;
   text-transform: uppercase;
+  color: #5a4a42;
 }
 
 /* ---------------------------------------------------------------------------
@@ -44,28 +91,21 @@
   font-size: 1.14rem;
   letter-spacing: 0.03em;
   line-height: 1;
+  color: #962b21;
 }
 
 /* ---------------------------------------------------------------------------
- * LA TAILLE DES PASTILLES
+ * LES PASTILLES
  *
- * 12px comme sur la page motif, contre 30px par defaut. On repose les deux
- * variables que le theme lit deja pour la largeur, la hauteur et la taille du
- * fond : les ecraser ensemble evite une image de pastille qui deborderait du
- * cercle.
+ * 12px comme sur les pages saga, toutes visibles, passage a la ligne. La
+ * liste `.rdc-swatch-list` remplace le composant du theme, retire dans
+ * snippets/variant-swatches.liquid.
  * ------------------------------------------------------------------------- */
 .product-card .swatch {
   --swatch-width: 12px;
   --swatch-height: 12px;
 }
 
-/* ---------------------------------------------------------------------------
- * LA LISTE DES PASTILLES
- *
- * Elle remplace le composant `overflow-list` du theme, retire dans
- * snippets/variant-swatches.liquid — voir le commentaire la-bas. Toutes les
- * pastilles sont visibles et passent a la ligne, comme sur la page motif.
- * ------------------------------------------------------------------------- */
 .rdc-swatch-list {
   display: flex;
   flex-wrap: wrap;
@@ -73,39 +113,20 @@
   justify-content: center;
   margin: 0;
   list-style: none;
-  /* Les pastilles sont le dernier element de la carte : sans cet air en
-   * dessous, elles touchent la carte de la rangee suivante. */
   padding: 0 0 10px;
 }
 
-/* Le bouton de comptage n'a plus rien a compter. */
 .rdc-swatch-list [slot='more'] {
   display: none;
 }
 
 /* ---------------------------------------------------------------------------
- * L'AIR ENTRE LES ELEMENTS DE LA CARTE
+ * L'AIR ENTRE LES ELEMENTS
  *
- * Image, titre, prix et couleurs etaient a 8px les uns des autres — trop
- * serre pour un titre en capitales espacees, qui a besoin de respirer pour ne
- * pas se confondre avec le prix juste en dessous.
- *
- * ⚠ La classe est doublee dans le theme (`.product-grid__card.product-grid__card`)
- * pour gagner en priorite : on la double aussi, sinon la regle du theme
- * l'emporte. Et c'est `gap` qu'on redefinit, pas la variable qui l'alimente :
- * celle-ci est ecrite en style inline, donc intouchable depuis une feuille.
+ * ⚠ La classe est doublee dans le theme pour gagner en priorite : on la
+ * double aussi. Et c'est `gap` qu'on redefinit, pas la variable qui
+ * l'alimente — celle-ci est ecrite en style inline.
  * ------------------------------------------------------------------------- */
 .product-card .product-grid__card.product-grid__card {
   gap: 12px;
-}
-
-/* ---------------------------------------------------------------------------
- * LE FOND DERRIERE L'IMAGE
- *
- * Voile ambre plutot que gris : un voile neutre refroidit le parchemin et le
- * fait virer au sale. Translucide plutot que couleur fixe : la carte apparait
- * sur parchemin, sur blanc et sur sections sombres.
- * ------------------------------------------------------------------------- */
-.product-card .card-gallery {
-  background-color: rgba(150, 110, 60, 0.07);
 }
