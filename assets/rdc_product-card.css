@@ -44,15 +44,43 @@
 }
 
 /* ---------------------------------------------------------------------------
- * 3. L'OMBRE PORTEE
+ * 3. L'OMBRE PORTEE, ET SURTOUT : NON ROGNEE
  *
  * `drop-shadow` et non `box-shadow` : il suit la SILHOUETTE du vetement
- * detoure, pas le rectangle de l'image. C'est toute la difference entre un
- * vetement pose sur la page et une vignette collee dessus.
+ * detoure, pas le rectangle de l'image.
+ *
+ * ⚠ Elle est posee sur la GALERIE, pas sur l'image. Trois conteneurs rognent
+ * ici, et celui du milieu — `.product-media-container` — ne peut PAS etre
+ * libere : c'est lui qui masque la seconde image en attente sur le cote, celle
+ * qui apparait au survol. Le liberer les montrerait toutes les deux.
+ *
+ * Or le filtre d'un element n'est jamais rogne par SON propre debordement :
+ * en le posant sur la galerie, l'ombre s'echappe du conteneur interdit. Il
+ * reste a ouvrir le conteneur du dessus, qui lui n'a rien a masquer.
  * ------------------------------------------------------------------------- */
-.product-card .product-media-container img {
+.product-card .card-gallery {
   filter: drop-shadow(0 10px 18px rgba(64, 52, 52, 0.18));
+}
+
+.product-card .product-grid__card.product-grid__card {
+  overflow: visible;
+}
+
+.product-card .product-media-container img {
   transition: transform 0.5s ease;
+}
+
+/* ---------------------------------------------------------------------------
+ * 4. LE VETEMENT RESPIRE DANS SA CASE
+ *
+ * ⚠ Le theme fait DEBORDER la galerie hors des marges de la carte (des marges
+ * negatives calculees). On les annule, puis on inset le vetement : c'est ce
+ * qui lui donne l'air des cartes de saga plutot que d'une image collee bord a
+ * bord.
+ * ------------------------------------------------------------------------- */
+.product-card .card-gallery {
+  margin-inline: 0;
+  padding-inline: clamp(12px, 7%, 34px);
 }
 
 .product-card:hover .product-media-container img {
