@@ -297,7 +297,7 @@
         <span
           class="mega-menu__link-title wrap-text"
         >
-          {%- if menu_icon_mf -%}
+          {%- if menu_icon_mf and icon_src != blank -%}
             <span class="mega-menu__link-icon">
               <img src="{{ icon_src }}" alt="{{ link.title }}"
                    width="32" height="32" loading="lazy">
@@ -544,7 +544,8 @@
                 repli sur l'image de collection.
               endcomment
               assign icon_src = menu_icon_mf | image_url: width: 400
-              assign icon_src = icon_src | default: menu_icon_mf.url | default: menu_icon_mf.src | default: menu_icon_mf.preview_image.src
+              assign icon_src = icon_src | default: menu_icon_mf.src | default: menu_icon_mf.preview_image.src | default: menu_icon_mf.url
+              assign icon_src = icon_src | default: menu_icon_mf | file_url
 
                 assign link_collection_image = nil
                 if menu_icon_mf == nil and link.type == 'collection_link' and link.object.image != blank
@@ -575,7 +576,7 @@
                 n'etait pas un element de la grille. Il restait empile
                 au-dessus du nom, quoi qu'on ecrive en CSS.
               {%- endcomment -%}
-              {%- if menu_icon_mf -%}
+              {%- if menu_icon_mf and icon_src != blank -%}
                 <span class="mega-menu__link-icon">
                   <img src="{{ icon_src }}" alt="{{ link.title }}"
                        width="62" height="62" loading="lazy">
@@ -663,7 +664,8 @@
                 repli sur l'image de collection.
               endcomment
               assign icon_src = menu_icon_mf | image_url: width: 400
-              assign icon_src = icon_src | default: menu_icon_mf.url | default: menu_icon_mf.src | default: menu_icon_mf.preview_image.src
+              assign icon_src = icon_src | default: menu_icon_mf.src | default: menu_icon_mf.preview_image.src | default: menu_icon_mf.url
+              assign icon_src = icon_src | default: menu_icon_mf | file_url
 
                 assign link_collection_image = nil
                 if menu_icon_mf == nil and link.type == 'collection_link' and link.object.image != blank
@@ -694,7 +696,7 @@
                 n'etait pas un element de la grille. Il restait empile
                 au-dessus du nom, quoi qu'on ecrive en CSS.
               {%- endcomment -%}
-              {%- if menu_icon_mf -%}
+              {%- if menu_icon_mf and icon_src != blank -%}
                 <span class="mega-menu__link-icon">
                   <img src="{{ icon_src }}" alt="{{ link.title }}"
                        width="62" height="62" loading="lazy">
