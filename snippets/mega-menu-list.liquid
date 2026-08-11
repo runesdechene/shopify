@@ -756,4 +756,52 @@
 
   .mega-menu__column--col2 .mega-menu__link-icon img { width: 22px; height: 22px; }
 
+
+  /* ---------------------------------------------------------------------------
+   * LE RANG DES GRANDES IMAGES
+   *
+   * Le theme les rend brutes : collees les unes aux autres, rognees en bandeau
+   * large, et le titre repete SOUS l'image avec une mini-vignette — alors que
+   * l'image porte deja le nom. Quatre corrections :
+   *   1. de l'air entre les cartes, et des coins arrondis comme partout ;
+   *   2. un cadrage 4/3 au lieu du bandeau, qui coupait les titres peints
+   *      dans les visuels ;
+   *   3. la mini-vignette disparait quand une grande image est presente —
+   *      elle n'a de sens que sur un lien sans image ;
+   *   4. le nom passe en police de titrage, comme sur les cartes de saga.
+   * ------------------------------------------------------------------------- */
+  .mega-menu__column--wide-collection-image {
+    padding-inline: 6px;
+  }
+
+  .mega-menu__link-image {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .mega-menu__link-image img {
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* 3. Une vignette a cote du nom, sous une grande image du meme sujet, ne dit
+   *    rien de plus : elle encombre. */
+  .mega-menu__link:has(.mega-menu__link-image) .mega-menu__link-icon {
+    display: none;
+  }
+
+  /* 4. Le nom, en police de titrage. */
+  .mega-menu__link:has(.mega-menu__link-image) .mega-menu__link-title {
+    font-family: var(--font-heading--family, sans-serif);
+    font-size: 1.3rem;
+    letter-spacing: .03em;
+    line-height: 1.05;
+    text-transform: uppercase;
+    margin-top: 9px;
+    display: block;
+  }
+
 {% endstylesheet %}
