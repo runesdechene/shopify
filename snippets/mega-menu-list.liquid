@@ -1028,9 +1028,16 @@
    * bloc, l'image agrandie pouvait deborder avant que le cadre ne se
    * redimensionne. En grille, elle est enfermee dans une cellule qui ne bouge
    * jamais. */
+  /* ⚠ `overflow: hidden`, PAS `clip` : `clip` n'est pas compris par tous les
+   * navigateurs et retombe alors sur « visible » — donc aucun rognage, et
+   * l'image agrandie deborde sur le menu. `hidden` est compris partout.
+   * `position: relative` et `isolation` bornent en plus le contexte de
+   * peinture, pour qu'aucune couche du theme ne fasse ressortir l'image. */
   .rdc-menu-shot {
     display: grid;
-    overflow: clip;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     line-height: 0;
   }
 
