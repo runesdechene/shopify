@@ -476,7 +476,8 @@
         "condition_value": "",
         "condition_liquid": "",
         "condition_invert": false
-      }
+      },
+      "disabled": true
     },
     "lecture_fragment_v2_UPfCbK": {
       "type": "lecture-fragment-v2",
@@ -814,9 +815,41 @@
         "condition_liquid": "",
         "condition_invert": false
       }
+    },
+    "rdc_planche": {
+      "type": "rdc_collection-planche",
+      "settings": {
+        "overline": "Rayon permanent",
+        "title": "{collection}",
+        "subtitle": "",
+        "title_size": 84,
+        "lede": "",
+        "lede_b": "",
+        "plate_no": "",
+        "plate_no_size": 38,
+        "show_tallies": true,
+        "label_pieces": "pièces au catalogue",
+        "label_fragments": "Fragments",
+        "label_coupes": "coupes",
+        "margin_width": 240,
+        "columns_gap": 56,
+        "show_rail": true,
+        "rail_title": "Entrer par le Fragment",
+        "rail_unit": "dessins",
+        "rail_count": 12,
+        "rail_item_width": 108,
+        "bg_color": "#f4eee1",
+        "card_color": "#eae0cc",
+        "ink_color": "#403434",
+        "muted_color": "#5a4a42",
+        "accent_color": "#b4894f",
+        "padding_top": 64,
+        "padding_bottom": 24
+      }
     }
   },
   "order": [
+    "rdc_planche",
     "section",
     "lecture_fragment_v2_UPfCbK",
     "main",
