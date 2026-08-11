@@ -150,9 +150,23 @@
   endcomment
   assign story_title_rendu = s.story_title | replace: '{motif}', motif_nom
 
+  comment
+    DEUX images, DEUX roles — elles ne se remplacent pas.
+
+    `image_fond_de_fragment` est le decor : elle occupe tout le fond de la
+    section, rognee pour le remplir, et se dissout vers le bas dans la couleur
+    de la section.
+
+    `image_pour_fond_clair` est le dessin du motif : filigrane en haut a
+    droite, PAR-DESSUS le decor.
+
+    ⚠ Avant le 11/08, la premiere ecrasait la seconde dans le filigrane : le
+    decor se retrouvait en petit a droite, et le dessin nulle part.
+  endcomment
   assign ghost = ill.image_pour_fond_clair | default: ill.image_pour_fond_sombre
-  if s.prefer_background_image and ill.image_fond_de_fragment != blank
-    assign ghost = ill.image_fond_de_fragment
+  assign backdrop = nil
+  if s.show_backdrop
+    assign backdrop = ill.image_fond_de_fragment
   endif
 
   assign cuts = collection.products_count
@@ -195,6 +209,36 @@
 {%- if cuts > 0 -%}
 <style>
   #{{ uid }}{position:relative;overflow:hidden;background:{{ s.bg_color }};color:#403434}
+
+  {%- comment -%}
+    Le decor du Fragment. Il remplit le fond de la section (`cover` : rogne
+    plutot que deforme) et s'arrete a la largeur de la page — pas de bord a
+    bord, sauf si on le demande dans l'editeur.
+
+    Le degrade du bas n'est pas un effet : sans lui, le decor se termine par
+    une ligne franche au milieu de la page. Il part de la couleur de la
+    section elle-meme, donc la jonction est invisible.
+
+    ⚠ Le haut du degrade est la MEME couleur en alpha 0, jamais `transparent` :
+    `transparent` vaut rgba(0,0,0,0) et plusieurs navigateurs interpolent alors
+    vers le noir — un voile gris apparait au milieu du degrade.
+  {%- endcomment -%}
+  #{{ uid }} .rdcm__backdrop{position:absolute;inset:0;margin:0 auto;overflow:hidden;
+    pointer-events:none;user-select:none;
+    {%- unless s.backdrop_full_width -%}
+      max-width:calc(var(--page-width, 1400px) - (var(--page-margin, 40px) * 2));
+    {%- endunless -%}
+  }
+  #{{ uid }} .rdcm__backdrop img{width:100%;height:100%;object-fit:cover;
+    object-position:{{ s.backdrop_position }};display:block;
+    opacity:{{ s.backdrop_opacity | divided_by: 100.0 }}}
+  #{{ uid }} .rdcm__backdrop::after{content:'';position:absolute;left:0;right:0;bottom:0;
+    height:{{ s.backdrop_fade }}%;
+    background:linear-gradient(to top,{{ s.bg_color }} 0%,
+      {{ s.bg_color | color_modify: 'alpha', 0 }} 100%)}
+  @media (max-width:749px){
+    #{{ uid }} .rdcm__backdrop img{opacity:{{ s.backdrop_opacity_mobile | divided_by: 100.0 }}}
+  }
 
   {%- comment -%}
     Filigrane CONTENU, jamais rogne. Le dessin est place a droite, centre
@@ -393,6 +437,17 @@
 </style>
 
 <section id="{{ uid }}">
+  {%- comment -%}
+    Le decor d'abord, le filigrane ensuite : dans le flux, le second passe
+    par-dessus le premier sans avoir besoin d'un z-index.
+  {%- endcomment -%}
+  {%- if backdrop != blank -%}
+    <div class="rdcm__backdrop">
+      <img src="{{ backdrop | image_url: width: 2000 }}" alt="" width="2000" height="1125"
+           loading="eager" fetchpriority="low">
+    </div>
+  {%- endif -%}
+
   {%- if ghost != blank -%}
     <div class="rdcm__ghost">
       <img src="{{ ghost | image_url: width: 1400 }}" alt="" width="1400" height="1980" loading="lazy">
@@ -646,7 +701,21 @@
     { "type": "range", "id": "ghost_offset_mobile", "label": "Décalage vers la droite (mobile)", "unit": "%", "min": -80, "max": 30, "step": 2, "default": -8 },
     { "type": "range", "id": "ghost_opacity_mobile", "label": "Intensité du filigrane (mobile)", "unit": "%", "min": 0, "max": 40, "step": 1, "default": 18, "info": "En haut de page il ne concurrence que du texte : il peut être plus présent qu'en desktop." },
     { "type": "range", "id": "ghost_offset", "label": "Décalage vers la droite (desktop)", "unit": "%", "min": -80, "max": 30, "step": 2, "default": -24, "info": "Ce qui reste visible = largeur max moins ce décalage. Avec 70 % de largeur et -24 %, il en reste 46 %. Un décalage égal à la largeur max le fait disparaître entièrement." },
-    { "type": "checkbox", "id": "prefer_background_image", "label": "Utiliser l'image de fond du Fragment si elle existe", "default": true, "info": "Sinon, le dessin du motif sert de filigrane. Une seule illustration sur 22 possède cette image aujourd'hui." },
+    { "type": "header", "content": "Décor du Fragment (image de fond)" },
+    { "type": "paragraph", "content": "L'image de fond du Fragment occupe tout l'arrière-plan de la section et se dissout vers le bas dans la couleur de fond. Le dessin du motif, lui, reste en filigrane par-dessus. Une seule illustration sur 22 possède cette image aujourd'hui." },
+    { "type": "checkbox", "id": "show_backdrop", "label": "Afficher l'image de fond du Fragment", "default": true },
+    { "type": "checkbox", "id": "backdrop_full_width", "label": "L'étendre d'un bord à l'autre de l'écran", "default": false, "info": "Décoché, elle s'arrête à la largeur de la page, comme le contenu." },
+    { "type": "range", "id": "backdrop_opacity", "label": "Intensité du décor", "unit": "%", "min": 5, "max": 100, "step": 5, "default": 100 },
+    { "type": "range", "id": "backdrop_opacity_mobile", "label": "Intensité du décor (mobile)", "unit": "%", "min": 5, "max": 100, "step": 5, "default": 100, "info": "Sur un petit écran, le texte couvre presque toute l'image : la baisser aide à le lire." },
+    { "type": "range", "id": "backdrop_fade", "label": "Hauteur du dégradé du bas", "unit": "%", "min": 10, "max": 100, "step": 5, "default": 55, "info": "Part de la section où l'image se dissout dans la couleur de fond. Sans dégradé, elle se termine par une ligne franche." },
+    {
+      "type": "select", "id": "backdrop_position", "label": "Cadrage du décor", "default": "center center",
+      "options": [
+        { "value": "center top", "label": "Haut" },
+        { "value": "center center", "label": "Centre" },
+        { "value": "center bottom", "label": "Bas" }
+      ]
+    },
     { "type": "header", "content": "Textes" },
     { "type": "text", "id": "overline", "label": "Surtitre", "default": "Motif" },
     { "type": "text", "id": "story_title", "label": "Titre du bloc de récit", "default": "{motif}, son histoire", "info": "Écrivez {motif} pour insérer le nom : « {motif}, son histoire » donne « Hoplite, son histoire ». C'est le seul titre de niveau 2 de la page — y mettre le nom du motif est ce qui la distingue des 21 autres aux yeux de Google." },
