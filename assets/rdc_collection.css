@@ -62,18 +62,20 @@
  * (`1 / -1`), puis on ramene son contenu a la largeur de page avec un
  * padding. Aucun debordement possible.
  */
-.collection-wrapper .facets-block-wrapper--horizontal {
-  grid-column: 1 / -1;
-}
-
+/* ⚠ RETIRE le 11/08 : `grid-column:1/-1` + un padding lateral calcule
+ * ajoutaient une barre de defilement HORIZONTALE sur la boutique. Un padding
+ * pose sur un element deja en largeur 100% deborde des que sa boite n'est pas
+ * en `border-box` — et celle du theme ne l'est pas partout.
+ *
+ * Les filets restent donc a la largeur naturelle de la barre. C'est moins
+ * spectaculaire qu'un bord a bord, mais ca ne casse pas la page. Si on y
+ * revient, il faudra le faire par un pseudo-element positionne, jamais par du
+ * padding. */
 .facets-block-wrapper--horizontal .facets--horizontal {
+  box-sizing: border-box;
   border-top: 1px solid rgba(64, 52, 52, 0.13);
   border-bottom: 1px solid rgba(64, 52, 52, 0.13);
   padding-block: 12px;
-  padding-inline: max(
-    var(--page-margin, 40px),
-    calc((100% - var(--page-width, 1400px)) / 2 + var(--page-margin, 40px))
-  );
 }
 
 /* De l'air sous la barre : sans lui, la premiere rangee de produits colle au
