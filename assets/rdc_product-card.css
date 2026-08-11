@@ -60,26 +60,47 @@
 }
 
 /* ---------------------------------------------------------------------------
- * ET SURTOUT : L'ECART ENTRE ELLES
+ * LE « +4 » : ON MONTRE CE QUI EST REPLIE, ON N'EMPECHE PAS LE REPLI
  *
- * C'est lui qui declenchait le « +4 », « +5 » au chargement. Le composant du
- * theme laisse 16px entre deux pastilles : a 12px de pastille, chacune coute
- * 28px de large, et six ou sept suffisent a remplir une carte — le reste part
- * dans le repliement.
+ * Comment le composant s'y prend, verifie dans overflow-list.css : les
+ * pastilles qui ne tiennent pas ne sont pas supprimees, elles sont deplacees
+ * dans un second conteneur — `[part="overflow"]` — mis en `display:none`.
  *
- * A 5px d'ecart (celui de la page motif), il en rentre plus du double et le
- * repli ne se declenche plus. C'est la bonne facon de le desamorcer : on lui
- * donne la place, on ne se bat pas contre lui.
+ * D'ou la solution : on rend ce conteneur visible, en dessous. Toutes les
+ * pastilles reapparaissent, sur une deuxieme ligne, et le bouton « +4 » n'a
+ * plus lieu d'etre. Le composant continue de calculer ce qu'il veut : on ne
+ * lui prend rien, on montre juste ce qu'il range.
  *
- * ⚠ Ne PAS tenter de forcer le retour a la ligne (`flex-wrap:wrap` via
- * `::part`) : le composant mesure justement ce qui passe a la ligne suivante
- * pour decider quoi replier — le faire wrapper AGGRAVE le repli. Et son
- * attribut `disabled` ne tient pas : ses observateurs relancent le calcul.
- *
- * `::part()` est la seule porte d'entree : la liste vit dans un shadow DOM.
+ * ⚠ DEUX FAUSSES PISTES, essayees et perdues — ne pas les reprendre :
+ *   · forcer `flex-wrap:wrap` sur la liste AGGRAVE le repli : le composant
+ *     mesure justement ce qui passe a la ligne suivante pour decider quoi
+ *     replier ;
+ *   · elargir la place (ecart plus petit) ne fait que deplacer le seuil, et
+ *     l'ecart de 16px d'overflow-list.css est de toute facon deja ecrase par
+ *     `compiled_assets/styles.css`, qui se charge APRES cette feuille.
  * ------------------------------------------------------------------------- */
-.product-card overflow-list::part(list) {
-  column-gap: 5px;
+
+/* Sans ca, la deuxieme ligne serait coupee net. */
+.product-card product-swatches {
+  overflow: visible;
+}
+
+.product-card overflow-list::part(overflow) {
+  display: block;
+}
+
+.product-card overflow-list::part(overflow-list) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+  margin-top: 5px;
+}
+
+/* Le compteur « +4 » et son bouton « Plus » n'ont plus d'objet. */
+.product-card .hidden-swatches__count,
+.product-card overflow-list::part(more) {
+  display: none;
 }
 
 /* ---------------------------------------------------------------------------
