@@ -84,11 +84,18 @@
   #{{ uid }} .rdccp__row{display:flex;gap:{{ s.gap }}px;overflow-x:auto;
     padding-bottom:4px;scrollbar-width:thin}
 
+  {%- comment -%}
+    Le contour est visible AU REPOS, dans la meme teinte que les pastilles de
+    filtres juste en dessous — rgba(64,52,52,.13), valeur recopiee de
+    rdc_collection.css. Sans lui, la rangee flottait et ne se lisait pas comme
+    une famille de boutons.
+  {%- endcomment -%}
   #{{ uid }} .rdccp__cut{flex:0 0 auto;display:flex;flex-direction:column;
     align-items:center;gap:7px;text-decoration:none;color:inherit;
     width:{{ s.item_width }}px;padding:10px 6px;border-radius:8px;
-    border:1px solid transparent;transition:border-color .2s ease,background .2s ease}
-  #{{ uid }} .rdccp__cut:hover{border-color:{{ s.accent_color }}55}
+    border:1px solid rgba(64,52,52,.13);
+    transition:border-color .2s ease,background .2s ease,box-shadow .2s ease}
+  #{{ uid }} .rdccp__cut:hover{border-color:{{ s.accent_color }}66}
   #{{ uid }} .rdccp__cut:focus-visible{outline:2px solid {{ s.accent_color }};outline-offset:2px}
 
   {%- comment -%}
@@ -96,8 +103,14 @@
     et le lien porte `aria-current`. Une pastille distinguee par la seule
     teinte serait invisible pour qui distingue mal les couleurs.
   {%- endcomment -%}
+  {%- comment -%}
+    ⚠ L'etat actif s'epaissit par une ombre INTERIEURE, pas par une bordure
+    plus large : passer de 1px a 2px decalerait la carte d'un pixel et ferait
+    sauter toute la rangee au clic.
+  {%- endcomment -%}
   #{{ uid }} .rdccp__cut.is-on{border-color:{{ s.accent_color }};
-    background:{{ s.accent_color }}1a}
+    background:{{ s.accent_color }}1a;
+    box-shadow:inset 0 0 0 1px {{ s.accent_color }}}
 
   #{{ uid }} .rdccp__ico{width:{{ s.icon_size }}px;height:{{ s.icon_size }}px;display:block}
   #{{ uid }} .rdccp__ico img{width:100%;height:100%;object-fit:contain;display:block}
