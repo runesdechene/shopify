@@ -853,6 +853,7 @@
     align-items: center;
     padding: 10px !important;
     border: 1px solid rgba(64, 52, 52, .13) !important;
+    border-radius: 8px;
     background: none !important;
     transition: border-color .2s ease, background-color .2s ease;
   }
@@ -932,8 +933,9 @@
     height: auto;
     aspect-ratio: 4 / 3;
     object-fit: cover;
-    /* Pas d'arrondi impose : c'est le reglage « Rayon des coins » du bloc de
-     * menu qui decide, comme pour le reste du theme. */
+    /* ⚠ L'arrondi est pose sur le CADRE et repete ici : sans lui sur l'image,
+     * un pixel d'image depasse dans chaque coin quand elle zoome au survol. */
+    border-radius: 5px;
   }
 
   .mega-menu__link-lede {
@@ -1031,6 +1033,7 @@
     display: grid;
     overflow: clip;
     line-height: 0;
+    border-radius: 5px;
   }
 
   .rdc-menu-shot > img {
@@ -1059,6 +1062,7 @@
   .rdc-menu-images .mega-menu__column--col3 .mega-menu__link-icon {
     overflow: hidden;
     line-height: 0;
+    border-radius: 5px;
   }
 
   /* Plus d'assombrissement du bloc : seul le contour signale le survol. */
