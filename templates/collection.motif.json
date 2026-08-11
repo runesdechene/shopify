@@ -28,6 +28,7 @@
         "ghost_offset": -24,
         "show_backdrop": true,
         "backdrop_full_width": true,
+        "backdrop_width": 80,
         "backdrop_opacity": 100,
         "backdrop_opacity_mobile": 100,
         "backdrop_fade": 70,
