@@ -85,8 +85,14 @@
   overflow: visible;
 }
 
+/* ⚠ `display:contents` et non `block` : `block` gardait la BOITE du conteneur,
+ * qui ajoutait une rangee a la grille du composant — presente meme quand
+ * aucune pastille n'est repliee, d'ou un grand vide entre le prix et les
+ * couleurs. `contents` supprime la boite sans supprimer son contenu : les
+ * pastilles repliees remontent d'un niveau et ne coutent plus rien quand il
+ * n'y en a pas. */
 .product-card overflow-list::part(overflow) {
-  display: block;
+  display: contents;
 }
 
 .product-card overflow-list::part(overflow-list) {
@@ -94,7 +100,12 @@
   flex-wrap: wrap;
   gap: 5px;
   justify-content: center;
-  margin-top: 5px;
+}
+
+/* L'ecart entre les deux rangees se joue ici, pas en marge : une marge sur une
+ * liste vide laisserait justement le vide qu'on cherche a supprimer. */
+.product-card overflow-list {
+  row-gap: 5px;
 }
 
 /* Le compteur « +4 » et son bouton « Plus » n'ont plus d'objet. */
