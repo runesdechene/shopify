@@ -71,16 +71,19 @@
 }
 
 /* ---------------------------------------------------------------------------
- * 4. LE VETEMENT RESPIRE DANS SA CASE
+ * 4. LE VETEMENT OCCUPE TOUTE SA CARTE
  *
- * ⚠ Le theme fait DEBORDER la galerie hors des marges de la carte (des marges
- * negatives calculees). On les annule, puis on inset le vetement : c'est ce
- * qui lui donne l'air des cartes de saga plutot que d'une image collee bord a
- * bord.
+ * ⚠ Exactement comme sur les sagas : `.rdcsm__cshot` n'a AUCUN retrait, le
+ * vetement prend toute la largeur de la carte. Le retrait que j'avais ajoute
+ * le rapetissait — c'est pour ca que les mockups paraissaient plus petits
+ * ici alors que les cartes sont pourtant PLUS LARGES (340px contre ~240).
+ *
+ * On annule seulement le debordement du theme, qui sortait la galerie hors
+ * des marges de la carte par des marges negatives calculees.
  * ------------------------------------------------------------------------- */
 .product-card .card-gallery {
   margin-inline: 0;
-  padding-inline: clamp(12px, 7%, 34px);
+  padding-inline: 0;
 }
 
 .product-card:hover .product-media-container img {
@@ -130,8 +133,8 @@
  * snippets/variant-swatches.liquid.
  * ------------------------------------------------------------------------- */
 .product-card .swatch {
-  --swatch-width: 12px;
-  --swatch-height: 12px;
+  --swatch-width: 22px;
+  --swatch-height: 22px;
 }
 
 .rdc-swatch-list {
@@ -156,5 +159,5 @@
  * l'alimente — celle-ci est ecrite en style inline.
  * ------------------------------------------------------------------------- */
 .product-card .product-grid__card.product-grid__card {
-  gap: 12px;
+  gap: 8px;
 }
