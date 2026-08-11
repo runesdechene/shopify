@@ -249,12 +249,17 @@
     demande rien a personne.
   {%- endcomment -%}
   {%- comment -%}
-    `left:0;right:0` + une largeur definie + `margin:0 auto` : c'est ce trio
-    qui centre une couche hors flux. Retirer l'un des trois la recolle a
-    gauche.
+    Alignement d'une couche hors flux : c'est le trio `left`/`right`/`margin`
+    qui decide. Les deux bords a 0 + `margin:0 auto` centrent ; un seul bord a
+    0 colle de ce cote-la.
   {%- endcomment -%}
-  #{{ uid }} .rdcm__backdrop{position:absolute;top:0;left:0;right:0;z-index:0;
-    width:{{ s.backdrop_width }}%;margin:0 auto;
+  #{{ uid }} .rdcm__backdrop{position:absolute;top:0;z-index:0;
+    width:{{ s.backdrop_width }}%;
+    {%- case s.backdrop_align -%}
+      {%- when 'left' -%}left:0;right:auto;margin:0;
+      {%- when 'right' -%}left:auto;right:0;margin:0;
+      {%- else -%}left:0;right:0;margin:0 auto;
+    {%- endcase -%}
     overflow:hidden;pointer-events:none;user-select:none;
     {%- unless s.backdrop_full_width -%}
       max-width:calc(var(--page-width, 1400px) - (var(--page-margin, 40px) * 2));
@@ -760,7 +765,15 @@
     { "type": "paragraph", "content": "L'image de fond du Fragment s'étend d'un bord à l'autre de l'écran, en entier (jamais rognée), et se dissout vers le bas dans la couleur de fond. Le dessin du motif, lui, reste en filigrane par-dessus. Une seule illustration sur 22 possède cette image aujourd'hui." },
     { "type": "checkbox", "id": "show_backdrop", "label": "Afficher l'image de fond du Fragment", "default": true },
     { "type": "checkbox", "id": "backdrop_full_width", "label": "D'un bord à l'autre de l'écran", "default": true, "info": "Décoché, elle s'arrête à la largeur de la page, comme le contenu." },
-    { "type": "range", "id": "backdrop_width", "label": "Largeur du décor", "unit": "%", "min": 30, "max": 100, "step": 5, "default": 80, "info": "Part de la largeur disponible qu'occupe l'image. Elle reste centrée : à 80 %, il reste 10 % de vide de chaque côté." },
+    { "type": "range", "id": "backdrop_width", "label": "Largeur du décor", "unit": "%", "min": 30, "max": 100, "step": 5, "default": 80, "info": "Part de la largeur disponible qu'occupe l'image." },
+    {
+      "type": "select", "id": "backdrop_align", "label": "Côté où le décor se cale", "default": "left",
+      "options": [
+        { "value": "left", "label": "Collé à gauche" },
+        { "value": "center", "label": "Centré" },
+        { "value": "right", "label": "Collé à droite" }
+      ]
+    },
     { "type": "range", "id": "backdrop_opacity", "label": "Intensité du décor", "unit": "%", "min": 5, "max": 100, "step": 5, "default": 100 },
     { "type": "range", "id": "backdrop_opacity_mobile", "label": "Intensité du décor (mobile)", "unit": "%", "min": 5, "max": 100, "step": 5, "default": 100, "info": "Sur un petit écran, le texte couvre presque toute l'image : la baisser aide à le lire." },
     { "type": "range", "id": "backdrop_fade", "label": "Hauteur du dégradé du bas", "unit": "%", "min": 10, "max": 100, "step": 5, "default": 70, "info": "Part de l'IMAGE où elle se dissout dans la couleur de fond, comptée depuis son bas. À 100 %, elle se dissout sur toute sa hauteur." },
