@@ -117,22 +117,31 @@
 <style>
   #{{ uid }}{background:{{ s.bg_color }};
     padding-top:{{ s.padding_top }}px;padding-bottom:{{ s.padding_bottom }}px}
-  #{{ uid }} .rdcv__in{max-width:{{ s.max_width }}px;margin:0 auto;
-    padding-inline:clamp(18px,4vw,40px)}
+  {%- comment -%}
+    ⚠ Largeur et marges laterales RECOPIEES de rdc_motif.liquid, a l'identique.
+    Les deux sections se suivent a l'ecran : la moindre difference se voit
+    comme un decalage. Si l'une change, changer l'autre.
+  {%- endcomment -%}
+  #{{ uid }} .rdcv__in{margin:0 auto;
+    max-width:calc(var(--page-width, 1400px) - (var(--page-margin, 40px) * 2));
+    padding-inline:clamp(20px,3vw,40px)}
   @media (max-width:749px){
     #{{ uid }}{padding-top:{{ s.padding_top_mobile }}px}
   }
 
-  {%- comment -%}
-    Un filet plutot qu'un bloc colore : la section suit la page du motif, elle
-    ne doit pas lui voler l'oeil. Le titre est un surtitre, pas un titre.
-  {%- endcomment -%}
   {%- if s.show_rule -%}
   #{{ uid }} .rdcv__in{border-top:1px solid {{ s.accent_color }}33;
     padding-top:clamp(22px,2.6vw,32px)}
   {%- endif -%}
-  #{{ uid }} h2{font-family:var(--font-body--family);font-size:.68rem;font-weight:700;
-    letter-spacing:.2em;text-transform:uppercase;color:{{ s.accent_color }};margin:0 0 22px}
+  {%- comment -%}
+    Le titre est un vrai titre, pas un surtitre discret : meme police de
+    titrage que le nom du motif et que le titre du recit, en grand. La taille
+    se reduit toute seule sur les petits ecrans.
+  {%- endcomment -%}
+  #{{ uid }} h2{font-family:var(--font-heading--family, sans-serif);
+    font-size:clamp(1.6rem,5.4vw,{{ s.title_size }}px);
+    line-height:.92;letter-spacing:.02em;text-transform:uppercase;
+    color:{{ s.accent_color }};margin:0 0 clamp(20px,2.4vw,30px);font-weight:400}
 
   {%- comment -%}
     Des dessins, pas des cartes produit : ni prix ni bouton. C'est une porte,
@@ -147,10 +156,16 @@
   }
   #{{ uid }} .rdcv__item{display:flex;flex-direction:column;align-items:center;gap:10px;
     text-decoration:none;color:inherit}
-  #{{ uid }} .rdcv__img{display:block;width:100%;aspect-ratio:3/4}
+  {%- comment -%}
+    Le dessin ne remplit pas toute sa case : il respire, et il s'efface un peu
+    (opacite) pour rester en dessous du motif qu'on vient de lire. Au survol,
+    il revient a pleine densite — c'est ce qui signale que c'est une porte.
+  {%- endcomment -%}
+  #{{ uid }} .rdcv__img{display:block;width:{{ s.image_scale }}%;margin:0 auto;aspect-ratio:3/4}
   #{{ uid }} .rdcv__img img{width:100%;height:100%;object-fit:contain;display:block;
-    transition:transform .45s ease}
-  #{{ uid }} .rdcv__item:hover .rdcv__img img{transform:scale(1.06) translateY(-3px)}
+    opacity:{{ s.image_opacity | divided_by: 100.0 }};
+    transition:transform .45s ease,opacity .3s ease}
+  #{{ uid }} .rdcv__item:hover .rdcv__img img{transform:scale(1.06) translateY(-3px);opacity:1}
   #{{ uid }} .rdcv__nom{font-family:var(--font-body--family);font-size:.68rem;font-weight:600;
     letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1.3;
     color:{{ s.name_color }}}
@@ -205,15 +220,18 @@
   "tag": "section",
   "settings": [
     { "type": "text", "id": "title", "label": "Titre du bloc", "default": "Les autres motifs de {saga}", "info": "Écrivez {saga} pour insérer le nom de la collection. Laisser vide pour n'afficher aucun titre." },
+    { "type": "range", "id": "title_size", "label": "Taille du titre", "unit": "px", "min": 20, "max": 96, "step": 2, "default": 48, "info": "Taille maximale sur ordinateur. Elle se réduit toute seule sur les petits écrans." },
     { "type": "range", "id": "count", "label": "Nombre de motifs affichés", "min": 2, "max": 12, "step": 1, "default": 4 },
     { "type": "range", "id": "columns", "label": "Colonnes (ordinateur)", "min": 2, "max": 6, "step": 1, "default": 4 },
     { "type": "range", "id": "columns_mobile", "label": "Colonnes (mobile)", "min": 1, "max": 3, "step": 1, "default": 2 },
+    { "type": "header", "content": "Les dessins" },
+    { "type": "range", "id": "image_scale", "label": "Taille des illustrations", "unit": "%", "min": 40, "max": 100, "step": 2, "default": 80, "info": "Part de la case occupée par le dessin. En dessous de 100 %, il respire." },
+    { "type": "range", "id": "image_opacity", "label": "Opacité des illustrations", "unit": "%", "min": 20, "max": 100, "step": 5, "default": 80, "info": "Elles reviennent à pleine densité au survol." },
     { "type": "header", "content": "Apparence" },
     { "type": "checkbox", "id": "show_rule", "label": "Filet de séparation au-dessus", "default": true },
     { "type": "color", "id": "bg_color", "label": "Fond de la section", "default": "#f4eee1" },
     { "type": "color", "id": "accent_color", "label": "Couleur du titre et du filet", "default": "#b4894f" },
     { "type": "color", "id": "name_color", "label": "Couleur des noms de motif", "default": "#5a4a42" },
-    { "type": "range", "id": "max_width", "label": "Largeur du contenu", "unit": "px", "min": 700, "max": 1600, "step": 20, "default": 1200 },
     { "type": "range", "id": "padding_top", "label": "Espace au-dessus", "unit": "px", "min": 0, "max": 120, "step": 4, "default": 24 },
     { "type": "range", "id": "padding_top_mobile", "label": "Espace au-dessus (mobile)", "unit": "px", "min": 0, "max": 80, "step": 4, "default": 16 },
     { "type": "range", "id": "padding_bottom", "label": "Espace en dessous", "unit": "px", "min": 0, "max": 160, "step": 4, "default": 72 },
