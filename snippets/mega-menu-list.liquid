@@ -279,7 +279,7 @@
         >
           {%- if menu_icon_mf -%}
             <span class="mega-menu__link-icon">
-              <img src="{{ menu_icon_mf | image_url: width: 64 }}" alt="{{ link.title }}"
+              <img src="{{ menu_icon_mf | image_url: width: 400 }}" alt="{{ link.title }}"
                    width="32" height="32" loading="lazy">
             </span>
           {%- elsif current_icon != blank -%}
@@ -289,7 +289,7 @@
             </span>
           {%- elsif link_collection_image -%}
             <span class="mega-menu__link-icon">
-              <img src="{{ link_collection_image | image_url: width: 64 }}" alt="{{ link.title }}"
+              <img src="{{ link_collection_image | image_url: width: 400 }}" alt="{{ link.title }}"
                    width="32" height="32" loading="lazy">
             </span>
           {%- endif -%}
@@ -366,7 +366,7 @@
                 <span class="mega-menu__link-title wrap-text">
                   {%- if child_collection_image -%}
                     <span class="mega-menu__link-icon">
-                      <img src="{{ child_collection_image | image_url: width: 64 }}" alt="{{ childLink.title }}" loading="lazy">
+                      <img src="{{ child_collection_image | image_url: width: 400 }}" alt="{{ childLink.title }}" loading="lazy">
                     </span>
                   {%- elsif child_icon != blank -%}
                     <span class="mega-menu__link-icon">
@@ -444,12 +444,12 @@
               <span class="mega-menu__link-title wrap-text">
                 {%- if menu_icon_mf -%}
                   <span class="mega-menu__link-icon">
-                    <img src="{{ menu_icon_mf | image_url: width: 64 }}" alt="{{ link.title }}"
+                    <img src="{{ menu_icon_mf | image_url: width: 400 }}" alt="{{ link.title }}"
                          width="24" height="24" loading="lazy">
                   </span>
                 {%- elsif link_collection_image -%}
                   <span class="mega-menu__link-icon">
-                    <img src="{{ link_collection_image | image_url: width: 64 }}" alt="{{ link.title }}"
+                    <img src="{{ link_collection_image | image_url: width: 400 }}" alt="{{ link.title }}"
                          width="24" height="24" loading="lazy">
                   </span>
                 {%- elsif current_icon != blank -%}
@@ -507,12 +507,12 @@
               <span class="mega-menu__link-title wrap-text">
                 {%- if menu_icon_mf -%}
                   <span class="mega-menu__link-icon">
-                    <img src="{{ menu_icon_mf | image_url: width: 64 }}" alt="{{ link.title }}"
+                    <img src="{{ menu_icon_mf | image_url: width: 400 }}" alt="{{ link.title }}"
                          width="24" height="24" loading="lazy">
                   </span>
                 {%- elsif link_collection_image -%}
                   <span class="mega-menu__link-icon">
-                    <img src="{{ link_collection_image | image_url: width: 64 }}" alt="{{ link.title }}"
+                    <img src="{{ link_collection_image | image_url: width: 400 }}" alt="{{ link.title }}"
                          width="24" height="24" loading="lazy">
                   </span>
                 {%- elsif current_icon != blank -%}
@@ -741,14 +741,18 @@
    * passaient devant les notres — c'est pourquoi la premiere version n'avait
    * aucun style.
    * ------------------------------------------------------------------------- */
+  /* ⚠ AUCUN filet ici : le theme dessine deja ses propres bordures sur les
+   * colonnes, et la mienne s'y ajoutait en formant une equerre — la ligne en
+   * haut et le petit trait a gauche. L'ecart et le titre suffisent a separer
+   * les deux rangs. */
   .rdc-menu-images > .mega-menu__column--col2,
   .rdc-menu-images > .mega-menu__column--col3 {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
     gap: 18px 14px;
-    margin-top: 26px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(64, 52, 52, .13);
+    margin-top: 34px;
+    padding: 0 !important;
+    border: 0 !important;
   }
 
   .rdc-menu-images .mega-menu__col2-title {
@@ -767,10 +771,23 @@
     display: flex !important;
     flex-direction: column !important;
     align-items: stretch;
-    gap: 8px;
+    gap: 10px !important;
     padding: 0 !important;
     border: 0 !important;
     background: none !important;
+  }
+
+  /* ⚠ Pas d'agrandissement au survol dans ce rang : l'image debordait par-dessus
+   * le nom, qui est juste dessous et beaucoup plus proche que sur les grandes
+   * cartes. Le survol se signale par le seul changement d'opacite. */
+  .rdc-menu-images .mega-menu__column--col2 .mega-menu__link:hover img,
+  .rdc-menu-images .mega-menu__column--col3 .mega-menu__link:hover img {
+    transform: none !important;
+  }
+
+  .rdc-menu-images .mega-menu__column--col2 .mega-menu__link:hover,
+  .rdc-menu-images .mega-menu__column--col3 .mega-menu__link:hover {
+    opacity: .78;
   }
 
   .rdc-menu-images .mega-menu__column--col2 .mega-menu__link-icon,
