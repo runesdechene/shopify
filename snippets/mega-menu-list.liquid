@@ -211,7 +211,15 @@
             -%}
           {%- endcapture -%}
 
-          {% render 'link-featured-image', link: link, class: 'mega-menu__link-image', sizes: collection_image_sizes %}
+          {%- comment -%}
+            Un cadre autour de l'image : c'est lui qui retient le zoom au
+            survol. Sans cadre, agrandir l'image la ferait deborder sur le nom
+            place juste dessous — c'est ce qui rendait l'effet vulgaire en bas
+            de panneau.
+          {%- endcomment -%}
+          <span class="rdc-menu-shot">
+            {% render 'link-featured-image', link: link, class: 'mega-menu__link-image', sizes: collection_image_sizes %}
+          </span>
         {% endif %}
         
         {%- liquid
@@ -406,9 +414,11 @@
   {%- comment -%} Colonne 2 : liens configurés dans le schema {%- endcomment -%}
   {% if has_column2 %}
     <li class="mega-menu__column mega-menu__column--col2">
-      {% if column2_title != blank %}
-        <span class="mega-menu__col2-title">{{ column2_title }}</span>
-      {% endif %}
+      {%- comment -%}
+        Le titre s'affiche meme si le champ est vide : sans lui, le second rang
+        arrive sans annonce et se confond avec le premier.
+      {%- endcomment -%}
+      <span class="mega-menu__col2-title">{{ column2_title | default: 'Aussi disponibles' }}</span>
       {% for link in parent_link.links %}
         {%- assign col2_check = '||' | append: link.title | append: '||' -%}
         {% if col2_list contains col2_check %}
@@ -985,6 +995,62 @@
   .rdc-menu-images .mega-menu__column--col2 .mega-menu__link::before,
   .rdc-menu-images .mega-menu__column--col3 .mega-menu__link::before {
     content: none !important;
+  }
+
+
+  /* ---------------------------------------------------------------------------
+   * LE SURVOL — UN ZOOM CONTENU, RIEN D'AUTRE
+   *
+   * L'image s'agrandit DANS son cadre, qui ne bouge pas. Le bloc ne grandit
+   * pas, ne s'assombrit pas : agrandir un bloc entier au survol le fait
+   * chevaucher ses voisins et son propre texte.
+   *
+   * Meme geste en haut et en bas — c'est ce qui manquait : les grandes cartes
+   * n'avaient aucun effet, les petites avaient le mauvais.
+   * ------------------------------------------------------------------------- */
+  .rdc-menu-shot {
+    display: block;
+    overflow: hidden;
+    line-height: 0;
+  }
+
+  .rdc-menu-shot img,
+  .rdc-menu-images .mega-menu__link-icon img {
+    transition: transform .5s ease;
+  }
+
+  .rdc-menu-images .mega-menu__link:hover .rdc-menu-shot img,
+  .rdc-menu-images .mega-menu__column--col2 .mega-menu__link:hover .mega-menu__link-icon img,
+  .rdc-menu-images .mega-menu__column--col3 .mega-menu__link:hover .mega-menu__link-icon img {
+    transform: scale(1.06);
+  }
+
+  /* Le cadre du visuel secondaire retient lui aussi son zoom. */
+  .rdc-menu-images .mega-menu__column--col2 .mega-menu__link-icon,
+  .rdc-menu-images .mega-menu__column--col3 .mega-menu__link-icon {
+    overflow: hidden;
+    line-height: 0;
+  }
+
+  /* Plus d'assombrissement du bloc : seul le contour signale le survol. */
+  .rdc-menu-images .mega-menu__column--col2 .mega-menu__link:hover,
+  .rdc-menu-images .mega-menu__column--col3 .mega-menu__link:hover {
+    background-color: transparent !important;
+    opacity: 1;
+  }
+
+  /* Le titre du second rang, avec son filet — comme sur la maquette. */
+  .rdc-menu-images .mega-menu__col2-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .rdc-menu-images .mega-menu__col2-title::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: rgba(64, 52, 52, .13);
   }
 
 {% endstylesheet %}
