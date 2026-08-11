@@ -150,13 +150,33 @@
   {%- endif -%}
   #{{ uid }} .rdcsh__overline{font-family:var(--font-body--family);font-weight:700;font-size:.74rem;
     letter-spacing:.26em;text-transform:uppercase;color:#f4d694;margin-bottom:16px}
+  {%- comment -%}
+    L'ombre du texte est un REGLAGE, pas une valeur en dur : c'est le voile
+    pose sur l'image qui doit porter le contraste, l'ombre n'etant la que pour
+    les cas ou la photo est claire a cet endroit. Une ombre forte sur un texte
+    deja lisible le salit.
+
+    ⚠ Cette section sert AUSSI les pages saga. Le defaut est adouci ici, donc
+    il l'est la-bas aussi : si une saga devient dure a lire, c'est ce curseur
+    qu'il faut remonter sur cette saga-la, pas revenir en arriere.
+  {%- endcomment -%}
+  {%- assign ombre = s.text_shadow | divided_by: 100.0 -%}
   #{{ uid }} .rdcsh__title{font-family:var(--font-heading--family, sans-serif);color:#fff;
     text-transform:uppercase;line-height:.94;letter-spacing:.02em;
-    font-size:clamp(2.2rem,5.2vw,4.6rem);text-shadow:0 2px 24px rgba(0,0,0,.55);margin:0}
+    font-size:clamp(2.2rem,5.2vw,4.6rem);
+    text-shadow:0 2px 18px rgba(0,0,0,{{ ombre }});margin:0}
   #{{ uid }} .rdcsh__subtitle{font-family:var(--font-body--family);color:#fff;
     font-size:clamp(1rem,1.4vw,1.18rem);line-height:1.5;max-width:48ch;margin:18px 0 0;
-    text-shadow:0 2px 24px rgba(0,0,0,.55)}
-  #{{ uid }} .rdcsh__subtitle p{margin:0}
+    font-weight:{{ s.desc_weight }};
+    text-shadow:0 2px 18px rgba(0,0,0,{{ ombre }})}
+  #{{ uid }} .rdcsh__subtitle p{margin:0;font-weight:inherit}
+  {%- comment -%}
+    La description vient de Shopify et arrive souvent toute en gras. On la
+    ramene a la graisse choisie, en laissant les mots volontairement mis en
+    valeur un cran au-dessus — pas deux.
+  {%- endcomment -%}
+  #{{ uid }} .rdcsh__subtitle strong,
+  #{{ uid }} .rdcsh__subtitle b{font-weight:{{ s.desc_weight | plus: 100 }}}
   #{{ uid }} .rdcsh__actions{display:flex;flex-wrap:wrap;gap:13px;margin-top:28px}
   #{{ uid }} .rdcsh__btn{display:inline-flex;align-items:center;font-family:var(--font-body--family);
     font-weight:700;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;
@@ -380,6 +400,17 @@
     { "type": "text", "id": "btn2_label", "label": "Bouton secondaire — libellé" },
     { "type": "url", "id": "btn2_link", "label": "Bouton secondaire — lien" },
     { "type": "header", "content": "Dimensions" },
+    { "type": "header", "content": "Le texte du hero" },
+    { "type": "range", "id": "text_shadow", "label": "Ombre portée du texte", "unit": "%", "min": 0, "max": 80, "step": 5, "default": 25, "info": "C'est le voile posé sur l'image qui doit porter le contraste. Une ombre forte sur un texte déjà lisible le salit." },
+    {
+      "type": "select", "id": "desc_weight", "label": "Graisse de la description", "default": "400",
+      "options": [
+        { "value": "300", "label": "Légère" },
+        { "value": "400", "label": "Normale" },
+        { "value": "500", "label": "Moyenne" },
+        { "value": "600", "label": "Grasse" }
+      ]
+    },
     { "type": "header", "content": "Quand la collection n'a pas d'image" },
     { "type": "paragraph", "content": "Par défaut la section ne s'affiche pas du tout : elle n'a rien à montrer. Cochez pour l'afficher quand même, sur un aplat de couleur — utile sur les collections ordinaires." },
     { "type": "checkbox", "id": "show_without_image", "label": "Afficher même sans image", "default": false },
