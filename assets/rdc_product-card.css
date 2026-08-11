@@ -133,8 +133,8 @@
  * snippets/variant-swatches.liquid.
  * ------------------------------------------------------------------------- */
 .product-card .swatch {
-  --swatch-width: 22px;
-  --swatch-height: 22px;
+  --swatch-width: 12px;
+  --swatch-height: 12px;
 }
 
 .rdc-swatch-list {
