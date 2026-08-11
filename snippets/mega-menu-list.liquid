@@ -296,6 +296,20 @@
           {{- link.title -}}
           {%- if hot_list != blank -%}{%- assign hot_check = '||' | append: link.title | append: '||' -%}{%- if hot_list contains hot_check -%}<span class="mega-menu__hot-badge">🔥 HOT</span>{%- endif -%}{%- endif -%}
         </span>
+        {%- comment -%}
+          La ligne de contexte sous le nom, en mode grandes images seulement.
+          Elle vient de la DESCRIPTION de la collection dans Shopify — donc
+          elle se remplit toute seule, et elle est vide tant que la collection
+          n'a pas de description. `strip_html` parce que le champ contient du
+          texte mis en forme ; tronquee, parce qu'une accroche de menu n'est
+          pas un paragraphe.
+        {%- endcomment -%}
+        {%- if menu_content_type == 'collection_images' and link.type == 'collection_link' -%}
+          {%- assign accroche = link.object.description | strip_html | strip -%}
+          {%- if accroche != blank -%}
+            <span class="mega-menu__link-lede">{{ accroche | truncate: 70 }}</span>
+          {%- endif -%}
+        {%- endif -%}
       </a>
       {% if link.links != blank %}
         <ul
@@ -774,17 +788,25 @@
     padding-inline: 6px;
   }
 
-  .mega-menu__link-image {
-    border-radius: 8px;
-    overflow: hidden;
-  }
-
-  .mega-menu__link-image img {
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
+  /* ⚠ La classe est posee SUR l'image par `link-featured-image`, pas sur un
+   * conteneur : viser `.mega-menu__link-image img` ne touchait rien. C'est
+   * pour ca que le cadrage en bandeau persistait. */
+  img.mega-menu__link-image {
+    display: block;
     width: 100%;
     height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .mega-menu__link-lede {
     display: block;
+    font-family: var(--font-body--family);
+    font-size: .78rem;
+    line-height: 1.35;
+    opacity: .72;
+    margin-top: 3px;
   }
 
   /* 3. Une vignette a cote du nom, sous une grande image du meme sujet, ne dit
