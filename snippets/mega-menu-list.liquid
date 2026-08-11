@@ -335,11 +335,54 @@
             a chaque chargement de page, sur tout le site : trop cher pour un
             menu. Le metachamp donne le chiffre juste sans rien couter.
           {%- endcomment -%}
-          {%- assign nbf = link.object.metafields.custom.nb_fragments.value | default: link.object.metafields.custom.nb_fragments -%}
-          {%- if nbf != blank -%}
-            <span class="mega-menu__link-count">{{ nbf }} Fragments</span>
-          {%- elsif link.object.products_count > 0 -%}
-            <span class="mega-menu__link-count">{{ link.object.products_count }} pièces</span>
+          {%- liquid
+            comment
+              ⚠ Un Fragment n'est PAS un produit : le meme dessin existe en six
+              coupes, donc il compte six fois dans `products_count`. « 20
+              pieces » pour La Garde d'Acier, ce sont 3 ou 4 Fragments.
+
+              On compte donc les DESSINS DISTINCTS : chaque produit porte son
+              metaobjet illustration, qui porte sa collection de motif. Meme
+              resolution que rdc_motifs-voisins et rdc_coupes, et meme sonde
+              bornee des deux cotes (|avalon|) — sinon « avalon » matcherait
+              dans « grand-avalon ».
+
+              ⚠ Sans pagination, Liquid s'arrete a 50 produits. Les sagas en
+              font 12 a 20 : le compte est donc exact ici. Il deviendrait un
+              minimum sur une collection plus grande.
+
+              Le metachamp reste prioritaire s'il existe, pour forcer une
+              valeur a la main.
+            endcomment
+            assign nbf = link.object.metafields.custom.nb_fragments.value | default: link.object.metafields.custom.nb_fragments
+            if nbf == blank
+              assign vus_frag = '|'
+              assign nb_calc = 0
+              for prod in link.object.products
+                assign ill_p = prod.metafields.custom.illustration_produit.value
+                unless ill_p == blank
+                  assign col_p = ill_p.collection.value
+                  if col_p == blank
+                    assign col_p = collections[ill_p.system.handle]
+                  endif
+                  unless col_p == blank
+                    assign sonde_f = '|' | append: col_p.handle | append: '|'
+                    unless vus_frag contains sonde_f
+                      assign vus_frag = vus_frag | append: col_p.handle | append: '|'
+                      assign nb_calc = nb_calc | plus: 1
+                    endunless
+                  endunless
+                endunless
+              endfor
+              if nb_calc > 0
+                assign nbf = nb_calc
+              endif
+            endif
+          -%}
+          {%- if nbf != blank and nbf != 0 -%}
+            <span class="mega-menu__link-count">
+              {{ nbf }} {% if nbf == 1 %}Fragment{% else %}Fragments{% endif %}
+            </span>
           {%- endif -%}
         {%- endif -%}
       </a>
