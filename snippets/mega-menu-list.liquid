@@ -260,16 +260,15 @@
             champ cree a la main ne doit pas obliger a toucher au code.
           endcomment
           assign menu_icon_mf = nil
-          assign mf = link.object.metafields.custom
-          assign candidats = 'icone_du_menu,icon_menu,icone_menu,menu_icon,icone' | split: ','
-          for cle in candidats
-            unless menu_icon_mf
-              assign brut = mf[cle]
-              unless brut == blank
-                assign menu_icon_mf = brut.value | default: brut
-              endunless
-            endunless
-          endfor
+          comment
+            ⚠ ACCES DIRECT, PAS PAR CLE VARIABLE.
+            `metafields.custom[cle]` renvoie la reference BRUTE du fichier, pas
+            l'objet — d'ou une adresse vide et une icone cassee. L'acces
+            pointe, lui, renvoie bien l'objet fichier.
+          endcomment
+          if link.object.metafields.custom.icon_menu != blank
+            assign menu_icon_mf = link.object.metafields.custom.icon_menu.value | default: link.object.metafields.custom.icon_menu
+          endif
 
           # Priorite 1 : correspondance manuelle, si une ligne vise ce lien
           assign current_icon = ''
@@ -521,16 +520,15 @@
             <a href="{{ link.url }}" class="mega-menu__link">
               {%- liquid
                 assign menu_icon_mf = nil
-                assign mf = link.object.metafields.custom
-                assign candidats = 'icone_du_menu,icon_menu,icone_menu,menu_icon,icone' | split: ','
-                for cle in candidats
-                  unless menu_icon_mf
-                    assign brut = mf[cle]
-                    unless brut == blank
-                      assign menu_icon_mf = brut.value | default: brut
-                    endunless
-                  endunless
-                endfor
+                comment
+                  ⚠ ACCES DIRECT, PAS PAR CLE VARIABLE.
+                  `metafields.custom[cle]` renvoie la reference BRUTE du fichier, pas
+                  l'objet — d'ou une adresse vide et une icone cassee. L'acces
+                  pointe, lui, renvoie bien l'objet fichier.
+                endcomment
+                if link.object.metafields.custom.icon_menu != blank
+                  assign menu_icon_mf = link.object.metafields.custom.icon_menu.value | default: link.object.metafields.custom.icon_menu
+                endif
 
               comment
                 ⚠ DEUX TYPES DE METACHAMP, DEUX FACON D'OBTENIR L'ADRESSE.
@@ -641,16 +639,15 @@
             <a href="{{ link.url }}" class="mega-menu__link">
               {%- liquid
                 assign menu_icon_mf = nil
-                assign mf = link.object.metafields.custom
-                assign candidats = 'icone_du_menu,icon_menu,icone_menu,menu_icon,icone' | split: ','
-                for cle in candidats
-                  unless menu_icon_mf
-                    assign brut = mf[cle]
-                    unless brut == blank
-                      assign menu_icon_mf = brut.value | default: brut
-                    endunless
-                  endunless
-                endfor
+                comment
+                  ⚠ ACCES DIRECT, PAS PAR CLE VARIABLE.
+                  `metafields.custom[cle]` renvoie la reference BRUTE du fichier, pas
+                  l'objet — d'ou une adresse vide et une icone cassee. L'acces
+                  pointe, lui, renvoie bien l'objet fichier.
+                endcomment
+                if link.object.metafields.custom.icon_menu != blank
+                  assign menu_icon_mf = link.object.metafields.custom.icon_menu.value | default: link.object.metafields.custom.icon_menu
+                endif
 
               comment
                 ⚠ DEUX TYPES DE METACHAMP, DEUX FACON D'OBTENIR L'ADRESSE.
