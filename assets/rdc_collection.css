@@ -62,23 +62,42 @@
  * (`1 / -1`), puis on ramene son contenu a la largeur de page avec un
  * padding. Aucun debordement possible.
  */
-/* ⚠ LE BORD A BORD EST DEFINITIVEMENT RETIRE.
+/* La barre prend toute la page, moins 50px de chaque cote.
  *
- * Deux tentatives, deux barres de defilement horizontales sur la boutique.
- * Je ne peux pas mesurer le rendu depuis ici : sans navigateur, je ne verifie
- * que le CSS servi, jamais la largeur reelle. Tant que ce sera le cas, on ne
- * retente pas — une boutique qui scrolle de travers coute plus cher qu'un
- * filet qui s'arrete a la marge.
+ * ⚠ POURQUOI CETTE FOIS CA NE PEUT PAS DEBORDER, apres deux echecs :
  *
- * Si on y revient un jour, ce sera avec un navigateur ouvert, et par un
- * pseudo-element positionne — jamais par du padding ni par `grid-column`.
+ *   · `grid-column: 1 / -1` etend la barre sur toutes les colonnes de la
+ *     grille du theme. C'est la grille qui donne la largeur — aucune unite
+ *     `vw` n'intervient, donc la largeur de l'ascenseur ne peut pas fausser
+ *     le calcul (c'etait le piege de `100vw`).
+ *
+ *   · `margin-inline` RETIRE de la largeur. Les deux versions cassees
+ *     utilisaient un `padding`, qui AJOUTE : sans `border-box`, un padding
+ *     s'additionne a 100% et fait deborder la page. Une marge, elle, retrecit
+ *     l'element — un element a marges ne peut pas depasser son conteneur,
+ *     c'est structurel, pas une question de reglage.
+ *
+ * Sur telephone, 50px de chaque cote mangeraient l'ecran : la marge tombe a
+ * 16px sous 750px de large.
  */
+.collection-wrapper .facets-block-wrapper--horizontal {
+  grid-column: 1 / -1;
+  margin-inline: 50px;
+}
+
+@media (max-width: 749px) {
+  .collection-wrapper .facets-block-wrapper--horizontal {
+    margin-inline: 16px;
+  }
+}
+
 .facets-block-wrapper--horizontal .facets--horizontal {
   box-sizing: border-box;
   max-width: 100%;
   border-top: 1px solid rgba(64, 52, 52, 0.13);
   border-bottom: 1px solid rgba(64, 52, 52, 0.13);
   padding-block: 12px;
+  padding-inline: 0;
 }
 
 /* De l'air sous la barre : sans lui, la premiere rangee de produits colle au
