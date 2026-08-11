@@ -459,6 +459,20 @@
                 {%- endif -%}
                 {{- link.title -}}
               </span>
+              {%- comment -%}
+                Meme source que les grandes cartes : le resume d'abord, la
+                description en repli.
+              {%- endcomment -%}
+              {%- if link.type == 'collection_link' -%}
+                {%- assign resume_mf = link.object.metafields.custom.resume.value | default: link.object.metafields.custom.resume -%}
+                {%- assign accroche = resume_mf | strip_html | strip -%}
+                {%- if accroche == blank -%}
+                  {%- assign accroche = link.object.description | strip_html | strip -%}
+                {%- endif -%}
+                {%- if accroche != blank -%}
+                  <span class="mega-menu__link-lede">{{ accroche | truncate: 60 }}</span>
+                {%- endif -%}
+              {%- endif -%}
             </a>
           </div>
         {% endif %}
@@ -522,6 +536,20 @@
                 {%- endif -%}
                 {{- link.title -}}
               </span>
+              {%- comment -%}
+                Meme source que les grandes cartes : le resume d'abord, la
+                description en repli.
+              {%- endcomment -%}
+              {%- if link.type == 'collection_link' -%}
+                {%- assign resume_mf = link.object.metafields.custom.resume.value | default: link.object.metafields.custom.resume -%}
+                {%- assign accroche = resume_mf | strip_html | strip -%}
+                {%- if accroche == blank -%}
+                  {%- assign accroche = link.object.description | strip_html | strip -%}
+                {%- endif -%}
+                {%- if accroche != blank -%}
+                  <span class="mega-menu__link-lede">{{ accroche | truncate: 60 }}</span>
+                {%- endif -%}
+              {%- endif -%}
             </a>
           </div>
         {% endif %}
@@ -748,7 +776,7 @@
   .rdc-menu-images > .mega-menu__column--col2,
   .rdc-menu-images > .mega-menu__column--col3 {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
     gap: 18px 14px;
     margin-top: 34px;
     padding: 0 !important;
@@ -766,41 +794,50 @@
     margin: 0 0 2px;
   }
 
+  /* ---------------------------------------------------------------------------
+   * LE SECOND RANG — DES RECTANGLES HORIZONTAUX
+   *
+   * Visuel a gauche, nom et description a droite. Un rectangle couche se lit
+   * immediatement comme un second rang face aux cartes verticales du haut —
+   * la hierarchie ne repose plus sur la seule taille.
+   *
+   * Une grille a deux colonnes plutot qu'une colonne flex : le visuel occupe
+   * les deux rangees, le nom la premiere, la description la seconde. L'ecart
+   * est porte par la grille, pas par des marges qui se faisaient ecraser.
+   * ------------------------------------------------------------------------- */
   .rdc-menu-images .mega-menu__column--col2 .mega-menu__link,
   .rdc-menu-images .mega-menu__column--col3 .mega-menu__link {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch;
-    gap: 10px !important;
-    padding: 0 !important;
-    border: 0 !important;
+    display: grid !important;
+    grid-template-columns: 62px minmax(0, 1fr);
+    column-gap: 13px;
+    row-gap: 3px;
+    align-items: center;
+    padding: 10px !important;
+    border: 1px solid rgba(64, 52, 52, .13) !important;
     background: none !important;
-  }
-
-  /* ⚠ Pas d'agrandissement au survol dans ce rang : l'image debordait par-dessus
-   * le nom, qui est juste dessous et beaucoup plus proche que sur les grandes
-   * cartes. Le survol se signale par le seul changement d'opacite. */
-  .rdc-menu-images .mega-menu__column--col2 .mega-menu__link:hover img,
-  .rdc-menu-images .mega-menu__column--col3 .mega-menu__link:hover img {
-    transform: none !important;
+    transition: border-color .2s ease, background-color .2s ease;
   }
 
   .rdc-menu-images .mega-menu__column--col2 .mega-menu__link:hover,
   .rdc-menu-images .mega-menu__column--col3 .mega-menu__link:hover {
-    opacity: .78;
+    border-color: #b4894f !important;
+    background-color: rgba(180, 137, 79, .07) !important;
+    opacity: 1;
   }
 
   .rdc-menu-images .mega-menu__column--col2 .mega-menu__link-icon,
   .rdc-menu-images .mega-menu__column--col3 .mega-menu__link-icon {
+    grid-column: 1;
+    grid-row: 1 / span 2;
     display: block;
-    width: 100%;
+    width: 62px;
     margin: 0;
   }
 
   .rdc-menu-images .mega-menu__column--col2 .mega-menu__link-icon img,
   .rdc-menu-images .mega-menu__column--col3 .mega-menu__link-icon img {
-    width: 100% !important;
-    height: auto !important;
+    width: 62px !important;
+    height: 62px !important;
     aspect-ratio: 1 / 1;
     object-fit: cover;
     display: block;
@@ -808,12 +845,25 @@
 
   .rdc-menu-images .mega-menu__column--col2 .mega-menu__link-title,
   .rdc-menu-images .mega-menu__column--col3 .mega-menu__link-title {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: end;
     display: block;
     font-family: var(--font-heading--family, sans-serif);
-    font-size: .92rem;
+    font-size: .95rem;
     letter-spacing: .03em;
-    line-height: 1.1;
+    line-height: 1.05;
     text-transform: uppercase;
+  }
+
+  .rdc-menu-images .mega-menu__column--col2 .mega-menu__link-lede,
+  .rdc-menu-images .mega-menu__column--col3 .mega-menu__link-lede {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: start;
+    margin: 0;
+    font-size: .72rem;
+    line-height: 1.3;
   }
 
 
