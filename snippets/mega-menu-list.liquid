@@ -441,24 +441,31 @@
                   endfor
                 endif
               -%}
-              <span class="mega-menu__link-title wrap-text">
-                {%- if menu_icon_mf -%}
-                  <span class="mega-menu__link-icon">
-                    <img src="{{ menu_icon_mf | image_url: width: 400 }}" alt="{{ link.title }}"
-                         width="24" height="24" loading="lazy">
-                  </span>
-                {%- elsif link_collection_image -%}
-                  <span class="mega-menu__link-icon">
-                    <img src="{{ link_collection_image | image_url: width: 400 }}" alt="{{ link.title }}"
-                         width="24" height="24" loading="lazy">
-                  </span>
-                {%- elsif current_icon != blank -%}
-                  <span class="mega-menu__link-icon">
-                    <img src="{{ current_icon | asset_url }}" alt="{{ link.title }}" loading="lazy">
-                  </span>
-                {%- endif -%}
-                {{- link.title -}}
-              </span>
+              {%- comment -%}
+                ⚠ Le visuel est un FRERE du titre, pas son enfant.
+
+                Il etait imbrique dans le bloc de titre : la mise en page en
+                rectangle ne pouvait donc pas le placer a gauche, puisqu'il
+                n'etait pas un element de la grille. Il restait empile
+                au-dessus du nom, quoi qu'on ecrive en CSS.
+              {%- endcomment -%}
+              {%- if menu_icon_mf -%}
+                <span class="mega-menu__link-icon">
+                  <img src="{{ menu_icon_mf | image_url: width: 400 }}" alt="{{ link.title }}"
+                       width="62" height="62" loading="lazy">
+                </span>
+              {%- elsif link_collection_image -%}
+                <span class="mega-menu__link-icon">
+                  <img src="{{ link_collection_image | image_url: width: 400 }}" alt="{{ link.title }}"
+                       width="62" height="62" loading="lazy">
+                </span>
+              {%- elsif current_icon != blank -%}
+                <span class="mega-menu__link-icon">
+                  <img src="{{ current_icon | asset_url }}" alt="{{ link.title }}"
+                       width="62" height="62" loading="lazy">
+                </span>
+              {%- endif -%}
+              <span class="mega-menu__link-title wrap-text">{{- link.title -}}</span>
               {%- comment -%}
                 Meme source que les grandes cartes : le resume d'abord, la
                 description en repli.
@@ -518,24 +525,31 @@
                   endfor
                 endif
               -%}
-              <span class="mega-menu__link-title wrap-text">
-                {%- if menu_icon_mf -%}
-                  <span class="mega-menu__link-icon">
-                    <img src="{{ menu_icon_mf | image_url: width: 400 }}" alt="{{ link.title }}"
-                         width="24" height="24" loading="lazy">
-                  </span>
-                {%- elsif link_collection_image -%}
-                  <span class="mega-menu__link-icon">
-                    <img src="{{ link_collection_image | image_url: width: 400 }}" alt="{{ link.title }}"
-                         width="24" height="24" loading="lazy">
-                  </span>
-                {%- elsif current_icon != blank -%}
-                  <span class="mega-menu__link-icon">
-                    <img src="{{ current_icon | asset_url }}" alt="{{ link.title }}" loading="lazy">
-                  </span>
-                {%- endif -%}
-                {{- link.title -}}
-              </span>
+              {%- comment -%}
+                ⚠ Le visuel est un FRERE du titre, pas son enfant.
+
+                Il etait imbrique dans le bloc de titre : la mise en page en
+                rectangle ne pouvait donc pas le placer a gauche, puisqu'il
+                n'etait pas un element de la grille. Il restait empile
+                au-dessus du nom, quoi qu'on ecrive en CSS.
+              {%- endcomment -%}
+              {%- if menu_icon_mf -%}
+                <span class="mega-menu__link-icon">
+                  <img src="{{ menu_icon_mf | image_url: width: 400 }}" alt="{{ link.title }}"
+                       width="62" height="62" loading="lazy">
+                </span>
+              {%- elsif link_collection_image -%}
+                <span class="mega-menu__link-icon">
+                  <img src="{{ link_collection_image | image_url: width: 400 }}" alt="{{ link.title }}"
+                       width="62" height="62" loading="lazy">
+                </span>
+              {%- elsif current_icon != blank -%}
+                <span class="mega-menu__link-icon">
+                  <img src="{{ current_icon | asset_url }}" alt="{{ link.title }}"
+                       width="62" height="62" loading="lazy">
+                </span>
+              {%- endif -%}
+              <span class="mega-menu__link-title wrap-text">{{- link.title -}}</span>
               {%- comment -%}
                 Meme source que les grandes cartes : le resume d'abord, la
                 description en repli.
