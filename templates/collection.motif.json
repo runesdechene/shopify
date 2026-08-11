@@ -73,6 +73,7 @@
         "image_opacity": 80,
         "show_rule": true,
         "bg_color": "#f4eee1",
+        "title_color": "#403434",
         "accent_color": "#b4894f",
         "name_color": "#5a4a42",
         "padding_top": 24,

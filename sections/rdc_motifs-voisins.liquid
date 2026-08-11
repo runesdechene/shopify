@@ -129,19 +129,31 @@
     #{{ uid }}{padding-top:{{ s.padding_top_mobile }}px}
   }
 
+  {%- comment -%}
+    ⚠ Le filet porte sur .rdcv__body, PAS sur .rdcv__in. Une bordure suit le
+    bord exterieur de son element, marges laterales comprises : posee sur
+    .rdcv__in, elle depassait le contenu de deux fois le padding (jusqu'a
+    80px). Sur .rdcv__body, elle tombe pile sur la largeur des dessins —
+    exactement ce que fait .rdcm__story sur la page du motif.
+  {%- endcomment -%}
   {%- if s.show_rule -%}
-  #{{ uid }} .rdcv__in{border-top:1px solid {{ s.accent_color }}33;
+  #{{ uid }} .rdcv__body{border-top:1px solid {{ s.accent_color }}33;
     padding-top:clamp(22px,2.6vw,32px)}
   {%- endif -%}
   {%- comment -%}
     Le titre est un vrai titre, pas un surtitre discret : meme police de
     titrage que le nom du motif et que le titre du recit, en grand. La taille
     se reduit toute seule sur les petits ecrans.
+
+    ⚠ Sa couleur est la SIENNE, pas la couleur d'accent. En dore, un surtitre
+    de 11px passe inapercu ; le meme dore a 48px vire au jaune et hurle. Le
+    titre du recit, juste au-dessus, est a l'encre (#403434) : celui-ci le
+    suit.
   {%- endcomment -%}
   #{{ uid }} h2{font-family:var(--font-heading--family, sans-serif);
     font-size:clamp(1.6rem,5.4vw,{{ s.title_size }}px);
     line-height:.92;letter-spacing:.02em;text-transform:uppercase;
-    color:{{ s.accent_color }};margin:0 0 clamp(20px,2.4vw,30px);font-weight:400}
+    color:{{ s.title_color }};margin:0 0 clamp(20px,2.4vw,30px);font-weight:400}
 
   {%- comment -%}
     Des dessins, pas des cartes produit : ni prix ni bouton. C'est une porte,
@@ -173,6 +185,7 @@
 
 <section id="{{ uid }}">
   <nav class="rdcv__in" aria-label="Les autres motifs de cette collection">
+   <div class="rdcv__body">
     {%- if titre_rendu != blank -%}<h2>{{ titre_rendu }}</h2>{%- endif -%}
     <div class="rdcv__grid">
       {%- for handle in voisins limit: s.count -%}
@@ -192,6 +205,7 @@
         </a>
       {%- endfor -%}
     </div>
+   </div>
   </nav>
 </section>
 {%- elsif request.design_mode -%}
@@ -230,7 +244,8 @@
     { "type": "header", "content": "Apparence" },
     { "type": "checkbox", "id": "show_rule", "label": "Filet de séparation au-dessus", "default": true },
     { "type": "color", "id": "bg_color", "label": "Fond de la section", "default": "#f4eee1" },
-    { "type": "color", "id": "accent_color", "label": "Couleur du titre et du filet", "default": "#b4894f" },
+    { "type": "color", "id": "title_color", "label": "Couleur du titre", "default": "#403434", "info": "La même encre que le titre du récit juste au-dessus. En doré, un titre de cette taille vire au jaune." },
+    { "type": "color", "id": "accent_color", "label": "Couleur du filet", "default": "#b4894f" },
     { "type": "color", "id": "name_color", "label": "Couleur des noms de motif", "default": "#5a4a42" },
     { "type": "range", "id": "padding_top", "label": "Espace au-dessus", "unit": "px", "min": 0, "max": 120, "step": 4, "default": 24 },
     { "type": "range", "id": "padding_top_mobile", "label": "Espace au-dessus (mobile)", "unit": "px", "min": 0, "max": 80, "step": 4, "default": 16 },
