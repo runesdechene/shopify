@@ -62,20 +62,32 @@
  * (`1 / -1`), puis on ramene son contenu a la largeur de page avec un
  * padding. Aucun debordement possible.
  */
-/* ⚠ RETIRE le 11/08 : `grid-column:1/-1` + un padding lateral calcule
- * ajoutaient une barre de defilement HORIZONTALE sur la boutique. Un padding
- * pose sur un element deja en largeur 100% deborde des que sa boite n'est pas
- * en `border-box` — et celle du theme ne l'est pas partout.
+/* La barre traverse toute la page, d'un bord a l'autre.
  *
- * Les filets restent donc a la largeur naturelle de la barre. C'est moins
- * spectaculaire qu'un bord a bord, mais ca ne casse pas la page. Si on y
- * revient, il faudra le faire par un pseudo-element positionne, jamais par du
- * padding. */
+ * ⚠ CE QUI AVAIT CASSE, et comment on l'evite : la premiere version ajoutait
+ * un padding lateral CALCULE a un element en largeur 100%. Sans `border-box`,
+ * un padding s'AJOUTE a la largeur au lieu de rentrer dedans — d'ou une barre
+ * de defilement horizontale sur toute la boutique.
+ *
+ * Ici : on etend l'element sur toutes les colonnes de la grille du theme
+ * (`1 / -1`) — c'est la grille elle-meme qui donne la pleine largeur, aucune
+ * unite `vw` n'intervient, donc l'ascenseur ne peut pas la fausser. Et
+ * `border-box` garantit que le padding rentre dans la largeur.
+ *
+ * `max-width:100%` est la ceinture : meme si un reglage du theme changeait, la
+ * barre ne pourrait pas depasser son conteneur. */
+.collection-wrapper .facets-block-wrapper--horizontal {
+  grid-column: 1 / -1;
+  max-width: 100%;
+}
+
 .facets-block-wrapper--horizontal .facets--horizontal {
   box-sizing: border-box;
+  max-width: 100%;
   border-top: 1px solid rgba(64, 52, 52, 0.13);
   border-bottom: 1px solid rgba(64, 52, 52, 0.13);
   padding-block: 12px;
+  padding-inline: var(--page-margin, 40px);
 }
 
 /* De l'air sous la barre : sans lui, la premiere rangee de produits colle au
