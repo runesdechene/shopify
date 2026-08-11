@@ -1,0 +1,106 @@
+/* rdc_collection.css
+ *
+ * Habille la colonne des FILTRES en marge de planche.
+ *
+ * ⚠ Le point qui m'avait echappe : le theme place DEJA une colonne a gauche
+ * de la grille — `collection-wrapper` est une grille a deux colonnes, filtres
+ * a gauche, produits a droite, et les filtres sont deja regles en `vertical`.
+ * La marge de planche n'avait donc pas a etre inventee : la creer en en-tete
+ * revenait a poser une deuxieme marge a cote de celle qui existait, d'ou une
+ * page qui ne ressemblait pas a la maquette.
+ *
+ * On ne touche a aucun comportement : filtres, tri, defilement infini et
+ * ajout rapide sont intacts. Uniquement l'apparence.
+ *
+ * ⚠ `compiled_assets/styles.css` se charge APRES cette feuille : chaque regle
+ * est donc prefixee par `.collection-wrapper` pour passer devant celles du
+ * theme a force egale.
+ *
+ * Pour tout retirer : supprimer l'appel dans snippets/stylesheets.liquid.
+ */
+
+/* ---------------------------------------------------------------------------
+ * L'INTITULE DE LA MARGE
+ *
+ * La colonne n'a pas de titre visible en mode vertical (le reglage
+ * « afficher l'intitule » est desactive) : on en pose un, comme le
+ * « AFFINER » de la maquette. Il double l'etiquette d'accessibilite qui
+ * existe deja sur la colonne, donc il n'apporte aucune information nouvelle
+ * a un lecteur d'ecran — c'est un ornement, et il est ecrit comme tel.
+ * ------------------------------------------------------------------------- */
+.collection-wrapper .facets--vertical::before {
+  content: "Affiner";
+  display: block;
+  font-family: var(--font-body--family);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #8d7c6d;
+  padding-bottom: 12px;
+  margin-bottom: 4px;
+}
+
+/* ---------------------------------------------------------------------------
+ * CHAQUE FILTRE EST UNE LIGNE DE SOMMAIRE
+ *
+ * Un filet fin au-dessus de chaque ligne donne a la colonne sa colonne
+ * vertebrale ; les points de conduite entre le nom et le chevron sont ce qui
+ * fait lire l'ensemble comme une table des matieres plutot que comme une
+ * pile de boutons.
+ * ------------------------------------------------------------------------- */
+.collection-wrapper .facets--vertical .facets__item {
+  border-top: 1px solid rgba(180, 137, 79, 0.22);
+}
+
+.collection-wrapper .facets--vertical .facets__summary {
+  align-items: baseline;
+  gap: 10px;
+}
+
+.collection-wrapper .facets--vertical .facets__label {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex: 1;
+  font-family: var(--font-body--family);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #5a4a42;
+}
+
+/* Les points de conduite. `flex:1` les fait courir jusqu'au chevron, et le
+ * leger decalage vers le haut les pose sur la ligne de base du texte plutot
+ * que sous elle. */
+.collection-wrapper .facets--vertical .facets__label::after {
+  content: "";
+  flex: 1;
+  min-width: 12px;
+  border-bottom: 1px dotted rgba(180, 137, 79, 0.5);
+  transform: translateY(-3px);
+}
+
+/* ---------------------------------------------------------------------------
+ * LE CHEVRON
+ *
+ * Dore et discret : c'est un signe, pas un bouton.
+ * ------------------------------------------------------------------------- */
+.collection-wrapper .facets--vertical .icon-caret {
+  color: #b4894f;
+}
+
+/* ---------------------------------------------------------------------------
+ * LES VALEURS DE FILTRE
+ *
+ * Meme voix que le reste de la marque : petites capitales espacees, encre
+ * adoucie. Sans ca, la colonne retombe dans la typographie du theme et la
+ * marge cesse de faire corps avec l'en-tete de planche juste au-dessus.
+ * ------------------------------------------------------------------------- */
+.collection-wrapper .facets--vertical .facets__inputs-wrapper label {
+  font-family: var(--font-body--family);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  color: #5a4a42;
+}
