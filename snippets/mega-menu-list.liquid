@@ -130,7 +130,7 @@
 %}
 <ul
   data-menu-list-id="{{ id }}"
-  class="mega-menu__list list-unstyled{% if has_column2 or has_column3 %} mega-menu__list--has-columns{% endif %}"
+  class="mega-menu__list list-unstyled{% if has_column2 or has_column3 %} mega-menu__list--has-columns{% endif %}{% if menu_content_type == 'collection_images' %} rdc-menu-images{% endif %}"
   style="--menu-image-border-radius: {{ image_border_radius }}px;"
 >
   {% for link in parent_link.links %}
@@ -833,6 +833,56 @@
     text-transform: uppercase;
     margin-top: 9px;
     display: block;
+  }
+
+
+  /* ---------------------------------------------------------------------------
+   * LE RANG DES GRANDES IMAGES — GRILLE IMPOSEE
+   *
+   * ⚠ Pourquoi on reprend la main : le theme calcule des largeurs de colonne
+   * a partir du NOMBRE d'enfants du menu (span 2 si 4 ou moins, span 1 sinon).
+   * Ajouter une collection secondaire fait donc changer la largeur de TOUTES
+   * les grandes — d'ou des cartes de tailles differentes, et une carte qui
+   * retrecit des qu'on ajoute une ligne ailleurs.
+   *
+   * On pose donc une grille a nous : quatre colonnes egales, alignees par le
+   * haut. Les largeurs ne dependent plus du nombre d'entrees, et les hauteurs
+   * d'image sont identiques puisque les largeurs le sont et que le cadrage est
+   * fixe en 4/3.
+   *
+   * `!important` sur `grid-column` : les classes de span du theme sont posees
+   * sur chaque colonne, et elles gagneraient sinon.
+   * ------------------------------------------------------------------------- */
+  .rdc-menu-images {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 22px 18px;
+    align-items: start;
+  }
+
+  @media (max-width: 989px) {
+    .rdc-menu-images { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  .rdc-menu-images > .mega-menu__column {
+    grid-column: auto !important;
+    width: auto;
+    padding-inline: 0;
+  }
+
+  /* La rangee secondaire traverse toute la grille, sous les grandes. */
+  .rdc-menu-images > .mega-menu__column--col2,
+  .rdc-menu-images > .mega-menu__column--col3 {
+    grid-column: 1 / -1 !important;
+  }
+
+  /* ⚠ Le rectangle gris 16/9 que le theme dessine devant un lien sans image
+   * doit etre neutralise en `!important` : sa regle vit dans la meme feuille
+   * compilee que la notre et peut passer apres. Sans ca il devient un grand
+   * ovale gris dans les pastilles — c'est ce qu'on voyait. */
+  .rdc-menu-images .mega-menu__column--col2 .mega-menu__link::before,
+  .rdc-menu-images .mega-menu__column--col3 .mega-menu__link::before {
+    content: none !important;
   }
 
 {% endstylesheet %}
