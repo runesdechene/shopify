@@ -103,7 +103,11 @@
             "condition_metafield": "",
             "condition_value": "",
             "condition_liquid": "",
-            "condition_invert": false
+            "condition_invert": false,
+            "mobile_image_layout": "grid",
+            "mobile_image_fit": "contain",
+            "mobile_carousel_item_width": 80,
+            "mobile_grid_columns": 2
           },
           "blocks": {
             "group_T4zBnb": {
@@ -149,7 +153,11 @@
                 "condition_metafield": "",
                 "condition_value": "",
                 "condition_liquid": "",
-                "condition_invert": false
+                "condition_invert": false,
+                "mobile_image_layout": "grid",
+                "mobile_image_fit": "contain",
+                "mobile_carousel_item_width": 80,
+                "mobile_grid_columns": 2
               },
               "blocks": {
                 "custom_liquid_aRBHgr": {
@@ -242,7 +250,7 @@
                   "type": "custom-liquid",
                   "name": "t:names.custom_liquid",
                   "settings": {
-                    "custom_liquid": "<p class=\"text\">Les <span style=\"color: #833434; font-weight: bold;\">Runes de Chêne</span> fleurissent dans toutes les contrées de France et d'ailleurs, comme un cri d’amour pour <b>l’Histoire, le patrimoine et la Nature.</b> Portées par ceux qui ont gardé une flamme au creux du cœur.</p> <p class=\"text\"><b>Chaque Fragment acheté finance la redécouverte de ce que nos régions ont oublié.</b><br/>Plus de 3 000 lieux ont déjà été retrouvés par ceux qui portent nos Fragments.</p>"
+                    "custom_liquid": "<p class=\"text\">Les <span style=\"color: #833434; font-weight: bold;\">Runes de Chêne</span> fleurissent dans toutes les contrées de France et d'ailleurs, comme un cri d’amour pour <b>l’Histoire, le patrimoine et la Nature.</b> Portées par ceux qui ont gardé une flamme au creux du cœur.</p> <p class=\"text\"><b>Chaque Fragment acheté finance la redécouverte de ce que nos régions ont oublié.</b> Plus de 3 000 lieux ont déjà été retrouvés par ceux qui portent nos Fragments.</p>"
                   },
                   "blocks": {}
                 },
@@ -289,7 +297,11 @@
                     "condition_metafield": "",
                     "condition_value": "",
                     "condition_liquid": "",
-                    "condition_invert": false
+                    "condition_invert": false,
+                    "mobile_image_layout": "grid",
+                    "mobile_image_fit": "contain",
+                    "mobile_carousel_item_width": 80,
+                    "mobile_grid_columns": 2
                   },
                   "blocks": {
                     "button_aiVGFR": {
@@ -365,7 +377,11 @@
                 "condition_metafield": "",
                 "condition_value": "",
                 "condition_liquid": "",
-                "condition_invert": false
+                "condition_invert": false,
+                "mobile_image_layout": "grid",
+                "mobile_image_fit": "contain",
+                "mobile_carousel_item_width": 80,
+                "mobile_grid_columns": 2
               },
               "blocks": {
                 "group_wXmXwH": {
@@ -412,7 +428,11 @@
                     "condition_metafield": "",
                     "condition_value": "",
                     "condition_liquid": "",
-                    "condition_invert": false
+                    "condition_invert": false,
+                    "mobile_image_layout": "grid",
+                    "mobile_image_fit": "contain",
+                    "mobile_carousel_item_width": 80,
+                    "mobile_grid_columns": 2
                   },
                   "blocks": {
                     "text_pMhwDP": {
@@ -445,7 +465,7 @@
                       "type": "custom-liquid",
                       "name": "t:names.custom_liquid",
                       "settings": {
-                        "custom_liquid": "<h3 style=\"color: #3D555B; font-size: 28px; margin-top: 0px; opacity: 0.8;\">Chez Runes de Chêne</h3>"
+                        "custom_liquid": "<h3 style=\"color: #8d3e3f; font-size: 28px; margin-top: 0px; opacity: 0.8;\">Chez Runes de Chêne</h3>"
                       },
                       "blocks": {}
                     },
@@ -617,7 +637,11 @@
             "condition_metafield": "",
             "condition_value": "",
             "condition_liquid": "",
-            "condition_invert": false
+            "condition_invert": false,
+            "mobile_image_layout": "grid",
+            "mobile_image_fit": "contain",
+            "mobile_carousel_item_width": 80,
+            "mobile_grid_columns": 2
           },
           "blocks": {
             "text_bLLTKW": {
@@ -689,7 +713,11 @@
                 "condition_metafield": "",
                 "condition_value": "",
                 "condition_liquid": "",
-                "condition_invert": false
+                "condition_invert": false,
+                "mobile_image_layout": "grid",
+                "mobile_image_fit": "contain",
+                "mobile_carousel_item_width": 80,
+                "mobile_grid_columns": 2
               },
               "blocks": {
                 "image_DBdgHc": {
@@ -821,7 +849,11 @@
             "condition_metafield": "",
             "condition_value": "",
             "condition_liquid": "",
-            "condition_invert": false
+            "condition_invert": false,
+            "mobile_image_layout": "grid",
+            "mobile_image_fit": "contain",
+            "mobile_carousel_item_width": 80,
+            "mobile_grid_columns": 2
           },
           "blocks": {
             "text_3KeF4Y": {
@@ -2104,7 +2136,11 @@
             "condition_metafield": "",
             "condition_value": "",
             "condition_liquid": "",
-            "condition_invert": false
+            "condition_invert": false,
+            "mobile_image_layout": "grid",
+            "mobile_image_fit": "contain",
+            "mobile_carousel_item_width": 80,
+            "mobile_grid_columns": 2
           },
           "blocks": {
             "text_Cwb69m": {

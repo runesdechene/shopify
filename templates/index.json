@@ -15,7 +15,8 @@
         "slide_37dEyh": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/fond_site_e9a28972-2ad7-478a-a9de-48deeefb381a.webp"
+            "image": "shopify://shop_images/Hoplite_large_LD.webp",
+            "image_mobile": "shopify://shop_images/Hoplite_large_LD_mobile.webp"
           }
         }
       },
@@ -25,19 +26,19 @@
       "name": "RDC — Hero diaporama",
       "settings": {
         "overline": "",
-        "title": "Porte un Fragment d'Histoire.",
-        "title_2": "Deviens un aventurier de ton territoire.",
-        "subtitle": "<p>Des vêtements durables, illustrés à la main, qui vous font voyager dans le passé.<br/>Un mouvement francophone qui arpente l'Histoire, la Nature & le Patrimoine.</p>",
-        "cta_primary_label": "Découvrir les produits",
+        "title": "PORTE UN FRAGMENT D'HISTOIRE",
+        "title_2": "",
+        "subtitle": "<p><strong>Des œuvres d'artistes illustrées à la main, sur du textile durable, imprimées en Bretagne.</strong> Le passé comme flambeau pour réenchanter notre époque.</p>",
+        "cta_primary_label": "Découvrir les fragments",
         "cta_primary_url": "#creations",
-        "cta_secondary_label": "le mouvement",
+        "cta_secondary_label": "La communauté",
         "cta_secondary_url": "#mouvement",
         "content_vertical": "center",
-        "content_horizontal": "left",
+        "content_horizontal": "right",
         "content_text_align": "",
         "content_max_width": 60,
         "content_padding_x": 200,
-        "min_height": 88,
+        "min_height": 100,
         "min_height_mobile": 100,
         "mobile_vertical": "center",
         "mobile_title_size": 38,
@@ -71,7 +72,7 @@
           "settings": {
             "image": "shopify://shop_images/voyageur_qui_incarne.webp",
             "word": "Incarnez",
-            "text": "Des vêtements iconiques et durables, portés pour inspirer le présent"
+            "text": "Des vêtements auxquels les âmes anciennes se reconnaissent."
           }
         },
         "pilier_CjV4xj": {
@@ -79,7 +80,7 @@
           "settings": {
             "image": "shopify://shop_images/voyageur_qui_explore_8567b2bc-c2a5-461d-8a9b-065a99f76165.webp",
             "word": "Explorez",
-            "text": "Une application qui référence 2800+ lieux anciens à découvrir et à protéger"
+            "text": "Des contrées oubliées à redécouvrir avec les autres Porteurs"
           }
         }
       },
@@ -99,8 +100,8 @@
         "grid_gap_top": 40,
         "image_size": 128,
         "word_size": 32,
-        "padding_top": 100,
-        "padding_bottom": 80,
+        "padding_top": 108,
+        "padding_bottom": 108,
         "color_scheme": "",
         "accent_color": "#b4894f",
         "word_color": "#403434",
@@ -162,7 +163,7 @@
         "show_price": true,
         "price_color": "#ffffff",
         "text_align": "center",
-        "padding_top": 0,
+        "padding_top": 36,
         "padding_bottom": 72,
         "color_scheme": "",
         "accent_color": "#b4894f"
@@ -443,6 +444,7 @@
         "tagline_zdNYgx",
         "tagline_VbprxY"
       ],
+      "disabled": true,
       "settings": {
         "reopen_enable": true,
         "reopen_image": "shopify://shop_images/bonus_e2141a09-8845-4d63-816f-4643a7fd20d5.webp",
@@ -492,11 +494,11 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h1>Nos créations</h1>",
+            "text": "<h1>Nos Fragments d'Histoire</h1>",
             "width": "fit-content",
             "max_width": "narrow",
             "alignment": "left",
-            "type_preset": "h2",
+            "type_preset": "h1",
             "font": "var(--font-body--family)",
             "font_size": "1rem",
             "line_height": "normal",
@@ -518,7 +520,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h4>Originales — Artistes indépendants — Imprimées en bretagne — Encres écologiques</h4>",
+            "text": "<p>Des figures qu'on avait cessé de raconter. Illustrées à la main, basée sur des sources fiables</p>",
             "width": "fit-content",
             "max_width": "none",
             "alignment": "left",
@@ -599,7 +601,8 @@
           "druide",
           "hoplite",
           "hecate",
-          "loutre"
+          "loutre",
+          "jeanne-de-flandre"
         ],
         "image_field": "image_pour_fond_clair",
         "sort_order": "recent",
@@ -641,7 +644,7 @@
           "settings": {
             "image": "shopify://shop_images/icone_arbre.png",
             "title": "Durable",
-            "text": "<p>Uniquement du coton biologique ou des fibres recyclées</p>",
+            "text": "<p>Uniquement du coton biologique ou des fibres recyclées.</p>",
             "alignment": "center",
             "icon_width": 80,
             "img_opacity": 75,
@@ -671,9 +674,9 @@
         "icon_block_mqRkFt": {
           "type": "icon_block",
           "settings": {
-            "image": "shopify://shop_images/rdc_icon_8698ac73-2183-484c-aab5-6a1c9e0dce1f.png",
-            "title": "Investi",
-            "text": "<p>Recherches bibliographiques & respect des sources pour chaque motif</p>",
+            "image": "shopify://shop_images/icone_document.png",
+            "title": "DOCUMENTÉ",
+            "text": "<p>Recherches bibliographiques et vérification des sources pour chaque motif.</p>",
             "alignment": "center",
             "icon_width": 80,
             "img_opacity": 75,
@@ -705,7 +708,7 @@
           "settings": {
             "image": "shopify://shop_images/rdc_icon-IA_1_copie.png",
             "title": "Humain",
-            "text": "<p>Pas d'IA sur nos illustrations. </p><p>Par des humains, pour des humains. </p>",
+            "text": "<p>Pas d'IA sur nos illustrations.</p><p>Jamais.</p>",
             "alignment": "center",
             "icon_width": 80,
             "img_opacity": 75,
@@ -737,7 +740,7 @@
           "settings": {
             "image": "shopify://shop_images/icone_eau.png",
             "title": "Artisanal",
-            "text": "<p>Atelier d'impression placé en zone rurale bretonne, géré par un membre de notre équipe.</p>",
+            "text": "<p>Imprimé dans notre atelier en Bretagne rurale, tenu par un membre de l'équipe.</p>",
             "alignment": "center",
             "icon_width": 80,
             "img_opacity": 75,
@@ -796,6 +799,95 @@
         "autoplay_speed": 5,
         "padding_top": 80,
         "padding_bottom": 80
+      }
+    },
+    "rdc_collections_dqWcJc": {
+      "type": "rdc_collections",
+      "blocks": {
+        "saga_UzpLJM": {
+          "type": "saga",
+          "settings": {
+            "collection": "lombre-et-lairain",
+            "title_text": "D'OMBRE ET D'AIRAIN",
+            "title_visible": false,
+            "subtitle": "LA MÉMOIRE HELLÉNIQUE RAVIVÉE",
+            "link": "",
+            "new_mode": "auto",
+            "new_text": ""
+          }
+        },
+        "saga_X3ztGx": {
+          "type": "saga",
+          "settings": {
+            "collection": "les-mysteres-celtes",
+            "title_text": "Les Mystères Celtes",
+            "title_visible": false,
+            "subtitle": "AVANT ROME, LA PREMIÈRE EUROPE",
+            "link": "",
+            "new_mode": "auto",
+            "new_text": ""
+          }
+        },
+        "saga_LFm9HF": {
+          "type": "saga",
+          "settings": {
+            "collection": "garde-d-acier",
+            "title_text": "LA GARDE D'ACIER",
+            "title_visible": false,
+            "subtitle": "FIDÈLES À UNE SEULE PAROLE : LA LEUR",
+            "link": "",
+            "new_mode": "auto",
+            "new_text": ""
+          }
+        },
+        "saga_TQNrcJ": {
+          "type": "saga",
+          "settings": {
+            "collection": "le-pacte-sauvage",
+            "title_text": "",
+            "title_visible": false,
+            "subtitle": "TROUVEZ L'ESPRIT QUI VOUS RESSEMBLE",
+            "link": "",
+            "new_mode": "auto",
+            "new_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "saga_UzpLJM",
+        "saga_X3ztGx",
+        "saga_LFm9HF",
+        "saga_TQNrcJ"
+      ],
+      "name": "RDC — Sagas",
+      "settings": {
+        "overline": "",
+        "title": "Nos collections",
+        "columns": 4,
+        "columns_mobile": 1,
+        "tile_ratio": "square",
+        "gap": 20,
+        "corner_radius": 0,
+        "hover_zoom": true,
+        "show_new": true,
+        "new_days": 35,
+        "new_text": "Nouveau Fragment",
+        "new_align": "left",
+        "new_style": "glass",
+        "new_marker": true,
+        "new_accent": "#e8cd9a",
+        "new_bg": "#b4894f",
+        "new_color": "#1c1812",
+        "sub_color": "#f2e6d2",
+        "sub_size": 1,
+        "sub_blend": "normal",
+        "sub_opacity": 100,
+        "sub_shadow": true,
+        "text_align": "left",
+        "padding_top": 72,
+        "padding_bottom": 72,
+        "color_scheme": "",
+        "accent_color": "#b4894f"
       }
     },
     "collection_list_KVTKQr": {
@@ -869,6 +961,7 @@
       "block_order": [
         "text_9eDNPT"
       ],
+      "disabled": true,
       "name": "t:names.collections_grid",
       "settings": {
         "collection_list": [
@@ -899,28 +992,31 @@
       "type": "rdc_mur-vivant",
       "name": "RDC — Mouvement vivant",
       "settings": {
-        "overline": "Pendant que le monde scrolle",
+        "overline": "Pendant que le monde regarde ailleurs",
         "title": "Un mouvement s'éveille",
-        "subtitle": "Partout en France, nos client portent leurs Fragments d'Histoires pour se reconnaître, partir à l'Aventure, explorer leurs régions & s'inspirer du passé pour réenchanter le futur.",
+        "subtitle": "De la France à la Suisse, de l'Espagne à l'Allemagne, vous êtes des milliers à porter vos Fragments d'Histoire pour vous reconnaître entre vous. Ce n'est plus juste une marque. Ce sont des Runes de Chêne qui fleurissent un peu partout, silencieusement.",
         "show_stats": true,
         "show_stars": true,
+        "stat_users_factor": 1,
+        "stat_users_round": "0",
+        "stat_users_plus": true,
         "stat_rating_label": "4,6/5 de moyenne",
-        "stat2_value": "+7 000",
-        "stat2_label": "clients conquis",
+        "stat2_value": "+4904",
+        "stat2_label": "Porteurs de Fragments",
         "stat2_source": "clients",
         "stat3_value": "+25/an",
-        "stat3_label": "Festivals en France",
+        "stat3_label": "Festivals où vous rencontrer",
         "stat3_source": "",
-        "stat4_value": "2 800+",
-        "stat4_label": "Lieux cartographiés sur l'application",
+        "stat4_value": "",
+        "stat4_label": "Lieux sortis de l'oubli par nos Porteurs",
         "stat4_source": "lieux",
         "rows": 2,
         "speed": 120,
         "card_width": 224,
         "max_photos": 40,
         "random_order": true,
-        "submit_intro": "Montre nous ta vision du mouvement",
-        "submit_label": "Partage ta photo sur le mur →",
+        "submit_intro": "",
+        "submit_label": "Ajoutez votre photo au mur →",
         "submit_url": "https://hub.runesdechene.com/soumettre-contenu",
         "supabase_url": "",
         "supabase_anon_key": "",
@@ -937,26 +1033,27 @@
         "feature_yTyPDt": {
           "type": "feature",
           "settings": {
-            "label": "Énigmes",
-            "icon": "key"
-          }
-        },
-        "feature_fFAJir": {
-          "type": "feature",
-          "settings": {
-            "label": "Missions",
-            "icon": "target"
+            "label": "3000+ lieux cartographiés",
+            "icon": "compass"
           }
         },
         "feature_XpDzDE": {
           "type": "feature",
           "settings": {
-            "label": "Défis du jour",
-            "icon": "sun"
+            "label": "Missions et événements",
+            "icon": "trophy"
+          }
+        },
+        "feature_fFAJir": {
+          "type": "feature",
+          "settings": {
+            "label": "Toute la communauté Runes de Chêne",
+            "icon": "group"
           }
         },
         "feature_KGDiFQ": {
           "type": "feature",
+          "disabled": true,
           "settings": {
             "label": "Défis collectifs",
             "icon": "group"
@@ -964,6 +1061,7 @@
         },
         "feature_kDmpYP": {
           "type": "feature",
+          "disabled": true,
           "settings": {
             "label": "Événements",
             "icon": "calendar"
@@ -971,6 +1069,7 @@
         },
         "feature_98YcM9": {
           "type": "feature",
+          "disabled": true,
           "settings": {
             "label": "Factions",
             "icon": "shield"
@@ -978,6 +1077,7 @@
         },
         "feature_WY8Uyt": {
           "type": "feature",
+          "disabled": true,
           "settings": {
             "label": "Coupe des Héritages",
             "icon": "trophy"
@@ -985,6 +1085,7 @@
         },
         "feature_chat01": {
           "type": "feature",
+          "disabled": true,
           "settings": {
             "label": "Chat communautaire",
             "icon": "chat"
@@ -993,8 +1094,8 @@
       },
       "block_order": [
         "feature_yTyPDt",
-        "feature_fFAJir",
         "feature_XpDzDE",
+        "feature_fFAJir",
         "feature_KGDiFQ",
         "feature_kDmpYP",
         "feature_98YcM9",
@@ -1003,18 +1104,24 @@
       ],
       "name": "RDC — L'application",
       "settings": {
-        "overline": "L'application officielle",
-        "title": "Ton territoire, un terrain d'aventure.",
-        "bridge": "« Une marque. Une application. L'une vous fait porter l'Histoire. La seconde vous la fait vivre. »",
-        "lead": "La plus grosse communauté francophone jamais fédérée autour de <b>l'Histoire, l'Aventure & la Nature</b> — dans ta poche.",
-        "play_heading": "Une carte. Mille façons de jouer.",
-        "free_text": "Gratuit · un clic · rien à installer",
-        "cta_label": "Essayer l'application",
+        "bg_image": "shopify://shop_images/rdc_fond_varegue_5223175d-5e1d-43c1-9d16-b4c6c37882d3.webp",
+        "bg_position": "center",
+        "bg_overlay_color": "#fff3de",
+        "bg_overlay": 40,
+        "overline": "Le Patrimoine et la Nature pour",
+        "title": "RAVIVER NOS CONTRÉES",
+        "title_size": 4.2,
+        "bridge": "",
+        "lead": "<b>Chaque Fragment acheté finance la redécouverte de nos régions</b>. Des milliers de <b>Porteurs</b> se rassemblent pour exhumer ce que le monde moderne a oublié.",
+        "play_heading": "",
+        "free_text": "Auto-financé par nos ventes · Aucune installation requise",
+        "cta_label": "EXPLORER LA CARTE",
         "cta_url": "https://app.runesdechene.com",
-        "video_external_url": "https://cdn.shopify.com/videos/c/o/v/f6c638bf0b134d7397ba964e6acf4417.mp4",
+        "video_external_url": "",
+        "video_poster": "shopify://shop_images/appli_img_site_9d3199a1-8ed4-4ccc-b109-7c4e7402c5a5.webp",
         "color_scheme": "",
         "accent_color": "#983c3c",
-        "padding_top": 0,
+        "padding_top": 80,
         "padding_bottom": 84,
         "anchor_id": "application"
       }
@@ -1026,7 +1133,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h3>Les dates de la boutique Nomade</h3>",
+            "text": "<h3>La boutique nomade</h3>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -1052,11 +1159,11 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h2>Venez nous rencontrer</h2>",
+            "text": "<h2>Nos prochaines dates</h2>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
-            "type_preset": "h1",
+            "type_preset": "h2",
             "font": "var(--font-body--family)",
             "font_size": "1rem",
             "line_height": "normal",
@@ -1098,7 +1205,7 @@
         "horizontal_alignment_flex_direction_column": "center",
         "vertical_alignment_flex_direction_column": "center",
         "gap": 12,
-        "section_width": "page-width",
+        "section_width": "full-width",
         "section_height": "small",
         "section_height_custom": 50,
         "color_scheme": "",
@@ -1113,7 +1220,7 @@
         "overlay_color": "#00000026",
         "overlay_style": "solid",
         "gradient_direction": "to top",
-        "padding-block-start": 0,
+        "padding-block-start": 62,
         "padding-block-end": 0,
         "enable_display_condition": false,
         "condition_type": "metafield",
@@ -1981,7 +2088,7 @@
           "disabled": true,
           "settings": {
             "label": "Découvrir notre mission : Contre l'Oubli",
-            "link": "shopify://pages/notre-mission",
+            "link": "shopify://pages/qui-sommes-nous",
             "open_in_new_tab": false,
             "style_class": "button",
             "width": "fit-content",
@@ -2050,6 +2157,7 @@
     "section_MgkEX9",
     "rdc_illustrations_meta_zxHWmV",
     "liste_icone_4QpiPW",
+    "rdc_collections_dqWcJc",
     "collection_list_KVTKQr",
     "rdc_mur_vivant_LwJVzT",
     "rdc_app_3t8D4m",

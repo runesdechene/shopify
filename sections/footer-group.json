@@ -585,7 +585,7 @@
                 "link": "",
                 "open_in_new_tab": false,
                 "placeholder": "",
-                "padding-block-start": 0,
+                "padding-block-start": 50,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0,
@@ -659,7 +659,7 @@
                         "link": "",
                         "image_ratio": "adapt",
                         "width": "custom",
-                        "custom_width": 33,
+                        "custom_width": 74,
                         "width_mobile": "fill",
                         "custom_width_mobile": 100,
                         "height": "fit",
@@ -679,7 +679,7 @@
                       "type": "text",
                       "name": "t:names.text",
                       "settings": {
-                        "text": "<p>Runes de Chêne est une marque française qui se bat pour rendre au monde<br/>sa mémoire & son souffle. Chacun de nos articles est une création originale appelée <em><strong>Fragment d'Histoire. </strong></em>Ce sont des échos du passé qui méritent d'être portés. Notre application mobile, quant à elle, <strong>rassemble la plus grosse communauté francophone jamais fédérée </strong>sur l'Histoire, l'Aventure & la Nature.</p><p><strong>Apprenez. Incarnez. Explorez !</strong></p>",
+                        "text": "<p>Fondée en 2023 sur les cendres de <em>North Wanderers</em>, <strong>Runes de Chêne</strong> est une marque française qui se bat pour rendre à notre époque sa mémoire & son souffle. Chacun de nos articles est une création originale appelée <em><strong>Fragment d'Histoire. </strong></em></p><p><strong>Apprenez. Incarnez. Explorez !</strong></p>",
                         "width": "fit-content",
                         "max_width": "normal",
                         "alignment": "left",
@@ -697,7 +697,7 @@
                         "padding-block-start": 0,
                         "padding-block-end": 30,
                         "padding-inline-start": 0,
-                        "padding-inline-end": 0
+                        "padding-inline-end": 20
                       },
                       "blocks": {}
                     },
@@ -761,6 +761,97 @@
                     "text_AtkKPX",
                     "text_FWEkiw",
                     "group_partenaire_gtThXC"
+                  ]
+                },
+                "group_XJLWBd": {
+                  "type": "group",
+                  "name": "Centre",
+                  "settings": {
+                    "content_direction": "column",
+                    "vertical_on_mobile": true,
+                    "horizontal_alignment": "flex-start",
+                    "vertical_alignment": "center",
+                    "align_baseline": false,
+                    "horizontal_alignment_flex_direction_column": "flex-start",
+                    "vertical_alignment_flex_direction_column": "center",
+                    "gap": 20,
+                    "width": "fill",
+                    "custom_width": 100,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "custom_height": 100,
+                    "inherit_color_scheme": true,
+                    "color_scheme": "",
+                    "background_media": "image",
+                    "video_position": "cover",
+                    "background_image": "shopify://shop_images/Fond_section_173d7ca4-1587-465e-be60-3ce8abe92f99.jpg",
+                    "background_image_position": "cover",
+                    "border": "solid",
+                    "border_width": 1,
+                    "border_opacity": 66,
+                    "border_radius": 18,
+                    "toggle_overlay": true,
+                    "overlay_color": "#fffcf696",
+                    "overlay_style": "solid",
+                    "gradient_direction": "to top",
+                    "link": "",
+                    "open_in_new_tab": false,
+                    "placeholder": "",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 20,
+                    "padding-inline-end": 20,
+                    "enable_display_condition": false,
+                    "condition_type": "metafield",
+                    "condition_metafield": "",
+                    "condition_value": "",
+                    "condition_liquid": "",
+                    "condition_invert": false,
+                    "mobile_image_layout": "grid",
+                    "mobile_image_fit": "contain",
+                    "mobile_carousel_item_width": 80,
+                    "mobile_grid_columns": 2
+                  },
+                  "blocks": {
+                    "rdc_newsletter_FEmeN3": {
+                      "type": "rdc_newsletter",
+                      "name": "RDC — Newsletter",
+                      "settings": {
+                        "overline": "Avant tout le monde",
+                        "title": "Les prochains Fragments",
+                        "text": "<p>Un prénom, un email, et on te met dans la boucle de nos dernières actualités + un accès aux <strong>Ventes Privées.</strong></p>",
+                        "first_name_label": "Prénom",
+                        "email_label": "Adresse email",
+                        "button_label": "S'inscrire",
+                        "success_text": "C'est fait. Bienvenue dans la communauté !",
+                        "success_color": "#3f6b4a",
+                        "success_bg": "#eef4ec",
+                        "legal_text": "",
+                        "form_layout": "stacked",
+                        "text_align": "left",
+                        "max_width": 540,
+                        "title_size": 2,
+                        "radius": 12,
+                        "radius_button": 12,
+                        "first_name_width": 35,
+                        "padding_top": 40,
+                        "padding_bottom": 20,
+                        "bg_overlay_color": "#f4ede1",
+                        "bg_overlay": 80,
+                        "accent_color": "#b4894f",
+                        "title_color": "#403434",
+                        "text_color": "#403434",
+                        "field_bg": "#ffffff",
+                        "field_border": "#d8c9b0",
+                        "button_bg": "#3E3A3A",
+                        "button_text": "#ffffff"
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "rdc_newsletter_FEmeN3"
                   ]
                 },
                 "group_nHTEEc": {
@@ -939,7 +1030,7 @@
                           "type": "menu",
                           "name": "t:names.menu",
                           "settings": {
-                            "menu": "main-menu",
+                            "menu": "footer",
                             "heading": "Aller plus loin",
                             "menu_spacing": 12,
                             "show_as_accordion": false,
@@ -1047,6 +1138,7 @@
               },
               "block_order": [
                 "group_C4DJQB",
+                "group_XJLWBd",
                 "group_nHTEEc"
               ]
             }
