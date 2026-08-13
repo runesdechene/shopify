@@ -420,6 +420,8 @@
     { "type": "text", "id": "btn2_label", "label": "Bouton secondaire — libellé" },
     { "type": "url", "id": "btn2_link", "label": "Bouton secondaire — lien" },
     { "type": "header", "content": "Dimensions" },
+    { "type": "range", "id": "min_height", "label": "Hauteur (ordinateur)", "unit": "vh", "min": 40, "max": 100, "step": 2, "default": 84, "info": "En pourcentage de la hauteur de l'écran. 100 = le hero remplit l'écran." },
+    { "type": "range", "id": "min_height_mobile", "label": "Hauteur (mobile)", "unit": "vh", "min": 40, "max": 100, "step": 2, "default": 80, "info": "Réglage indépendant, appliqué sous 750px de large. Un mobile étant beaucoup plus haut que large, il lui faut une valeur plus grande qu'à l'ordinateur pour un cadrage équivalent." },
     { "type": "header", "content": "Le texte du hero" },
     { "type": "range", "id": "text_shadow", "label": "Ombre portée du texte", "unit": "%", "min": 0, "max": 80, "step": 5, "default": 25, "info": "C'est le voile posé sur l'image qui doit porter le contraste. Une ombre forte sur un texte déjà lisible le salit." },
     {
@@ -434,9 +436,7 @@
     { "type": "header", "content": "Quand la collection n'a pas d'image" },
     { "type": "paragraph", "content": "Par défaut la section ne s'affiche pas du tout : elle n'a rien à montrer. Cochez pour l'afficher quand même, sur un aplat de couleur — utile sur les collections ordinaires." },
     { "type": "checkbox", "id": "show_without_image", "label": "Afficher même sans image", "default": false },
-    { "type": "color", "id": "fallback_color", "label": "Couleur de l'aplat", "default": "#46493c", "info": "Le texte du hero est clair : il lui faut un fond sombre." },
-    { "type": "range", "id": "min_height", "label": "Hauteur (desktop)", "unit": "vh", "min": 40, "max": 100, "step": 2, "default": 84 },
-    { "type": "range", "id": "min_height_mobile", "label": "Hauteur (mobile)", "unit": "vh", "min": 40, "max": 100, "step": 2, "default": 80 }
+    { "type": "color", "id": "fallback_color", "label": "Couleur de l'aplat", "default": "#46493c", "info": "Le texte du hero est clair : il lui faut un fond sombre." }
   ],
   "presets": [{ "name": "RDC — Saga : hero" }]
 }
