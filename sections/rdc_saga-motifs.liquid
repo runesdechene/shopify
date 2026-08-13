@@ -113,7 +113,15 @@
   #{{ uid }} .rdcsm__head{position:relative;display:flex;align-items:center;
     gap:clamp(16px,2vw,26px);margin-bottom:clamp(22px,2.6vw,34px)}
   #{{ uid }} .rdcsm__seal{flex:0 0 auto;width:clamp(74px,7vw,104px)}
-  #{{ uid }} .rdcsm__seal img{width:100%;display:block;height:auto}
+  {%- comment -%}
+    L'illustration du Fragment est un trait noir dense sur du parchemin clair :
+    a pleine opacite elle tranche plus fort que le nom du motif, qui est
+    pourtant la tete de la bande. On la fond legerement pour la remettre a sa
+    place de vignette. Reglable, parce que toutes les illustrations n'ont pas
+    la meme densite de trait.
+  {%- endcomment -%}
+  #{{ uid }} .rdcsm__seal img{width:100%;display:block;height:auto;
+    opacity:{{ s.seal_opacity | divided_by: 100.0 }}}
   #{{ uid }} .rdcsm__txt{min-width:0}
   #{{ uid }} .rdcsm__over{font-family:var(--font-body--family);font-weight:700;font-size:.68rem;
     letter-spacing:.26em;text-transform:uppercase;color:#b4894f}
@@ -170,10 +178,15 @@
     #{{ uid }} .rdcsm__meta{grid-area:meta;margin-left:0;margin-top:18px;
       text-align:left;align-self:start}
     {%- comment -%}
-      Filigrane reduit et remonte : a 14vw il descendait jusque dans le resume,
-      qui occupe desormais toute la largeur. Il se cale sur la premiere rangee.
+      Filigrane reduit : a 14vw il descendait jusque dans le resume, qui occupe
+      desormais toute la largeur.
+
+      Le decalage de 36px le centre sur le sceau (96 de large, donc 136 de haut
+      pour un original 320x454) au lieu de le coller au bord haut. Il vient
+      ainsi se poser a hauteur du nom du motif, et non au-dessus de lui.
+      Colle en haut, il flottait tout seul dans le coin.
     {%- endcomment -%}
-    #{{ uid }} .rdcsm__num{font-size:clamp(3.6rem,17vw,5.6rem);top:2px;right:0;opacity:.16}
+    #{{ uid }} .rdcsm__num{font-size:clamp(3.6rem,17vw,5.6rem);top:36px;right:0;opacity:.16}
   }
 
   {%- comment -%}
@@ -339,6 +352,18 @@
       "step": 50,
       "unit": "px",
       "default": 1400
+    },
+    { "type": "header", "content": "En-tête de motif" },
+    {
+      "type": "range",
+      "id": "seal_opacity",
+      "label": "Opacité de l'illustration",
+      "unit": "%",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "default": 80,
+      "info": "L'illustration du Fragment, à côté du nom du motif. En dessous de 100 elle se fond dans le parchemin au lieu de trancher sur le nom du motif."
     },
     { "type": "header", "content": "Grille des coupes" },
     {
