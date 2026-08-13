@@ -23,6 +23,7 @@
         "hero_margin_top": 16,
         "hero_margin_bottom": 0,
         "hero_radius": 16,
+        "mobile_bleed": true,
         "overlay_color": "#626453",
         "overlay_opacity": 50,
         "overlay_blend": "normal",

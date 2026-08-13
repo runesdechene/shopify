@@ -110,7 +110,20 @@
     overflow:hidden;background:#1c1812;
     max-width:{{ hero_max }};margin:{{ s.hero_margin_top }}px auto {{ s.hero_margin_bottom }}px;
     border-radius:{{ s.hero_radius }}px}
-  @media (max-width:749px){#{{ uid }}{min-height:{{ s.min_height_mobile }}vh}}
+  {%- comment -%}
+    Sur mobile, marges et arrondi mangent la moitie de la largeur utile pour
+    rien : l'image est deja petite. Le reglage « bord a bord » annule marge
+    haute, marges laterales et arrondi — mobile UNIQUEMENT, le cadrage
+    ordinateur reglé au-dessus reste intact.
+
+    ⚠ `max-width` est pose plus haut avec un `calc()` ou un `min()` : il faut
+    le remettre a 100% explicitement, une marge a 0 ne suffit pas a elargir.
+    La marge basse, elle, reste celle du reglage : c'est un raccord avec la
+    section suivante, pas un cadre.
+  {%- endcomment -%}
+  @media (max-width:749px){#{{ uid }}{min-height:{{ s.min_height_mobile }}vh
+    {%- if s.mobile_bleed %};max-width:100%;margin-top:0;margin-left:0;margin-right:0;border-radius:0{% endif -%}
+  }}
   #{{ uid }} .rdcsh__slides{position:absolute;inset:0;overflow:hidden}
   #{{ uid }} .rdcsh__slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease-in-out}
   #{{ uid }} .rdcsh__slide.is-active{opacity:1}
@@ -332,6 +345,13 @@
     { "type": "range", "id": "hero_margin_top", "label": "Espace au-dessus", "unit": "px", "min": 0, "max": 120, "step": 4, "default": 24 },
     { "type": "range", "id": "hero_margin_bottom", "label": "Espace en dessous", "unit": "px", "min": 0, "max": 120, "step": 4, "default": 0 },
     { "type": "range", "id": "hero_radius", "label": "Arrondi des coins", "unit": "px", "min": 0, "max": 32, "step": 2, "default": 0 },
+    {
+      "type": "checkbox",
+      "id": "mobile_bleed",
+      "label": "Bord à bord sur mobile",
+      "default": false,
+      "info": "Sur mobile uniquement : le hero touche le haut et les deux bords, sans arrondi. Les marges et l'arrondi réglés ci-dessus ne valent alors que pour l'ordinateur. L'espace en dessous est conservé."
+    },
     { "type": "header", "content": "Teinte sur l'image" },
     {
       "type": "color",
