@@ -129,6 +129,54 @@
     font-size:.8rem;padding:12px 18px}
 
   {%- comment -%}
+    En-tete de motif sur mobile.
+
+    En trois colonnes comprimees (sceau | texte | « n coupes » en nowrap), il
+    restait environ 150px de large au texte sur un ecran de 390 : le nom du
+    motif tombait a la taille d'un sous-titre et le resume s'etirait sur
+    quatre lignes. On deplie donc en grille :
+
+        sceau  surtitre
+        sceau  NOM
+        resume resume        <- pleine largeur, deux lignes
+        n coupes             <- devient la legende de la grille en dessous
+
+    `display:contents` sur le conteneur de texte : ses trois enfants deviennent
+    des cases de la grille de l'en-tete, ce qui permet de sortir le resume de
+    la colonne etroite SANS toucher au HTML — donc sans rien changer au rendu
+    ordinateur, qui reste en flex trois colonnes.
+
+    Le sceau (320x454) fait 136px de haut pour 96 de large : il est plus grand
+    que le couple surtitre + nom. Les deux premieres rangees se partagent donc
+    sa hauteur, et `align-self` end/start recolle le surtitre au nom au lieu de
+    les laisser deriver chacun au centre de sa rangee.
+  {%- endcomment -%}
+  @media (max-width:749px){
+    #{{ uid }} .rdcsm__band{padding-inline:20px}
+    #{{ uid }} .rdcsm__head{display:grid;
+      grid-template-columns:auto minmax(0,1fr);
+      grid-template-areas:"seal over" "seal name" "res res" "meta meta";
+      align-items:center;column-gap:16px;row-gap:0;margin-bottom:20px}
+    #{{ uid }} .rdcsm__seal{grid-area:seal;width:96px;align-self:center}
+    #{{ uid }} .rdcsm__txt{display:contents}
+    #{{ uid }} .rdcsm__over{grid-area:over;align-self:end}
+    #{{ uid }} .rdcsm__name{grid-area:name;align-self:start;margin-top:6px;
+      font-size:clamp(2.1rem,8.6vw,2.9rem)}
+    #{{ uid }} .rdcsm__res{grid-area:res;margin-top:16px;max-width:none}
+    {%- comment -%}
+      « n coupes » quitte le coin haut-droit, ou il verrouillait 78px de large
+      sous le filigrane, et vient annoncer la grille juste au-dessus d'elle.
+    {%- endcomment -%}
+    #{{ uid }} .rdcsm__meta{grid-area:meta;margin-left:0;margin-top:18px;
+      text-align:left;align-self:start}
+    {%- comment -%}
+      Filigrane reduit et remonte : a 14vw il descendait jusque dans le resume,
+      qui occupe desormais toute la largeur. Il se cale sur la premiere rangee.
+    {%- endcomment -%}
+    #{{ uid }} .rdcsm__num{font-size:clamp(3.6rem,17vw,5.6rem);top:2px;right:0;opacity:.16}
+  }
+
+  {%- comment -%}
     Nombre de colonnes FIXE, pas `auto-fit` : c'est ce qui permet de forcer le
     passage a la ligne. A 4 colonnes, un motif de 7 coupes s'etale sur deux
     rangees. Effet de bord voulu : les cartes gardent la meme taille d'une
