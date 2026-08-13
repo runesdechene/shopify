@@ -15,6 +15,32 @@
 {%- liquid
   assign uid = 'RdcMv-' | append: section.id
   assign s = section.settings
+
+  comment
+    Nombre de stats reellement remplies. Sert uniquement au mobile, ou la barre
+    passe en grille de deux colonnes : un nombre IMPAIR y laisse un orphelin
+    seul sur la derniere rangee, ce qui casse la symetrie du bloc. On fait donc
+    tenir la premiere stat sur toute la largeur, et les suivantes s'apparient
+    proprement deux par deux en dessous.
+
+    C'est la premiere et pas la derniere qu'on etale : c'est la note en etoiles,
+    une bande de glyphes horizontale — l'element le moins compressible du lot,
+    et celui qui fait le meilleur chapeau au-dessus des chiffres.
+  endcomment
+  assign stats_count = 0
+  if s.stat_rating_label != blank
+    assign stats_count = stats_count | plus: 1
+  endif
+  if s.stat2_value != blank
+    assign stats_count = stats_count | plus: 1
+  endif
+  if s.stat3_value != blank
+    assign stats_count = stats_count | plus: 1
+  endif
+  if s.stat4_value != blank
+    assign stats_count = stats_count | plus: 1
+  endif
+  assign stats_odd = stats_count | modulo: 2
 -%}
 
 <style>
@@ -155,6 +181,11 @@
     #{{ uid }} .rdc-mv__stat { padding: 4px 8px; }
     #{{ uid }} .rdc-mv__stat + .rdc-mv__stat::before { display: none; }
     #{{ uid }} .rdc-mv__stat b { font-size: 1.9rem; }
+    {%- if stats_odd == 1 -%}
+    /* Nombre impair de stats : la premiere prend la rangee entiere, pour que
+       les suivantes s'apparient sans laisser d'orphelin en bas. */
+    #{{ uid }} .rdc-mv__stat:first-child { grid-column: 1 / -1; }
+    {%- endif -%}
     #{{ uid }} { --mv-card-w: 150px; }
   }
 
