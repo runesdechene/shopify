@@ -9,6 +9,20 @@
   cle renommee se corrige sans toucher au code. Repli sur collection.image.
   Si aucune image : la section ne s'affiche pas du tout, plutot qu'un cadre vide.
 
+  Jeu MOBILE (2026-08-14) : une SECONDE cle de metachamp, facultative. Liquid
+  est rendu par le serveur et ne sait pas sur quel appareil on est — les deux
+  jeux sont donc poses dans la page et c'est le CSS qui tranche. Deux
+  consequences assumees :
+   - le jeu cache est en display:none et ses images sont en loading="lazy",
+     donc le navigateur ne les telecharge PAS (une image sans boite ne croise
+     jamais le viewport). C'est pour ca que le eager de la premiere diapo
+     devient lazy+fetchpriority des qu'un jeu mobile existe : sinon le mobile
+     telechargerait pour rien la premiere image d'ordinateur en 2200px ;
+   - les deux carrousels tournent en parallele, chacun avec ses propres points.
+     Aucune bascule a gerer au redimensionnement.
+  ⚠ Si la cle mobile est vide ou le metachamp non rempli, RIEN de mobile n'est
+  rendu et le comportement d'avant est conserve a l'identique.
+
   image_url ne recoit JAMAIS format:'jpg' : les visuels peuvent porter un
   canal alpha, que le JPEG detruit.
 {%- endcomment -%}
@@ -32,11 +46,38 @@
     assign has_list = true
   endif
 
+  comment
+    Jeu mobile. Meme namespace que le jeu principal — c'est la CLE qui change.
+    Le garde-fou est le meme que ci-dessus (`.size`, jamais `.first`).
+  endcomment
+  assign raw_m = collection.metafields[s.mf_namespace][s.mf_key_mobile]
+  assign imgs_m = raw_m.value | default: raw_m
+  assign has_mobile = false
+  if s.mf_key_mobile != blank and imgs_m != blank and imgs_m.size > 0
+    assign has_mobile = true
+  endif
+
+  comment
+    Cas limite : des images mobiles posees sur une collection qui n'a NI liste
+    principale NI image de collection. Plutot que d'afficher un aplat sur
+    ordinateur, le jeu mobile devient le jeu unique.
+  endcomment
+  if has_mobile and has_list == false and collection.image == blank
+    assign imgs = imgs_m
+    assign has_list = true
+    assign has_mobile = false
+  endif
+
   assign slide_count = 0
   if has_list
     assign slide_count = imgs.size
   elsif collection.image != blank
     assign slide_count = 1
+  endif
+
+  assign slide_count_mobile = 0
+  if has_mobile
+    assign slide_count_mobile = imgs_m.size
   endif
 
   comment
@@ -125,6 +166,15 @@
     {%- if s.mobile_bleed %};max-width:100%;margin-top:0;margin-left:0;margin-right:0;border-radius:0{% endif -%}
   }}
   #{{ uid }} .rdcsh__slides{position:absolute;inset:0;overflow:hidden}
+  {%- if has_mobile -%}
+  {%- comment -%}
+    L'aiguillage des deux jeux. La borne est la MEME que celle des autres
+    reglages mobiles de la section (749px) : deux seuils differents feraient
+    apparaitre un hero d'ordinateur a la hauteur du mobile.
+  {%- endcomment -%}
+  @media (max-width:749px){#{{ uid }} .rdcsh__set--desktop{display:none}}
+  @media (min-width:750px){#{{ uid }} .rdcsh__set--mobile{display:none}}
+  {%- endif -%}
   #{{ uid }} .rdcsh__slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease-in-out}
   #{{ uid }} .rdcsh__slide.is-active{opacity:1}
   #{{ uid }} .rdcsh__slide img{width:100%;height:100%;object-fit:cover;display:block}
@@ -206,8 +256,21 @@
   #{{ uid }} .rdcsh__slide--plain{background:{{ s.fallback_color }}}
 </style>
 
+{%- comment -%}
+  Chargement de la premiere diapo. Sans jeu mobile, elle reste `eager` : c'est
+  l'image la plus grande de la page, autant la demander tout de suite. Des
+  qu'un jeu mobile existe, les DEUX premieres diapos passent en `lazy` —
+  sinon le navigateur telechargerait aussi celle du jeu cache, qu'il ne montrera
+  jamais. `fetchpriority=high` rattrape le retard sur celle qui est visible.
+{%- endcomment -%}
+{%- if has_mobile -%}
+  {%- assign first_load = 'lazy' -%}
+{%- else -%}
+  {%- assign first_load = 'eager' -%}
+{%- endif -%}
+
 <section id="{{ uid }}" data-rdc-saga-hero>
-  <div class="rdcsh__slides">
+  <div class="rdcsh__slides rdcsh__set--desktop" data-rdcsh-set="desktop">
     {%- if has_list -%}
       {%- for img in imgs -%}
         <div class="rdcsh__slide{% if forloop.first %} is-active{% endif %}">
@@ -216,7 +279,8 @@
             alt="{{ collection.title | escape }}"
             width="2200"
             height="1100"
-            loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+            loading="{% if forloop.first %}{{ first_load }}{% else %}lazy{% endif %}"
+            {% if forloop.first %}fetchpriority="high"{% endif %}
           >
         </div>
       {%- endfor -%}
@@ -227,7 +291,8 @@
           alt="{{ collection.title | escape }}"
           width="2200"
           height="1100"
-          loading="eager"
+          loading="{{ first_load }}"
+          fetchpriority="high"
         >
       </div>
     {%- else -%}
@@ -239,6 +304,32 @@
       <div class="rdcsh__slide is-active rdcsh__slide--plain"></div>
     {%- endif -%}
   </div>
+
+  {%- if has_mobile -%}
+    {%- comment -%}
+      Jeu mobile. Meme grammaire que ci-dessus, volontairement recopiee plutot
+      que factorisee dans un snippet : un fichier de plus, c'est un fichier de
+      plus a pousser et a verifier a chaque envoi.
+
+      Largeur demandee : 1200px et non 2200. Le plus large des telephones
+      courants fait ~430px de large en CSS, soit ~1290px reels — demander
+      2200px, c'est faire payer deux fois le poids pour rien.
+    {%- endcomment -%}
+    <div class="rdcsh__slides rdcsh__set--mobile" data-rdcsh-set="mobile">
+      {%- for img in imgs_m -%}
+        <div class="rdcsh__slide{% if forloop.first %} is-active{% endif %}">
+          <img
+            src="{{ img | image_url: width: 1200 }}"
+            alt="{{ collection.title | escape }}"
+            width="1200"
+            height="1600"
+            loading="lazy"
+            {% if forloop.first %}fetchpriority="high"{% endif %}
+          >
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
 
   {%- if s.overlay_opacity > 0 -%}<div class="rdcsh__overlay"></div>{%- endif -%}
   <div class="rdcsh__scrim"></div>
@@ -264,9 +355,26 @@
     {%- endif -%}
   </div>
 
+  {%- comment -%}
+    Un jeu de points par carrousel : les deux listes n'ont aucune raison de
+    compter le meme nombre d'images. Les points du jeu cache disparaissent avec
+    lui (meme classe `--desktop` / `--mobile`).
+  {%- endcomment -%}
   {%- if slide_count > 1 -%}
-    <div class="rdcsh__dots">
+    <div class="rdcsh__dots rdcsh__set--desktop" data-rdcsh-dots="desktop">
       {%- for i in (1..slide_count) -%}
+        <button
+          class="rdcsh__dot{% if forloop.first %} is-active{% endif %}"
+          type="button"
+          aria-label="Diapositive {{ forloop.index }}"
+        ></button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  {%- if slide_count_mobile > 1 -%}
+    <div class="rdcsh__dots rdcsh__set--mobile" data-rdcsh-dots="mobile">
+      {%- for i in (1..slide_count_mobile) -%}
         <button
           class="rdcsh__dot{% if forloop.first %} is-active{% endif %}"
           type="button"
@@ -281,27 +389,39 @@
   (function () {
     var root = document.getElementById({{ uid | json }});
     if (!root) return;
-    var slides = root.querySelectorAll('.rdcsh__slide');
-    var dots = root.querySelectorAll('.rdcsh__dot');
-    if (slides.length < 2) return;
-    var i = 0;
-    var timer = null;
     var delay = {{ s.autoplay_seconds | times: 1000 }};
-    function show(n) {
-      i = (n + slides.length) % slides.length;
-      for (var k = 0; k < slides.length; k++) {
-        slides[k].classList.toggle('is-active', k === i);
-        if (dots[k]) dots[k].classList.toggle('is-active', k === i);
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* Un carrousel par jeu d'images. Celui qui est cache par le CSS tourne
+       quand meme : c'est quelques classes basculees toutes les 6 secondes, et
+       ca evite d'avoir a gerer une bascule au redimensionnement. */
+    var sets = root.querySelectorAll('[data-rdcsh-set]');
+    for (var s = 0; s < sets.length; s++) init(sets[s]);
+
+    function init(container) {
+      var name = container.getAttribute('data-rdcsh-set');
+      var slides = container.querySelectorAll('.rdcsh__slide');
+      var group = root.querySelector('[data-rdcsh-dots="' + name + '"]');
+      var dots = group ? group.querySelectorAll('.rdcsh__dot') : [];
+      if (slides.length < 2) return;
+      var i = 0;
+      var timer = null;
+      function show(n) {
+        i = (n + slides.length) % slides.length;
+        for (var k = 0; k < slides.length; k++) {
+          slides[k].classList.toggle('is-active', k === i);
+          if (dots[k]) dots[k].classList.toggle('is-active', k === i);
+        }
       }
+      function start() { if (delay > 0) timer = setInterval(function () { show(i + 1); }, delay); }
+      function stop() { if (timer) { clearInterval(timer); timer = null; } }
+      for (var k = 0; k < dots.length; k++) {
+        (function (n) {
+          dots[n].addEventListener('click', function () { stop(); show(n); start(); });
+        })(k);
+      }
+      if (!reduced) start();
     }
-    function start() { if (delay > 0) timer = setInterval(function () { show(i + 1); }, delay); }
-    function stop() { if (timer) { clearInterval(timer); timer = null; } }
-    for (var k = 0; k < dots.length; k++) {
-      (function (n) {
-        dots[n].addEventListener('click', function () { stop(); show(n); start(); });
-      })(k);
-    }
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) start();
   })();
 </script>
 {%- endif -%}
@@ -314,6 +434,7 @@
     { "type": "header", "content": "Images du carrousel" },
     { "type": "text", "id": "mf_namespace", "label": "Métachamp — namespace", "default": "custom" },
     { "type": "text", "id": "mf_key", "label": "Métachamp — clé", "default": "hero_images", "info": "Métachamp de COLLECTION, type liste de fichiers. Repli automatique sur l'image de la collection." },
+    { "type": "text", "id": "mf_key_mobile", "label": "Métachamp — clé (mobile)", "default": "hero_images_mobile", "info": "Facultatif, même namespace. Ces images remplacent les précédentes sous 750px de large. Champ vide, ou métachamp non rempli sur la collection : ce sont les images ci-dessus qui servent partout, exactement comme avant." },
     { "type": "range", "id": "autoplay_seconds", "label": "Défilement automatique", "unit": "s", "min": 0, "max": 12, "step": 1, "default": 6, "info": "0 = pas de défilement automatique." },
     { "type": "range", "id": "ken_burns_duration", "label": "Durée du zoom lent", "unit": "s", "min": 8, "max": 30, "step": 1, "default": 18 },
     { "type": "header", "content": "Cadrage" },
