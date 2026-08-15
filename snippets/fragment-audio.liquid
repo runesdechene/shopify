@@ -1,0 +1,174 @@
+{%- comment -%}
+  fragment-audio.liquid
+
+  Le lecteur de voix off d'un Fragment, et sa mesure. Appele par la page motif
+  (source 'motif') et par la fiche produit (source 'produit').
+
+  Un seul endroit : le player et son tracking ne doivent PAS exister en deux
+  exemplaires, sinon les deux surfaces divergent au premier correctif.
+
+  Parametres :
+    ill                - le metaobjet Illustration (obligatoire)
+    source             - 'motif' ou 'produit' (obligatoire)
+    audio_field_key    - cle du champ fichier audio        (defaut 'fragment_audio')
+    narrator_field_key - cle du champ narrateur            (defaut 'narrateur_audio')
+    label              - libelle affiche                    (defaut 'Écouter ce Fragment')
+    show_avatar        - afficher l'avatar du narrateur      (defaut true)
+    avatar_size        - taille de l'avatar en px            (defaut 34)
+    accent             - couleur d'accent                    (defaut '#8a6a4a')
+    supa_url / supa_key- surcharges Supabase                 (defaut : projet RdC)
+
+  Si l'Illustration ne porte pas de fichier audio, RIEN n'est rendu.
+{%- endcomment -%}
+
+{%- liquid
+  assign fa_key       = audio_field_key    | default: 'fragment_audio'
+  assign fa_narr_key  = narrator_field_key | default: 'narrateur_audio'
+  assign fa_label     = label              | default: 'Écouter ce Fragment'
+  assign fa_avatar_px = avatar_size        | default: 34
+  assign fa_accent    = accent             | default: '#8a6a4a'
+  assign fa_supa_url  = supa_url           | default: 'https://ukpapqssgsxirsgmcvof.supabase.co'
+  assign fa_supa_key  = supa_key           | default: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrcGFwcXNzZ3N4aXJzZ21jdm9mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAyOTU5OTMsImV4cCI6MjA4NTg3MTk5M30.Le1gdE3HhmZ2gzMJF9hVhlZVsILmLd5GQgk87xC_dUY'
+
+  comment
+    Meme double acces `.value` puis direct que partout ailleurs : selon le type
+    de metachamp, Shopify renvoie l'un ou l'autre.
+  endcomment
+  assign fa_champ = ill[fa_key]
+  assign fa_url   = fa_champ.value.url | default: fa_champ.url
+  if fa_url == blank
+    assign fa_url = fa_champ | metafield_text | strip
+  endif
+
+  assign fa_ref  = ill[fa_narr_key]
+  assign fa_nom  = fa_ref.value.nom.value
+  if fa_nom == blank
+    assign fa_nom = fa_ref.value.nom
+  endif
+  if fa_nom == blank
+    assign fa_nom = fa_ref.nom
+  endif
+  assign fa_face = fa_ref.value.image | default: fa_ref.image
+
+  comment
+    La cle de comptage. `system.handle` est stable et identique sur les deux
+    surfaces, contrairement au tag produit `fragment:*` (cf. migs 251-253).
+  endcomment
+  assign fa_handle = ill.system.handle
+  if fa_handle == blank
+    assign fa_handle = collection.handle | default: product.handle
+  endif
+
+  assign fa_uid = 'fa-' | append: source | append: '-' | append: fa_handle
+-%}
+
+{%- if fa_url != blank -%}
+  <style>
+    .rdcfa{margin:0 0 26px}
+    .rdcfa__label{display:flex;align-items:center;gap:10px;
+      font-family:var(--font-body--family);font-size:.68rem;
+      font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+      color:{{ fa_accent }};margin-bottom:10px}
+    .rdcfa__avatar{width:{{ fa_avatar_px }}px;height:{{ fa_avatar_px }}px;
+      border-radius:999px;object-fit:cover;flex:0 0 auto;
+      box-shadow:0 0 0 2px {{ fa_accent }}55}
+    .rdcfa__label strong{font-weight:700;color:#403434}
+    .rdcfa audio{width:100%;max-width:420px;height:40px;display:block}
+  </style>
+
+  {%- comment -%}
+    Pas d'autoplay : la voix demarre sur decision du visiteur. Et le lecteur
+    natif du navigateur plutot qu'un composant maison — il est accessible au
+    clavier et connu de tous.
+  {%- endcomment -%}
+  <div class="rdcfa">
+    <div class="rdcfa__label">
+      {%- if show_avatar != false and fa_face != blank -%}
+        <img class="rdcfa__avatar" src="{{ fa_face | image_url: width: 96 }}"
+             alt="{{ fa_nom | escape }}" width="96" height="96" loading="lazy">
+      {%- endif -%}
+      <span>{{ fa_label }}{% if fa_nom != blank %}, avec <strong>{{ fa_nom }}</strong>{% endif %}</span>
+    </div>
+    <audio id="{{ fa_uid }}" controls preload="none" src="{{ fa_url }}">
+      Votre navigateur ne peut pas lire cet extrait.
+      <a href="{{ fa_url }}">Télécharger la voix off</a>.
+    </audio>
+  </div>
+
+  <script>
+    (function () {
+      var el = document.getElementById({{ fa_uid | json }});
+      if (!el) return;
+
+      var URL_BASE = {{ fa_supa_url | json }};
+      var KEY      = {{ fa_supa_key | json }};
+      var HANDLE   = {{ fa_handle | json }};
+      var SOURCE   = {{ source | json }};
+      if (!URL_BASE || !KEY || !HANDLE) return; // le lecteur marche, seule la mesure est muette
+
+      // Identite de session. Bornee cote base par un index unique quotidien :
+      // ce jeton n'est PAS la securite, il evite juste le bruit legitime.
+      var SKEY = 'rdc_fa_sid';
+      var sid;
+      try {
+        sid = sessionStorage.getItem(SKEY);
+        if (!sid) {
+          sid = String(Date.now()) + '-' + Math.random().toString(36).slice(2, 12);
+          sessionStorage.setItem(SKEY, sid);
+        }
+      } catch (e) {
+        return; // navigation privee verrouillee : on ne mesure pas, on ne casse rien
+      }
+
+      var seuilAtteint = false;
+      var envoye = false;
+
+      function envoyer(complet) {
+        var secondes = Math.floor(el.currentTime || 0);
+        // Rien a dire tant que le seuil n'est pas franchi : un `play` de curiosite
+        // de deux secondes n'est pas une ecoute.
+        if (!seuilAtteint) return;
+        if (envoye && !complet) return;
+        envoye = true;
+        fetch(URL_BASE + '/rest/v1/rpc/log_fragment_audio_play', {
+          method: 'POST',
+          keepalive: true, // sendBeacon ne permet pas de poser apikey/Authorization
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': KEY,
+            'Authorization': 'Bearer ' + KEY
+          },
+          body: JSON.stringify({
+            p_illustration_handle: HANDLE,
+            p_source: SOURCE,
+            p_session_id: sid,
+            p_listened_seconds: secondes,
+            p_completed: !!complet
+          })
+        }).catch(function () {}); // la mesure ne doit jamais deranger le visiteur
+      }
+
+      el.addEventListener('timeupdate', function () {
+        if (seuilAtteint) return;
+        var duree = el.duration;
+        var seuil = 10;
+        if (duree && isFinite(duree)) seuil = Math.min(10, duree * 0.25);
+        if ((el.currentTime || 0) >= seuil) {
+          seuilAtteint = true;
+          envoyer(false);
+        }
+      });
+
+      el.addEventListener('ended', function () { envoyer(true); });
+
+      // Le visiteur ferme l'onglet en pleine ecoute : on remonte le temps ecoute
+      // avant de perdre la page.
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'hidden' && seuilAtteint && !el.ended) {
+          envoye = false;
+          envoyer(false);
+        }
+      });
+    })();
+  </script>
+{%- endif -%}
