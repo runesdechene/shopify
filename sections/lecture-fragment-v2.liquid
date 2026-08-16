@@ -22,6 +22,14 @@
   if background_image_url == blank and section.settings.background_image != blank
     assign background_image_url = section.settings.background_image | image_url: width: 1920
   endif
+
+  comment
+    La section est alimentee par les reglages du customizer et ne connaissait
+    aucun metaobjet. Le metachamp `illustration_produit` existe deja sur les
+    produits — il est lu par rdc_fragment-app.liquid et rdc_saga-motifs.liquid.
+    On emprunte le meme chemin plutot que d'en inventer un.
+  endcomment
+  assign ill_produit = product.metafields.custom.illustration_produit.value
 -%}
 
 <div class="lecture-fragment{% if section.settings.collapsed_default %} lecture-fragment--collapsed{% endif %}">
@@ -71,6 +79,14 @@
             <p class="lecture-fragment__artist">
               <strong>Artiste : {{ section.settings.artist }}</strong>
             </p>
+          {%- endif -%}
+
+          {%- if ill_produit != blank -%}
+            {%- render 'fragment-audio',
+                ill: ill_produit,
+                source: 'produit',
+                label: section.settings.audio_label,
+                accent: section.settings.audio_accent -%}
           {%- endif -%}
         </div>
 
@@ -511,6 +527,18 @@
       "id": "description",
       "label": "Description",
       "default": "<p>Les Varègues apparaissent à l'époque médiévale comme un phénomène historique singulier : des hommes venus du Nord, principalement de Scandinavie, qui s'inscrivent durablement dans les réseaux commerciaux, militaires puis politiques, reliant l'Europe septentrionale à l'Asie mineure.</p><p>Ils participent activement à la formation des premiers États slaves, tout en conservant une identité propre. Le terme « Varègue » désigne moins un peuple qu'un rôle : celui d'hommes mobiles, capables de naviguer entre cultures, langues et systèmes politiques très différents.</p><p>Leur présence à Constantinople marque l'apogée de leur trajectoire. Recrutés comme mercenaires d'élite, ils forment la célèbre Garde varègue, chargée de la protection rapprochée de l'empereur byzantin. Leur réputation repose sur des éléments concrets : discipline, efficacité au combat et fidélité stricte à leur employeur. Étrangers aux intrigues locales, ils sont considérés comme plus fiables que les troupes issues de l'aristocratie byzantine elle-même.</p><p>Les Varègues incarnent ainsi un modèle rare au Moyen Âge : celui d'hommes capables de préserver à des structures impériales complexes sans renoncer à leurs traditions. Leur équipement, leur organisation et leurs rites témoignent d'un équilibre entre héritage scandinave et adaptation à un environnement méditerranéen et chrétien oriental.</p>"
+    },
+    {
+      "type": "text",
+      "id": "audio_label",
+      "label": "Libellé du lecteur audio",
+      "default": "Écouter ce Fragment"
+    },
+    {
+      "type": "color",
+      "id": "audio_accent",
+      "label": "Couleur d'accent du lecteur",
+      "default": "#8a6a4a"
     },
     {
       "type": "header",
