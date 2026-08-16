@@ -30,7 +30,17 @@
   class="product-recommendations"
   data-url="{{ routes.product_recommendations_url }}?limit={{ section.settings.max_products }}"
   data-section-id="{{ section.id }}"
-  data-product-id="{{ section.settings.product.id | default: product.id }}"
+  {%- comment -%}
+    ⚠ Le produit AFFICHE passe devant le produit choisi dans l'editeur, et non
+    l'inverse comme le faisait Heritage. Sans ca, les 97 fiches recommandaient
+    toutes les complements d'un seul t-shirt (celui laisse dans le selecteur).
+
+    Le selecteur reste le repli — il sert aux pages qui n'ont pas de produit
+    (accueil, page libre), et il doit rester REMPLI sur les gabarits produit :
+    vide, le rendu serveur part dans la branche « demonstration » et affiche
+    cinq t-shirts d'exemple, y compris quand le JS redemande la section.
+  {%- endcomment -%}
+  data-product-id="{{ product.id | default: section.settings.product.id }}"
   data-intent="{{ section.settings.recommendation_type }}"
   data-testid="product-recommendations-section"
   data-recommendations-performed="{{ recommendations.performed }}"
