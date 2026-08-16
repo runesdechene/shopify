@@ -420,12 +420,10 @@
         "text_w3FTGV"
       ],
       "disabled": true,
-      "custom_css": [
-        ".product-media-container.media-fit {background: #e7dcca;}"
-      ],
+      "custom_css": [],
       "name": "t:names.product_recommendations",
       "settings": {
-        "product": "t-shirt-overzised-varegue",
+        "product": "",
         "recommendation_type": "complementary",
         "layout_type": "carousel",
         "carousel_on_mobile": true,

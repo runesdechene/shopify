@@ -1323,7 +1323,6 @@
     },
     "lecture_fragment_v2_EaANnh": {
       "type": "lecture-fragment-v2",
-      "disabled": false,
       "custom_css": [],
       "name": "Lecture Fragment",
       "settings": {
@@ -1519,12 +1518,10 @@
       "block_order": [
         "text_w3FTGV"
       ],
-      "custom_css": [
-        ".product-media-container.media-fit {background: #e7dcca;}"
-      ],
+      "custom_css": [],
       "name": "t:names.product_recommendations",
       "settings": {
-        "product": "t-shirt-overzised-varegue",
+        "product": "",
         "recommendation_type": "complementary",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
