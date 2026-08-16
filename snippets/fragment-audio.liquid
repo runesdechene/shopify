@@ -205,6 +205,13 @@
           if (!seuilAtteint && joue >= 3) seuilAtteint = true;
           complet = seuilAtteint;
         }
+        // Le garde de dedoublonnage de envoyer() jette tout envoi non-complet
+        // une fois qu'un envoi a deja eu lieu (franchissement du seuil) : sans
+        // cette remise a zero, une ecoute qui n'atteint pas la completion
+        // resterait figee a la valeur de joue capturee au franchissement,
+        // au lieu du temps reellement joue jusqu'a la fin. Meme technique que
+        // visibilitychange plus bas.
+        envoye = false;
         envoyer(complet);
       });
 
