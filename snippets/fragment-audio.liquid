@@ -53,11 +53,18 @@
   comment
     La cle de comptage. `system.handle` est stable et identique sur les deux
     surfaces, contrairement au tag produit `fragment:*` (cf. migs 251-253).
+
+    PAS de repli sur collection.handle / product.handle ici (voir I1, revue
+    finale 2026-08-16) : ce repli change de valeur selon la surface d'arrivee
+    (product.handle sur une fiche produit, mais collection.handle des qu'on y
+    arrive via /collections/x/products/y) et ces lignes ne rejoignent jamais
+    les lignes motif du meme Fragment -- une agregation faussee et invisible
+    au Hub. Si system.handle est vide, fa_handle reste vide : le lecteur est
+    quand meme rendu plus bas, mais le script de mesure se coupe de lui-meme
+    (garde `if (!HANDLE) return;`). Pas de mesure vaut mieux qu'une mesure
+    fausse -- c'est le principe du spec, ne pas reintroduire ce repli.
   endcomment
   assign fa_handle = ill.system.handle
-  if fa_handle == blank
-    assign fa_handle = collection.handle | default: product.handle
-  endif
 
   assign fa_uid = 'fa-' | append: source | append: '-' | append: fa_handle
 -%}
@@ -120,11 +127,23 @@
         return; // navigation privee verrouillee : on ne mesure pas, on ne casse rien
       }
 
+      // Temps reellement joue, pas position du curseur (voir I3, revue finale
+      // 2026-08-16) : glisser le curseur jusqu'a la fin change `currentTime`
+      // sans qu'une seule seconde ait ete ecoutee. `joue` n'accumule que les
+      // petits deltas de lecture reelle entre deux `timeupdate` ; un saut
+      // (seek) est trop grand pour passer le filtre et n'y contribue jamais.
+      var joue = 0;
+      var dernierTemps = 0;
       var seuilAtteint = false;
       var envoye = false;
 
+      function calculerSeuil() {
+        var duree = el.duration;
+        if (duree && isFinite(duree) && duree > 0) return Math.min(10, duree * 0.25);
+        return 10;
+      }
+
       function envoyer(complet) {
-        var secondes = Math.floor(el.currentTime || 0);
         // Rien a dire tant que le seuil n'est pas franchi : un `play` de curiosite
         // de deux secondes n'est pas une ecoute.
         if (!seuilAtteint) return;
@@ -142,24 +161,52 @@
             p_illustration_handle: HANDLE,
             p_source: SOURCE,
             p_session_id: sid,
-            p_listened_seconds: secondes,
+            p_listened_seconds: Math.floor(joue),
             p_completed: !!complet
           })
         }).catch(function () {}); // la mesure ne doit jamais deranger le visiteur
       }
 
       el.addEventListener('timeupdate', function () {
-        if (seuilAtteint) return;
-        var duree = el.duration;
-        var seuil = 10;
-        if (duree && isFinite(duree)) seuil = Math.min(10, duree * 0.25);
-        if ((el.currentTime || 0) >= seuil) {
+        var t = el.currentTime || 0;
+        var delta = t - dernierTemps;
+        // Un delta positif et court (< 1.5 s) est de la lecture reelle entre
+        // deux evenements ; un delta plus grand (ou negatif) est un seek et
+        // ne compte pas, meme si aucun evenement seeking/seeked n'a ete recu.
+        if (delta > 0 && delta < 1.5) joue += delta;
+        dernierTemps = t;
+
+        if (!seuilAtteint && joue >= calculerSeuil()) {
           seuilAtteint = true;
           envoyer(false);
         }
       });
 
-      el.addEventListener('ended', function () { envoyer(true); });
+      // Un seek ne doit jamais se traduire en delta de lecture au prochain
+      // timeupdate : on resynchronise le repere avant/apres le saut.
+      function resynchroniser() { dernierTemps = el.currentTime || 0; }
+      el.addEventListener('seeking', resynchroniser);
+      el.addEventListener('seeked', resynchroniser);
+
+      el.addEventListener('ended', function () {
+        var duree = el.duration;
+        var dureeConnue = !!(duree && isFinite(duree) && duree > 0);
+        var complet;
+        if (dureeConnue) {
+          // Duree connue : la completion se mesure au temps reellement joue,
+          // pas a la position finale. Un mid-file skip qui atteint la fin
+          // sans avoir ecoute le milieu n'est pas une completion.
+          complet = joue >= duree * 0.9;
+        } else {
+          // Duree jamais connue : un clip court entierement ecoute peut ne
+          // jamais atteindre le seuil fixe de 10 s. Si au moins 3 s reelles
+          // ont ete jouees, on traite le seuil comme atteint plutot que de
+          // perdre une ecoute complete et honnete.
+          if (!seuilAtteint && joue >= 3) seuilAtteint = true;
+          complet = seuilAtteint;
+        }
+        envoyer(complet);
+      });
 
       // Le visiteur ferme l'onglet en pleine ecoute : on remonte le temps ecoute
       // avant de perdre la page.
