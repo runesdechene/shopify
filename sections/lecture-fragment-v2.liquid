@@ -69,6 +69,19 @@
               {%- endif -%}
             </div>
           </div>
+          {%- comment -%}
+            Le lecteur se pose AVANT le recit : ecouter est une alternative a
+            lire, pas une recompense de fin de lecture. En bas de 400 mots,
+            personne ne le voyait.
+          {%- endcomment -%}
+          {%- if ill_produit != blank -%}
+            {%- render 'fragment-audio',
+                ill: ill_produit,
+                source: 'produit',
+                label: section.settings.audio_label,
+                accent: section.settings.audio_accent -%}
+          {%- endif -%}
+
           {%- if section.settings.description != blank -%}
             <div class="lecture-fragment__description">
               {{ section.settings.description }}
@@ -79,14 +92,6 @@
             <p class="lecture-fragment__artist">
               <strong>Artiste : {{ section.settings.artist }}</strong>
             </p>
-          {%- endif -%}
-
-          {%- if ill_produit != blank -%}
-            {%- render 'fragment-audio',
-                ill: ill_produit,
-                source: 'produit',
-                label: section.settings.audio_label,
-                accent: section.settings.audio_accent -%}
           {%- endif -%}
         </div>
 

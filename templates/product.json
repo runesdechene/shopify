@@ -1323,17 +1323,17 @@
     },
     "lecture_fragment_v2_EaANnh": {
       "type": "lecture-fragment-v2",
-      "disabled": true,
+      "disabled": false,
       "custom_css": [],
       "name": "Lecture Fragment",
       "settings": {
         "show_section": "{% if product.metafields.custom.illustration_produit.value.son_histoire != blank %}true{% else %}false{% endif %}",
         "collapsed_default": false,
-        "pretitle": "{{ product.metafields.custom.illustration_produit.value.resume.value }}",
+        "pretitle": "L'histoire derrière ce Fragment",
         "title": "{{ product.metafields.custom.illustration_produit.value.nom.value }}",
         "artist": "{{ product.metafields.custom.illustration_produit.value.artiste.value.nom.value }}",
         "description": "{{ product.metafields.custom.illustration_produit.value.son_histoire | metafield_tag }}",
-        "icon_image": "shopify://shop_images/grimoire.png",
+        "icon_image": "",
         "main_illustration": "{{ product.metafields.custom.illustration_produit.value.image_pour_fond_clair.value }}",
         "background_image_metaobject": "{{ product.metafields.custom.illustration_produit.value.image_fond_de_fragment.value }}",
         "background_image": "shopify://shop_images/fond_explore.webp"
