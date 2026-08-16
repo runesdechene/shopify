@@ -162,7 +162,13 @@
             p_source: SOURCE,
             p_session_id: sid,
             p_listened_seconds: Math.floor(joue),
-            p_completed: !!complet
+            p_completed: !!complet,
+            // La duree transforme des secondes en pourcentage : sans elle, on sait
+            // qu'on a ecoute 70 s, jamais que c'etait 70 % du recit. Envoyee des
+            // qu'elle est connue, ignoree cote base si elle ne l'est pas.
+            p_duration_seconds: (el.duration && isFinite(el.duration) && el.duration > 0)
+              ? Math.round(el.duration)
+              : null
           })
         }).catch(function () {}); // la mesure ne doit jamais deranger le visiteur
       }
