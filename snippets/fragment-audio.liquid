@@ -16,6 +16,7 @@
     show_avatar        - afficher l'avatar du narrateur      (defaut true)
     avatar_size        - taille de l'avatar en px            (defaut 34)
     accent             - couleur d'accent                    (defaut '#8a6a4a')
+    player_bg          - fond de la barre du lecteur          (defaut '#eee5d3')
     supa_url / supa_key- surcharges Supabase                 (defaut : projet RdC)
 
   Si l'Illustration ne porte pas de fichier audio, RIEN n'est rendu.
@@ -27,6 +28,7 @@
   assign fa_label     = label              | default: 'Écouter ce Fragment'
   assign fa_avatar_px = avatar_size        | default: 34
   assign fa_accent    = accent             | default: '#8a6a4a'
+  assign fa_player_bg = player_bg          | default: '#eee5d3'
   assign fa_supa_url  = supa_url           | default: 'https://ukpapqssgsxirsgmcvof.supabase.co'
   assign fa_supa_key  = supa_key           | default: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrcGFwcXNzZ3N4aXJzZ21jdm9mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAyOTU5OTMsImV4cCI6MjA4NTg3MTk5M30.Le1gdE3HhmZ2gzMJF9hVhlZVsILmLd5GQgk87xC_dUY'
 
@@ -80,7 +82,24 @@
       border-radius:999px;object-fit:cover;flex:0 0 auto;
       box-shadow:0 0 0 2px {{ fa_accent }}55}
     .rdcfa__label strong{font-weight:700;color:#403434}
-    .rdcfa audio{width:100%;max-width:420px;height:40px;display:block}
+    {%- comment -%}
+      Le lecteur natif de Chrome arrive en gris bleute (#f1f3f4) : sur le
+      parchemin, c'est la seule tache froide de la page.
+
+      Deux gestes, parce qu'aucun ne suffit seul :
+        · le fond de la barre se repeint par `::-webkit-media-controls-*`
+          (Chrome, Edge, Safari — Firefox n'expose aucun equivalent) ;
+        · le filtre rechauffe ce que le fond ne touche pas — la barre de
+          progression et les icones, dessinees par le navigateur.
+      Le filtre s'applique AUSSI au fond : la teinte ci-dessous est donc
+      choisie apres filtrage, ne pas la juger sur la valeur brute.
+    {%- endcomment -%}
+    .rdcfa audio{width:100%;max-width:420px;height:40px;display:block;
+      border-radius:999px;background:{{ fa_player_bg }};
+      filter:sepia(.35) saturate(.85) hue-rotate(-8deg)}
+    .rdcfa audio::-webkit-media-controls-enclosure{
+      background:{{ fa_player_bg }};border-radius:999px}
+    .rdcfa audio::-webkit-media-controls-panel{background:{{ fa_player_bg }}}
   </style>
 
   {%- comment -%}
