@@ -45,6 +45,7 @@
     "auto_open_cart_drawer": true,
     "show_cart_note": true,
     "show_installments": true,
+    "empty_cart_button_link": "shopify://collections/tous-les-produits",
     "input_border_width": 0,
     "popover_color_scheme": "scheme-1",
     "popover_border": "none",
