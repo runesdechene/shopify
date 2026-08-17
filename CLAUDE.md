@@ -113,3 +113,17 @@ Décision 2026-06-14 : le thème et le monorepo app restent **deux repos sépar�
 - **`theme push` peut dire « pushed with errors » sans écrire le fichier.** Le détail est noyé sous la barre de progression → rediriger (`> push.log 2>&1`) puis grep. Et **vérifier** avec `theme pull --only <fichier>` : « Theme upload complete » ne garantit rien.
 - **`type: "url"` n'accepte PAS de `default` en URL externe** (`https://…`) → schema invalide → section refusée → invisible. Pour une URL externe par défaut, utiliser `type: "text"`. (`theme check` hors-ligne ne l'attrape pas ; la validation serveur de Shopify, si.)
 - **En `--theme-editor-sync`, les fichiers JSON (templates, settings_data) sont pilotés par l'éditeur** → éditer `index.json` en local est écrasé. On place/retire une section **depuis l'éditeur en ligne**, pas en touchant le JSON.
+- **⚠️ `theme push` ne met PAS en ligne un bloc `{% stylesheet %}`.** Shopify empaquette ces blocs dans une feuille compilée qu'un push ne régénère pas : le snippet corrigé est en ligne pendant que le site sert encore l'ancienne règle, **sans aucun signal**. Les feuilles ordinaires (`assets/*.css`) partent tout de suite. C'est pourquoi le correctif du menu mobile vit **en double** dans `rdc_menu-drawer.css` — ne pas supprimer ce doublon tant que la feuille compilée n'a pas rattrapé son retard. (Constaté 2026-08-17.)
+- **`compiled_assets/styles.css` se charge APRÈS notre feuille maison.** Toute règle du thème de force égale gagne contre les nôtres. À savoir avant de s'étonner qu'un style ne prenne pas.
+- **Un `default` vide (`""`) dans un schéma fait rejeter TOUT le fichier**, avec un « pushed with errors » noyé sous la barre de progression. **Omettre la clé**, ne jamais la mettre à `""`.
+- **Un jeton entre accolades dans une balise d'affichage casse le parseur** : `{{ titre | replace: '{saga}', … }}` fait refuser la section. Le remplacement doit se faire dans un bloc `{% liquid %}`.
+- **`collection.price_min` renvoie vide** sur nos collections : le prix se calcule en bouclant sur les produits.
+- **Un modèle de page est refusé s'il appelle un bloc pas encore en ligne** → pousser **les blocs d'abord, le modèle en dernier**.
+- **`theme check` global est inutilisable en l'état** : le thème traîne 335 erreurs antérieures. Ne vérifier que les fichiers touchés.
+- **Après une session dans l'éditeur en ligne, redescendre les gabarits touchés** (`theme pull`) avant tout envoi large. Constaté le 2026-08-12 : la page collection refaite la veille n'existait **que** sur le site ; un push un peu large l'effaçait. Le filet de sécurité ment tant que le pull n'est pas fait.
+
+### ⚠️ Pièges de contenu (thème Crépuscule)
+
+- **Ne jamais vider le sélecteur de produit de la section « produits recommandés ».** Vide, le rendu serveur part dans sa branche de démonstration et sort **cinq t-shirts d'exemple en couleurs vives**, même quand le navigateur redemande la section. Il sert de repli aux pages sans produit : il doit rester rempli.
+- **Deux « Tous les produits » cohabitent dans TOUS les sélecteurs de lien** : la collection automatique de Shopify (`/collections/all`) et notre collection maison `tous-les-produits`, au libellé identique. Choisir le bon libellé donne la mauvaise page. Vérifier l'URL, pas le nom.
+- **CSS : un padding ajoute à la largeur, une marge la retire.** Et `100vw` compte l'ascenseur — il dépasse toujours. (Deux barres de défilement horizontales payées pour l'apprendre.)
