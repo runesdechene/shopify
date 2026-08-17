@@ -15,7 +15,7 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<h1>Page not found</h1>",
+            "text": "<h1>Page introuvable</h1>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
@@ -41,7 +41,7 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p>The link may be incorrect, or the page has been removed. </p>",
+            "text": "<p>Le lien est peut-être erroné, ou la page a été retirée.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
@@ -67,8 +67,8 @@
           "type": "button",
           "name": "t:names.button",
           "settings": {
-            "label": "Continue shopping",
-            "link": "shopify://collections/all",
+            "label": "Continuer les achats",
+            "link": "shopify://collections/tous-les-produits",
             "open_in_new_tab": false,
             "style_class": "button",
             "width": "fit-content",
@@ -136,7 +136,7 @@
               "type": "_product-list-text",
               "name": "t:names.collection_title",
               "settings": {
-                "text": "<h3>Our bestsellers</h3>",
+                "text": "<h3>Les plus portés</h3>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -163,7 +163,7 @@
               "name": "t:names.button",
               "disabled": true,
               "settings": {
-                "label": "View all",
+                "label": "Tout voir",
                 "open_in_new_tab": false,
                 "style_class": "link",
                 "width": "fit-content",
