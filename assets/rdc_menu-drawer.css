@@ -1,0 +1,34 @@
+/* rdc_menu-drawer.css
+ *
+ * Le tiroir de menu sur telephone doit rester defilant, meme quand un
+ * accordeon est ouvert.
+ *
+ * Le thème coupait son propre defilement (`overflow:initial`) des qu'UN
+ * `details` s'ouvrait, quel qu'il soit — or c'est `.menu-drawer` lui-meme qui
+ * defile (hauteur 100dvh). Ouvrir « Plus » sous Boutique revelait donc des
+ * collections devenues inatteignables.
+ *
+ * ⚠ POURQUOI ICI ET PAS SEULEMENT DANS LE SNIPPET.
+ * La regle fautive vient d'un bloc `{% stylesheet %}` de
+ * `snippets/header-drawer.liquid`, que Shopify empaquette dans
+ * `compiled_assets/styles.css`. Ce paquet n'est PAS regenere par un
+ * `theme push` : le snippet corrige est en ligne depuis le 17/08 et la feuille
+ * servie contenait toujours l'ancienne regle. Le snippet reste corrige (pour
+ * le jour ou le paquet se reconstruira), et cette feuille-ci prend le relais
+ * en attendant — les deux disent la meme chose.
+ *
+ * ⚠ CLASSE DOUBLEE, ET C'EST NECESSAIRE : `compiled_assets/styles.css` se
+ * charge APRES nous. A force egale, le thème gagnerait.
+ */
+
+.menu-drawer.menu-drawer:has(details[open]) {
+  overflow: auto;
+}
+
+/* La seule exception, et la raison d'etre de la regle du thème : le panneau
+ * glissant est pose en ABSOLU dans le tiroir, qui est son bloc conteneur. Si
+ * le tiroir est defile, le panneau s'ouvre decale d'autant. Lui porte deja son
+ * propre defilement — on ne perd donc rien a liberer le tiroir pour lui. */
+.menu-drawer.menu-drawer:has(details[open] > .menu-drawer__submenu) {
+  overflow: initial;
+}
