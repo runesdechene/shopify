@@ -1,32 +1,25 @@
 # shopify — Boutique en ligne Runes de Chêne
 
 > Thème **Crépuscule** (fork Heritage v3.2.1 **lourdement modifié**). Prod : runesdechene.com
-> Responsables : Mathéo (quotidien, fiches) · Uriel (DA)
+> Responsable unique : Uriel. *(Mathéo tenait le quotidien et les fiches — il a quitté l'entreprise en septembre 2026.)*
 
-## Démarrage — Règle N°1
+## Où chercher quoi — mis à jour le 25/09/2026
 
-Lire `~/citadelle/CLAUDE.md` (symlink vers vault Obsidian partagé). Ce fichier contient :
-- Protocole ingest (`_Inbox/`)
-- Routing par intent
-- 4-Layer Query Rule
+⚠️ **Le vault Citadelle n'existe plus** et le symlink `~/citadelle` est supprimé. Tout a été
+fusionné dans **Mon Cerveau** : `\\EGIDE\Uriel Lahoussaye\🧠 Mon Cerveau\`.
 
-Si `~/citadelle` inaccessible → vérifier qu'Obsidian est ouvert sur le vault. Fallback NAS : `\\EGIDE\Runes de Chêne\👑 LA CITADELLE\`.
+| Question | Où regarder |
+|---|---|
+| Shopify, Liquid, extensions d'app | **Context7 MCP** — docs officielles à jour |
+| Sections et blocs de ce thème | Glob / Read direct — *Graphify n'indexe pas le Liquid* |
+| Décisions boutique, marchandisage, dettes connues | `Mon Cerveau\Projets\Runes de Chêne\Boutique.md` |
+| Ton, formats, doctrine de com | `…\Projets\Runes de Chêne\Communication.md` |
+| La marque, les Fragments, les mots interdits | `…\Projets\Runes de Chêne\Identité.md` |
+| Le catalogue réel | `runesdechene.com/products.json` — **jamais une copie dans le vault** |
+| DB, RPC, hub, app | le monorepo voisin (voir plus bas), pas le vault |
 
-## 4-Layer Query Rule (adaptée Shopify)
-
-1. **Question Shopify / Liquid / App extensions** → **Context7 MCP** (docs officielles Shopify à jour)
-2. **Structure / sections / blocks de ce thème** → Glob / Read direct (pas de Graphify sur Liquid, pas supporté)
-3. **Décisions marque, ton, contenu** → **Obsidian MCP** (vault Citadelle)
-4. **Édition** → Read du fichier brut
-
-## Zone Citadelle pour ce repo
-
-Pour contexte produit / vision / stratégie boutique en ligne :
-
-- **`~/citadelle/📋 VUE - Boutique en ligne.md`** — rôle, mix CA, parcours client, intégrations
-- **`~/citadelle/⛩️ La Marque/🌐 La boutique en ligne/INDEX - Boutique en ligne.md`** — notes opérationnelles
-- **`~/citadelle/⛩️ La Marque/📦 Produits/INDEX - Produits.md`** — catalogue
-- **`~/citadelle/Backlogs/Backlog - Boutique en ligne.md`** — chantiers futurs (emails auto, blog SEO, /rejoindre, refonte DA)
+**Règle de frontière** : ce dépôt porte le code · le vault porte les décisions qu'Uriel doit
+pouvoir relire · ma mémoire porte les pièges ci-dessous. Jamais deux fois au même endroit.
 
 ## Spécificités de CE repo
 
@@ -69,7 +62,7 @@ shopify theme pull --theme=123456789
 |--------|------|
 | **Ce repo** | Thème Shopify Crépuscule |
 | **`app (Runes de Chêne)`** | Monorepo apps (explore-web + hub + supabase) |
-| **Citadelle** (Obsidian) | QG mémoire partagée |
+| **Mon Cerveau** (Obsidian) | vault unique — décisions, état, identité de marque |
 
 ### Repos voisins — accès cross-repo (PAS de fusion)
 

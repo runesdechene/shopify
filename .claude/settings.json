@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"PROTOCOLE XO (repo Shopify): Avant toute réponse au premier message, exécute Read(\\\"~/citadelle/CLAUDE.md\\\") puis charge le contexte Shopify (VUE Boutique en ligne + DEV - Notes techniques). Ne jamais faire la MAJ du thème Heritage (écraserait les modifs).\"}}'"
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"Repo Shopify (thème Crépuscule). Lire CLAUDE.md de ce repo avant toute action — il porte les pièges Shopify déjà payés. Décisions boutique: Mon Cerveau/Projets/Runes de Chêne/Boutique.md. NE JAMAIS faire la MAJ du thème Heritage (écraserait toutes les modifs).\"}}'"
           }
         ]
       }
