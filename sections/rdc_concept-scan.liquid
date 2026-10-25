@@ -1,0 +1,244 @@
+{%- comment -%}
+  rdc_concept-scan.liquid — Section « Le concept » de l'accueil (25/10/2026).
+
+  Une seule idée : on scanne son Fragment et l'appli raconte son histoire.
+  À gauche le texte, trois étapes, le bouton vers les Fragments (jamais vers l'appli :
+  l'appli valide le prix, elle ne fait pas sortir de la boutique), puis l'encart du Campement.
+  À droite le viseur du scan posé sur la photo d'un porteur, et le Récit qui s'ouvre.
+  Maquette : Figma « App v2 », 831:2061. Les écrans viennent du scan validé le 09/10 (530:946, 530:1052).
+{%- endcomment -%}
+
+{%- liquid
+  assign uid = 'RdcScan-' | append: section.id
+  assign s = section.settings
+-%}
+
+<style>
+  #{{ uid }} { --rdc-scan-accent: {{ s.accent_color }}; padding-block: {{ s.padding_top }}px {{ s.padding_bottom }}px; }
+  #{{ uid }} .rdc-scan__inner { max-width: 1200px; margin: 0 auto; padding-inline: 32px;
+    display: grid; grid-template-columns: 1fr 1.05fr; grid-template-areas: "head stage" "body stage";
+    column-gap: 64px; align-items: center; }
+  #{{ uid }} .rdc-scan__head { grid-area: head; align-self: end; }
+  #{{ uid }} .rdc-scan__body { grid-area: body; align-self: start; }
+  #{{ uid }} .rdc-scan__stage { grid-area: stage; position: relative; padding-right: 18%; }
+
+  #{{ uid }} .rdc-scan__over { font-family: var(--font-accent--family); font-weight: 600; font-size: .85rem;
+    letter-spacing: .25em; text-transform: uppercase; color: #b4894f; margin-bottom: 14px; }
+  #{{ uid }} .rdc-scan__title { font-family: var(--font-heading--family); font-weight: 400; margin: 0 0 22px;
+    font-size: clamp(2.6rem, 5.4vw, 4.2rem); line-height: .95; letter-spacing: .01em;
+    color: var(--color-foreground-heading, var(--color-foreground)); }
+  #{{ uid }} .rdc-scan__lead { font-family: var(--font-body--family); font-size: 1.1rem; line-height: 1.55;
+    color: var(--color-foreground); opacity: .85; max-width: 32rem; margin: 0 0 26px; }
+
+  {%- comment -%} Les étapes : un numéro rouge, un filet entre chacune. {%- endcomment -%}
+  #{{ uid }} .rdc-scan__steps { display: flex; margin: 0 0 28px; padding: 0; list-style: none; }
+  #{{ uid }} .rdc-scan__step { padding-inline: 20px; border-left: 1px solid rgb(var(--color-foreground-rgb) / .2); }
+  #{{ uid }} .rdc-scan__step:first-child { padding-left: 0; border-left: 0; }
+  #{{ uid }} .rdc-scan__num { display: block; font-family: var(--font-heading--family); font-size: 2.1rem;
+    line-height: 1; color: var(--rdc-scan-accent); margin-bottom: 8px; }
+  #{{ uid }} .rdc-scan__label { font-family: var(--font-accent--family); font-weight: 700; font-size: .85rem;
+    line-height: 1.25; letter-spacing: .04em; text-transform: uppercase; color: var(--color-foreground); }
+
+  #{{ uid }} .rdc-scan__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; margin-bottom: 28px; }
+  #{{ uid }} .rdc-scan__cta { display: inline-flex; background: var(--rdc-scan-accent); color: #fffaf2; text-decoration: none;
+    font-family: var(--font-accent--family); font-weight: 700; font-size: .95rem; letter-spacing: .02em;
+    text-transform: uppercase; padding: 16px 28px; border-radius: 10px; transition: filter .2s; }
+  #{{ uid }} .rdc-scan__cta:hover { filter: brightness(.9); }
+  #{{ uid }} .rdc-scan__free { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-accent--family);
+    font-weight: 600; font-size: .85rem; letter-spacing: .04em; text-transform: uppercase; color: #857575; }
+  #{{ uid }} .rdc-scan__free::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #9ab788; }
+
+  {%- comment -%} L'encart du Campement : l'étendard, puis le teasing. {%- endcomment -%}
+  #{{ uid }} .rdc-scan__camp { display: flex; align-items: center; gap: 20px; max-width: 32rem;
+    background: {{ s.camp_bg }}; border-radius: 15px; padding: 18px 24px 18px 18px; }
+  #{{ uid }} .rdc-scan__camp img { width: 56px; height: auto; flex: 0 0 auto; }
+  #{{ uid }} .rdc-scan__camp-over { font-family: var(--font-accent--family); font-weight: 700; font-size: .75rem;
+    letter-spacing: .18em; text-transform: uppercase; color: #b4894f; }
+  #{{ uid }} .rdc-scan__camp-title { font-family: var(--font-heading--family); font-size: 1.9rem; line-height: 1.05;
+    color: var(--color-foreground-heading, var(--color-foreground)); margin: 2px 0 4px; }
+  #{{ uid }} .rdc-scan__camp-text { font-family: var(--font-body--family); font-size: .92rem; line-height: 1.4;
+    color: #857575; margin: 0; }
+
+  {%- comment -%} Le viseur : la photo du porteur, les coins du scan, la carte « Fragment reconnu ». {%- endcomment -%}
+  #{{ uid }} .rdc-scan__viewfinder { position: relative; aspect-ratio: 500 / 720; border-radius: 15px; overflow: hidden;
+    background: #cdbfa8; }
+  #{{ uid }} .rdc-scan__photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  #{{ uid }} .rdc-scan__viewfinder::after { content: ''; position: absolute; inset: 0; background: rgb(31 26 20 / .18); }
+  #{{ uid }} .rdc-scan__vf-label { position: absolute; z-index: 1; top: 5%; inset-inline: 0; text-align: center;
+    font-family: var(--font-heading--family); font-size: 1.6rem; color: #fffaf2; }
+  {%- comment -%} Les coins s'arrêtent avant le téléphone, qui recouvre le quart droit du viseur. {%- endcomment -%}
+  #{{ uid }} .rdc-scan__frame { position: absolute; z-index: 1; inset: 18% 28% 32% 10%; }
+  #{{ uid }} .rdc-scan__corner { position: absolute; width: 64px; height: 64px; border: 0 solid var(--rdc-scan-accent); }
+  #{{ uid }} .rdc-scan__corner:nth-child(1) { top: 0; left: 0; border-top-width: 4px; border-left-width: 4px; border-top-left-radius: 6px; }
+  #{{ uid }} .rdc-scan__corner:nth-child(2) { top: 0; right: 0; border-top-width: 4px; border-right-width: 4px; border-top-right-radius: 6px; }
+  #{{ uid }} .rdc-scan__corner:nth-child(3) { bottom: 0; left: 0; border-bottom-width: 4px; border-left-width: 4px; border-bottom-left-radius: 6px; }
+  #{{ uid }} .rdc-scan__corner:nth-child(4) { bottom: 0; right: 0; border-bottom-width: 4px; border-right-width: 4px; border-bottom-right-radius: 6px; }
+  #{{ uid }} .rdc-scan__line { position: absolute; inset-inline: 8%; height: 2px; background: var(--rdc-scan-accent);
+    opacity: .8; animation: rdc-scan-sweep 2.6s ease-in-out infinite alternate; }
+  @keyframes rdc-scan-sweep { from { top: 10%; } to { top: 90%; } }
+  #{{ uid }} .rdc-scan__card { position: absolute; z-index: 1; left: 8%; right: 8%; bottom: 5.5%;
+    display: flex; align-items: center; gap: 16px; background: #fffaf2; border-radius: 15px; padding: 12px 18px 12px 12px; }
+  #{{ uid }} .rdc-scan__card img { width: 52px; height: auto; flex: 0 0 auto; }
+  #{{ uid }} .rdc-scan__card-over { font-family: var(--font-body--family); font-size: .85rem; color: #857575; }
+  #{{ uid }} .rdc-scan__card-name { font-family: var(--font-heading--family); font-size: 1.9rem; line-height: 1; color: #494841; }
+
+  {%- comment -%} Le Récit qui s'ouvre, dans un téléphone plat qui déborde du viseur. {%- endcomment -%}
+  #{{ uid }} .rdc-scan__phone { position: absolute; right: 0; top: 20%; width: 34%; aspect-ratio: 260 / 540;
+    border: 7px solid #1f1a14; border-radius: 34px; overflow: hidden; background: #fcf3e4; }
+  #{{ uid }} .rdc-scan__phone img { width: 100%; height: auto; display: block; }
+
+  @media (max-width: 820px) {
+    #{{ uid }} { padding-block: {{ s.padding_top | times: 0.7 | round }}px {{ s.padding_bottom | times: 0.7 | round }}px; }
+    #{{ uid }} .rdc-scan__inner { grid-template-columns: 1fr; grid-template-areas: "head" "stage" "body"; padding-inline: 16px; }
+    #{{ uid }} .rdc-scan__stage { margin: 8px 0 32px; padding-right: 22%; }
+    #{{ uid }} .rdc-scan__phone { width: 40%; border-width: 5px; border-radius: 24px; }
+    #{{ uid }} .rdc-scan__corner { width: 40px; height: 40px; }
+    #{{ uid }} .rdc-scan__card { gap: 10px; padding: 8px 12px 8px 8px; left: 6%; right: 26%; }
+    #{{ uid }} .rdc-scan__card img { width: 34px; }
+    #{{ uid }} .rdc-scan__card-name { font-size: 1.4rem; }
+    #{{ uid }} .rdc-scan__vf-label { font-size: 1.2rem; }
+    #{{ uid }} .rdc-scan__step { padding-inline: 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #{{ uid }} .rdc-scan__line { animation: none; top: 50%; }
+  }
+</style>
+
+<div class="section-background color-{{ s.color_scheme }}"></div>
+<div id="{{ uid }}" class="section section--full-width color-{{ s.color_scheme }} rdc-scan">
+  <div class="rdc-scan__inner">
+
+    <div class="rdc-scan__head">
+      {%- if s.overline != blank -%}<div class="rdc-scan__over">{{ s.overline }}</div>{%- endif -%}
+      {%- if s.title != blank -%}<h2 class="rdc-scan__title">{{ s.title | newline_to_br }}</h2>{%- endif -%}
+      {%- if s.lead != blank -%}<p class="rdc-scan__lead">{{ s.lead }}</p>{%- endif -%}
+    </div>
+
+    <div class="rdc-scan__stage">
+      <div class="rdc-scan__viewfinder">
+        {%- if s.photo != blank -%}
+          {{ s.photo | image_url: width: 1200 | image_tag: class: 'rdc-scan__photo', loading: 'lazy',
+            widths: '500, 800, 1200', sizes: '(max-width: 820px) 80vw, 500px', alt: s.photo.alt }}
+        {%- endif -%}
+        <div class="rdc-scan__vf-label">{{ s.scanner_label }}</div>
+        <div class="rdc-scan__frame" aria-hidden="true">
+          <span class="rdc-scan__corner"></span><span class="rdc-scan__corner"></span>
+          <span class="rdc-scan__corner"></span><span class="rdc-scan__corner"></span>
+          <span class="rdc-scan__line"></span>
+        </div>
+        <div class="rdc-scan__card">
+          {%- if s.vignette != blank -%}
+            {{ s.vignette | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}
+          {%- else -%}
+            <img src="{{ 'rdc-scan-vignette.png' | asset_url }}" width="52" height="72" loading="lazy" alt="">
+          {%- endif -%}
+          <div>
+            <div class="rdc-scan__card-over">Fragment reconnu</div>
+            <div class="rdc-scan__card-name">{{ s.fragment_name }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="rdc-scan__phone">
+        {%- if s.recit != blank -%}
+          {{ s.recit | image_url: width: 780 | image_tag: loading: 'lazy', alt: s.recit.alt }}
+        {%- else -%}
+          <img src="{{ 'rdc-scan-recit.png' | asset_url }}" width="390" height="1092" loading="lazy"
+            alt="Le récit du Fragment Hoplite dans l'appli Runes de Chêne">
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="rdc-scan__body">
+      {%- if section.blocks.size > 0 -%}
+        <ol class="rdc-scan__steps">
+          {%- for block in section.blocks -%}
+            <li class="rdc-scan__step" {{ block.shopify_attributes }}>
+              <span class="rdc-scan__num">{{ forloop.index | prepend: '0' }}</span>
+              <span class="rdc-scan__label">{{ block.settings.label | newline_to_br }}</span>
+            </li>
+          {%- endfor -%}
+        </ol>
+      {%- endif -%}
+
+      <div class="rdc-scan__actions">
+        {%- if s.cta_label != blank -%}<a class="rdc-scan__cta" href="{{ s.cta_url }}">{{ s.cta_label }} →</a>{%- endif -%}
+        {%- if s.free_text != blank -%}<span class="rdc-scan__free">{{ s.free_text }}</span>{%- endif -%}
+      </div>
+
+      {%- if s.camp_title != blank -%}
+        <div class="rdc-scan__camp">
+          {%- if s.etendard != blank -%}
+            {{ s.etendard | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}
+          {%- else -%}
+            <img src="{{ 'rdc-etendard.png' | asset_url }}" width="56" height="80" loading="lazy" alt="">
+          {%- endif -%}
+          <div>
+            {%- if s.camp_over != blank -%}<div class="rdc-scan__camp-over">{{ s.camp_over }}</div>{%- endif -%}
+            <div class="rdc-scan__camp-title">{{ s.camp_title }}</div>
+            {%- if s.camp_text != blank -%}<p class="rdc-scan__camp-text">{{ s.camp_text }}</p>{%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "RDC — Le concept (scan)",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    { "type": "header", "content": "Texte" },
+    { "type": "text", "id": "overline", "label": "Surtitre", "default": "Le concept Runes de Chêne" },
+    { "type": "textarea", "id": "title", "label": "Titre", "default": "Scanne ton t-shirt.\nÉcoute son histoire." },
+    { "type": "textarea", "id": "lead", "label": "Paragraphe", "default": "Chaque Fragment est une histoire vraie. Vise ton vêtement avec l'appli Runes de Chêne : il est reconnu en une seconde, et son récit s'ouvre, à lire ou à écouter." },
+
+    { "type": "header", "content": "Bouton" },
+    { "type": "text", "id": "cta_label", "label": "Libellé", "default": "Choisir mon Fragment" },
+    { "type": "url", "id": "cta_url", "label": "Lien", "default": "/collections/all", "info": "Vers les Fragments, jamais vers l'appli." },
+    { "type": "text", "id": "free_text", "label": "Mention", "default": "Offert avec chaque Fragment" },
+
+    { "type": "header", "content": "Le scan" },
+    { "type": "image_picker", "id": "photo", "label": "Photo d'un porteur", "info": "Un modèle qui porte un Fragment, en portrait. Elle s'affiche sous le viseur du scan." },
+    { "type": "text", "id": "scanner_label", "label": "Titre du viseur", "default": "Scanner un Fragment" },
+    { "type": "text", "id": "fragment_name", "label": "Fragment reconnu", "default": "Hoplite" },
+    { "type": "image_picker", "id": "vignette", "label": "Vignette du Fragment reconnu", "info": "Vide : l'Hoplite." },
+    { "type": "image_picker", "id": "recit", "label": "Écran du Récit (téléphone)", "info": "Une capture du Récit dans l'appli, 390 px de large. Vide : le Récit d'Hoplite." },
+
+    { "type": "header", "content": "Le Campement" },
+    { "type": "image_picker", "id": "etendard", "label": "Étendard", "info": "Vide : l'étendard Runes de Chêne." },
+    { "type": "text", "id": "camp_over", "label": "Surtitre", "default": "En prime, avec ton Fragment" },
+    { "type": "text", "id": "camp_title", "label": "Titre", "default": "Ta place au Campement", "info": "Vide : l'encart disparaît." },
+    { "type": "textarea", "id": "camp_text", "label": "Texte", "default": "Là où les porteurs se retrouvent : toute la communauté, les ventes privées, les rencontres." },
+    { "type": "color", "id": "camp_bg", "label": "Fond de l'encart", "default": "#f6e7cf" },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Schéma de couleur", "default": "scheme-1" },
+    { "type": "color", "id": "accent_color", "label": "Couleur d'accent", "default": "#a94842" },
+    { "type": "range", "id": "padding_top", "label": "Marge haut (px)", "min": 0, "max": 160, "step": 4, "default": 96 },
+    { "type": "range", "id": "padding_bottom", "label": "Marge bas (px)", "min": 0, "max": 160, "step": 4, "default": 96 }
+  ],
+  "blocks": [
+    {
+      "type": "etape",
+      "name": "Étape",
+      "settings": [
+        { "type": "textarea", "id": "label", "label": "Texte", "default": "Vise ton\nFragment" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "RDC — Le concept (scan)",
+      "blocks": [
+        { "type": "etape", "settings": { "label": "Vise ton\nFragment" } },
+        { "type": "etape", "settings": { "label": "Bip,\nil est reconnu" } },
+        { "type": "etape", "settings": { "label": "Son récit\ns'ouvre" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
