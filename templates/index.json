@@ -2292,7 +2292,8 @@
         "button_text": "#fffaf2",
         "cut_bottom": false,
         "padding_bottom": 0,
-        "min_height": 560
+        "min_height": 560,
+        "under_footer": 120
       }
     }
   },

@@ -38,6 +38,12 @@
 
 <style>
   #{{ uid }} { padding-block: {{ s.padding_top }}px {{ s.padding_bottom }}px; }
+  {%- if s.under_footer > 0 -%}
+  {%- comment -%} La bande glisse sous le haut du pied de page : la forêt immersive la recouvre.
+      Le fond uni de la forêt passe transparent, sinon il cacherait la bande. {%- endcomment -%}
+  #{{ uid }} { margin-bottom: -{{ s.under_footer }}px; position: relative; z-index: 0; }
+  .forest-wrapper { background-color: transparent !important; position: relative; z-index: 1; }
+  {%- endif -%}
 
   #{{ uid }} .rdc-ctaf__band {
     position: relative; width: 100%; min-height: {{ s.min_height }}px; overflow: hidden;
@@ -133,6 +139,7 @@
     { "type": "range", "id": "cut_depth", "label": "Inclinaison", "unit": "%", "min": 0, "max": 20, "step": 1, "default": 8 },
     { "type": "select", "id": "cut_direction", "label": "Sens de l'inclinaison", "options": [
       { "value": "right", "label": "Montant vers la droite" }, { "value": "left", "label": "Montant vers la gauche" } ], "default": "right" },
+    { "type": "range", "id": "under_footer", "label": "Glisser sous la forêt du pied de page", "unit": "px", "min": 0, "max": 200, "step": 10, "default": 0, "info": "0 = la bande s'arrête au-dessus du pied de page." },
     { "type": "checkbox", "id": "cut_bottom", "label": "Pencher aussi le bas", "info": "Décoché : le bas reste droit, pour que la forêt du pied de page recouvre la bande.", "default": true },
 
     { "type": "header", "content": "Mise en page" },
