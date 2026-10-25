@@ -1336,7 +1336,7 @@
       "settings": {
         "overline": "Ce que ce Fragment cache",
         "title": "Ton [perso]\na une histoire.",
-        "lead": "Ce motif n'est pas un dessin de plus : c'est une histoire vraie. Quand tu le recevras, vise-le avec ton téléphone. Il est reconnu en une seconde, et son récit s'ouvre, à lire ou à écouter, avec ses anecdotes et ses énigmes.",
+        "lead": "Ce motif n'est pas un dessin de plus : c'est une histoire vraie. Quand tu le recevras, vise-le avec ton téléphone. Il est reconnu en une seconde, et son récit s'ouvre, à lire ou à écouter.",
         "cta_label": "",
         "cta_url": "shopify://collections/all",
         "photo": "shopify://shop_images/DSC01872.jpg",
@@ -1348,7 +1348,8 @@
         "color_scheme": "",
         "accent_color": "#a94842",
         "padding_top": 96,
-        "padding_bottom": 96
+        "padding_bottom": 96,
+        "bonus": "Débloque ses anecdotes et ses énigmes"
       }
     },
     "lecture_fragment_v2_EaANnh": {

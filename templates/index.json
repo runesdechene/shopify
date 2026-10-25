@@ -747,7 +747,7 @@
       "settings": {
         "overline": "Le concept Runes de Chêne",
         "title": "Scanne ton t-shirt.\nÉcoute son histoire.",
-        "lead": "Chaque Fragment est une histoire vraie. Vise ton vêtement avec l'appli Runes de Chêne : il est reconnu en une seconde, et son récit s'ouvre, à lire ou à écouter, avec ses anecdotes et ses énigmes.",
+        "lead": "Chaque Fragment est une histoire vraie. Vise ton vêtement avec l'appli Runes de Chêne : il est reconnu en une seconde, et son récit s'ouvre, à lire ou à écouter.",
         "cta_label": "Choisir mon Fragment",
         "cta_url": "shopify://collections/all",
         "photo": "shopify://shop_images/DSC01872.jpg",
@@ -759,7 +759,8 @@
         "color_scheme": "",
         "accent_color": "#a94842",
         "padding_top": 96,
-        "padding_bottom": 96
+        "padding_bottom": 96,
+        "bonus": "Débloque ses anecdotes et ses énigmes"
       }
     },
     "liste_icone_4QpiPW": {

@@ -50,6 +50,10 @@
     font-family: var(--font-accent--family); font-weight: 700; font-size: .95rem; letter-spacing: .08em;
     text-transform: uppercase; padding: 16px 32px; border-radius: 999px; transition: background .2s, transform .2s; }
   #{{ uid }} .rdc-scan__cta:hover { background: var(--rdc-scan-accent); transform: translateY(-2px); }
+  {%- comment -%} Le bonus : le cadenas dit qu'il s'ouvre à l'achat. {%- endcomment -%}
+  #{{ uid }} .rdc-scan__bonus { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-accent--family);
+    font-weight: 700; font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; color: #857575; }
+  #{{ uid }} .rdc-scan__bonus svg { flex: none; color: var(--rdc-scan-accent); }
 
   {%- comment -%} L'encart du Campement : l'étendard, puis le teasing, sur le parchemin de l'appli. {%- endcomment -%}
   #{{ uid }} .rdc-scan__camp { display: flex; align-items: center; gap: 20px; max-width: 32rem;
@@ -167,6 +171,15 @@
 
       <div class="rdc-scan__actions">
         {%- if s.cta_label != blank -%}<a class="rdc-scan__cta" href="{{ s.cta_url }}">{{ s.cta_label }} →</a>{%- endif -%}
+        {%- if s.bonus != blank -%}
+          <span class="rdc-scan__bonus">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="4" y="11" width="16" height="11" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+            </svg>
+            {{ s.bonus }}
+          </span>
+        {%- endif -%}
       </div>
 
       {%- if s.camp_title != blank -%}
@@ -203,6 +216,7 @@
     { "type": "header", "content": "Bouton" },
     { "type": "text", "id": "cta_label", "label": "Libellé", "default": "Choisir mon Fragment" },
     { "type": "url", "id": "cta_url", "label": "Lien", "default": "/collections/all", "info": "Vers les Fragments, jamais vers l'appli. Libellé vide : pas de bouton (fiche produit)." },
+    { "type": "text", "id": "bonus", "label": "Bonus (avec un cadenas)", "default": "Débloque ses anecdotes et ses énigmes", "info": "Ce qui s'ouvre à l'achat. Vide : la ligne disparaît." },
 
     { "type": "header", "content": "Le scan" },
     { "type": "image_picker", "id": "photo", "label": "Photo d'un porteur", "info": "Un modèle qui porte un Fragment, en portrait. Elle s'affiche sous le viseur du scan." },
