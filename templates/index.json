@@ -2279,6 +2279,18 @@
         "etape_3"
       ],
       "settings": {}
+    },
+    "rdc_cta_final": {
+      "type": "rdc_cta-final",
+      "settings": {
+        "overline": "Pour ceux qui aiment l'Histoire",
+        "title": "Quelle figure porteras-tu ?",
+        "subtitle": "<p>Valkyrie, Druide, Hoplite, Jeanne de Flandre… Chacune a une histoire vraie à te raconter.</p>",
+        "button_label": "Trouver la mienne",
+        "button_url": "/collections/all",
+        "button_bg": "#1f1a14",
+        "button_text": "#fffaf2"
+      }
     }
   },
   "order": [
@@ -2295,6 +2307,7 @@
     "rdc_collections_dqWcJc",
     "collection_list_KVTKQr",
     "rdc_mur_vivant_LwJVzT",
+    "rdc_cta_final",
     "rdc_app_3t8D4m",
     "section_8PtfMJ",
     "illustration_list_FjwKWn",
