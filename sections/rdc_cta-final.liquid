@@ -61,7 +61,7 @@
     {% if s.animate and s.image != blank %}animation: rdcCtaKb 18s ease-in-out infinite alternate;{% endif %}
   }
   #{{ uid }} .rdc-ctaf__scrim { position: absolute; inset: 0; z-index: 1;
-    background: rgba(20,14,8,{{ scrim }}); }
+    background: {{ s.scrim_color | color_modify: 'alpha', scrim }}; }
 
   #{{ uid }} .rdc-ctaf__ct {
     position: relative; z-index: 2; width: 100%;
@@ -184,6 +184,7 @@
     { "type": "image_picker", "id": "image", "label": "Image (bureau)" },
     { "type": "image_picker", "id": "image_mobile", "label": "Image (mobile)", "info": "Si vide, l'image bureau est utilisée." },
     { "type": "range", "id": "photo_brightness", "label": "Luminosité de la photo", "unit": "%", "min": 30, "max": 100, "step": 5, "default": 80 },
+    { "type": "color", "id": "scrim_color", "label": "Couleur du voile", "default": "#140e08" },
     { "type": "range", "id": "scrim_opacity", "label": "Voile sur toute l'image", "unit": "%", "min": 0, "max": 90, "step": 5, "default": 40 },
     { "type": "checkbox", "id": "animate", "label": "Animation (zoom lent)", "info": "Désactivée si l'utilisateur préfère réduire les animations.", "default": true },
 
