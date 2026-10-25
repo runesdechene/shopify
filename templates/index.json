@@ -1331,7 +1331,8 @@
         "condition_value": "",
         "condition_liquid": "",
         "condition_invert": false
-      }
+      },
+      "disabled": true
     },
     "illustration_list_FjwKWn": {
       "type": "illustration-list",
