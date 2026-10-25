@@ -44,9 +44,6 @@
     font-family: var(--font-accent--family); font-weight: 700; font-size: .95rem; letter-spacing: .02em;
     text-transform: uppercase; padding: 16px 28px; border-radius: 10px; transition: filter .2s; }
   #{{ uid }} .rdc-scan__cta:hover { filter: brightness(.9); }
-  #{{ uid }} .rdc-scan__free { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-accent--family);
-    font-weight: 600; font-size: .85rem; letter-spacing: .04em; text-transform: uppercase; color: #857575; }
-  #{{ uid }} .rdc-scan__free::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #9ab788; }
 
   {%- comment -%} L'encart du Campement : l'étendard, puis le teasing. {%- endcomment -%}
   #{{ uid }} .rdc-scan__camp { display: flex; align-items: center; gap: 20px; max-width: 32rem;
@@ -162,7 +159,6 @@
 
       <div class="rdc-scan__actions">
         {%- if s.cta_label != blank -%}<a class="rdc-scan__cta" href="{{ s.cta_url }}">{{ s.cta_label }} →</a>{%- endif -%}
-        {%- if s.free_text != blank -%}<span class="rdc-scan__free">{{ s.free_text }}</span>{%- endif -%}
       </div>
 
       {%- if s.camp_title != blank -%}
@@ -198,7 +194,6 @@
     { "type": "header", "content": "Bouton" },
     { "type": "text", "id": "cta_label", "label": "Libellé", "default": "Choisir mon Fragment" },
     { "type": "url", "id": "cta_url", "label": "Lien", "default": "/collections/all", "info": "Vers les Fragments, jamais vers l'appli." },
-    { "type": "text", "id": "free_text", "label": "Mention", "default": "Offert avec chaque Fragment" },
 
     { "type": "header", "content": "Le scan" },
     { "type": "image_picker", "id": "photo", "label": "Photo d'un porteur", "info": "Un modèle qui porte un Fragment, en portrait. Elle s'affiche sous le viseur du scan." },
