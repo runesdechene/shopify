@@ -20,6 +20,10 @@
   # Inclinaison parallèle (parallélogramme) : cut_depth en % de la hauteur, sens réglable
   assign d = s.cut_depth
   assign b = 100 | minus: d
+  # Bas droit : la bande descend jusqu'au pied de page, que la forêt immersive vient recouvrir
+  if s.cut_bottom == false
+    assign b = 100
+  endif
   if s.cut_direction == 'left'
     assign clip = '0% 0%, 100% ' | append: d | append: '%, 100% 100%, 0% ' | append: b | append: '%'
   else
@@ -129,6 +133,7 @@
     { "type": "range", "id": "cut_depth", "label": "Inclinaison", "unit": "%", "min": 0, "max": 20, "step": 1, "default": 8 },
     { "type": "select", "id": "cut_direction", "label": "Sens de l'inclinaison", "options": [
       { "value": "right", "label": "Montant vers la droite" }, { "value": "left", "label": "Montant vers la gauche" } ], "default": "right" },
+    { "type": "checkbox", "id": "cut_bottom", "label": "Pencher aussi le bas", "info": "Décoché : le bas reste droit, pour que la forêt du pied de page recouvre la bande.", "default": true },
 
     { "type": "header", "content": "Mise en page" },
     { "type": "range", "id": "min_height", "label": "Hauteur (bureau)", "unit": "px", "min": 280, "max": 700, "step": 10, "default": 420 },

@@ -2289,7 +2289,10 @@
         "button_label": "Trouver la mienne",
         "button_url": "/collections/all",
         "button_bg": "#1f1a14",
-        "button_text": "#fffaf2"
+        "button_text": "#fffaf2",
+        "cut_bottom": false,
+        "padding_bottom": 0,
+        "min_height": 560
       }
     }
   },
