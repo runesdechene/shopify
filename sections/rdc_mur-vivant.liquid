@@ -108,6 +108,12 @@
     box-shadow: 0 10px 30px rgb(64 46 26 / .10); }
   #{{ uid }} .rdc-mv__ph { flex: 0 0 200px; position: relative; overflow: hidden; background: #221a12; cursor: pointer; }
   #{{ uid }} .rdc-mv__card--photo { width: 200px; }
+  {%- comment -%} Sur une photo sans avis : les étoiles et le prénom, posés en bas sur un fondu sombre. {%- endcomment -%}
+  #{{ uid }} .rdc-mv__legende { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; pointer-events: none;
+    padding: 34px 14px 12px; background: linear-gradient(to top, rgb(20 14 8 / .7), transparent);
+    color: #fffaf2; font-family: var(--font-heading--family); font-size: 1.15rem; letter-spacing: .02em; }
+  #{{ uid }} .rdc-mv__legende-note { display: block; color: #f4d694; font-family: var(--font-body--family);
+    font-size: .8rem; letter-spacing: .12em; margin-bottom: 2px; }
   #{{ uid }} .rdc-mv__ph img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease;
     -webkit-user-drag: none; user-select: none; }
   #{{ uid }} .rdc-mv__ph:hover img { transform: scale(1.05); }
@@ -388,7 +394,9 @@
       /* Sans avis écrit, la carte n'est que la photo : elle passe entre les avis. */
       if (!(p.message || '').trim()) {
         return '<div class="rdc-mv__card rdc-mv__card--photo"><div class="rdc-mv__ph" data-idx="' + p._idx + '"><img src="' +
-          esc(p.image_url) + '" alt="' + esc('Photo de ' + (p.submitter_name || 'la communauté')) + '" loading="lazy"></div></div>';
+          esc(p.image_url) + '" alt="' + esc('Photo de ' + (p.submitter_name || 'la communauté')) + '" loading="lazy">' +
+          '<div class="rdc-mv__legende"><span class="rdc-mv__legende-note" aria-label="5 sur 5">★★★★★</span>' +
+          esc(p.submitter_name || '') + '</div></div></div>';
       }
       /* Cinq étoiles pour tous : chaque porteur qui a envoyé sa photo a mis 5 (Uriel, 25/10/2026). */
       var txt = '<div class="rdc-mv__note" aria-label="5 sur 5">★★★★★</div>';
