@@ -34,3 +34,35 @@
 **Repo** : `C:/Users/uriel/Desktop/DEVS/shopify (Runes de Chêne)/` (machine FONDATION).
 
 **Établi** : 23 avril 2026, fin de session refonte popup home Boutique.
+
+## Le dépôt local n'est pas le thème en ligne — on ne pousse que ses propres fichiers (25/10/2026)
+
+**Le piège** : le 25/10, le dépôt avait plusieurs fichiers en retard sur le thème en ligne (menu mobile,
+newsletter, `rdc_motif`, `fragment-audio`…). Un `theme push` complet aurait écrasé ces corrections. Et Uriel
+règle ses images et ses textes **dans l'éditeur en ligne** : entre deux déploiements, `templates/index.json`
+change en ligne sans passer par le dépôt.
+
+**How to apply :**
+- Travailler sur une copie du thème en ligne (`theme pull --theme=<LIVE_ID> --path <dossier à part>`),
+  y poser ses fichiers, prévisualiser avec `theme dev --path <ce dossier>`.
+- Avant chaque déploiement : re-tirer `templates/index.json` en ligne, comparer section par section, et
+  **repartir de la version en ligne** en n'y appliquant que ses propres réglages.
+- Pousser avec `--only` les seuls fichiers touchés, puis vérifier sur runesdechene.com.
+
+## `theme dev` envoie tout ce qui apparaît dans le dossier, même un fichier temporaire
+
+**Le piège** (25/10/2026) : un `sed -i` et l'outil d'édition créent un fichier temporaire à côté du vrai ;
+`theme dev` l'a envoyé (« Doit avoir une extension de fichier .liquid ») et l'aperçu est resté bloqué sur une
+page d'erreur jusqu'au redémarrage. **How to apply :** modifier les fichiers dans le dépôt, puis les recopier
+(`cp`) dans le dossier surveillé ; jamais d'édition sur place.
+
+## Arrêter `theme dev` ne libère pas le port 9292
+
+**Le piège** (25/10/2026) : arrêter la tâche laisse tourner le processus `node` : le redémarrage échoue avec
+`EADDRINUSE`. **How to apply :** après l'arrêt, tuer le processus qui écoute sur 9292
+(`Get-NetTCPConnection -LocalPort 9292` → `Stop-Process`).
+
+## Un réglage `range` refuse toute valeur hors de son pas
+
+`padding_top` à 18 avec un pas de 4 → « must be a step in the range », et tout `index.json` est refusé.
+Changer le pas d'un `range` : au plus 101 crans entre `min` et `max`.
