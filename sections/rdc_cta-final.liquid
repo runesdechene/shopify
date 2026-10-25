@@ -107,7 +107,8 @@
   }
   {%- if s.show_email -%}
   {%- comment -%} Le bandeau recueille déjà l'email : on cache l'inscription du pied de page sur cette page. {%- endcomment -%}
-  .rdc-nl { display: none; }
+  {%- comment -%} Le bloc qui encadre l'inscription (sa bordure resterait seule, en trait). {%- endcomment -%}
+  .group-block:has(> .group-block-content > .rdc-nl), .rdc-nl { display: none; }
   {%- endif -%}
 
   @keyframes rdcCtaKb { from { transform: scale(1.05); } to { transform: scale(1.14); } }
