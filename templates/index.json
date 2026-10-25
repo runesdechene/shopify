@@ -98,6 +98,7 @@
         "pilier_4aCpLm",
         "pilier_CjV4xj"
       ],
+      "disabled": true,
       "name": "RDC — Triptyque",
       "settings": {
         "overline": "Depuis 2023, Runes de chêne fait",
@@ -122,8 +123,7 @@
         "word_color": "#403434",
         "background_image": "shopify://shop_images/Fond_section_173d7ca4-1587-465e-be60-3ce8abe92f99.jpg",
         "background_fit": "cover"
-      },
-      "disabled": true
+      }
     },
     "rdc_categories_PPbH9J": {
       "type": "rdc_categories",
@@ -165,9 +165,11 @@
       "settings": {
         "overline": "",
         "title": "",
+        "full_width": true,
         "columns": 3,
         "columns_mobile": 1,
         "tile_ratio": "portrait",
+        "tile_height": 600,
         "gap": 2,
         "corner_radius": 0,
         "label_align": "left",
@@ -182,9 +184,7 @@
         "padding_top": 2,
         "padding_bottom": 72,
         "color_scheme": "",
-        "accent_color": "#b4894f",
-        "full_width": true,
-        "tile_height": 600
+        "accent_color": "#b4894f"
       }
     },
     "slideshow_hf3iVq": {
@@ -717,6 +717,51 @@
         "anchor_id": "creations"
       }
     },
+    "rdc_concept_scan": {
+      "type": "rdc_concept-scan",
+      "blocks": {
+        "etape_1": {
+          "type": "etape",
+          "settings": {
+            "label": "Vise ton\nFragment"
+          }
+        },
+        "etape_2": {
+          "type": "etape",
+          "settings": {
+            "label": "Bip,\nil est reconnu"
+          }
+        },
+        "etape_3": {
+          "type": "etape",
+          "settings": {
+            "label": "Son récit\ns'ouvre"
+          }
+        }
+      },
+      "block_order": [
+        "etape_1",
+        "etape_2",
+        "etape_3"
+      ],
+      "settings": {
+        "overline": "Le concept Runes de Chêne",
+        "title": "Scanne ton t-shirt.\nÉcoute son histoire.",
+        "lead": "Chaque Fragment est une histoire vraie. Vise ton vêtement avec l'appli Runes de Chêne : il est reconnu en une seconde, et son récit s'ouvre, à lire ou à écouter.",
+        "cta_label": "Choisir mon Fragment",
+        "cta_url": "shopify://collections/all",
+        "photo": "shopify://shop_images/DSC01872.jpg",
+        "scanner_label": "Scanner un Fragment",
+        "fragment_name": "Hoplite",
+        "camp_over": "En prime, avec ton Fragment",
+        "camp_title": "Ta place au Campement",
+        "camp_text": "Là où les porteurs se retrouvent : toute la communauté, les ventes privées, les rencontres.",
+        "color_scheme": "",
+        "accent_color": "#a94842",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
     "liste_icone_4QpiPW": {
       "type": "liste-icone",
       "blocks": {
@@ -953,6 +998,7 @@
         "saga_LFm9HF",
         "saga_TQNrcJ"
       ],
+      "disabled": true,
       "name": "RDC — Sagas",
       "settings": {
         "overline": "",
@@ -982,8 +1028,7 @@
         "padding_bottom": 72,
         "color_scheme": "",
         "accent_color": "#b4894f"
-      },
-      "disabled": true
+      }
     },
     "collection_list_KVTKQr": {
       "type": "collection-list",
@@ -1087,8 +1132,8 @@
       "type": "rdc_mur-vivant",
       "name": "RDC — Mouvement vivant",
       "settings": {
-        "overline": "Pour ceux qui aiment l'Histoire",
-        "title": "Bienvenue chez toi.",
+        "overline": "A ceux qui aiment l'Histoire",
+        "title": "Bienvenue chez vous.",
         "subtitle": "De la France à la Suisse, de l'Espagne à l'Allemagne, nous sommes des milliers à porter nos Fragments d'Histoire comme signe d'appartenance. <b>Ce n'est plus juste une marque. C'est un état d'esprit.</b>",
         "show_stats": true,
         "show_stars": true,
@@ -1119,6 +1164,43 @@
         "padding_bottom": 64,
         "anchor_id": "mouvement",
         "photo_tint": 35
+      }
+    },
+    "rdc_cta_final": {
+      "type": "rdc_cta-final",
+      "settings": {
+        "overline": "Ventes privées · Nouveaux Fragments",
+        "title": "Sois le premier à les porter",
+        "subtitle": "<p>Un nouveau Fragment tous les deux mois, et des ventes privées. Laisse ton email, on te prévient en premier.</p>",
+        "button_label": "Trouver la mienne",
+        "button_url": "/collections/all",
+        "show_email": true,
+        "firstname_placeholder": "Ton prénom",
+        "email_placeholder": "Ton adresse email",
+        "email_button": "Me prévenir",
+        "email_success": "C'est noté. Tu seras prévenu avant tout le monde.",
+        "link_label": "Voir les collections",
+        "link_url": "/collections",
+        "content_align": "center",
+        "image": "shopify://shop_images/DSC01655.jpg",
+        "photo_brightness": 80,
+        "scrim_color": "#362C22",
+        "scrim_opacity": 75,
+        "animate": true,
+        "cut_depth": 8,
+        "cut_direction": "right",
+        "under_footer": 90,
+        "cut_bottom": false,
+        "min_height": 1120,
+        "height_mobile": 420,
+        "color_scheme": "",
+        "accent_color": "#f4d694",
+        "title_color": "#fcf9f1",
+        "button_bg": "#1f1a14",
+        "button_text": "#fffaf2",
+        "padding_top": 40,
+        "padding_bottom": 0,
+        "anchor_id": ""
       }
     },
     "rdc_app_3t8D4m": {
@@ -1203,6 +1285,7 @@
         "feature_WY8Uyt",
         "feature_chat01"
       ],
+      "disabled": true,
       "name": "RDC — L'application",
       "settings": {
         "bg_image": "shopify://shop_images/rdc_fond_varegue_5223175d-5e1d-43c1-9d16-b4c6c37882d3.webp",
@@ -1225,8 +1308,7 @@
         "padding_top": 80,
         "padding_bottom": 84,
         "anchor_id": "application"
-      },
-      "disabled": true
+      }
     },
     "section_8PtfMJ": {
       "type": "section",
@@ -1297,6 +1379,7 @@
         "text_6mnUcM",
         "custom_liquid_a9px9t"
       ],
+      "disabled": true,
       "name": "t:names.custom_section",
       "settings": {
         "content_direction": "column",
@@ -1330,8 +1413,7 @@
         "condition_value": "",
         "condition_liquid": "",
         "condition_invert": false
-      },
-      "disabled": true
+      }
     },
     "illustration_list_FjwKWn": {
       "type": "illustration-list",
@@ -2248,58 +2330,6 @@
         "condition_value": "",
         "condition_liquid": "",
         "condition_invert": false
-      }
-    },
-    "rdc_concept_scan": {
-      "type": "rdc_concept-scan",
-      "blocks": {
-        "etape_1": {
-          "type": "etape",
-          "settings": {
-            "label": "Vise ton\nFragment"
-          }
-        },
-        "etape_2": {
-          "type": "etape",
-          "settings": {
-            "label": "Bip,\nil est reconnu"
-          }
-        },
-        "etape_3": {
-          "type": "etape",
-          "settings": {
-            "label": "Son récit\ns'ouvre"
-          }
-        }
-      },
-      "block_order": [
-        "etape_1",
-        "etape_2",
-        "etape_3"
-      ],
-      "settings": {}
-    },
-    "rdc_cta_final": {
-      "type": "rdc_cta-final",
-      "settings": {
-        "overline": "Ventes privées · Nouveaux Fragments",
-        "title": "Sois le premier à les porter",
-        "subtitle": "<p>Un nouveau Fragment tous les deux mois, et des ventes privées. Laisse ton email, on te prévient en premier.</p>",
-        "button_label": "Trouver la mienne",
-        "button_url": "/collections/all",
-        "button_bg": "#1f1a14",
-        "button_text": "#fffaf2",
-        "cut_bottom": false,
-        "padding_bottom": 0,
-        "min_height": 1120,
-        "under_footer": 90,
-        "show_email": true,
-        "email_placeholder": "Ton adresse email",
-        "email_button": "Me prévenir",
-        "email_success": "C'est noté. Tu seras prévenu avant tout le monde.",
-        "link_label": "Voir les collections",
-        "link_url": "/collections",
-        "firstname_placeholder": "Ton prénom"
       }
     }
   },
