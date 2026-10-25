@@ -377,6 +377,23 @@
                   },
                   "block_order": []
                 },
+                "rdc_reassurance_buybox": {
+                  "type": "rdc_reassurance",
+                  "settings": {
+                    "line_delivery": "Imprimé à la commande dans notre atelier · <strong>chez vous entre 2 et 3 semaines</strong>",
+                    "line_returns": "Échange ou remboursement <strong>sous 14 jours</strong>",
+                    "line_payment": "Paiement sécurisé",
+                    "text_size": 13,
+                    "icon_size": 17,
+                    "gap": 9,
+                    "margin_top": 16,
+                    "margin_bottom": 8,
+                    "accent_color": "#b4894f",
+                    "text_color": "#5a4a42",
+                    "strong_color": "#403434"
+                  },
+                  "blocks": {}
+                },
                 "group_wNUjBe": {
                   "type": "group",
                   "name": "t:names.group",
@@ -1150,10 +1167,6 @@
                   "block_order": [
                     "text_wdNxWE"
                   ]
-                },
-                "rdc_reassurance_buybox": {
-                  "type": "rdc_reassurance",
-                  "settings": {}
                 }
               },
               "block_order": [
@@ -1293,6 +1306,51 @@
         "padding-block-end": 40
       }
     },
+    "rdc_concept_scan": {
+      "type": "rdc_concept-scan",
+      "blocks": {
+        "etape_1": {
+          "type": "etape",
+          "settings": {
+            "label": "Tu le\nreçois"
+          }
+        },
+        "etape_2": {
+          "type": "etape",
+          "settings": {
+            "label": "Tu vises\nle motif"
+          }
+        },
+        "etape_3": {
+          "type": "etape",
+          "settings": {
+            "label": "Son récit\ns'ouvre"
+          }
+        }
+      },
+      "block_order": [
+        "etape_1",
+        "etape_2",
+        "etape_3"
+      ],
+      "settings": {
+        "overline": "Ce que ce Fragment cache",
+        "title": "Ton [perso]\na une histoire.",
+        "lead": "Ce motif n'est pas un dessin de plus : c'est une histoire vraie. Quand tu le recevras, vise-le avec ton téléphone. Il est reconnu en une seconde, et son récit s'ouvre, à lire ou à écouter, avec ses anecdotes et ses énigmes.",
+        "cta_label": "",
+        "cta_url": "shopify://collections/all",
+        "photo": "shopify://shop_images/DSC01872.jpg",
+        "scanner_label": "Scanner un Fragment",
+        "fragment_name": "Hoplite",
+        "camp_over": "En prime, à ton nom",
+        "camp_title": "Ta place au Campement",
+        "camp_text": "Un titre unique inspiré par [perso], et ton accès prémium au CAMPEMENT : la communauté, les ventes privées, les rencontres.",
+        "color_scheme": "",
+        "accent_color": "#a94842",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
     "lecture_fragment_v2_EaANnh": {
       "type": "lecture-fragment-v2",
       "custom_css": [],
@@ -1304,7 +1362,8 @@
         "title": "{{ product.metafields.custom.illustration_produit.value.nom.value }}",
         "artist": "{{ product.metafields.custom.illustration_produit.value.artiste.value.nom.value }}",
         "description": "{{ product.metafields.custom.illustration_produit.value.son_histoire | metafield_tag }}",
-        "icon_image": "",
+        "audio_label": "Écouter ce Fragment",
+        "audio_accent": "#8a6a4a",
         "main_illustration": "{{ product.metafields.custom.illustration_produit.value.image_pour_fond_clair.value }}",
         "background_image_metaobject": "{{ product.metafields.custom.illustration_produit.value.image_fond_de_fragment.value }}",
         "background_image": "shopify://shop_images/fond_explore.webp"
@@ -1509,51 +1568,6 @@
         "color_scheme": "scheme-1",
         "padding-block-start": 48,
         "padding-block-end": 48
-      }
-    },
-    "rdc_concept_scan": {
-      "type": "rdc_concept-scan",
-      "blocks": {
-        "etape_1": {
-          "type": "etape",
-          "settings": {
-            "label": "Tu le\nreçois"
-          }
-        },
-        "etape_2": {
-          "type": "etape",
-          "settings": {
-            "label": "Tu vises\nle motif"
-          }
-        },
-        "etape_3": {
-          "type": "etape",
-          "settings": {
-            "label": "Son récit\ns'ouvre"
-          }
-        }
-      },
-      "block_order": [
-        "etape_1",
-        "etape_2",
-        "etape_3"
-      ],
-      "settings": {
-        "overline": "Ce que ce Fragment cache",
-        "title": "Ton [perso]\na une histoire.",
-        "lead": "Ce motif n'est pas un dessin de plus : c'est une histoire vraie. Quand tu le recevras, vise-le avec ton téléphone. Il est reconnu en une seconde, et son récit s'ouvre, à lire ou à écouter.",
-        "cta_label": "",
-        "cta_url": "shopify://collections/all",
-        "photo": "shopify://shop_images/DSC01872.jpg",
-        "scanner_label": "Scanner un Fragment",
-        "fragment_name": "Hoplite",
-        "camp_over": "En prime, à ton nom",
-        "camp_title": "Ta place au Campement",
-        "camp_text": "Un titre unique inspiré par [perso], et ta place parmi les porteurs : la communauté, les ventes privées, les rencontres.",
-        "color_scheme": "",
-        "accent_color": "#a94842",
-        "padding_top": 96,
-        "padding_bottom": 96
       }
     }
   },

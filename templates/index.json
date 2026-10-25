@@ -723,13 +723,13 @@
         "etape_1": {
           "type": "etape",
           "settings": {
-            "label": "Vise ton\nFragment"
+            "label": "Vise un\nFragment"
           }
         },
         "etape_2": {
           "type": "etape",
           "settings": {
-            "label": "Bip,\nil est reconnu"
+            "label": "Il est aussitôt\n reconnu"
           }
         },
         "etape_3": {
@@ -747,7 +747,7 @@
       "settings": {
         "overline": "Le concept Runes de Chêne",
         "title": "Scanne ton t-shirt.\nÉcoute son histoire.",
-        "lead": "Chaque Fragment est une histoire vraie. Vise ton vêtement avec l'appli Runes de Chêne : il est reconnu en une seconde, et son récit s'ouvre, à lire ou à écouter.",
+        "lead": "Chaque Fragment est une histoire vraie. Vise ton vêtement avec l'appli Runes de Chêne : il est reconnu en une seconde, et son récit s'ouvre, à lire ou à écouter, avec ses anecdotes et ses énigmes.",
         "cta_label": "Choisir mon Fragment",
         "cta_url": "shopify://collections/all",
         "photo": "shopify://shop_images/DSC01872.jpg",
@@ -1151,6 +1151,7 @@
         "stat4_label": "Lieux sortis de l'oubli par nos Porteurs",
         "stat4_source": "lieux",
         "speed": 120,
+        "photo_tint": 35,
         "max_photos": 100,
         "random_order": true,
         "submit_intro": "",
@@ -1162,16 +1163,15 @@
         "accent_color": "#983c3c",
         "padding_top": 72,
         "padding_bottom": 64,
-        "anchor_id": "mouvement",
-        "photo_tint": 35
+        "anchor_id": "mouvement"
       }
     },
     "rdc_cta_final": {
       "type": "rdc_cta-final",
       "settings": {
-        "overline": "Ventes privées · Nouveaux Fragments",
-        "title": "Sois le premier à les porter",
-        "subtitle": "<p>Un nouveau Fragment tous les deux mois, et des ventes privées. Laisse ton email, on te prévient en premier.</p>",
+        "overline": "Ventes privées & drops · Nouveaux Fragments",
+        "title": "Ecris l'Histoire avec nous",
+        "subtitle": "<p>Un nouveau Fragment tous les deux mois, des ventes privées, des événements. Laisse ton email, on te prévient en premier.</p>",
         "button_label": "Trouver la mienne",
         "button_url": "/collections/all",
         "show_email": true,
@@ -1184,7 +1184,7 @@
         "content_align": "center",
         "image": "shopify://shop_images/DSC01655.jpg",
         "photo_brightness": 80,
-        "scrim_color": "#362C22",
+        "scrim_color": "#362c22",
         "scrim_opacity": 75,
         "animate": true,
         "cut_depth": 8,
