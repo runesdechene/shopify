@@ -40,10 +40,10 @@
     line-height: 1.25; letter-spacing: .04em; text-transform: uppercase; color: var(--color-foreground); }
 
   #{{ uid }} .rdc-scan__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; margin-bottom: 28px; }
-  #{{ uid }} .rdc-scan__cta { display: inline-flex; background: var(--rdc-scan-accent); color: #fffaf2; text-decoration: none;
-    font-family: var(--font-accent--family); font-weight: 700; font-size: .95rem; letter-spacing: .02em;
-    text-transform: uppercase; padding: 16px 28px; border-radius: 10px; transition: filter .2s; }
-  #{{ uid }} .rdc-scan__cta:hover { filter: brightness(.9); }
+  #{{ uid }} .rdc-scan__cta { display: inline-flex; background: #1f1a14; color: #fffaf2; text-decoration: none;
+    font-family: var(--font-accent--family); font-weight: 700; font-size: .95rem; letter-spacing: .08em;
+    text-transform: uppercase; padding: 16px 32px; border-radius: 999px; transition: background .2s, transform .2s; }
+  #{{ uid }} .rdc-scan__cta:hover { background: var(--rdc-scan-accent); transform: translateY(-2px); }
 
   {%- comment -%} L'encart du Campement : l'étendard, puis le teasing, sur le parchemin de l'appli. {%- endcomment -%}
   #{{ uid }} .rdc-scan__camp { display: flex; align-items: center; gap: 20px; max-width: 32rem;
