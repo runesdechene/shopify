@@ -1,17 +1,23 @@
 {%- comment -%}
-  rdc_concept-scan.liquid — Section « Le concept » de l'accueil (25/10/2026).
+  rdc_concept-scan.liquid — Section « Le concept » de l'accueil et des fiches produit (25/10/2026).
 
   Une seule idée : on scanne son Fragment et l'appli raconte son histoire.
   À gauche le texte, trois étapes, le bouton vers les Fragments (jamais vers l'appli :
   l'appli valide le prix, elle ne fait pas sortir de la boutique), puis l'encart du Campement.
   À droite le viseur du scan posé sur la photo d'un porteur, et le Récit qui s'ouvre.
   Maquette : Figma « App v2 », 831:2061. Les écrans viennent du scan validé le 09/10 (530:946, 530:1052).
+  Sur une fiche produit (845:2061) : pas de bouton (le seul geste y est d'acheter), et [perso] dans le
+  titre ou le texte du Campement devient le nom du Fragment. Un produit sans Fragment n'affiche rien.
 {%- endcomment -%}
 
 {%- liquid
   assign uid = 'RdcScan-' | append: section.id
   assign s = section.settings
+  assign perso = product.metafields.custom.illustration_produit.value.nom
+  assign title = s.title | replace: '[perso]', perso
+  assign camp_text = s.camp_text | replace: '[perso]', perso
 -%}
+{%- if product == blank or perso != blank -%}
 
 <style>
   #{{ uid }} { --rdc-scan-accent: {{ s.accent_color }}; padding-block: {{ s.padding_top }}px {{ s.padding_bottom }}px; }
@@ -109,7 +115,7 @@
 
     <div class="rdc-scan__head">
       {%- if s.overline != blank -%}<div class="rdc-scan__over">{{ s.overline }}</div>{%- endif -%}
-      {%- if s.title != blank -%}<h2 class="rdc-scan__title">{{ s.title | newline_to_br }}</h2>{%- endif -%}
+      {%- if title != blank -%}<h2 class="rdc-scan__title">{{ title | newline_to_br }}</h2>{%- endif -%}
       {%- if s.lead != blank -%}<p class="rdc-scan__lead">{{ s.lead }}</p>{%- endif -%}
     </div>
 
@@ -173,7 +179,7 @@
           <div>
             {%- if s.camp_over != blank -%}<div class="rdc-scan__camp-over">{{ s.camp_over }}</div>{%- endif -%}
             <div class="rdc-scan__camp-title">{{ s.camp_title }}</div>
-            {%- if s.camp_text != blank -%}<p class="rdc-scan__camp-text">{{ s.camp_text }}</p>{%- endif -%}
+            {%- if camp_text != blank -%}<p class="rdc-scan__camp-text">{{ camp_text }}</p>{%- endif -%}
           </div>
         </div>
       {%- endif -%}
@@ -181,6 +187,7 @@
 
   </div>
 </div>
+{%- endif -%}
 
 {% schema %}
 {
@@ -190,12 +197,12 @@
   "settings": [
     { "type": "header", "content": "Texte" },
     { "type": "text", "id": "overline", "label": "Surtitre", "default": "Le concept Runes de Chêne" },
-    { "type": "textarea", "id": "title", "label": "Titre", "default": "Scanne ton t-shirt.\nÉcoute son histoire." },
+    { "type": "textarea", "id": "title", "label": "Titre", "default": "Scanne ton t-shirt.\nÉcoute son histoire.", "info": "Sur une fiche produit, [perso] devient le nom du Fragment." },
     { "type": "textarea", "id": "lead", "label": "Paragraphe", "default": "Chaque Fragment est une histoire vraie. Vise ton vêtement avec l'appli Runes de Chêne : il est reconnu en une seconde, et son récit s'ouvre, à lire ou à écouter." },
 
     { "type": "header", "content": "Bouton" },
     { "type": "text", "id": "cta_label", "label": "Libellé", "default": "Choisir mon Fragment" },
-    { "type": "url", "id": "cta_url", "label": "Lien", "default": "/collections/all", "info": "Vers les Fragments, jamais vers l'appli." },
+    { "type": "url", "id": "cta_url", "label": "Lien", "default": "/collections/all", "info": "Vers les Fragments, jamais vers l'appli. Libellé vide : pas de bouton (fiche produit)." },
 
     { "type": "header", "content": "Le scan" },
     { "type": "image_picker", "id": "photo", "label": "Photo d'un porteur", "info": "Un modèle qui porte un Fragment, en portrait. Elle s'affiche sous le viseur du scan." },
