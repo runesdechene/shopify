@@ -33,7 +33,8 @@
   #{{ uid }} .rdc-cat__grid{display:grid;width:100%;grid-template-columns:repeat({{ section.settings.columns }},1fr);
     gap:{{ section.settings.gap }}px}
   #{{ uid }} .rdc-cat__tile{position:relative;display:block;overflow:hidden;text-decoration:none;
-    border-radius:{{ section.settings.corner_radius }}px;aspect-ratio:{{ ratio }};background:#1c1812}
+    border-radius:{{ section.settings.corner_radius }}px;background:#1c1812;
+    {% if section.settings.tile_height > 0 %}height:{{ section.settings.tile_height }}px{% else %}aspect-ratio:{{ ratio }}{% endif %}}
   #{{ uid }} .rdc-cat__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
     transition:transform .6s ease}
   {% if section.settings.hover_zoom %}#{{ uid }} .rdc-cat__tile:hover .rdc-cat__img{transform:scale(1.06)}{% endif %}
@@ -150,6 +151,7 @@
     { "type": "select", "id": "tile_ratio", "label": "Format des tuiles", "options": [
       { "value": "portrait", "label": "Portrait (3:4)" }, { "value": "square", "label": "Carré" },
       { "value": "landscape", "label": "Paysage (4:3)" }, { "value": "wide", "label": "Large (16:9)" } ], "default": "portrait" },
+    { "type": "range", "id": "tile_height", "label": "Hauteur fixe des tuiles", "unit": "px", "min": 0, "max": 800, "step": 10, "default": 0, "info": "0 = la hauteur suit le format des tuiles." },
     { "type": "range", "id": "gap", "label": "Espacement", "unit": "px", "min": 4, "max": 40, "step": 2, "default": 18 },
     { "type": "range", "id": "corner_radius", "label": "Arrondi des coins", "unit": "px", "min": 0, "max": 30, "step": 1, "default": 0 },
     { "type": "select", "id": "label_align", "label": "Alignement du label", "options": [
