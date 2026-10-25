@@ -61,7 +61,7 @@
     {% if s.animate and s.image != blank %}animation: rdcCtaKb 18s ease-in-out infinite alternate;{% endif %}
   }
   #{{ uid }} .rdc-ctaf__scrim { position: absolute; inset: 0; z-index: 1;
-    background: linear-gradient(180deg, rgba(20,14,8,{{ scrim }}), rgba(20,14,8,{{ scrim | times: 0.6 | round: 2 }}) 50%, rgba(20,14,8,{{ scrim | times: 1.15 | round: 2 }})); }
+    background: rgba(20,14,8,{{ scrim }}); }
 
   #{{ uid }} .rdc-ctaf__ct {
     position: relative; z-index: 2; width: 100%;
@@ -73,9 +73,9 @@
     letter-spacing: .3em; text-transform: uppercase; color: {{ s.accent_color }}; margin: 0; }
   #{{ uid }} .rdc-ctaf__title { font-family: var(--font-heading--family, sans-serif);
     font-size: clamp(2.6rem, 6.5vw, 6.2rem); line-height: .84; letter-spacing: .02em; margin: 0;
-    color: {{ s.title_color }}; text-shadow: 0 2px {{ s.title_shadow }}px rgba(0,0,0,.45); }
+    color: {{ s.title_color }}; }
   #{{ uid }} .rdc-ctaf__sub { font-family: var(--font-body--family); font-style: normal;
-    font-size: 1.06rem; line-height: 1.45; color: #efe7d6; margin: 0; max-width: 46ch; text-shadow: 0 1px 6px rgba(0,0,0,.4); }
+    font-size: 1.06rem; line-height: 1.45; color: #efe7d6; margin: 0; max-width: 46ch; }
   #{{ uid }} .rdc-ctaf__sub p { margin: 0; }
 
   #{{ uid }} .rdc-ctaf__btn { margin-top: 6px; display: inline-flex; align-items: center; gap: 9px;
@@ -184,7 +184,7 @@
     { "type": "image_picker", "id": "image", "label": "Image (bureau)" },
     { "type": "image_picker", "id": "image_mobile", "label": "Image (mobile)", "info": "Si vide, l'image bureau est utilisée." },
     { "type": "range", "id": "photo_brightness", "label": "Luminosité de la photo", "unit": "%", "min": 30, "max": 100, "step": 5, "default": 80 },
-    { "type": "range", "id": "scrim_opacity", "label": "Voile (lisibilité du texte)", "unit": "%", "min": 0, "max": 80, "step": 5, "default": 40 },
+    { "type": "range", "id": "scrim_opacity", "label": "Voile sur toute l'image", "unit": "%", "min": 0, "max": 90, "step": 5, "default": 40 },
     { "type": "checkbox", "id": "animate", "label": "Animation (zoom lent)", "info": "Désactivée si l'utilisateur préfère réduire les animations.", "default": true },
 
     { "type": "header", "content": "Coupes immersives (penché)" },
@@ -202,7 +202,6 @@
     { "type": "color_scheme", "id": "color_scheme", "label": "Schéma de couleur", "default": "scheme-1" },
     { "type": "color", "id": "accent_color", "label": "Couleur du sur-titre", "default": "#f4d694" },
     { "type": "color", "id": "title_color", "label": "Couleur du titre", "default": "#fcf9f1" },
-    { "type": "range", "id": "title_shadow", "label": "Ombre du titre (lisibilité)", "unit": "px", "min": 0, "max": 16, "step": 1, "default": 6 },
     { "type": "color", "id": "button_bg", "label": "Fond du bouton", "default": "#f4d694" },
     { "type": "color", "id": "button_text", "label": "Texte du bouton", "default": "#623c3c" },
 
