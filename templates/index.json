@@ -1091,7 +1091,7 @@
         "show_stats": true,
         "show_stars": true,
         "stat_users_factor": 1,
-        "stat_users_round": "0",
+        "stat_users_round": "1000",
         "stat_users_plus": true,
         "stat_rating_label": "4,6/5 de moyenne",
         "stat2_value": "+4904",
