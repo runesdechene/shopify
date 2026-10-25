@@ -1105,10 +1105,8 @@
         "stat4_value": "",
         "stat4_label": "Lieux sortis de l'oubli par nos Porteurs",
         "stat4_source": "lieux",
-        "rows": 2,
         "speed": 120,
-        "card_width": 224,
-        "max_photos": 40,
+        "max_photos": 100,
         "random_order": true,
         "submit_intro": "",
         "submit_label": "",
@@ -1119,7 +1117,8 @@
         "accent_color": "#983c3c",
         "padding_top": 72,
         "padding_bottom": 64,
-        "anchor_id": "mouvement"
+        "anchor_id": "mouvement",
+        "photo_tint": 35
       }
     },
     "rdc_app_3t8D4m": {
