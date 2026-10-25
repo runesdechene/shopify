@@ -107,6 +107,7 @@
     background: #fbf3e4 url('{{ 'rdc-parchemin.webp' | asset_url }}') center / cover;
     box-shadow: 0 10px 30px rgb(64 46 26 / .10); }
   #{{ uid }} .rdc-mv__ph { flex: 0 0 200px; position: relative; overflow: hidden; background: #221a12; cursor: pointer; }
+  #{{ uid }} .rdc-mv__card--photo { width: 200px; }
   #{{ uid }} .rdc-mv__ph img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease;
     -webkit-user-drag: none; user-select: none; }
   #{{ uid }} .rdc-mv__ph:hover img { transform: scale(1.05); }
@@ -118,7 +119,7 @@
   #{{ uid }} .rdc-mv__txt { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 22px 26px 20px; }
   #{{ uid }} .rdc-mv__note { color: var(--mv-accent); font-size: 1rem; letter-spacing: .12em; margin-bottom: 8px; }
   #{{ uid }} .rdc-mv__avis { font-family: var(--font-body--family); font-size: .875rem; line-height: 1.4; color: #594848; margin: 0;
-    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 5; line-clamp: 5; overflow: hidden; }
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; line-clamp: 4; overflow: hidden; }
   #{{ uid }} .rdc-mv__who { margin-top: auto; padding-top: 20px; font-family: var(--font-heading--family); font-size: 1.2rem;
     letter-spacing: .02em; color: #403434; }
   #{{ uid }} .rdc-mv__loc { font-family: var(--font-body--family); font-size: .8rem; letter-spacing: 0; color: #857575; }
@@ -198,6 +199,8 @@
     {%- endif -%}
     #{{ uid }} .rdc-mv__card { width: 320px; height: 230px; }
     #{{ uid }} .rdc-mv__ph { flex-basis: 120px; }
+    #{{ uid }} .rdc-mv__card--photo { width: 160px; }
+    #{{ uid }} .rdc-mv__card--photo .rdc-mv__ph { flex-basis: 100%; }
     #{{ uid }} .rdc-mv__txt { padding: 16px 16px 14px; }
     #{{ uid }} .rdc-mv__avis { -webkit-line-clamp: 4; line-clamp: 4; }
     #{{ uid }} .rdc-mv__who { padding-top: 12px; }
@@ -382,9 +385,13 @@
     /* Une carte par témoignage : sa première photo, sa note, son avis, son prénom et son lieu. */
     function cardHtml(t) {
       var p = t.photos[0];
-      var note = parseInt(p.rating_products || p.rating_experience, 10) || 0;
-      var txt = '';
-      if (note) txt += '<div class="rdc-mv__note" aria-label="' + note + ' sur 5">' + '★'.repeat(Math.min(note, 5)) + '</div>';
+      /* Sans avis écrit, la carte n'est que la photo : elle passe entre les avis. */
+      if (!(p.message || '').trim()) {
+        return '<div class="rdc-mv__card rdc-mv__card--photo"><div class="rdc-mv__ph" data-idx="' + p._idx + '"><img src="' +
+          esc(p.image_url) + '" alt="' + esc('Photo de ' + (p.submitter_name || 'la communauté')) + '" loading="lazy"></div></div>';
+      }
+      /* Cinq étoiles pour tous : chaque porteur qui a envoyé sa photo a mis 5 (Uriel, 25/10/2026). */
+      var txt = '<div class="rdc-mv__note" aria-label="5 sur 5">★★★★★</div>';
       if (p.message) txt += '<p class="rdc-mv__avis">« ' + esc(p.message) + ' »</p>';
       txt += '<div class="rdc-mv__who">' + esc(p.submitter_name || '') +
         (p.location_name ? ' <span class="rdc-mv__loc">· ' + esc(p.location_name) + '</span>' : '') + '</div>';
@@ -397,7 +404,7 @@
 
     function buildRow(list, duration, reverse) {
       /* Répète le jeu jusqu'à couvrir ~1.6× la largeur viewport pour une boucle sans couture. */
-      var unit = (window.innerWidth < 681 ? 320 : 500) + 24;
+      var unit = (window.innerWidth < 681 ? 160 : 200) + 24; /* la plus petite carte : assez de répétitions dans tous les cas */
       var target = Math.max(window.innerWidth * 1.6, unit * 6);
       var repeats = Math.max(1, Math.ceil(target / (list.length * unit)));
       var half = '';
