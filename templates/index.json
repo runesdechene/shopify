@@ -1111,7 +1111,7 @@
         "max_photos": 40,
         "random_order": true,
         "submit_intro": "",
-        "submit_label": "Ajoute ta photo au mur →",
+        "submit_label": "",
         "submit_url": "https://hub.runesdechene.com/soumettre-contenu",
         "supabase_url": "",
         "supabase_anon_key": "",
