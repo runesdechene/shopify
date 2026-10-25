@@ -45,9 +45,10 @@
     text-transform: uppercase; padding: 16px 28px; border-radius: 10px; transition: filter .2s; }
   #{{ uid }} .rdc-scan__cta:hover { filter: brightness(.9); }
 
-  {%- comment -%} L'encart du Campement : l'étendard, puis le teasing. {%- endcomment -%}
+  {%- comment -%} L'encart du Campement : l'étendard, puis le teasing, sur le parchemin de l'appli. {%- endcomment -%}
   #{{ uid }} .rdc-scan__camp { display: flex; align-items: center; gap: 20px; max-width: 32rem;
-    background: {{ s.camp_bg }}; border-radius: 15px; padding: 18px 24px 18px 18px; }
+    background: #f6e7cf url('{{ 'rdc-parchemin.webp' | asset_url }}') center 40% / cover;
+    border: 1px solid rgb(168 147 105 / .55); border-radius: 15px; padding: 18px 24px 18px 18px; }
   #{{ uid }} .rdc-scan__camp img { width: 56px; height: auto; flex: 0 0 auto; }
   #{{ uid }} .rdc-scan__camp-over { font-family: var(--font-accent--family); font-weight: 700; font-size: .75rem;
     letter-spacing: .18em; text-transform: uppercase; color: #b4894f; }
@@ -208,7 +209,6 @@
     { "type": "text", "id": "camp_over", "label": "Surtitre", "default": "En prime, avec ton Fragment" },
     { "type": "text", "id": "camp_title", "label": "Titre", "default": "Ta place au Campement", "info": "Vide : l'encart disparaît." },
     { "type": "textarea", "id": "camp_text", "label": "Texte", "default": "Là où les porteurs se retrouvent : toute la communauté, les ventes privées, les rencontres." },
-    { "type": "color", "id": "camp_bg", "label": "Fond de l'encart", "default": "#f6e7cf" },
 
     { "type": "header", "content": "Style" },
     { "type": "color_scheme", "id": "color_scheme", "label": "Schéma de couleur", "default": "scheme-1" },
