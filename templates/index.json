@@ -2283,7 +2283,7 @@
     "rdc_cta_final": {
       "type": "rdc_cta-final",
       "settings": {
-        "overline": "Pour ceux qui aiment l'Histoire",
+        "overline": "À ton tour",
         "title": "Quelle figure porteras-tu ?",
         "subtitle": "<p>Valkyrie, Druide, Hoplite, Jeanne de Flandre… Chacune a une histoire vraie à te raconter.</p>",
         "button_label": "Trouver la mienne",
