@@ -74,7 +74,7 @@
   #{{ uid }} .rdc-ctaf__title { font-family: var(--font-heading--family, sans-serif);
     font-size: clamp(2.6rem, 6.5vw, 6.2rem); line-height: .84; letter-spacing: .02em; margin: 0;
     color: {{ s.title_color }}; text-shadow: 0 2px {{ s.title_shadow }}px rgba(0,0,0,.45); }
-  #{{ uid }} .rdc-ctaf__sub { font-family: var(--font-fragment--family, Georgia, serif); font-style: italic;
+  #{{ uid }} .rdc-ctaf__sub { font-family: var(--font-fragment--family, Georgia, serif); font-style: normal;
     font-size: 1.06rem; line-height: 1.45; color: #efe7d6; margin: 0; max-width: 46ch; text-shadow: 0 1px 6px rgba(0,0,0,.4); }
   #{{ uid }} .rdc-ctaf__sub p { margin: 0; }
 
@@ -143,7 +143,7 @@
     { "type": "checkbox", "id": "cut_bottom", "label": "Pencher aussi le bas", "info": "Décoché : le bas reste droit, pour que la forêt du pied de page recouvre la bande.", "default": true },
 
     { "type": "header", "content": "Mise en page" },
-    { "type": "range", "id": "min_height", "label": "Hauteur (bureau)", "unit": "px", "min": 280, "max": 700, "step": 10, "default": 420 },
+    { "type": "range", "id": "min_height", "label": "Hauteur (bureau)", "unit": "px", "min": 280, "max": 1400, "step": 20, "default": 420 },
     { "type": "range", "id": "height_mobile", "label": "Hauteur (mobile)", "unit": "px", "min": 240, "max": 600, "step": 10, "default": 420 },
 
     { "type": "header", "content": "Couleurs" },
