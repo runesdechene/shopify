@@ -124,13 +124,13 @@
   }
   #{{ uid }} .rdc-mv__submit-btn {
     display: inline-flex; align-items: center; gap: 9px;
-    background: var(--mv-accent); color: #fff;
+    background: transparent; color: #1f1a14; border: 1px solid #1f1a14;
     font-family: var(--font-accent--family); letter-spacing: .08em; font-weight: 700; font-size: .95rem;
     text-transform: uppercase; padding: 15px 30px; border-radius: 999px; text-decoration: none;
     transition: filter .2s ease, transform .2s ease;
   }
   #{{ uid }} .rdc-mv__submit-btn svg { width: 19px; height: 19px; flex: 0 0 auto; }
-  #{{ uid }} .rdc-mv__submit-btn:hover { filter: brightness(.92); transform: translateY(-2px); }
+  #{{ uid }} .rdc-mv__submit-btn:hover { background: #1f1a14; color: #fffaf2; transform: translateY(-2px); }
   /* Écart entre le bouton et la première rangée de photos */
   #{{ uid }} .rdc-mv__cta + .rdc-mv__wall { margin-top: 34px; }
 
