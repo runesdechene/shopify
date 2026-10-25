@@ -85,6 +85,23 @@
     transition: transform .2s ease, filter .2s ease; }
   #{{ uid }} .rdc-ctaf__btn:hover { transform: translateY(-2px); filter: brightness(.96); }
 
+  {%- comment -%} L'inscription : un champ et un bouton sur une ligne, le lien vers les collections dessous. {%- endcomment -%}
+  #{{ uid }} .rdc-ctaf__form { display: flex; gap: 10px; margin-top: 6px; width: min(100%, 620px); }
+  #{{ uid }} .rdc-ctaf__input--prenom { flex: 0 1 34%; }
+  #{{ uid }} .rdc-ctaf__input { flex: 1; min-width: 0; padding: 15px 22px; border-radius: 999px;
+    border: 1px solid rgba(252,249,241,.55); background: rgba(252,249,241,.08); color: #fcf9f1;
+    font-family: var(--font-body--family); font-size: .95rem; }
+  #{{ uid }} .rdc-ctaf__input::placeholder { color: rgba(252,249,241,.6); }
+  #{{ uid }} .rdc-ctaf__submit { padding: 15px 26px; border-radius: 999px; border: 0; cursor: pointer;
+    background: #fcf9f1; color: #1f1a14; font-family: var(--font-body--family); font-weight: 700;
+    font-size: .9rem; letter-spacing: .06em; text-transform: uppercase; transition: transform .2s ease; }
+  #{{ uid }} .rdc-ctaf__submit:hover { transform: translateY(-2px); }
+  #{{ uid }} .rdc-ctaf__msg { font-family: var(--font-body--family); font-size: 1rem; color: #fcf9f1; margin: 6px 0 0; }
+  #{{ uid }} .rdc-ctaf__link { font-family: var(--font-body--family); font-size: .9rem; color: rgba(252,249,241,.8);
+    text-decoration: underline; text-underline-offset: 3px; }
+  #{{ uid }} .rdc-ctaf__link:hover { color: #fcf9f1; }
+  @media (max-width: 749px) { #{{ uid }} .rdc-ctaf__form { flex-direction: column; } }
+
   @keyframes rdcCtaKb { from { transform: scale(1.05); } to { transform: scale(1.14); } }
   @media (prefers-reduced-motion: reduce) { #{{ uid }} .rdc-ctaf__bg { animation: none; } }
 
@@ -105,7 +122,25 @@
       {%- if s.overline != blank -%}<p class="rdc-ctaf__over">{{ s.overline }}</p>{%- endif -%}
       {%- if s.title != blank -%}<h2 class="rdc-ctaf__title">{{ s.title }}</h2>{%- endif -%}
       {%- if s.subtitle != blank -%}<div class="rdc-ctaf__sub">{{ s.subtitle }}</div>{%- endif -%}
-      {%- if s.button_label != blank -%}
+      {%- if s.show_email -%}
+        {%- comment -%} Formulaire client natif de Shopify : l'adresse rejoint les abonnés de la boutique,
+            que le Hub synchronise. L'id ramène la page ici après l'envoi. {%- endcomment -%}
+        {%- form 'customer', id: 'RdcCtaEmail', class: 'rdc-ctaf__form' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="rdc-ctaf__msg">{{ s.email_success }}</p>
+          {%- else -%}
+            <input type="hidden" name="contact[tags]" value="newsletter,accueil-bandeau-final">
+            <label for="RdcCtaFirstName" class="visually-hidden">Prénom</label>
+            <input id="RdcCtaFirstName" class="rdc-ctaf__input rdc-ctaf__input--prenom" type="text" name="contact[first_name]"
+              autocomplete="given-name" autocapitalize="words" placeholder="{{ s.firstname_placeholder }}">
+            <label for="RdcCtaEmailInput" class="visually-hidden">E-mail</label>
+            <input id="RdcCtaEmailInput" class="rdc-ctaf__input" type="email" name="contact[email]"
+              autocomplete="email" autocapitalize="off" required placeholder="{{ s.email_placeholder }}">
+            <button class="rdc-ctaf__submit" type="submit">{{ s.email_button }}</button>
+          {%- endif -%}
+        {%- endform -%}
+        {%- if s.link_label != blank -%}<a class="rdc-ctaf__link" href="{{ s.link_url | default: '/collections' }}">{{ s.link_label }}</a>{%- endif -%}
+      {%- elsif s.button_label != blank -%}
         <a class="rdc-ctaf__btn" href="{{ s.button_url | default: '#' }}">{{ s.button_label }} →</a>
       {%- endif -%}
     </div>
@@ -125,6 +160,14 @@
     { "type": "richtext", "id": "subtitle", "label": "Ligne d'accent", "default": "<p>Des créations à porter, un monde à explorer.</p>" },
     { "type": "text", "id": "button_label", "label": "Libellé du bouton", "default": "Explorer la boutique" },
     { "type": "url", "id": "button_url", "label": "Lien du bouton", "info": "Choisis la Page Boutique ou une Collection." },
+    { "type": "header", "content": "Inscription e-mail" },
+    { "type": "checkbox", "id": "show_email", "label": "Remplacer le bouton par un champ e-mail", "default": false },
+    { "type": "text", "id": "firstname_placeholder", "label": "Texte du champ prénom", "default": "Ton prénom" },
+    { "type": "text", "id": "email_placeholder", "label": "Texte du champ e-mail", "default": "Ton adresse e-mail" },
+    { "type": "text", "id": "email_button", "label": "Bouton", "default": "Me prévenir" },
+    { "type": "text", "id": "email_success", "label": "Message après l'inscription", "default": "C'est noté. Tu seras prévenu avant tout le monde." },
+    { "type": "text", "id": "link_label", "label": "Petit lien sous le champ", "default": "Voir les collections" },
+    { "type": "url", "id": "link_url", "label": "Lien" },
     { "type": "select", "id": "content_align", "label": "Alignement", "options": [
       { "value": "center", "label": "Centré" }, { "value": "left", "label": "Gauche" } ], "default": "center" },
 
