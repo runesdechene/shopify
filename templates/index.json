@@ -182,7 +182,8 @@
         "padding_top": 36,
         "padding_bottom": 72,
         "color_scheme": "",
-        "accent_color": "#b4894f"
+        "accent_color": "#b4894f",
+        "full_width": true
       }
     },
     "slideshow_hf3iVq": {
