@@ -94,7 +94,7 @@
             <div class="lecture-fragment__description">
               {%- if motif_bref != blank -%}
                 <p class="lecture-fragment__bref">En bref</p>
-                <p>{{ motif_bref }}</p>
+                <p>{{ motif_bref | escape }}</p>
               {%- endif -%}
               {%- if motif_mot != blank -%}
                 {%- capture NL %}
@@ -106,7 +106,7 @@
                     {%- assign paragraphes = motif_mot | split: NL -%}
                     {%- for para in paragraphes -%}
                       {%- assign ligne = para | strip -%}
-                      {%- if ligne != '' -%}<p>{{ ligne }}</p>{%- endif -%}
+                      {%- if ligne != '' -%}<p>{{ ligne | escape }}</p>{%- endif -%}
                     {%- endfor -%}
                   </blockquote>
                   {%- assign artiste = ill_produit.artiste.value -%}
@@ -115,7 +115,7 @@
                       {%- if artiste.image != blank -%}
                         {{ artiste.image | image_url: width: 80 | image_tag: loading: 'lazy', width: 40, height: 40, alt: '' }}
                       {%- endif -%}
-                      {{ artiste.nom }}, l’artiste
+                      {{ artiste.nom | escape }}, l’artiste
                     </p>
                   {%- endif -%}
                 </figure>
