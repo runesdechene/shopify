@@ -87,8 +87,11 @@
     <div class="three-installments">
       {%- assign installment_price = selected_variant.price | divided_by: 3.0 | money -%}
       <p class="three-installments__text">
-        {%- comment -%} Hors UE (Suisse…), Shopify retire la TVA française : pas de « TTC ». {%- endcomment -%}
-        ou 3 paiements de {{ installment_price }}{% if cart.taxes_included %} TTC{% endif %}
+        {%- comment -%}
+          En Suisse, Shopify retire la TVA française : pas de « TTC ». (cart.taxes_included ne suit pas le marché.)
+          shortcut: seule la Suisse est traitée, ajouter les autres pays hors UE s'ils deviennent un marché.
+        {%- endcomment -%}
+        ou 3 paiements de {{ installment_price }}{% unless localization.country.iso_code == 'CH' %} TTC{% endunless %}
         {%- if block_settings.installments_image != blank -%}
           <img src="{{ block_settings.installments_image | image_url: width: 100 }}" alt="" class="three-installments__image" loading="lazy">
         {%- endif -%}
