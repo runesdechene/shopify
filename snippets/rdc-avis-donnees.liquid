@@ -1,0 +1,26 @@
+{%- comment -%}
+  rdc-avis-donnees.liquid
+
+  Les avis du vêtement d'un produit, lus une seule fois par page : `window.rdcAvis(type)` rend la promesse
+  de la RPC anon `avis_du_vetement` (monorepo, migs 595-596) — { vetement, note, nombre, avis[] }, ou null
+  quand le type Shopify n'a pas de vêtement (débardeurs). La ligne d'étoiles et la section d'avis la partagent.
+{%- endcomment -%}
+<script>
+  window.rdcAvis = window.rdcAvis || (function () {
+    var URL_BASE = 'https://ukpapqssgsxirsgmcvof.supabase.co';
+    var KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrcGFwcXNzZ3N4aXJzZ21jdm9mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAyOTU5OTMsImV4cCI6MjA4NTg3MTk5M30.Le1gdE3HhmZ2gzMJF9hVhlZVsILmLd5GQgk87xC_dUY';
+    var lus = {};
+    return function (type) {
+      if (!lus[type]) {
+        lus[type] = fetch(URL_BASE + '/rest/v1/rpc/avis_du_vetement', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', apikey: KEY, Authorization: 'Bearer ' + KEY },
+          body: JSON.stringify({ p_type_shopify: type })
+        }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+      }
+      return lus[type];
+    };
+  })();
+  /* Le pluriel d'un vêtement, tel qu'il s'écrit sur la fiche. */
+  window.rdcVetements = { tshirt: 'T-shirts', sweatshirt: 'Sweatshirts', veste_zip: 'Vestes Zip' };
+</script>

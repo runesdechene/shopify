@@ -1,0 +1,197 @@
+{%- comment -%}
+  rdc_avis-produit.liquid
+
+  Les avis du vêtement de la fiche (maquette Figma « App v2 », page « Boutique — Avis », validée le 11/11/2026),
+  à la place de Judge.me. Les avis vont par vêtement, jamais par motif : un T-shirt montre ceux de tous les
+  T-shirts, et un modèle qui en remplace un autre les garde (table vetements_shopify du monorepo).
+  - Données : `window.rdcAvis` (snippet rdc-avis-donnees, RPC anon avis_du_vetement).
+  - Pleine largeur, les cartes défilent doucement en boucle (doublées pour qu'on ne voie pas la couture) ;
+    pause au survol ; immobiles et défilables à la main si le visiteur réduit les animations ou s'il y a
+    moins de 4 avis.
+  - La photo d'un avis (cochée « Avis » dans le Hub) se pose à gauche, « +N » s'il y en a d'autres ;
+    un clic les ouvre en grand.
+  - Aucun avis, ou un produit sans vêtement (débardeur) : la section reste cachée.
+{%- endcomment -%}
+{%- render 'rdc-avis-donnees' -%}
+{%- assign uid = 'RdcAvis-' | append: section.id -%}
+
+<section id="rdc-avis" class="rdc-avis" data-uid="{{ uid }}" hidden>
+  <div id="{{ uid }}">
+    <div class="rdc-avis__tete">
+      <div>
+        <p class="rdc-avis__surtitre">Ce qu’en disent ceux qui le portent</p>
+        <h2 class="rdc-avis__titre"></h2>
+        <div class="rdc-avis__resume">
+          <span class="rdc-avis__note"></span>
+          <span>
+            <span class="rdc-avis__etoiles" aria-hidden="true"></span>
+            <span class="rdc-avis__nombre"></span>
+          </span>
+        </div>
+      </div>
+      <a class="rdc-avis__bouton" href="https://hub.runesdechene.com/soumettre-contenu?chemin=avis">Donner mon avis</a>
+    </div>
+    <div class="rdc-avis__bande">
+      <ul class="rdc-avis__piste"></ul>
+    </div>
+    <div class="rdc-avis__grand" role="dialog" aria-modal="true" aria-label="Photos de l’avis" hidden>
+      <button type="button" class="rdc-avis__fermer" aria-label="Fermer">✕</button>
+      <button type="button" class="rdc-avis__fleche" data-sens="-1" aria-label="Photo précédente">‹</button>
+      <img alt="">
+      <button type="button" class="rdc-avis__fleche" data-sens="1" aria-label="Photo suivante">›</button>
+    </div>
+  </div>
+</section>
+
+<style>
+  #{{ uid }} { --encre: #594848; --sombre: #312b2b; --or: #b4894f; --carte: #f6e7cf;
+    padding: 96px 0 64px; overflow: hidden; }
+  #{{ uid }} .rdc-avis__tete { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
+    gap: 24px; max-width: var(--page-width, 1440px); margin: 0 auto 32px; padding: 0 var(--page-margin, 20px); }
+  #{{ uid }} .rdc-avis__surtitre { margin: 0 0 6px; font-family: var(--font-accent--family); font-weight: 600;
+    font-size: .85rem; letter-spacing: .25em; text-transform: uppercase; color: var(--or); }
+  #{{ uid }} .rdc-avis__titre { margin: 0; font-family: var(--font-heading--family); font-weight: 400;
+    font-size: clamp(2rem, 4vw, 3rem); letter-spacing: .08em; line-height: 1.1; text-transform: uppercase; color: var(--encre); }
+  #{{ uid }} .rdc-avis__resume { display: flex; align-items: center; gap: 16px; margin-top: 28px; }
+  #{{ uid }} .rdc-avis__note { font-family: var(--font-heading--family); font-size: 4.5rem; line-height: 1; color: var(--encre); }
+  #{{ uid }} .rdc-avis__etoiles { display: block; color: var(--or); font-size: 1.3rem; letter-spacing: .15em; }
+  #{{ uid }} .rdc-avis__nombre { font-family: var(--font-fragment--family, var(--font-body--family)); font-size: 1.1rem; color: var(--sombre); }
+  #{{ uid }} .rdc-avis__bouton { display: inline-block; padding: 12px 24px; border: 1px solid #c9baac; border-radius: 999px;
+    background: #f9f4ea; box-shadow: 0 3px 8px -1px rgba(89, 64, 31, .22); color: var(--sombre);
+    font-family: var(--font-body--family); font-weight: 700; font-size: .95rem; text-decoration: none; }
+
+  #{{ uid }} .rdc-avis__bande { padding: 8px 0 24px; }
+  #{{ uid }} .rdc-avis__piste { display: flex; gap: 24px; width: max-content; margin: 0; padding: 0 var(--page-margin, 20px); list-style: none; }
+  #{{ uid }}[data-defile] .rdc-avis__piste { animation: rdc-avis-defile var(--duree) linear infinite; }
+  #{{ uid }}[data-defile] .rdc-avis__bande:hover .rdc-avis__piste { animation-play-state: paused; }
+  #{{ uid }}:not([data-defile]) .rdc-avis__bande { overflow-x: auto; scroll-snap-type: x mandatory; }
+  #{{ uid }}:not([data-defile]) .rdc-avis__carte { scroll-snap-align: start; }
+  @keyframes rdc-avis-defile { to { transform: translateX(-50%); } }
+
+  #{{ uid }} .rdc-avis__carte { display: flex; gap: 24px; width: min(82vw, 448px); padding: 28px; box-sizing: border-box;
+    border: 1px solid rgba(168, 147, 105, .55); border-radius: 15px; background: var(--carte); }
+  #{{ uid }} .rdc-avis__photo { position: relative; flex: none; width: 140px; height: 180px; padding: 0; border: 0;
+    border-radius: 10px; overflow: hidden; background: #d9c9b0; cursor: zoom-in; }
+  #{{ uid }} .rdc-avis__photo img { width: 100%; height: 100%; object-fit: cover; }
+  #{{ uid }} .rdc-avis__plus { position: absolute; right: 8px; bottom: 8px; padding: 2px 9px; border-radius: 999px;
+    background: rgba(49, 43, 43, .75); color: #fff; font-family: var(--font-body--family); font-weight: 700; font-size: .8rem; }
+  #{{ uid }} .rdc-avis__contenu { display: flex; flex-direction: column; gap: 11px; min-width: 0; }
+  #{{ uid }} .rdc-avis__carte-etoiles { color: var(--or); font-size: 1.1rem; letter-spacing: .12em; }
+  #{{ uid }} .rdc-avis__carte-titre { margin: 0; font-family: var(--font-heading--family); font-weight: 400; font-size: 1.6rem;
+    letter-spacing: .03em; line-height: 1.15; color: var(--encre); }
+  #{{ uid }} .rdc-avis__texte { margin: 0; font-family: var(--font-fragment--family, var(--font-body--family)); font-size: 1.1rem;
+    line-height: 1.45; color: var(--sombre); white-space: pre-line; }
+  #{{ uid }} .rdc-avis__signature { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding-top: 4px;
+    font-family: var(--font-body--family); font-size: .8rem; color: var(--encre); }
+  #{{ uid }} .rdc-avis__nom { font-weight: 700; font-size: .875rem; }
+  #{{ uid }} .rdc-avis__verifie { padding: 4px 12px; border: 1px solid rgba(180, 137, 79, .6); border-radius: 999px;
+    background: rgba(180, 137, 79, .16); color: #7a5a2b; font-weight: 700; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; }
+  #{{ uid }} .rdc-avis__date { opacity: .7; }
+
+  #{{ uid }} .rdc-avis__grand { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center;
+    gap: 12px; background: rgba(20, 16, 14, .88); }
+  #{{ uid }} .rdc-avis__grand[hidden] { display: none; }
+  #{{ uid }} .rdc-avis__grand img { max-width: min(88vw, 900px); max-height: 88vh; border-radius: 10px; object-fit: contain; }
+  #{{ uid }} .rdc-avis__grand button { border: 0; background: none; color: #fff; font-size: 2.4rem; cursor: pointer; padding: 8px; }
+  #{{ uid }} .rdc-avis__fermer { position: absolute; top: 16px; right: 20px; font-size: 1.6rem !important; }
+
+  @media (max-width: 749px) {
+    #{{ uid }} { padding: 64px 0 40px; }
+    #{{ uid }} .rdc-avis__carte { flex-direction: column; }
+    #{{ uid }} .rdc-avis__photo { width: 100%; height: 200px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #{{ uid }} .rdc-avis__piste { animation: none !important; }
+  }
+</style>
+
+<script>
+  (function () {
+    var racine = document.getElementById({{ uid | json }});
+    var section = racine.closest('.rdc-avis');
+    var piste = racine.querySelector('.rdc-avis__piste');
+    var grand = racine.querySelector('.rdc-avis__grand');
+    var photosOuvertes = [];
+    var rang = 0;
+
+    function echapper(s) {
+      return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    function etoiles(n) {
+      var pleines = Math.max(0, Math.min(5, Math.round(n || 0)));
+      return '★'.repeat(pleines) + '☆'.repeat(5 - pleines);
+    }
+    function mois(quand) {
+      var t = new Date(quand).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+      return t.charAt(0).toUpperCase() + t.slice(1);
+    }
+    /* Un avis repris de Judge.me commence par son titre, seul sur sa ligne. */
+    function titreEtTexte(texte) {
+      var parties = String(texte || '').split(/\n\s*\n/);
+      if (parties.length > 1 && parties[0].length <= 80) return { titre: parties[0], texte: parties.slice(1).join('\n\n') };
+      return { titre: '', texte: texte || '' };
+    }
+    function carte(a, i) {
+      var tt = titreEtTexte(a.texte);
+      var photo = '';
+      if (a.photos.length) {
+        photo = '<button type="button" class="rdc-avis__photo" data-avis="' + i + '" aria-label="Voir les photos de ' + echapper(a.nom) + '">'
+          + '<img src="' + echapper(a.photos[0].vignette) + '" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=\'' + echapper(a.photos[0].url) + '\'">'
+          + (a.photos.length > 1 ? '<span class="rdc-avis__plus">+' + (a.photos.length - 1) + '</span>' : '')
+          + '</button>';
+      }
+      return '<li class="rdc-avis__carte">' + photo + '<div class="rdc-avis__contenu">'
+        + (a.note ? '<span class="rdc-avis__carte-etoiles" role="img" aria-label="' + a.note + ' sur 5">' + etoiles(a.note) + '</span>' : '')
+        + (tt.titre ? '<h3 class="rdc-avis__carte-titre">' + echapper(tt.titre) + '</h3>' : '')
+        + (tt.texte ? '<p class="rdc-avis__texte">' + echapper(tt.texte) + '</p>' : '')
+        + '<div class="rdc-avis__signature"><span class="rdc-avis__nom">' + echapper(a.nom) + '</span>'
+        + (a.verifie ? '<span class="rdc-avis__verifie">✓ Client vérifié</span>' : '')
+        + '<span class="rdc-avis__date">' + mois(a.quand) + '</span></div>'
+        + '</div></li>';
+    }
+
+    function montrer(photos, i) {
+      photosOuvertes = photos; rang = i;
+      grand.querySelector('img').src = photos[rang].url;
+      grand.querySelectorAll('.rdc-avis__fleche').forEach(function (b) { b.hidden = photos.length < 2; });
+      grand.hidden = false;
+    }
+    grand.addEventListener('click', function (e) {
+      var b = e.target.closest('button');
+      if (b && b.dataset.sens) { montrer(photosOuvertes, (rang + Number(b.dataset.sens) + photosOuvertes.length) % photosOuvertes.length); return; }
+      if (b || e.target === grand) grand.hidden = true;
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') grand.hidden = true; });
+
+    window.rdcAvis({{ product.type | json }}).then(function (d) {
+      if (!d || !d.avis || !d.avis.length) return;
+      var vetements = window.rdcVetements[d.vetement];
+      racine.querySelector('.rdc-avis__titre').textContent = 'Ils portent nos ' + vetements;
+      racine.querySelector('.rdc-avis__note').textContent = d.note ? String(d.note).replace('.', ',') : '';
+      racine.querySelector('.rdc-avis__etoiles').textContent = etoiles(d.note);
+      racine.querySelector('.rdc-avis__nombre').textContent = d.nombre + ' avis sur nos ' + vetements + ', tous motifs confondus';
+
+      var cartes = d.avis.map(carte).join('');
+      var defile = d.avis.length >= 4 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      piste.innerHTML = defile ? cartes + cartes.replace(/<li /g, '<li inert ') : cartes;
+      if (defile) {
+        racine.dataset.defile = '';
+        racine.style.setProperty('--duree', (d.avis.length * 9) + 's'); /* environ 9 s par carte : on a le temps de lire */
+      }
+      piste.addEventListener('click', function (e) {
+        var b = e.target.closest('.rdc-avis__photo');
+        if (b) montrer(d.avis[Number(b.dataset.avis)].photos, 0);
+      });
+      section.hidden = false;
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Avis du vêtement",
+  "tag": "div",
+  "enabled_on": { "templates": ["product"] },
+  "presets": [{ "name": "Avis du vêtement" }]
+}
+{% endschema %}

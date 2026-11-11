@@ -1,0 +1,34 @@
+{%- comment -%}
+  rdc-note-avis.liquid
+
+  La ligne sous le titre de la fiche (maquette Figma « Boutique — Avis ») : ★★★★★ 4,9 · 38 avis sur nos T-shirts,
+  qui mène à la section `rdc_avis-produit`. Cachée tant que les avis ne sont pas lus, et pour un vêtement sans avis.
+  Rendu par un bloc « Liquid personnalisé » de la fiche : {% render 'rdc-note-avis', product: closest.product %}
+{%- endcomment -%}
+{%- render 'rdc-avis-donnees' -%}
+{%- assign uid = 'RdcNote-' | append: product.id -%}
+<a id="{{ uid }}" class="rdc-note" href="#rdc-avis" hidden>
+  <span class="rdc-note__etoiles" aria-hidden="true"></span>
+  <b class="rdc-note__valeur"></b>
+  <span class="rdc-note__nombre"></span>
+</a>
+<style>
+  #{{ uid }} { display: inline-flex; align-items: center; gap: 8px; margin: 2px 0 6px; color: #594848;
+    font-family: var(--font-body--family); font-size: .875rem; text-decoration: none; }
+  #{{ uid }}[hidden] { display: none; }
+  #{{ uid }} .rdc-note__etoiles { color: #b4894f; letter-spacing: .1em; font-size: .95rem; }
+  #{{ uid }} .rdc-note__nombre { text-decoration: underline; text-underline-offset: 3px; }
+</style>
+<script>
+  (function () {
+    var lien = document.getElementById({{ uid | json }});
+    window.rdcAvis({{ product.type | json }}).then(function (d) {
+      if (!d || !d.nombre) return;
+      var pleines = Math.round(d.note || 0);
+      lien.querySelector('.rdc-note__etoiles').textContent = '★'.repeat(pleines) + '☆'.repeat(5 - pleines);
+      lien.querySelector('.rdc-note__valeur').textContent = d.note ? String(d.note).replace('.', ',') : '';
+      lien.querySelector('.rdc-note__nombre').textContent = d.nombre + ' avis sur nos ' + window.rdcVetements[d.vetement];
+      lien.hidden = false;
+    });
+  })();
+</script>
