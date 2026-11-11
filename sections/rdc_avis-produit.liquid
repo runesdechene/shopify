@@ -6,8 +6,9 @@
   T-shirts, et un modèle qui en remplace un autre les garde (table vetements_shopify du monorepo).
   - Données : `window.rdcAvis` (snippet rdc-avis-donnees, RPC anon avis_du_vetement).
   - Pleine largeur, les cartes défilent doucement en boucle (doublées pour qu'on ne voie pas la couture) ;
-    pause au survol ; immobiles et défilables à la main si le visiteur réduit les animations ou s'il y a
-    moins de 4 avis.
+    pause au survol ; la bande se tire à la souris et se glisse au doigt. Immobiles si le visiteur réduit
+    les animations ou s'il y a moins de 4 avis.
+  - Chaque carte garde sa hauteur ; un long texte se coupe à 6 lignes, « Lire la suite » le déplie.
   - La photo d'un avis (cochée « Avis » dans le Hub) se pose à gauche, « +N » s'il y en a d'autres ;
     un clic les ouvre en grand.
   - Aucun avis, ou un produit sans vêtement (débardeur) : la section reste cachée.
@@ -60,13 +61,12 @@
     background: #f9f4ea; box-shadow: 0 3px 8px -1px rgba(89, 64, 31, .22); color: var(--sombre);
     font-family: var(--font-body--family); font-weight: 700; font-size: .95rem; text-decoration: none; }
 
-  #{{ uid }} .rdc-avis__bande { padding: 8px 0 24px; }
-  #{{ uid }} .rdc-avis__piste { display: flex; gap: 24px; width: max-content; margin: 0; padding: 0 var(--page-margin, 20px); list-style: none; }
-  #{{ uid }}[data-defile] .rdc-avis__piste { animation: rdc-avis-defile var(--duree) linear infinite; }
-  #{{ uid }}[data-defile] .rdc-avis__bande:hover .rdc-avis__piste { animation-play-state: paused; }
-  #{{ uid }}:not([data-defile]) .rdc-avis__bande { overflow-x: auto; scroll-snap-type: x mandatory; }
-  #{{ uid }}:not([data-defile]) .rdc-avis__carte { scroll-snap-align: start; }
-  @keyframes rdc-avis-defile { to { transform: translateX(-50%); } }
+  #{{ uid }} .rdc-avis__bande { padding: 8px 0 24px; overflow-x: auto; scrollbar-width: none; cursor: grab; }
+  #{{ uid }} .rdc-avis__bande::-webkit-scrollbar { display: none; }
+  #{{ uid }} .rdc-avis__bande[data-tire] { cursor: grabbing; user-select: none; }
+  #{{ uid }} .rdc-avis__bande img { -webkit-user-drag: none; }
+  #{{ uid }} .rdc-avis__piste { display: flex; align-items: flex-start; gap: 24px; width: max-content; margin: 0;
+    padding: 0 var(--page-margin, 20px); list-style: none; }
 
   #{{ uid }} .rdc-avis__carte { display: flex; gap: 24px; width: min(82vw, 448px); padding: 28px; box-sizing: border-box;
     border: 1px solid rgba(168, 147, 105, .55); border-radius: 15px; background: var(--carte); }
@@ -80,7 +80,11 @@
   #{{ uid }} .rdc-avis__carte-titre { margin: 0; font-family: var(--font-heading--family); font-weight: 400; font-size: 1.6rem;
     letter-spacing: .03em; line-height: 1.15; color: var(--encre); }
   #{{ uid }} .rdc-avis__texte { margin: 0; font-family: var(--font-fragment--family, var(--font-body--family)); font-size: 1.1rem;
-    line-height: 1.45; color: var(--sombre); white-space: pre-line; }
+    line-height: 1.45; color: var(--sombre); white-space: pre-line;
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 6; overflow: hidden; }
+  #{{ uid }} .rdc-avis__carte[data-ouverte] .rdc-avis__texte { -webkit-line-clamp: unset; }
+  #{{ uid }} .rdc-avis__suite { align-self: flex-start; padding: 0; border: 0; background: none; cursor: pointer;
+    color: var(--or); font-family: var(--font-body--family); font-weight: 700; font-size: .85rem; text-decoration: underline; }
   #{{ uid }} .rdc-avis__signature { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding-top: 4px;
     font-family: var(--font-body--family); font-size: .8rem; color: var(--encre); }
   #{{ uid }} .rdc-avis__nom { font-weight: 700; font-size: .875rem; }
@@ -100,15 +104,13 @@
     #{{ uid }} .rdc-avis__carte { flex-direction: column; }
     #{{ uid }} .rdc-avis__photo { width: 100%; height: 200px; }
   }
-  @media (prefers-reduced-motion: reduce) {
-    #{{ uid }} .rdc-avis__piste { animation: none !important; }
-  }
 </style>
 
 <script>
   (function () {
     var racine = document.getElementById({{ uid | json }});
     var section = racine.closest('.rdc-avis');
+    var bande = racine.querySelector('.rdc-avis__bande');
     var piste = racine.querySelector('.rdc-avis__piste');
     var grand = racine.querySelector('.rdc-avis__grand');
     var photosOuvertes = [];
@@ -143,7 +145,7 @@
       return '<li class="rdc-avis__carte">' + photo + '<div class="rdc-avis__contenu">'
         + (a.note ? '<span class="rdc-avis__carte-etoiles" role="img" aria-label="' + a.note + ' sur 5">' + etoiles(a.note) + '</span>' : '')
         + (tt.titre ? '<h3 class="rdc-avis__carte-titre">' + echapper(tt.titre) + '</h3>' : '')
-        + (tt.texte ? '<p class="rdc-avis__texte">' + echapper(tt.texte) + '</p>' : '')
+        + (tt.texte ? '<p class="rdc-avis__texte">' + echapper(tt.texte) + '</p><button type="button" class="rdc-avis__suite" hidden>Lire la suite</button>' : '')
         + '<div class="rdc-avis__signature"><span class="rdc-avis__nom">' + echapper(a.nom) + '</span>'
         + (a.verifie ? '<span class="rdc-avis__verifie">✓ Client vérifié</span>' : '')
         + '<span class="rdc-avis__date">' + mois(a.quand) + '</span></div>'
@@ -163,6 +165,48 @@
     });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') grand.hidden = true; });
 
+    /* À la souris, on tire la bande ; au doigt, le défilement natif suffit. */
+    var tire = null;
+    var aTire = false;
+    bande.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse' && e.button === 0) tire = { x: e.clientX, depart: bande.scrollLeft, id: e.pointerId };
+      aTire = false;
+    });
+    bande.addEventListener('pointermove', function (e) {
+      if (!tire) return;
+      var dx = e.clientX - tire.x;
+      if (!aTire && Math.abs(dx) < 6) return; /* en dessous, c'est un clic */
+      if (!aTire) { aTire = true; bande.dataset.tire = ''; bande.setPointerCapture(tire.id); }
+      bande.scrollLeft = tire.depart - dx;
+    });
+    function lacher() { tire = null; delete bande.dataset.tire; }
+    bande.addEventListener('pointerup', lacher);
+    bande.addEventListener('pointercancel', lacher);
+    /* Un glisser ne doit pas ouvrir la photo sur laquelle il finit. */
+    bande.addEventListener('click', function (e) { if (aTire) { aTire = false; e.stopPropagation(); e.preventDefault(); } }, true);
+
+    /* La bande avance seule, sauf survolée ou touchée ; passée la première série de cartes, elle revient
+       d'autant en arrière, sur la copie identique. */
+    function defiler(pxParSeconde) {
+      var arret = false;
+      var pos = bande.scrollLeft;
+      var avant = performance.now();
+      bande.addEventListener('pointerenter', function () { arret = true; });
+      bande.addEventListener('pointerleave', function () { arret = false; });
+      bande.addEventListener('touchstart', function () { arret = true; }, { passive: true });
+      bande.addEventListener('touchend', function () { setTimeout(function () { arret = false; }, 2000); });
+      requestAnimationFrame(function image(maintenant) {
+        var periode = piste.querySelector('[inert]').offsetLeft - piste.firstElementChild.offsetLeft;
+        if (arret || tire) pos = bande.scrollLeft;
+        else pos += pxParSeconde * Math.min(maintenant - avant, 100) / 1000;
+        if (pos >= periode) pos -= periode;
+        if (pos < 0) pos += periode;
+        if (Math.abs(bande.scrollLeft - pos) >= 1 || !(arret || tire)) bande.scrollLeft = pos;
+        avant = maintenant;
+        requestAnimationFrame(image);
+      });
+    }
+
     window.rdcAvis({{ product.type | json }}).then(function (d) {
       if (!d || !d.avis || !d.avis.length) return;
       var vetements = window.rdcVetements[d.vetement];
@@ -174,15 +218,21 @@
       var cartes = d.avis.map(carte).join('');
       var defile = d.avis.length >= 4 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       piste.innerHTML = defile ? cartes + cartes.replace(/<li /g, '<li inert ') : cartes;
-      if (defile) {
-        racine.dataset.defile = '';
-        racine.style.setProperty('--duree', (d.avis.length * 9) + 's'); /* environ 9 s par carte : on a le temps de lire */
-      }
       piste.addEventListener('click', function (e) {
         var b = e.target.closest('.rdc-avis__photo');
         if (b) montrer(d.avis[Number(b.dataset.avis)].photos, 0);
+        var suite = e.target.closest('.rdc-avis__suite');
+        if (suite) { suite.closest('.rdc-avis__carte').dataset.ouverte = ''; suite.hidden = true; }
       });
       section.hidden = false;
+      /* « Lire la suite » seulement là où le texte est vraiment coupé (mesurable une fois la section visible). */
+      piste.querySelectorAll('.rdc-avis__texte').forEach(function (p) {
+        if (p.scrollHeight > p.clientHeight + 1) p.nextElementSibling.hidden = false;
+      });
+      if (defile) {
+        var periode = piste.querySelector('[inert]').offsetLeft - piste.firstElementChild.offsetLeft;
+        defiler(periode / (d.avis.length * 9)); /* environ 9 s par carte : on a le temps de lire */
+      }
     });
   })();
 </script>
