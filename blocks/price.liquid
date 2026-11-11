@@ -87,7 +87,8 @@
     <div class="three-installments">
       {%- assign installment_price = selected_variant.price | divided_by: 3.0 | money -%}
       <p class="three-installments__text">
-        ou 3 paiements de {{ installment_price }} TTC
+        {%- comment -%} Hors UE (Suisse…), Shopify retire la TVA française : pas de « TTC ». {%- endcomment -%}
+        ou 3 paiements de {{ installment_price }}{% if cart.taxes_included %} TTC{% endif %}
         {%- if block_settings.installments_image != blank -%}
           <img src="{{ block_settings.installments_image | image_url: width: 100 }}" alt="" class="three-installments__image" loading="lazy">
         {%- endif -%}
