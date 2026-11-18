@@ -108,19 +108,29 @@
     <div class="fragments-filters">
       <button class="fragments-filter active" data-filter="all">{{ section.settings.filter_all_label }}</button>
 
-      {%- comment -%} Un filtre par collection groupée (collection_d_heritage), comme l'Explore fragments {%- endcomment -%}
+      {%- comment -%} Collecter tous les tags uniques depuis les metaobjects {%- endcomment -%}
+      {%- assign tags_field = section.settings.tags_field_handle | default: 'tags' -%}
       {%- assign all_tags = '' -%}
       {% for relique in reliques %}
-        {%- assign clean_tag = relique.collection_d_heritage.value.title | strip -%}
-        {%- if clean_tag != '' -%}
-          {%- unless all_tags contains clean_tag -%}
-            {%- if all_tags == '' -%}
-              {%- assign all_tags = clean_tag -%}
-            {%- else -%}
-              {%- assign all_tags = all_tags | append: '|' | append: clean_tag -%}
-            {%- endif -%}
-          {%- endunless -%}
-        {%- endif -%}
+        {%- assign relique_tags = relique[tags_field] -%}
+        {% if relique_tags != blank %}
+          {%- comment -%} Gérer à la fois les champs de type liste et les listes de valeurs {%- endcomment -%}
+          {%- if relique_tags.value -%}
+            {%- assign tags_to_process = relique_tags.value -%}
+          {%- else -%}
+            {%- assign tags_to_process = relique_tags -%}
+          {%- endif -%}
+          {% for tag in tags_to_process %}
+            {%- assign clean_tag = tag | strip -%}
+            {%- unless all_tags contains clean_tag -%}
+              {%- if all_tags == '' -%}
+                {%- assign all_tags = clean_tag -%}
+              {%- else -%}
+                {%- assign all_tags = all_tags | append: '|' | append: clean_tag -%}
+              {%- endif -%}
+            {%- endunless -%}
+          {% endfor %}
+        {% endif %}
       {% endfor %}
 
       {%- comment -%} Afficher un bouton pour chaque tag unique {%- endcomment -%}
@@ -188,8 +198,25 @@
 
       {% if reliques.size > 0 %}
         {% for relique in reliques %}
-          {%- comment -%} Tag = titre de la collection groupée (pour le filtre) {%- endcomment -%}
-          {%- assign tags_string = relique.collection_d_heritage.value.title | strip -%}
+          {%- comment -%} Convertir la liste de tags en chaîne {%- endcomment -%}
+          {%- assign tags_field = section.settings.tags_field_handle | default: 'tags' -%}
+          {%- assign relique_tags = relique[tags_field] -%}
+          {%- assign tags_string = '' -%}
+          {% if relique_tags != blank %}
+            {%- comment -%} Gérer à la fois les champs de type liste et les listes de valeurs {%- endcomment -%}
+            {%- if relique_tags.value -%}
+              {%- assign tags_to_process = relique_tags.value -%}
+            {%- else -%}
+              {%- assign tags_to_process = relique_tags -%}
+            {%- endif -%}
+            {% for tag in tags_to_process %}
+              {%- if forloop.first -%}
+                {%- assign tags_string = tag -%}
+              {%- else -%}
+                {%- assign tags_string = tags_string | append: ', ' | append: tag -%}
+              {%- endif -%}
+            {% endfor %}
+          {% endif %}
 
           {%- comment -%} Récupérer l'URL et la date de l'article {%- endcomment -%}
           {%- assign article_url = '' -%}
@@ -266,7 +293,7 @@
             data-block-id="{{ relique.id }}"
             data-card-title="{{ relique.nom }}"
             data-filter-gid="{{ relique.filter_gid }}"
-            data-excerpt="{{ relique.resume | metafield_text | strip_html | truncate: 200 | escape }}"
+            data-excerpt="{{ relique.description | metafield_text | strip_html | truncate: 200 | escape }}"
             data-tags="{{ tags_string }}"
             data-article-url="{{ article_url }}"
             data-article-published-at="{{ article_published_at }}"
@@ -500,6 +527,13 @@
       "label": "Handle du champ résumé",
       "info": "Nom du champ résumé du métaobjet (ex: resume, description)",
       "default": "resume"
+    },
+    {
+      "type": "text",
+      "id": "tags_field_handle",
+      "label": "Handle du champ tags",
+      "info": "Nom du champ tags du métaobjet (ex: tags, categories)",
+      "default": "tags"
     },
     {
       "type": "header",
