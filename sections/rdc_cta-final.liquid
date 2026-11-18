@@ -39,6 +39,9 @@
     position: relative; width: 100%; min-height: {{ s.min_height }}px; overflow: hidden;
     {% if s.image != blank %}--rdc-img: url('{{ img_url }}');{% endif %}
     clip-path: polygon({{ clip }});
+    /* Un seul calque pour tout le bandeau : sinon, au premier chargement, Chrome peut peindre
+       le voile hors de la découpe (triangle gris) le temps que la photo animée arrive. */
+    isolation: isolate; will-change: transform;
     display: flex;
   }
 
