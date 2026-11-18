@@ -15,8 +15,8 @@
         "slide_37dEyh": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/Hoplite_large_LD.webp",
-            "image_mobile": "shopify://shop_images/Hoplite_large_LD_mobile.webp"
+            "image": "shopify://shop_images/DSC02683_Grand.jpg",
+            "image_mobile": "shopify://shop_images/DSC02683_mobile_Grand.jpg"
           }
         }
       },
@@ -25,10 +25,10 @@
       ],
       "name": "RDC — Hero diaporama",
       "settings": {
-        "overline": "",
-        "title": "PORTE UN FRAGMENT D'HISTOIRE",
-        "title_2": "",
-        "subtitle": "<p><strong>Des œuvres d'artistes illustrées à la main, sur du textile durable, imprimées en Bretagne.</strong> Le passé comme flambeau pour réenchanter notre époque.</p>",
+        "overline": "Chaque vêtement se scanne avec ton téléphone",
+        "title": "PORTE UN FRAGMENT D'HISTOIRE.",
+        "title_2": "Transmets son récit.",
+        "subtitle": "<p>Des œuvres d'Artistes imprimées en Bretagne par nos soins,</p><p>uniquement sur des vêtements de qualité.</p>",
         "cta_primary_label": "Découvrir les fragments",
         "cta_primary_url": "#creations",
         "cta_secondary_label": "La communauté",
@@ -43,9 +43,9 @@
         "mobile_vertical": "center",
         "mobile_title_size": 38,
         "mobile_hide_subtitle": false,
-        "color_scheme": "",
+        "color_scheme": "scheme-1",
         "text_color": "#ffffff",
-        "overline_color": "#f4d694",
+        "overline_color": "#ffebd4",
         "overlay_color": "#464d50",
         "overlay_opacity": 30,
         "text_shadow": 10,
@@ -63,36 +63,46 @@
           "type": "pilier",
           "settings": {
             "image": "shopify://shop_images/voyageur_qui_apprend_ef577f29-3c2f-4504-b461-e446a6e57506.webp",
-            "word": "Apprenez",
-            "text": "Des illustrations originales qui racontent notre passé sans cliché"
+            "word": "Fiable.",
+            "text": "Chaque illustration est conçue à partir de recherches bibliographiques."
           }
         },
         "pilier_g6gzHM": {
           "type": "pilier",
           "settings": {
             "image": "shopify://shop_images/voyageur_qui_incarne.webp",
-            "word": "Incarnez",
-            "text": "Des vêtements auxquels les âmes anciennes se reconnaissent."
+            "word": "Qualitative.",
+            "text": "Une impression artisanale, sur du textile haut-de-gamme."
+          }
+        },
+        "pilier_4aCpLm": {
+          "type": "pilier",
+          "disabled": true,
+          "settings": {
+            "word": "Apprenez",
+            "text": "L'Histoire et le patrimoine, racontés comme une aventure."
           }
         },
         "pilier_CjV4xj": {
           "type": "pilier",
           "settings": {
             "image": "shopify://shop_images/voyageur_qui_explore_8567b2bc-c2a5-461d-8a9b-065a99f76165.webp",
-            "word": "Explorez",
-            "text": "Des contrées oubliées à redécouvrir avec les autres Porteurs"
+            "word": "Audacieuse.",
+            "text": "Un Rune de Chêne se reconnait et devient moteur de belles rencontres."
           }
         }
       },
       "block_order": [
         "pilier_FMPpH9",
         "pilier_g6gzHM",
+        "pilier_4aCpLm",
         "pilier_CjV4xj"
       ],
+      "disabled": true,
       "name": "RDC — Triptyque",
       "settings": {
-        "overline": "Runes de Chêne en 3 mots",
-        "intro": "Notre Mantra",
+        "overline": "Depuis 2023, Runes de chêne fait",
+        "intro": "porter l'Histoire",
         "link_label": "",
         "link_url": "",
         "text_align": "center",
@@ -102,6 +112,12 @@
         "word_size": 32,
         "padding_top": 108,
         "padding_bottom": 108,
+        "mobile_row": true,
+        "image_size_mobile": 64,
+        "word_size_mobile": 22,
+        "grid_gap_top_mobile": 24,
+        "padding_top_mobile": 44,
+        "padding_bottom_mobile": 40,
         "color_scheme": "",
         "accent_color": "#b4894f",
         "word_color": "#403434",
@@ -134,7 +150,7 @@
           "type": "tuile",
           "settings": {
             "collection": "vestes-sweatshirts",
-            "image": "shopify://shop_images/sweat_1c49a169-fa5e-43a4-9996-e634551ad833.webp",
+            "image": "shopify://shop_images/sweat_ddedc44d-4840-45bc-888f-d2d536b9668c.webp",
             "label": "",
             "badge_text": "100% BIO"
           }
@@ -149,11 +165,13 @@
       "settings": {
         "overline": "",
         "title": "",
+        "full_width": true,
         "columns": 3,
         "columns_mobile": 1,
         "tile_ratio": "portrait",
-        "gap": 18,
-        "corner_radius": 9,
+        "tile_height": 600,
+        "gap": 2,
+        "corner_radius": 0,
         "label_align": "left",
         "hover_zoom": true,
         "show_badge": false,
@@ -163,7 +181,7 @@
         "show_price": true,
         "price_color": "#ffffff",
         "text_align": "center",
-        "padding_top": 36,
+        "padding_top": 2,
         "padding_bottom": 72,
         "color_scheme": "",
         "accent_color": "#b4894f"
@@ -487,6 +505,69 @@
         "enable_ken_burns": true
       }
     },
+    "rdc_section_newsletter_popup_NUGxwe": {
+      "type": "rdc-section-newsletter-popup",
+      "disabled": true,
+      "custom_css": [
+        ".rdc-hero__newsletter-row {display: flex; flex-direction: column; gap: 0.5rem; width: auto; max-width: 300px;}",
+        ",.rdc-hero__newsletter-input {flex: 0 0 auto; width: auto; max-width: 320px; min-height: 52px; padding: 0.75rem;}"
+      ],
+      "name": "RDC popup newsletter",
+      "settings": {
+        "reopen_enable": true,
+        "reopen_image": "shopify://shop_images/bonus_e2141a09-8845-4d63-816f-4643a7fd20d5.webp",
+        "popup_delay": 10,
+        "popup_autoshow_disable": false,
+        "popup_show_once": true,
+        "popup_storage_key": "rdc_hero_seen_summer_2026",
+        "image_desktop": "shopify://shop_images/essai2_copie_3e5c66b7-7e85-492d-b673-8b6926c44557.webp",
+        "image_alt": "Personne face aux montagnes",
+        "frame_image": "shopify://shop_images/essai_23105c58-ad91-4f4b-aaed-7ecf39a21dbc.webp",
+        "frame_image_mobile": "shopify://shop_images/fond_mobile_23dddd6d-1296-41a9-8262-e2dce1b8954b.webp",
+        "frame_opacity": 100,
+        "top_image_max_width": 140,
+        "overline": "grâce à runes de chêne",
+        "title": "PORTE L'HISTOIRE SANS CLICHé",
+        "subtitle": "<p>Et rejoins une communauté de +10 000 passionnés.</p>",
+        "pitch": "La marque française qui fait porter l'histoire sans cliché, grâce à des illustrations originales d'artistes sur un vêtement éthique.",
+        "perk_1_text": "",
+        "perk_2_text": "",
+        "perk_1_color": "#c8956b",
+        "perk_2_color": "#7a8e6f",
+        "newsletter_enable": true,
+        "newsletter_heading": "-10% sur ta première commande",
+        "newsletter_subtext": "Inscris toi à la newsletter et reçois ton code par mail",
+        "newsletter_first_name_placeholder": "Ton prénom",
+        "newsletter_placeholder": "Ton adresse e-mail",
+        "newsletter_button_label": "Je m'abonne",
+        "newsletter_tag": "newsletter-popup",
+        "newsletter_consent": "En t'inscrivant, tu acceptes de recevoir nos e-mails. \nDésabonnement à tout moment.",
+        "success_image": "shopify://shop_images/Perseus_38.jpg",
+        "success_overlay_color": "#2d2e2a",
+        "success_overlay_opacity": 70,
+        "success_title": "Bienvenue parmi nous !",
+        "success_subtitle": "Ton code -10% arrive dans ta boîte mail.\nPense à vérifier tes spams.",
+        "cta_primary_label": "",
+        "cta_primary_url": "",
+        "cta_secondary_label": "",
+        "cta_secondary_url": "",
+        "taglines_max_width": 380,
+        "text_color": "#46352e",
+        "title_color": "#963e3e",
+        "cta_primary_color": "#2a2418",
+        "modal_max_width": 720,
+        "modal_padding_block": 60,
+        "modal_padding_inline": 40,
+        "backdrop_color": "#f5f0e6",
+        "backdrop_strength": 15,
+        "backdrop_blur": 10,
+        "color_scheme": "",
+        "overlay_color": "#000000",
+        "overlay_strength": 0,
+        "overlay_blur": 0,
+        "enable_ken_burns": true
+      }
+    },
     "section_MgkEX9": {
       "type": "section",
       "blocks": {
@@ -520,7 +601,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<p>Des figures qu'on avait cessé de raconter. Illustrées à la main, basée sur des sources fiables</p>",
+            "text": "<p>Des figures qu'on avait cessé de raconter. Illustrées à la main, d'après des sources fiables.</p>",
             "width": "fit-content",
             "max_width": "none",
             "alignment": "left",
@@ -602,7 +683,8 @@
           "hoplite",
           "hecate",
           "loutre",
-          "jeanne-de-flandre"
+          "jeanne-de-flandre",
+          "loki"
         ],
         "image_field": "image_pour_fond_clair",
         "sort_order": "recent",
@@ -634,6 +716,52 @@
         "padding_top": 56,
         "padding_bottom": 56,
         "anchor_id": "creations"
+      }
+    },
+    "rdc_concept_scan": {
+      "type": "rdc_concept-scan",
+      "blocks": {
+        "etape_1": {
+          "type": "etape",
+          "settings": {
+            "label": "Vise un\nFragment"
+          }
+        },
+        "etape_2": {
+          "type": "etape",
+          "settings": {
+            "label": "Il est aussitôt\n reconnu"
+          }
+        },
+        "etape_3": {
+          "type": "etape",
+          "settings": {
+            "label": "Son récit\ns'ouvre"
+          }
+        }
+      },
+      "block_order": [
+        "etape_1",
+        "etape_2",
+        "etape_3"
+      ],
+      "settings": {
+        "overline": "Le concept Runes de Chêne",
+        "title": "Scanne ton t-shirt.\nÉcoute son histoire.",
+        "lead": "Chaque Fragment est une histoire vraie. Vise ton vêtement avec l'appli Runes de Chêne : il est reconnu en une seconde, et son récit s'ouvre, à lire ou à écouter.",
+        "cta_label": "Choisir mon Fragment",
+        "cta_url": "shopify://collections/all",
+        "photo": "shopify://shop_images/DSC01872.jpg",
+        "scanner_label": "Scanner un Fragment",
+        "fragment_name": "Hoplite",
+        "camp_over": "En prime, avec ton Fragment",
+        "camp_title": "Ta place au Campement",
+        "camp_text": "Là où les porteurs se retrouvent : toute la communauté, les ventes privées, les rencontres.",
+        "color_scheme": "",
+        "accent_color": "#a94842",
+        "padding_top": 96,
+        "padding_bottom": 96,
+        "bonus": "Débloque ses anecdotes et ses énigmes"
       }
     },
     "liste_icone_4QpiPW": {
@@ -804,6 +932,18 @@
     "rdc_collections_dqWcJc": {
       "type": "rdc_collections",
       "blocks": {
+        "saga_JdPQpQ": {
+          "type": "saga",
+          "settings": {
+            "collection": "jeanne-de-flandre-saga",
+            "title_text": "JEANNE DE FLANDRE",
+            "title_visible": false,
+            "subtitle": "La gloire médiévale au féminin",
+            "link": "shopify://collections/jeanne-de-flandre-saga",
+            "new_mode": "auto",
+            "new_text": ""
+          }
+        },
         "saga_UzpLJM": {
           "type": "saga",
           "settings": {
@@ -854,11 +994,13 @@
         }
       },
       "block_order": [
+        "saga_JdPQpQ",
         "saga_UzpLJM",
         "saga_X3ztGx",
         "saga_LFm9HF",
         "saga_TQNrcJ"
       ],
+      "disabled": true,
       "name": "RDC — Sagas",
       "settings": {
         "overline": "",
@@ -992,31 +1134,30 @@
       "type": "rdc_mur-vivant",
       "name": "RDC — Mouvement vivant",
       "settings": {
-        "overline": "Pendant que le monde regarde ailleurs",
-        "title": "Un mouvement s'éveille",
-        "subtitle": "De la France à la Suisse, de l'Espagne à l'Allemagne, vous êtes des milliers à porter vos Fragments d'Histoire pour vous reconnaître entre vous. Ce n'est plus juste une marque. Ce sont des Runes de Chêne qui fleurissent un peu partout, silencieusement.",
+        "overline": "A ceux qui aiment l'Histoire",
+        "title": "Bienvenue chez vous.",
+        "subtitle": "De la France à la Suisse, de l'Espagne à l'Allemagne, nous sommes des milliers à porter nos Fragments d'Histoire comme signe d'appartenance. <b>Ce n'est plus juste une marque. C'est un état d'esprit.</b>",
         "show_stats": true,
         "show_stars": true,
         "stat_users_factor": 1,
-        "stat_users_round": "0",
+        "stat_users_round": "1000",
         "stat_users_plus": true,
         "stat_rating_label": "4,6/5 de moyenne",
         "stat2_value": "+4904",
         "stat2_label": "Porteurs de Fragments",
         "stat2_source": "clients",
-        "stat3_value": "+25/an",
-        "stat3_label": "Festivals où vous rencontrer",
+        "stat3_value": "12/an",
+        "stat3_label": "Festivals pour se rencontrer",
         "stat3_source": "",
         "stat4_value": "",
         "stat4_label": "Lieux sortis de l'oubli par nos Porteurs",
         "stat4_source": "lieux",
-        "rows": 2,
         "speed": 120,
-        "card_width": 224,
-        "max_photos": 40,
+        "photo_tint": 35,
+        "max_photos": 100,
         "random_order": true,
         "submit_intro": "",
-        "submit_label": "Ajoutez votre photo au mur →",
+        "submit_label": "",
         "submit_url": "https://hub.runesdechene.com/soumettre-contenu",
         "supabase_url": "",
         "supabase_anon_key": "",
@@ -1027,25 +1168,64 @@
         "anchor_id": "mouvement"
       }
     },
+    "rdc_cta_final": {
+      "type": "rdc_cta-final",
+      "settings": {
+        "overline": "Ventes privées & drops · Nouveaux Fragments",
+        "title": "Ecris l'Histoire avec nous",
+        "subtitle": "<p>Un nouveau Fragment tous les deux mois, des ventes privées, des événements. Laisse ton email, on te prévient en premier.</p>",
+        "button_label": "Trouver la mienne",
+        "button_url": "/collections/all",
+        "show_email": true,
+        "firstname_placeholder": "Ton prénom",
+        "email_placeholder": "Ton adresse email",
+        "email_button": "Me prévenir",
+        "email_success": "C'est noté. Tu seras prévenu avant tout le monde.",
+        "link_label": "Voir les collections",
+        "link_url": "/collections",
+        "content_align": "center",
+        "image": "shopify://shop_images/DSC01655.jpg",
+        "photo_brightness": 80,
+        "scrim_color": "#362c22",
+        "scrim_opacity": 75,
+        "animate": true,
+        "cut_depth": 8,
+        "cut_direction": "right",
+        "under_footer": 90,
+        "cut_bottom": false,
+        "min_height": 1120,
+        "height_mobile": 420,
+        "color_scheme": "",
+        "accent_color": "#f4d694",
+        "title_color": "#fcf9f1",
+        "button_bg": "#1f1a14",
+        "button_text": "#fffaf2",
+        "padding_top": 40,
+        "padding_bottom": 0,
+        "anchor_id": ""
+      }
+    },
     "rdc_app_3t8D4m": {
       "type": "rdc_app",
       "blocks": {
         "feature_yTyPDt": {
           "type": "feature",
           "settings": {
-            "label": "3000+ lieux cartographiés",
+            "label": "3400+ points d'intérêts",
             "icon": "compass"
           }
         },
         "feature_XpDzDE": {
           "type": "feature",
+          "disabled": true,
           "settings": {
-            "label": "Missions et événements",
+            "label": "Enigmes historiques",
             "icon": "trophy"
           }
         },
         "feature_fFAJir": {
           "type": "feature",
+          "disabled": true,
           "settings": {
             "label": "Toute la communauté Runes de Chêne",
             "icon": "group"
@@ -1061,7 +1241,6 @@
         },
         "feature_kDmpYP": {
           "type": "feature",
-          "disabled": true,
           "settings": {
             "label": "Événements",
             "icon": "calendar"
@@ -1075,17 +1254,22 @@
             "icon": "shield"
           }
         },
+        "feature_h3ecqY": {
+          "type": "feature",
+          "settings": {
+            "label": "Énigmes",
+            "icon": "key"
+          }
+        },
         "feature_WY8Uyt": {
           "type": "feature",
-          "disabled": true,
           "settings": {
-            "label": "Coupe des Héritages",
+            "label": "Ventes privées",
             "icon": "trophy"
           }
         },
         "feature_chat01": {
           "type": "feature",
-          "disabled": true,
           "settings": {
             "label": "Chat communautaire",
             "icon": "chat"
@@ -1099,26 +1283,28 @@
         "feature_KGDiFQ",
         "feature_kDmpYP",
         "feature_98YcM9",
+        "feature_h3ecqY",
         "feature_WY8Uyt",
         "feature_chat01"
       ],
+      "disabled": true,
       "name": "RDC — L'application",
       "settings": {
         "bg_image": "shopify://shop_images/rdc_fond_varegue_5223175d-5e1d-43c1-9d16-b4c6c37882d3.webp",
         "bg_position": "center",
         "bg_overlay_color": "#fff3de",
         "bg_overlay": 40,
-        "overline": "Le Patrimoine et la Nature pour",
-        "title": "RAVIVER NOS CONTRÉES",
-        "title_size": 4.2,
+        "overline": "Ne te contente pas de la porter",
+        "title": "Explore l'Histoire",
+        "title_size": 3.2,
         "bridge": "",
-        "lead": "<b>Chaque Fragment acheté finance la redécouverte de nos régions</b>. Des milliers de <b>Porteurs</b> se rassemblent pour exhumer ce que le monde moderne a oublié.",
+        "lead": "",
         "play_heading": "",
-        "free_text": "Auto-financé par nos ventes · Aucune installation requise",
-        "cta_label": "EXPLORER LA CARTE",
+        "free_text": "Gratuite · Aucune installation requise",
+        "cta_label": "Ouvrir l'app",
         "cta_url": "https://app.runesdechene.com",
         "video_external_url": "",
-        "video_poster": "shopify://shop_images/appli_img_site_9d3199a1-8ed4-4ccc-b109-7c4e7402c5a5.webp",
+        "video_poster": "shopify://shop_images/5978596770004537256_121_25fa75c0-5821-4603-bb72-155828658634.jpg",
         "color_scheme": "",
         "accent_color": "#983c3c",
         "padding_top": 80,
@@ -1133,7 +1319,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h3>La boutique nomade</h3>",
+            "text": "<h3>Venir nous voir en vrai</h3>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -1159,7 +1345,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h2>Nos prochaines dates</h2>",
+            "text": "<h2>Nos prochains festivals</h2>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -1195,6 +1381,7 @@
         "text_6mnUcM",
         "custom_liquid_a9px9t"
       ],
+      "disabled": true,
       "name": "t:names.custom_section",
       "settings": {
         "content_direction": "column",
@@ -2154,12 +2341,15 @@
     "rdc_categories_PPbH9J",
     "slideshow_hf3iVq",
     "rdc_hero_main",
+    "rdc_section_newsletter_popup_NUGxwe",
     "section_MgkEX9",
     "rdc_illustrations_meta_zxHWmV",
+    "rdc_concept_scan",
     "liste_icone_4QpiPW",
     "rdc_collections_dqWcJc",
     "collection_list_KVTKQr",
     "rdc_mur_vivant_LwJVzT",
+    "rdc_cta_final",
     "rdc_app_3t8D4m",
     "section_8PtfMJ",
     "illustration_list_FjwKWn",
