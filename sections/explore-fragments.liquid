@@ -329,7 +329,7 @@
             data-block-id="{{ relique.id }}"
             data-card-title="{{ relique.nom }}"
             data-filter-gid="{{ relique.filter_gid }}"
-            data-excerpt="{{ relique.description | metafield_text | strip_html | truncate: 200 | escape }}"
+            data-excerpt="{{ relique.resume | metafield_text | strip_html | truncate: 200 | escape }}"
             data-tags="{{ tags_string }}"
             data-article-url="{{ article_url }}"
             data-article-published-at="{{ article_published_at }}"
@@ -630,13 +630,6 @@
       "label": "Handle du champ résumé",
       "info": "Nom du champ résumé du métaobjet (ex: resume, description)",
       "default": "resume"
-    },
-    {
-      "type": "text",
-      "id": "tags_field_handle",
-      "label": "Handle du champ tags",
-      "info": "Nom du champ tags du métaobjet (ex: tags, categories)",
-      "default": "tags"
     },
     {
       "type": "checkbox",
