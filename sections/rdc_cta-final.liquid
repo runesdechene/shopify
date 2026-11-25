@@ -47,6 +47,9 @@
 
   #{{ uid }} .rdc-ctaf__band {
     position: relative; width: 100%; min-height: {{ s.min_height }}px; overflow: hidden;
+    /* « clip » : au retour de l'inscription, le saut vers le formulaire faisait défiler l'intérieur du bandeau
+       (« hidden » le permet), le voile remontait et laissait une bande sombre en bas. */
+    overflow: clip;
     {% if s.image != blank %}--rdc-img: url('{{ img_url }}');{% endif %}
     clip-path: polygon({{ clip }});
     /* Un seul calque pour tout le bandeau : sinon, au premier chargement, Chrome peut peindre
@@ -100,7 +103,15 @@
     background: #fcf9f1; color: #1f1a14; font-family: var(--font-body--family); font-weight: 700;
     font-size: .9rem; letter-spacing: .06em; text-transform: uppercase; transition: transform .2s ease; }
   #{{ uid }} .rdc-ctaf__submit:hover { transform: translateY(-2px); }
-  #{{ uid }} .rdc-ctaf__msg { font-family: var(--font-body--family); font-size: 1rem; color: #fcf9f1; margin: 6px 0 0; }
+  {%- comment -%} La confirmation prend la place des champs : une pastille dans leur style, alignée comme le texte. {%- endcomment -%}
+  #{{ uid }} .rdc-ctaf__form { justify-content: {{ align_items }}; }
+  #{{ uid }} .rdc-ctaf__msg { display: inline-flex; align-items: center; gap: 12px; margin: 0; padding: 15px 28px;
+    border-radius: 999px; border: 1px solid rgba(252,249,241,.55); background: rgba(252,249,241,.08);
+    font-family: var(--font-body--family); font-weight: 700; font-size: 1rem; line-height: 1.4; color: #fcf9f1;
+    animation: rdcCtaMerci .5s ease-out both; }
+  #{{ uid }} .rdc-ctaf__msg::before { content: '✓'; color: {{ s.accent_color }}; font-size: 1.15rem; }
+  @keyframes rdcCtaMerci { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { #{{ uid }} .rdc-ctaf__msg { animation: none; } }
   #{{ uid }} .rdc-ctaf__link { font-family: var(--font-body--family); font-size: .9rem; color: rgba(252,249,241,.8);
     text-decoration: underline; text-underline-offset: 3px; }
   #{{ uid }} .rdc-ctaf__link:hover { color: #fcf9f1; }
@@ -139,7 +150,7 @@
             que le Hub synchronise. L'id ramène la page ici après l'envoi. {%- endcomment -%}
         {%- form 'customer', id: 'RdcCtaEmail', class: 'rdc-ctaf__form' -%}
           {%- if form.posted_successfully? -%}
-            <p class="rdc-ctaf__msg">{{ s.email_success }}</p>
+            <p class="rdc-ctaf__msg" role="status">{{ s.email_success }}</p>
           {%- else -%}
             <input type="hidden" name="contact[tags]" value="newsletter,accueil-bandeau-final">
             <label for="RdcCtaFirstName" class="visually-hidden">Prénom</label>
