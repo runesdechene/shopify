@@ -13,6 +13,9 @@
   "sections": {
     "footer_immersif_WEyxt8": {
       "type": "footer-immersif",
+      "custom_css": [
+        "footer-immersif: {margin-top: 10%;}"
+      ],
       "name": "Pied de page immersif",
       "settings": {
         "class": "footer-immersif",
@@ -235,8 +238,8 @@
                           "name": "t:names.icon",
                           "settings": {
                             "icon": "price_tag",
-                            "image_upload": "shopify://shop_images/l2_bleu.png",
-                            "width": 30,
+                            "image_upload": "shopify://shop_images/003_94495d7a-4e5f-40cd-8afb-97b921e83e12.png",
+                            "width": 26,
                             "link": "",
                             "open_in_new_tab": false
                           },
@@ -329,8 +332,8 @@
                           "name": "t:names.icon",
                           "settings": {
                             "icon": "price_tag",
-                            "image_upload": "shopify://shop_images/l2_bleu.png",
-                            "width": 30,
+                            "image_upload": "shopify://shop_images/003_94495d7a-4e5f-40cd-8afb-97b921e83e12.png",
+                            "width": 26,
                             "link": "",
                             "open_in_new_tab": false
                           },
@@ -423,8 +426,8 @@
                           "name": "t:names.icon",
                           "settings": {
                             "icon": "price_tag",
-                            "image_upload": "shopify://shop_images/l2_bleu.png",
-                            "width": 30,
+                            "image_upload": "shopify://shop_images/003_94495d7a-4e5f-40cd-8afb-97b921e83e12.png",
+                            "width": 26,
                             "link": "",
                             "open_in_new_tab": false
                           },
@@ -655,11 +658,11 @@
                       "type": "image",
                       "name": "t:names.image",
                       "settings": {
-                        "image": "shopify://shop_images/logo_ligne_bleu_c.webp",
+                        "image": "shopify://shop_images/Logo_ligne_slogan_d7184f77-20a2-4c08-b9db-3f449a2a2f35.webp",
                         "link": "",
                         "image_ratio": "adapt",
                         "width": "custom",
-                        "custom_width": 74,
+                        "custom_width": 64,
                         "width_mobile": "fill",
                         "custom_width_mobile": 100,
                         "height": "fit",
@@ -679,7 +682,7 @@
                       "type": "text",
                       "name": "t:names.text",
                       "settings": {
-                        "text": "<p>Fondée en 2023 sur les cendres de <em>North Wanderers</em>, <strong>Runes de Chêne</strong> est une marque française qui se bat pour rendre à notre époque sa mémoire & son souffle. Chacun de nos articles est une création originale appelée <em><strong>Fragment d'Histoire. </strong></em></p><p><strong>Apprenez. Incarnez. Explorez !</strong></p>",
+                        "text": "<p>Fondée en 2023 sur les cendres de <em>North Wanderers</em>, <strong>Runes de Chêne</strong> est une marque française qui se bat pour rendre à notre époque sa mémoire & son souffle. Chacun de nos articles est une création originale appelée&nbsp;<em><strong>Fragment d'Histoire, qui vous fait porter un écho du passé.</strong></em></p><p><strong>Durable. Rebelle. Française.</strong></p>",
                         "width": "fit-content",
                         "max_width": "normal",
                         "alignment": "left",
@@ -844,7 +847,7 @@
                         "text_color": "#403434",
                         "field_bg": "#ffffff",
                         "field_border": "#d8c9b0",
-                        "button_bg": "#3E3A3A",
+                        "button_bg": "#3e3a3a",
                         "button_text": "#ffffff"
                       },
                       "blocks": {}

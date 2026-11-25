@@ -14,6 +14,7 @@
       "settings": {
         "mf_namespace": "custom",
         "mf_key": "hero_images",
+        "mf_key_mobile": "hero_images_mobile",
         "autoplay_seconds": 6,
         "ken_burns_duration": 18,
         "hero_width": "full",
@@ -36,12 +37,12 @@
         "btn1_link": "",
         "btn2_label": "",
         "btn2_link": "",
+        "min_height": 46,
+        "min_height_mobile": 40,
         "text_shadow": 25,
         "desc_weight": "400",
         "show_without_image": false,
-        "fallback_color": "#46493c",
-        "min_height": 46,
-        "min_height_mobile": 80
+        "fallback_color": "#46493c"
       }
     },
     "saga_motifs": {
@@ -49,6 +50,7 @@
       "settings": {
         "section_width": "full",
         "section_max_width": 1400,
+        "seal_opacity": 80,
         "columns": 5,
         "mobile_columns": "2",
         "card_align": "center",
@@ -63,6 +65,19 @@
     "rdc_collections_3yKGEt": {
       "type": "rdc_collections",
       "blocks": {
+        "saga_KQCD6w": {
+          "type": "saga",
+          "settings": {
+            "collection": "jeanne-de-flandre-saga",
+            "image": "shopify://shop_images/Jeanne_de_flandre.png",
+            "title_text": "jeanne de flandre",
+            "title_visible": false,
+            "subtitle": "la gloire médiévale au féminin",
+            "link": "shopify://collections/jeanne-de-flandre-saga",
+            "new_mode": "auto",
+            "new_text": ""
+          }
+        },
         "saga_GPcfj4": {
           "type": "saga",
           "settings": {
@@ -113,6 +128,7 @@
         }
       },
       "block_order": [
+        "saga_KQCD6w",
         "saga_GPcfj4",
         "saga_efJKh8",
         "saga_AiKfd8",

@@ -9,8 +9,8 @@
  */
 {
   "current": {
-    "logo": "shopify://shop_images/LOGO_ligne_marron.webp",
-    "logo_inverse": "shopify://shop_images/LOGO_ligne_blanc.webp",
+    "logo": "shopify://shop_images/Logo_ligne_slogan.webp",
+    "logo_inverse": "shopify://shop_images/Logo_ligne_slogan_blanc.webp",
     "logo_height": 50,
     "logo_height_mobile": 28,
     "favicon": "shopify://shop_images/favicon.png",
@@ -210,7 +210,7 @@
       "scheme-4": {
         "settings": {
           "background": "#fcf9f1",
-          "foreground_heading": "#3b575c",
+          "foreground_heading": "#2E2D2B",
           "foreground": "#3e3930",
           "primary": "#833434",
           "primary_hover": "#504545",

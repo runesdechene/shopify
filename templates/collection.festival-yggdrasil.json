@@ -9,166 +9,59 @@
  */
 {
   "sections": {
-    "section": {
-      "type": "section",
-      "blocks": {
-        "group_ctDbWy": {
-          "type": "group",
-          "name": "t:names.group",
-          "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "link": "",
-            "open_in_new_tab": false,
-            "placeholder": "",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "text_B9gWdi": {
-              "type": "text",
-              "name": "Title",
-              "settings": {
-                "text": "<h1>C'est l'année des Dragons</h1>",
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h2",
-                "font": "var(--font-primary--family)",
-                "font_size": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "text_DtyfWL": {
-              "type": "text",
-              "name": "Title",
-              "settings": {
-                "text": "<h1>Au festival yggdrasil</h1>",
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "custom",
-                "font": "var(--font-heading--family)",
-                "font_size": "7.5rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-primary)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "text_TAYMHa": {
-              "type": "text",
-              "name": "Title",
-              "settings": {
-                "text": "<h3>Runes de Chêne y sera présent à Lyon, Eurexpo le <strong>7 et 8 Mars 2026. </strong><a href=\"https://www.indoor.festyggdrasil.fr/\" title=\"https://www.indoor.festyggdrasil.fr/\"><strong>Découvrez le festival</strong></a> et explorez dès maintenant nos produits officiels.</h3>",
-                "width": "100%",
-                "max_width": "none",
-                "alignment": "left",
-                "type_preset": "h5",
-                "font": "var(--font-primary--family)",
-                "font_size": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "text_B9gWdi",
-            "text_DtyfWL",
-            "text_TAYMHa"
-          ]
-        }
-      },
-      "block_order": [
-        "group_ctDbWy"
-      ],
-      "custom_css": [],
-      "name": "Collection heading",
+    "rdc_saga_hero_BHkiRp": {
+      "type": "rdc_saga-hero",
+      "name": "RDC — Saga : hero",
       "settings": {
-        "content_direction": "row",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "flex-start",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 12,
-        "section_width": "page-width",
-        "section_height": "",
-        "section_height_custom": 50,
-        "color_scheme": "scheme-1",
-        "background_media": "none",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_radius": 0,
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "padding-block-start": 40,
-        "padding-block-end": 40
+        "mf_namespace": "custom",
+        "mf_key": "hero_images",
+        "mf_key_mobile": "hero_images_mobile",
+        "autoplay_seconds": 6,
+        "ken_burns_duration": 18,
+        "hero_width": "full",
+        "hero_max_width": 1400,
+        "hero_overhang": 50,
+        "hero_side_gap": 50,
+        "hero_margin_top": 16,
+        "hero_margin_bottom": 0,
+        "hero_radius": 16,
+        "mobile_bleed": true,
+        "overlay_color": "#626453",
+        "overlay_opacity": 50,
+        "overlay_blend": "normal",
+        "bottom_fade": false,
+        "bottom_fade_height": 140,
+        "bottom_fade_color": "#f4eee1",
+        "overline": "collection partenaire",
+        "title": "",
+        "btn1_label": "",
+        "btn1_link": "",
+        "btn2_label": "",
+        "btn2_link": "",
+        "min_height": 46,
+        "min_height_mobile": 40,
+        "text_shadow": 25,
+        "desc_weight": "400",
+        "show_without_image": false,
+        "fallback_color": "#46493c"
+      }
+    },
+    "rdc_saga_motifs_drKEbL": {
+      "type": "rdc_saga-motifs",
+      "name": "RDC — Saga : motifs",
+      "settings": {
+        "section_width": "full",
+        "section_max_width": 1400,
+        "seal_opacity": 80,
+        "columns": 7,
+        "mobile_columns": "2",
+        "card_align": "center",
+        "card_gap": 8,
+        "swatch_size": 22,
+        "columns_gap": 10,
+        "rows_gap": 28,
+        "label_recent": "Le plus récent",
+        "label_motif": "Motif"
       }
     },
     "main": {
@@ -342,6 +235,7 @@
           ]
         }
       },
+      "disabled": true,
       "custom_css": [],
       "settings": {
         "layout_type": "grid",
@@ -367,7 +261,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h2>Cette année, le festival Yggdrasil c'est...</h2>",
+            "text": "<h2>en 2026, le festival yggdrasil c'était :</h2>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -405,6 +299,7 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 20,
+            "custom_css_class": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -449,7 +344,17 @@
             "padding-block-start": 20,
             "padding-block-end": 0,
             "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-end": 0,
+            "enable_display_condition": false,
+            "condition_type": "metafield",
+            "condition_metafield": "",
+            "condition_value": "",
+            "condition_liquid": "",
+            "condition_invert": false,
+            "mobile_image_layout": "grid",
+            "mobile_image_fit": "contain",
+            "mobile_carousel_item_width": 80,
+            "mobile_grid_columns": 2
           },
           "blocks": {
             "image_PHj8ze": {
@@ -468,6 +373,7 @@
                 "border_width": 2,
                 "border_opacity": 100,
                 "border_radius": 0,
+                "custom_css_class": "",
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
@@ -513,12 +419,19 @@
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "padding-block-start": 49,
-        "padding-block-end": 0
+        "padding-block-end": 0,
+        "enable_display_condition": false,
+        "condition_type": "metafield",
+        "condition_metafield": "",
+        "condition_value": "",
+        "condition_liquid": "",
+        "condition_invert": false
       }
     }
   },
   "order": [
-    "section",
+    "rdc_saga_hero_BHkiRp",
+    "rdc_saga_motifs_drKEbL",
     "main",
     "section_aNxTgE"
   ]

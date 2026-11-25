@@ -14,6 +14,7 @@
       "settings": {
         "mf_namespace": "custom",
         "mf_key": "hero_images",
+        "mf_key_mobile": "hero_images_mobile",
         "autoplay_seconds": 6,
         "ken_burns_duration": 18,
         "hero_width": "full",
@@ -23,6 +24,7 @@
         "hero_margin_top": 0,
         "hero_margin_bottom": 0,
         "hero_radius": 0,
+        "mobile_bleed": false,
         "overlay_color": "#4a4135",
         "overlay_opacity": 55,
         "overlay_blend": "normal",
@@ -35,12 +37,12 @@
         "btn1_link": "",
         "btn2_label": "",
         "btn2_link": "",
+        "min_height": 46,
+        "min_height_mobile": 80,
         "text_shadow": 0,
         "desc_weight": "300",
         "show_without_image": true,
-        "fallback_color": "#46493c",
-        "min_height": 46,
-        "min_height_mobile": 80
+        "fallback_color": "#46493c"
       }
     },
     "rdc_coupes": {
@@ -378,12 +380,61 @@
         "condition_liquid": "",
         "condition_invert": false
       }
+    },
+    "rdc_illustrations_meta_BRW3JW": {
+      "type": "rdc_illustrations_meta",
+      "disabled": true,
+      "name": "RDC — Illustrations",
+      "settings": {
+        "collections": [
+          "lesprit-de-l-ours",
+          "vegvisir",
+          "cerf",
+          "svarrun",
+          "valsgard",
+          "gjallahorn",
+          "lesprit-du-renard",
+          "le-vagabond-gris",
+          "huginn"
+        ],
+        "image_field": "image_pour_fond_clair",
+        "sort_order": "manual",
+        "overline": "",
+        "heading": "",
+        "columns": 3,
+        "mobile_columns": "2",
+        "columns_gap": 16,
+        "rows_gap": 28,
+        "image_ratio": "2/3",
+        "corner_radius": 0,
+        "image_padding": 30,
+        "hover_zoom": true,
+        "motif_float": true,
+        "show_name": true,
+        "show_summary": true,
+        "show_artist": true,
+        "show_link": false,
+        "link_label": "Voir la collection",
+        "show_new_badge": true,
+        "new_label": "New",
+        "new_months": 3,
+        "new_bg": "#833434",
+        "new_text": "#f4eee1",
+        "new_ring": "#f4d694",
+        "section_width": "page-width",
+        "color_scheme": "",
+        "accent_color": "#b4894f",
+        "padding_top": 56,
+        "padding_bottom": 56,
+        "anchor_id": "creations"
+      }
     }
   },
   "order": [
     "rdc_hero",
     "rdc_coupes",
     "main",
-    "section_Uhe9Wa"
+    "section_Uhe9Wa",
+    "rdc_illustrations_meta_BRW3JW"
   ]
 }

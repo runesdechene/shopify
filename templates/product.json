@@ -256,11 +256,18 @@
                         "padding-inline-end": 0
                       },
                       "blocks": {}
+                    },
+                    "rdc_note_avis": {
+                      "type": "custom-liquid",
+                      "settings": {
+                        "custom_liquid": "{% render 'rdc-note-avis', product: closest.product %}"
+                      }
                     }
                   },
                   "block_order": [
                     "text_rwpyUz",
                     "text_rF3pQm",
+                    "rdc_note_avis",
                     "custom_liquid_HEUDXr",
                     "price_iBYhxh"
                   ]
@@ -1354,6 +1361,7 @@
     },
     "lecture_fragment_v2_EaANnh": {
       "type": "lecture-fragment-v2",
+      "disabled": true,
       "custom_css": [],
       "name": "Lecture Fragment",
       "settings": {
@@ -1570,6 +1578,10 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "rdc_avis_produit": {
+      "type": "rdc_avis-produit",
+      "settings": {}
     }
   },
   "order": [
@@ -1579,6 +1591,7 @@
     "similar_products_LCyQ6g",
     "rdc_concept_scan",
     "lecture_fragment_v2_EaANnh",
+    "rdc_avis_produit",
     "product_recommendations_8RVdzU"
   ]
 }
