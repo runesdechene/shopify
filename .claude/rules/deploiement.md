@@ -5,35 +5,28 @@
 
 ## Protocole « déploie shopify »
 
-**Trigger** : quand Uriel dit `déploie shopify` ou `déploie` (dans contexte Shopify évident).
+**Trigger** : quand Uriel dit `déploie shopify` ou `déploie` (dans un contexte Shopify évident).
+Boutique `eef6c4-b5.myshopify.com`, thème en ligne `181425930507` (si la CLI refuse l'accès, elle est
+connectée à une autre boutique : `shopify auth logout`).
 
-**Protocole automatique** :
+**Jamais de `theme push` complet.** Dans l'ordre :
 
-1. **Stop `shopify theme dev`** si en cours (TaskStop sur le background task)
-2. **Récupérer l'ID du Development theme actuel** :
-   ```bash
-   shopify theme list --store=runes-de-chene
-   ```
-   Chercher la ligne `[development] [yours]` — l'ID change à chaque création (les Development themes ont une lifespan ~7 jours).
-3. **Pull** depuis le Development theme :
-   ```bash
-   cd "C:/Users/uriel/Desktop/DEVS/shopify (Runes de Chêne)" && shopify theme pull --theme=DEV_ID --store=runes-de-chene --force
-   ```
-   → récupère les settings qu'Uriel a édités via theme editor (images, couleurs, padding, perks, etc.)
-4. **Push --live** vers le thème publié :
-   ```bash
-   cd "C:/Users/uriel/Desktop/DEVS/shopify (Runes de Chêne)" && shopify theme push --live --store=runes-de-chene --force --allow-live
-   ```
-   → push code + settings vers le thème actuellement live (peu importe son nom/ID)
-5. **Confirmer** en chat avec l'URL https://runesdechene.com
+1. `git branch -a --no-merged main` : une branche déjà envoyée en ligne et absente de `main` se fusionne
+   **avant** de toucher au moindre fichier.
+2. Tirer le thème en ligne dans un dossier à part (`theme pull --path <dossier>`).
+3. Pour chaque fichier à envoyer, comparer la version en ligne à la version **d'avant ses propres
+   modifications**. Un écart = quelqu'un d'autre l'a changé : le reprendre d'abord. Les réglages de
+   l'éditeur (`templates/*.json`, `*-group.json`, `settings_data.json`) font foi en ligne.
+4. `theme push --path <dépôt> --theme=181425930507 --only <fichiers> --allow-live --nodelete`
+5. Re-tirer ces fichiers pour comparer, puis vérifier la page sur runesdechene.com.
 
-**Pourquoi ce protocole** : les settings d'Uriel (images uploadées, couleurs custom, padding, etc.) sont stockés dans `templates/index.json` du Development theme distant, PAS dans le local. Sans le pull, on push un local obsolète et on perd ses ajustements.
+## `main` doit contenir tout ce qui est en ligne (26/11/2026)
 
-**Risque** : `--live` push direct en production sans test intermédiaire. À utiliser quand on a déjà validé sur le Development theme. Pour test intermédiaire : push vers une "Copie de Crépuscule" d'abord, puis publish.
+**Le piège** : 56 commits envoyés en ligne depuis une branche n'avaient jamais rejoint `main`. Le 18/11,
+un correctif fait sur le `rdc_cta-final.liquid` de `main` a écrasé en ligne le formulaire prénom + e-mail
+et rendu au pied de page de l'accueil son inscription.
 
-**Repo** : `C:/Users/uriel/Desktop/DEVS/shopify (Runes de Chêne)/` (machine FONDATION).
-
-**Établi** : 23 avril 2026, fin de session refonte popup home Boutique.
+**How to apply :** une branche se fusionne dans `main` dès qu'un de ses fichiers part en ligne.
 
 ## Le dépôt local n'est pas le thème en ligne — on ne pousse que ses propres fichiers (25/10/2026)
 
