@@ -377,6 +377,23 @@
                   },
                   "block_order": []
                 },
+                "rdc_reassurance_buybox": {
+                  "type": "rdc_reassurance",
+                  "settings": {
+                    "line_delivery": "Imprimé à la commande dans notre atelier · <strong>chez vous entre 2 et 3 semaines</strong>",
+                    "line_returns": "Échange ou remboursement <strong>sous 14 jours</strong>",
+                    "line_payment": "Paiement sécurisé",
+                    "text_size": 13,
+                    "icon_size": 17,
+                    "gap": 9,
+                    "margin_top": 16,
+                    "margin_bottom": 8,
+                    "accent_color": "#b4894f",
+                    "text_color": "#5a4a42",
+                    "strong_color": "#403434"
+                  },
+                  "blocks": {}
+                },
                 "group_wNUjBe": {
                   "type": "group",
                   "name": "t:names.group",
@@ -1150,10 +1167,6 @@
                   "block_order": [
                     "text_wdNxWE"
                   ]
-                },
-                "rdc_reassurance_buybox": {
-                  "type": "rdc_reassurance",
-                  "settings": {}
                 }
               },
               "block_order": [
@@ -1293,47 +1306,65 @@
         "padding-block-end": 40
       }
     },
-    "rdc_fragment_app_xQhqP3": {
-      "type": "rdc_fragment-app",
-      "name": "RDC — Fragment & App",
+    "rdc_concept_scan": {
+      "type": "rdc_concept-scan",
+      "blocks": {
+        "etape_1": {
+          "type": "etape",
+          "settings": {
+            "label": "Tu le\nreçois"
+          }
+        },
+        "etape_2": {
+          "type": "etape",
+          "settings": {
+            "label": "Tu vises\nle motif"
+          }
+        },
+        "etape_3": {
+          "type": "etape",
+          "settings": {
+            "label": "Son récit\ns'ouvre"
+          }
+        }
+      },
+      "block_order": [
+        "etape_1",
+        "etape_2",
+        "etape_3"
+      ],
       "settings": {
-        "pretitle": "",
-        "title": "Ce Fragment s'ajoute à votre compte",
-        "bridge": "",
-        "unlocks_label": "En l'achetant, vous obtenez aussi sur l'application...",
-        "unlock1_title": "Un titre unique",
-        "unlock1_desc": "Inspiré par [perso]",
-        "unlock2_title": "L'accès au Campement",
-        "unlock2_desc": "Votez pour les prochains Fragments et participez aux missions.",
-        "unlock3_title": "Le Fragment débloqué dans votre Codex",
-        "unlock3_desc": "Son histoire s'y révèle. Sa mémoire est collectée.",
-        "free_text": "Application autofinancée · Bureau & Mobile",
-        "account_text": "Un seul compte - l'email de commande suffit",
-        "video_external_url": "",
-        "video_poster": "shopify://shop_images/appli_img_site_9d3199a1-8ed4-4ccc-b109-7c4e7402c5a5.webp",
-        "card_dark": true,
-        "reward_label": "Nouvelle entrée du Codex",
-        "plaque_label": "Titre débloqué sur la Carte",
-        "plaque_fallback": "Ton titre de Porteur",
-        "background_image": "shopify://shop_images/Fond_section_173d7ca4-1587-465e-be60-3ce8abe92f99.jpg",
-        "background_image_mobile": "shopify://shop_images/fond_de_section_mobile.jpg",
-        "supabase_url": "",
-        "supabase_anon_key": ""
+        "overline": "Ce que ce Fragment cache",
+        "title": "Ton [perso]\na une histoire.",
+        "lead": "Ce motif n'est pas un dessin de plus : c'est une histoire vraie. Quand tu le recevras, vise-le avec ton téléphone. Il est reconnu en une seconde, et son récit s'ouvre, à lire ou à écouter.",
+        "cta_label": "",
+        "cta_url": "shopify://collections/all",
+        "photo": "shopify://shop_images/DSC01872.jpg",
+        "scanner_label": "Scanner un Fragment",
+        "fragment_name": "Hoplite",
+        "camp_over": "En prime, à ton nom",
+        "camp_title": "Ta place au Campement",
+        "camp_text": "Un titre unique inspiré par [perso], et ton accès prémium au CAMPEMENT : la communauté, les ventes privées, les rencontres.",
+        "color_scheme": "",
+        "accent_color": "#a94842",
+        "padding_top": 96,
+        "padding_bottom": 96,
+        "bonus": "Débloque ses anecdotes et ses énigmes"
       }
     },
     "lecture_fragment_v2_EaANnh": {
       "type": "lecture-fragment-v2",
-      "disabled": true,
       "custom_css": [],
       "name": "Lecture Fragment",
       "settings": {
         "show_section": "{% if product.metafields.custom.illustration_produit.value.son_histoire != blank %}true{% else %}false{% endif %}",
         "collapsed_default": false,
-        "pretitle": "{{ product.metafields.custom.illustration_produit.value.resume.value }}",
+        "pretitle": "L'histoire derrière ce Fragment",
         "title": "{{ product.metafields.custom.illustration_produit.value.nom.value }}",
         "artist": "{{ product.metafields.custom.illustration_produit.value.artiste.value.nom.value }}",
         "description": "{{ product.metafields.custom.illustration_produit.value.son_histoire | metafield_tag }}",
-        "icon_image": "shopify://shop_images/grimoire.png",
+        "audio_label": "Écouter ce Fragment",
+        "audio_accent": "#8a6a4a",
         "main_illustration": "{{ product.metafields.custom.illustration_produit.value.image_pour_fond_clair.value }}",
         "background_image_metaobject": "{{ product.metafields.custom.illustration_produit.value.image_fond_de_fragment.value }}",
         "background_image": "shopify://shop_images/fond_explore.webp"
@@ -1519,13 +1550,11 @@
       "block_order": [
         "text_w3FTGV"
       ],
-      "custom_css": [
-        ".product-media-container.media-fit {background: #e7dcca;}"
-      ],
+      "custom_css": [],
       "name": "t:names.product_recommendations",
       "settings": {
         "product": "t-shirt-overzised-varegue",
-        "recommendation_type": "complementary",
+        "recommendation_type": "related",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
         "max_products": 10,
@@ -1548,7 +1577,7 @@
     "rdc_inp_ilnp",
     "section_3W4BMb",
     "similar_products_LCyQ6g",
-    "rdc_fragment_app_xQhqP3",
+    "rdc_concept_scan",
     "lecture_fragment_v2_EaANnh",
     "product_recommendations_8RVdzU"
   ]

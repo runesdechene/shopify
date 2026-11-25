@@ -15,7 +15,7 @@
           "type": "_cart-title",
           "static": true,
           "settings": {
-            "title": "Cart",
+            "title": "Votre panier",
             "show_count": true,
             "type_preset": "h3",
             "alignment": "left",
@@ -103,7 +103,7 @@
               "type": "_product-list-text",
               "name": "t:names.collection_title",
               "settings": {
-                "text": "<h3>Our bestsellers</h3>",
+                "text": "<h3>Les plus portés</h3>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -130,7 +130,7 @@
               "name": "t:names.button",
               "disabled": true,
               "settings": {
-                "label": "View all",
+                "label": "Tout voir",
                 "open_in_new_tab": false,
                 "style_class": "link",
                 "width": "fit-content",

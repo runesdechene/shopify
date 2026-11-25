@@ -5,6 +5,23 @@
 
 
 {%- liquid
+  comment
+    Codex (02/11/2026, Uriel) : la fiche produit montre « En bref » et « Le mot de l'artiste » à la
+    place de l'histoire contée, qui s'ouvre dans l'appli à qui porte le Fragment. Les deux champs
+    vivent dans le métaobjet Illustration (écrits au Hub). Avec ce métaobjet, la section s'affiche
+    dès que l'un des deux est rempli ; sinon le réglage d'origine décide.
+  endcomment
+  assign ill_produit = product.metafields.custom.illustration_produit.value
+  assign motif_bref = ill_produit.resume | metafield_text | strip
+  assign motif_mot = ill_produit.mot_de_l_artiste | metafield_text | strip
+  assign codex = false
+  if ill_produit != blank
+    if motif_bref != blank or motif_mot != blank
+      assign codex = true
+      assign should_show = true
+    endif
+  endif
+
   # Ne rien afficher si la condition retourne false (comparaison de string)
   if should_show == 'false' or should_show == false or should_show == blank
     break
@@ -22,6 +39,13 @@
   if background_image_url == blank and section.settings.background_image != blank
     assign background_image_url = section.settings.background_image | image_url: width: 1920
   endif
+
+  comment
+    La section est alimentee par les reglages du customizer et ne connaissait
+    aucun metaobjet. Le metachamp `illustration_produit` existe deja sur les
+    produits — il est lu par rdc_fragment-app.liquid et rdc_saga-motifs.liquid.
+    On emprunte le meme chemin plutot que d'en inventer un (lu plus haut).
+  endcomment
 -%}
 
 <div class="lecture-fragment{% if section.settings.collapsed_default %} lecture-fragment--collapsed{% endif %}">
@@ -61,10 +85,59 @@
               {%- endif -%}
             </div>
           </div>
-          {%- if section.settings.description != blank -%}
+          {%- comment -%}
+            Le lecteur se pose AVANT le recit : ecouter est une alternative a
+            lire, pas une recompense de fin de lecture. En bas de 400 mots,
+            personne ne le voyait.
+          {%- endcomment -%}
+          {%- if codex -%}
             <div class="lecture-fragment__description">
-              {{ section.settings.description }}
+              {%- if motif_bref != blank -%}
+                <p class="lecture-fragment__bref">En bref</p>
+                <p>{{ motif_bref | escape }}</p>
+              {%- endif -%}
+              {%- if motif_mot != blank -%}
+                {%- capture NL %}
+{% endcapture -%}
+                <figure class="lecture-fragment__mot">
+                  <span class="lecture-fragment__guillemet" aria-hidden="true">“</span>
+                  <figcaption class="lecture-fragment__bref">Le mot de l’artiste</figcaption>
+                  <blockquote>
+                    {%- assign paragraphes = motif_mot | split: NL -%}
+                    {%- for para in paragraphes -%}
+                      {%- assign ligne = para | strip -%}
+                      {%- if ligne != '' -%}<p>{{ ligne | escape }}</p>{%- endif -%}
+                    {%- endfor -%}
+                  </blockquote>
+                  {%- assign artiste = ill_produit.artiste.value -%}
+                  {%- if artiste != blank -%}
+                    <p class="lecture-fragment__signature">
+                      {%- if artiste.image != blank -%}
+                        {{ artiste.image | image_url: width: 80 | image_tag: loading: 'lazy', width: 40, height: 40, alt: '' }}
+                      {%- endif -%}
+                      {{ artiste.nom | escape }}, l’artiste
+                    </p>
+                  {%- endif -%}
+                </figure>
+              {%- endif -%}
+              <p class="lecture-fragment__suite">
+                Son histoire entière, à lire ou à écouter, s’ouvre dans l’appli quand tu portes ce Fragment.
+              </p>
             </div>
+          {%- else -%}
+            {%- if ill_produit != blank -%}
+              {%- render 'fragment-audio',
+                  ill: ill_produit,
+                  source: 'produit',
+                  label: section.settings.audio_label,
+                  accent: section.settings.audio_accent -%}
+            {%- endif -%}
+
+            {%- if section.settings.description != blank -%}
+              <div class="lecture-fragment__description">
+                {{ section.settings.description }}
+              </div>
+            {%- endif -%}
           {%- endif -%}
 
           {%- if section.settings.artist != blank -%}
@@ -124,7 +197,9 @@
     background-repeat: no-repeat;
     padding: 60px 80px;
     border-radius: 20px;
-    border: 2px solid #ac9c89ff;
+    /* Meme filet que la carte de la section application, juste au-dessus :
+       deux cadres qui se suivent avec deux bruns differents se voient. */
+    border: 2px solid #d3c2ad;
     position: relative;
     z-index: 1;
   }
@@ -356,6 +431,63 @@
     margin-bottom: 0;
   }
 
+  .lecture-fragment__bref {
+    margin: 0 0 0.4rem;
+    font-family: var(--font-heading--family);
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #a89369;
+  }
+
+  .lecture-fragment__mot {
+    position: relative;
+    margin: 1.6rem 0 0;
+    padding: 1.4rem 1.2rem 1rem;
+    border: 1px solid rgba(168, 147, 105, 0.5);
+    border-radius: 16px;
+    background: rgba(255, 249, 240, 0.85);
+  }
+
+  .lecture-fragment__mot blockquote {
+    margin: 0;
+    font-style: normal;
+  }
+
+  .lecture-fragment__guillemet {
+    position: absolute;
+    top: -1.6rem;
+    left: 0.6rem;
+    font-size: 5rem;
+    line-height: 1;
+    color: #a89369;
+    opacity: 0.35;
+  }
+
+  .lecture-fragment__signature {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0.8rem 0 0;
+    font-family: var(--font-heading--family);
+    font-size: 0.95rem;
+    color: #857575;
+  }
+
+  .lecture-fragment__signature img {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #fff9f0;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .lecture-fragment__suite {
+    margin-top: 1.2rem;
+    font-size: 0.95rem;
+    color: #a94842;
+  }
+
   .lecture-fragment__artist {
     font-size: 1.3rem;
     margin: 0;
@@ -511,6 +643,18 @@
       "id": "description",
       "label": "Description",
       "default": "<p>Les Varègues apparaissent à l'époque médiévale comme un phénomène historique singulier : des hommes venus du Nord, principalement de Scandinavie, qui s'inscrivent durablement dans les réseaux commerciaux, militaires puis politiques, reliant l'Europe septentrionale à l'Asie mineure.</p><p>Ils participent activement à la formation des premiers États slaves, tout en conservant une identité propre. Le terme « Varègue » désigne moins un peuple qu'un rôle : celui d'hommes mobiles, capables de naviguer entre cultures, langues et systèmes politiques très différents.</p><p>Leur présence à Constantinople marque l'apogée de leur trajectoire. Recrutés comme mercenaires d'élite, ils forment la célèbre Garde varègue, chargée de la protection rapprochée de l'empereur byzantin. Leur réputation repose sur des éléments concrets : discipline, efficacité au combat et fidélité stricte à leur employeur. Étrangers aux intrigues locales, ils sont considérés comme plus fiables que les troupes issues de l'aristocratie byzantine elle-même.</p><p>Les Varègues incarnent ainsi un modèle rare au Moyen Âge : celui d'hommes capables de préserver à des structures impériales complexes sans renoncer à leurs traditions. Leur équipement, leur organisation et leurs rites témoignent d'un équilibre entre héritage scandinave et adaptation à un environnement méditerranéen et chrétien oriental.</p>"
+    },
+    {
+      "type": "text",
+      "id": "audio_label",
+      "label": "Libellé du lecteur audio",
+      "default": "Écouter ce Fragment"
+    },
+    {
+      "type": "color",
+      "id": "audio_accent",
+      "label": "Couleur d'accent du lecteur",
+      "default": "#8a6a4a"
     },
     {
       "type": "header",

@@ -1118,7 +1118,21 @@
     }
   }
 
-  .menu-drawer:has(details[open]) {
+  {%- comment -%}
+    ⚠ Heritage coupait le defilement du tiroir des qu'UN accordeon s'ouvrait,
+    quel qu'il soit. Or c'est `.menu-drawer` lui-meme qui defile (overflow:auto,
+    hauteur 100dvh) : le passer en `initial` le fige. Concretement, ouvrir
+    « Plus » revelait des collections... qu'on ne pouvait plus atteindre.
+
+    La regle a pourtant une raison : le panneau glissant (`__submenu`) est pose
+    en ABSOLU dans le tiroir, qui est son bloc conteneur — si le tiroir defile,
+    le panneau s'ouvre decale d'autant. Mais lui seul est concerne, et il porte
+    son propre defilement.
+
+    On ne libere donc le tiroir que pour ce panneau-la, pas pour les accordeons
+    poses en ligne.
+  {%- endcomment -%}
+  .menu-drawer:has(details[open] > .menu-drawer__submenu) {
     overflow: initial;
   }
 

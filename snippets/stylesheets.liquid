@@ -10,3 +10,9 @@
   d'origine du theme.
 {%- endcomment -%}
 {{ 'rdc_collection.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  Le defilement du tiroir de menu sur telephone. Lire l'en-tete du fichier
+  avant d'y toucher : il repare une regle du theme que `theme push` ne suffit
+  pas a mettre en ligne.
+{%- endcomment -%}
+{{ 'rdc_menu-drawer.css' | asset_url | stylesheet_tag }}

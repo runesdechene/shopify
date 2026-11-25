@@ -55,38 +55,6 @@
   assign motif_artiste = ill.artiste.value.nom.value | default: ill.artiste
 
   comment
-    Voix off du Fragment.
-
-    Les CLES sont reglables dans l'editeur : le metaobjet est edite par un
-    humain, une clé renommee ne doit pas exiger une modification de code.
-    Par defaut `fragment_audio` (fichier) et `narrateur_audio`.
-
-    ⚠ `narrateur_audio` n'est pas du texte : c'est une REFERENCE au metaobjet
-    « Artistes ». Il faut donc descendre chercher son champ `nom`, comme le
-    fait deja `artiste` dans borne.liquid. On tente les niveaux du plus
-    precis au plus large, faute de connaitre la forme exacte de la reference.
-  endcomment
-  assign champ_audio = ill[s.audio_field_key]
-  assign audio_url = champ_audio.value.url | default: champ_audio.url
-  if audio_url == blank
-    assign audio_url = champ_audio | metafield_text | strip
-  endif
-
-  assign ref_narrateur = ill[s.narrator_field_key]
-  assign voix_nom = ref_narrateur.value.nom.value
-  if voix_nom == blank
-    assign voix_nom = ref_narrateur.value.nom
-  endif
-  if voix_nom == blank
-    assign voix_nom = ref_narrateur.nom
-  endif
-  if voix_nom == blank
-    assign voix_nom = ref_narrateur | metafield_text | strip
-  endif
-  # Le metaobjet Artistes porte un champ `image` : l'avatar du narrateur.
-  assign voix_avatar = ref_narrateur.value.image | default: ref_narrateur.image
-
-  comment
     Rappel de la collection principale — la saga d'ou vient ce motif.
 
     Le metaobjet Illustration porte deja un metachamp « collection groupee »
@@ -430,17 +398,6 @@
   #{{ uid }} .rdcm__story h2::before{content:'';display:block;width:64px;height:2px;
     background:{{ s.accent_color }};margin-bottom:20px}
   {%- endif -%}
-  #{{ uid }} .rdcm__audio{margin:0 0 26px}
-  #{{ uid }} .rdcm__audio-label{display:flex;align-items:center;gap:10px;
-    font-family:var(--font-body--family);font-size:.68rem;
-    font-weight:600;letter-spacing:.18em;text-transform:uppercase;
-    color:{{ s.accent_color }};margin-bottom:10px}
-  #{{ uid }} .rdcm__audio-avatar{width:{{ s.audio_avatar_size }}px;height:{{ s.audio_avatar_size }}px;
-    border-radius:999px;object-fit:cover;flex:0 0 auto;
-    box-shadow:0 0 0 2px {{ s.accent_color }}55}
-  #{{ uid }} .rdcm__audio-label strong{font-weight:700;color:#403434}
-  #{{ uid }} .rdcm__audio audio{width:100%;max-width:420px;height:40px;display:block}
-
   #{{ uid }} .rdcm__story-body{font-family:var(--font-body--family);font-size:1.02rem;line-height:1.7;
     color:#5a4a42}
   #{{ uid }} .rdcm__story-body > *:first-child{margin-top:0}
@@ -574,25 +531,18 @@
           NL capture un saut de ligne : c'est le seul moyen propre d'en
           obtenir un comme separateur de `split`.
         {%- endcomment -%}
-        {%- if s.audio_enabled and audio_url != blank -%}
-          {%- comment -%}
-            Pas d'autoplay : la voix demarre sur decision du visiteur. Et le
-            lecteur natif du navigateur plutot qu'un composant maison — il est
-            accessible au clavier et connu de tous.
-          {%- endcomment -%}
-          <div class="rdcm__audio">
-            <div class="rdcm__audio-label">
-              {%- if s.audio_avatar and voix_avatar != blank -%}
-                <img class="rdcm__audio-avatar" src="{{ voix_avatar | image_url: width: 96 }}"
-                     alt="{{ voix_nom | escape }}" width="96" height="96" loading="lazy">
-              {%- endif -%}
-              <span>{{ s.audio_label }}{% if voix_nom != blank %}, avec <strong>{{ voix_nom }}</strong>{% endif %}</span>
-            </div>
-            <audio controls preload="none" src="{{ audio_url }}">
-              Votre navigateur ne peut pas lire cet extrait.
-              <a href="{{ audio_url }}">Télécharger la voix off</a>.
-            </audio>
-          </div>
+        {%- if s.audio_enabled -%}
+          {%- render 'fragment-audio',
+              ill: ill,
+              source: 'motif',
+              audio_field_key: s.audio_field_key,
+              narrator_field_key: s.narrator_field_key,
+              label: s.audio_label,
+              show_avatar: s.audio_avatar,
+              avatar_size: s.audio_avatar_size,
+              accent: s.accent_color,
+              supa_url: s.supabase_url,
+              supa_key: s.supabase_anon_key -%}
         {%- endif -%}
 
         <div class="rdcm__story-body">
@@ -810,6 +760,8 @@
     { "type": "text", "id": "narrator_field_key", "label": "Métachamp — narrateur", "default": "narrateur_audio", "info": "Référence vers le métaobjet Artistes. Ses champs « nom » et « image » sont utilisés." },
     { "type": "checkbox", "id": "audio_avatar", "label": "Afficher l'avatar du narrateur", "default": true },
     { "type": "range", "id": "audio_avatar_size", "label": "Taille de l'avatar", "unit": "px", "min": 20, "max": 72, "step": 2, "default": 34, "visible_if": "{{ section.settings.audio_avatar }}" },
+    { "type": "text", "id": "supabase_url", "label": "URL Supabase", "info": "Optionnel — laisser vide utilise le projet Runes de Chêne." },
+    { "type": "text", "id": "supabase_anon_key", "label": "Clé Supabase (anon)", "info": "Optionnel — laisser vide utilise la clé publique par défaut." },
     { "type": "header", "content": "Données structurées (Google)" },
     { "type": "checkbox", "id": "schema_enabled", "label": "Émettre le balisage produit et le fil d'Ariane", "default": true, "info": "Rend la page éligible à l'affichage du prix et du chemin de navigation dans les résultats Google. Invisible sur la page." },
     { "type": "header", "content": "Bouton de rappel (bas de page)" },

@@ -32,7 +32,7 @@
           "type": "_announcement",
           "name": "t:names.announcement",
           "settings": {
-            "text": "🌾 Fête des moissons, frais de ports offerts dès 50€ d'achat",
+            "text": "🍺 Frais de port réduits dès 50 € d'achat",
             "link": "",
             "font": "var(--font-subheading--family)",
             "font_size": "0.875rem",
@@ -94,7 +94,7 @@
             "drawer_dividers": false,
             "menu_icons_mapping": "Collection Romaine (à venir)|spqr.png",
             "mega_menu_column1_title": "",
-            "mega_menu_column2": "North Wanderers",
+            "mega_menu_column2": "Jeanne de Flandre\nNorth Wanderers\nLe festival Yggdrasil",
             "mega_menu_column2_title": "",
             "mega_menu_column3": "",
             "mega_menu_column3_title": "",
